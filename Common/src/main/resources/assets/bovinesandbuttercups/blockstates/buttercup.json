@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "bud=false": {
+      "model": "bovinesandbuttercups:block/buttercup"
+    },
+    "bud=true": {
+      "model": "bovinesandbuttercups:block/buttercup_bud"
+    }
+  }
+}

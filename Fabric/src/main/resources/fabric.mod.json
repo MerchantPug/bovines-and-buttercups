@@ -1,39 +1,44 @@
 {
-    "schemaVersion": 1,
-    "id": "modid",
-    "version": "${version}",
-  
-    "name": "Example Mod",
-    "description": "This is an example description! Tell everyone what your mod is about!",
-    "authors": [
-      "Me!"
+  "schemaVersion": 1,
+  "id": "bovinesandbuttercups",
+  "version": "${version}",
+
+  "name": "Bovines and Buttercups",
+  "description": "Placeholder",
+  "authors": [
+    "MerchantPug"
+  ],
+  "contributors": [
+    "SpiderKolo"
+  ],
+  "contact": {
+    "homepage": ""
+  },
+
+  "license": "MIT",
+  "icon": "assets/bovinesandbuttercups/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups"
     ],
-    "contact": {
-      "homepage": "https://fabricmc.net/",
-      "sources": "https://github.com/FabricMC/fabric-example-mod"
-    },
-  
-    "license": "CC0-1.0",
-    "icon": "assets/modid/icon.png",
-  
-    "environment": "*",
-    "entrypoints": {
-      "main": [
-        "com.example.examplemod.ExampleMod"
-      ]
-    },
-    "mixins": [
-      "modid.mixins.json"
+    "client": [
+      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsClient"
     ],
-  
-    "depends": {
-      "fabricloader": ">=0.14",
-      "fabric": "*",
-      "minecraft": "1.19.x",
-      "java": ">=17"
-    },
-    "suggests": {
-      "another-mod": "*"
-    }
+    "preLaunch": [
+      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsPreLaunch"
+    ]
+  },
+  "accessWidener": "bovinesandbuttercups.accesswidener",
+  "mixins": [
+    "bovinesandbuttercups.mixins.json",
+    "bovinesandbuttercups.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "1.19.x",
+    "java": ">=17"
   }
-  
+}

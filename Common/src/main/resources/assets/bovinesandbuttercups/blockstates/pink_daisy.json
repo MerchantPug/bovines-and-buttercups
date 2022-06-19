@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "bud=false": {
+      "model": "bovinesandbuttercups:block/pink_daisy"
+    },
+    "bud=true": {
+      "model": "bovinesandbuttercups:block/pink_daisy_bud"
+    }
+  }
+}

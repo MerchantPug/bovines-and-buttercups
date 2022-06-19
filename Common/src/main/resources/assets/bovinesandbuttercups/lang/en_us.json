@@ -1,0 +1,18 @@
+{
+  "block.bovinesandbuttercups.buttercup": "Buttercup",
+  "block.bovinesandbuttercups.pink_daisy": "Pink Daisy",
+  "block.bovinesandbuttercups.potted_buttercup": "Potted Buttercup",
+  "block.bovinesandbuttercups.potted_pink_daisy": "Potted Pink Daisy",
+
+  "item.bovinesandbuttercups.nectar_bowl": "Bowl of Nectar",
+  "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",
+
+  "entity.bovinesandbuttercups.moobloom": "Moobloom",
+  "subtitles.entity.moobloom.milk": "Moobloom gets milked",
+
+  "effect.bovinesandbuttercups.lockdown": "Lockdown",
+
+  "commands.effect.lockdown.success.single": "Applied Lockdown effect for %s to %s",
+  "commands.effect.lockdown.success.multiple": "Applied Lockdown effect for %s to %s targets",
+  "commands.effect.lockdown.failed": "Unable to apply Lockdown for Lockdown"
+}

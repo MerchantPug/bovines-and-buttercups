@@ -1,0 +1,30 @@
+{
+  "entity.moobloom.milk": {
+    "subtitle": "subtitles.entity.moobloom.milk",
+    "sounds": [
+      {
+        "name": "bovinesandbuttercups:mob/moobloom/milk1",
+        "weight": 333
+      },
+      {
+        "name": "bovinesandbuttercups:mob/moobloom/milk2",
+        "weight": 333
+      },
+      {
+        "name": "bovinesandbuttercups:mob/moobloom/milk3",
+        "weight": 333
+      },
+      {
+        "name": "bovinesandbuttercups:mob/moobloom/easter_egg_milk",
+        "volume": 0.5,
+        "weight": 1
+      }
+    ]
+  },
+  "entity.moobloom.shear": {
+    "subtitle": "subtitles.item.shears.shear",
+    "sounds": [
+      "mob/sheep/shear"
+    ]
+  }
+}

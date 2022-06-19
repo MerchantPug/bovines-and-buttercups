@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "bovinesandbuttercups:block/pink_daisy"
+  }
+}

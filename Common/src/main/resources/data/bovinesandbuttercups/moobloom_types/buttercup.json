@@ -1,0 +1,7 @@
+{
+  "flower_block": "bovinesandbuttercups:buttercup",
+  "bud_block": "bovinesandbuttercups:buttercup[bud=true]",
+  "spawn_biome": "minecraft:flower_forest",
+  "nectar_duration": 600,
+  "natural_spawn_weight": 7
+}

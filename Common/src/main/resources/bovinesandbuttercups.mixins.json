@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.merchantpug.bovinesandbuttercups.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BeeAccessor",
+    "BeeMixin",
+    "ClientboundUpdateMobEffectPacketMixin",
+    "LivingEntityMixin",
+    "MobAccessor",
+    "MobEffectInstanceMixin",
+    "PlayerListMixin"
+  ],
+  "client": [
+    "client.ClientPacketListenerMixin",
+    "client.EffectRenderingInventoryScreenMixin",
+    "client.ModelBakeryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+  

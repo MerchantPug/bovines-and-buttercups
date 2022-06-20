@@ -41,7 +41,10 @@ public class JsonReadingUtil {
                 throw new JsonSyntaxException("Could not find mob effect with id: " + effectString);
             }
             int duration = json.get("duration").getAsInt();
-            int amplifier = json.get("amplifier").getAsInt();
+            int amplifier = 0;
+            if (json.has("amplifier")) {
+                amplifier = json.get("amplifier").getAsInt();
+            }
             return new MobEffectInstance(optionalEffect.get(), duration, amplifier);
         } else {
             throw new JsonSyntaxException("Expected mob effect to be a json object.");

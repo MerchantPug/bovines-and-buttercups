@@ -36,7 +36,7 @@ public class BovinesAndButtercups implements ModInitializer {
 		});
 
 		BiomeModifications.addSpawn(biomeSelectionContext -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 60, 2, 4);
-		FabricDefaultAttributeRegistry.register((EntityType<FlowerCow>)BovineEntityTypes.MOOBLOOM.get(), FlowerCow.createAttributes());
+		FabricDefaultAttributeRegistry.register(BovineEntityTypes.MOOBLOOM.get(), FlowerCow.createAttributes());
 
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new FlowerCowLoaderFabric());
 	}

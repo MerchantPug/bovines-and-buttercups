@@ -1,0 +1,10 @@
+{
+  "type": "bovinesandbuttercups:add_spawns_except",
+  "spawners":
+  {
+    "type": "bovinesandbuttercups:moobloom",
+    "weight": 60,
+    "minCount": 2,
+    "maxCount": 4
+  }
+}

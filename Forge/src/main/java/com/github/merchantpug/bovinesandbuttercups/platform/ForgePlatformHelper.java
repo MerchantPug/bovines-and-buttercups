@@ -5,7 +5,6 @@ import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;

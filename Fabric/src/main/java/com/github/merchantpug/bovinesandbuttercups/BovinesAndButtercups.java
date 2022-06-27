@@ -18,9 +18,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class BovinesAndButtercups implements ModInitializer {
-	public static final String MODID = "bovinesandbuttercups";
-	public static final Logger LOGGER = LogManager.getLogger(BovinesAndButtercups.class);
-
 	@Override
 	public void onInitialize() {
 		BovinesAndButtercupsCommon.init();
@@ -30,7 +27,7 @@ public class BovinesAndButtercups implements ModInitializer {
 			EffectLockdownCommand.register(dispatcher);
 		});
 
-		FabricLoader.getInstance().getModContainer(MODID).ifPresent(modContainer -> {
+		FabricLoader.getInstance().getModContainer(Constants.MOD_ID).ifPresent(modContainer -> {
 			ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercupsCommon.resourceLocation("mojang"), modContainer, "Mojang Textures", ResourcePackActivationType.NORMAL);
 			ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercupsCommon.resourceLocation("no_grass"), modContainer, "No Grass Back", ResourcePackActivationType.NORMAL);
 		});

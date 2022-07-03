@@ -2,12 +2,10 @@ package com.github.merchantpug.bovinesandbuttercups.client;
 
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.entity.renderer.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.minecraft.client.model.CowModel;
-import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,6 +26,6 @@ public class BovinesAndButtercupsClient {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer((EntityType<FlowerCow>)BovineEntityTypes.MOOBLOOM.get(), FlowerCowRenderer::new);
+        event.registerEntityRenderer(BovineEntityTypes.MOOBLOOM.get(), FlowerCowRenderer::new);
     }
 }

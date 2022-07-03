@@ -40,7 +40,7 @@ public abstract class PlayerListMixin {
             Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()])));
         }
         this.getServer().getAllLevels().forEach(level -> {
-            level.getEntities((EntityType<FlowerCow>)BovineEntityTypes.MOOBLOOM.get(), Entity::isAlive).forEach(flowerCow -> {
+            level.getEntities(BovineEntityTypes.MOOBLOOM.get(), Entity::isAlive).forEach(flowerCow -> {
                 try {
                     ResourceLocation resourceLocation = ResourceLocation.tryParse(flowerCow.getTypeId());
                     if (!FlowerCowTypeRegistry.contains(resourceLocation)) {

@@ -30,12 +30,12 @@ public abstract class PlayerListMixin {
     @Shadow public abstract MinecraftServer getServer();
 
     @Inject(method = "placeNewPlayer", at = @At("TAIL"))
-    private void sendServerTokensToPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
+    private void sendServerTypesToPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
         Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()])));
     }
 
     @Inject(method = "reloadResources", at = @At("TAIL"))
-    private void sendServerTokensToPlayersAfterReload(CallbackInfo ci) {
+    private void sendServerTypesToPlayersAfterReload(CallbackInfo ci) {
         for (ServerPlayer player : this.players) {
             Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()])));
         }

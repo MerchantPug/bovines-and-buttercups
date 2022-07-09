@@ -47,7 +47,7 @@ public abstract class EffectRenderingInventoryScreenForgeMixin<T extends Abstrac
                 List<Component> list = new ArrayList<>();
                 list.add(this.getEffectName(mobEffectInstance));
                 ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getNullifiedEffects().forEach(((statusEffect, duration) -> {
-                    list.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDuration(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+                    list.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDurationFromInt(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
                 }));
                 this.renderTooltip(poseStack, list, Optional.empty(), mouseX, mouseY);
             }
@@ -67,7 +67,7 @@ public abstract class EffectRenderingInventoryScreenForgeMixin<T extends Abstrac
         List<Component> newList = new ArrayList<>();
         newList.add(this.getEffectName(bovinesandbuttercups$capturedMobEffectInstance));
         ((MobEffectInstanceAccess)bovinesandbuttercups$capturedMobEffectInstance).bovinesandbuttercups$getNullifiedEffects().forEach(((statusEffect, duration) -> {
-            newList.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDuration(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+            newList.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDurationFromInt(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
         }));
         return newList;
     }

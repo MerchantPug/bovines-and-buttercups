@@ -5,6 +5,6 @@ import net.minecraft.world.effect.MobEffectCategory;
 
 public class LockdownEffect extends MobEffect {
     public LockdownEffect() {
-        super(MobEffectCategory.NEUTRAL, 0xf5f5f5);
+        super(MobEffectCategory.NEUTRAL, 0xeec561);
     }
 }

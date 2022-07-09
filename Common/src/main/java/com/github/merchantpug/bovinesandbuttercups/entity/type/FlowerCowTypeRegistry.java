@@ -41,7 +41,7 @@ public class FlowerCowTypeRegistry {
 
     public static FlowerCowType register(ResourceLocation resourceLocation, FlowerCowType type) {
         if (idToMoobloomType.containsKey(resourceLocation)) {
-            throw new IllegalArgumentException("Duplicate token id! Tried to register: '" + resourceLocation.toString() + "'");
+            throw new IllegalArgumentException("Duplicate moobloom type id! Tried to register: '" + resourceLocation.toString() + "'");
         }
         idToMoobloomType.put(resourceLocation, type);
         return type;
@@ -85,7 +85,7 @@ public class FlowerCowTypeRegistry {
 
     public static FlowerCowType get(ResourceLocation resourceLocation) {
         if(!idToMoobloomType.containsKey(resourceLocation)) {
-            throw new IllegalArgumentException("Could not get token from id '" + resourceLocation.toString() + "', as it was not registered!");
+            throw new IllegalArgumentException("Could not get moobloom type from id '" + resourceLocation.toString() + "', as it was not registered!");
         }
         return idToMoobloomType.get(resourceLocation);
     }

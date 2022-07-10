@@ -132,6 +132,9 @@ public class FlowerCow extends Cow implements Shearable {
         if (standingStillForBeeTicks > 0) {
             standingStillForBeeTicks--;
         }
+        if (!this.level.isClientSide() && this.getPollinationTicks() > 0 && this.tickCount % 8 == 0) {
+            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY(1.1), this.getZ(), 1, 0.3, 0.1, 0.3, 0.0);
+        }
         super.tick();
     }
 
@@ -148,10 +151,12 @@ public class FlowerCow extends Cow implements Shearable {
         }
 
         if (this.getFlowerCowType().getFlower() != null && !this.level.isClientSide && this.getFlowerCowType().getFlower().canSurvive(this.level, this.blockPosition()) && this.level.getBlockState(this.blockPosition()).isAir() && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
+            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
             this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getFlower(), 3);
             this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
+            this.gameEvent(GameEvent.BLOCK_PLACE, this);
             if (this.getFlowersToGenerate() > 0) {
-                this.timeBetweenFlowerPlacement = level.random.nextInt(60, 80);
+                this.timeBetweenFlowerPlacement = this.random.nextInt(60, 80);
             }
         }
     }

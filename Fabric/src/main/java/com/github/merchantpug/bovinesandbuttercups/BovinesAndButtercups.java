@@ -12,18 +12,11 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.awt.*;
 
 public class BovinesAndButtercups implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		Constants.LOG.info(Color.decode("4866583").toString());
-
 		BovinesAndButtercupsCommon.init();
 		BovineSpawnRestrictions.register();
 

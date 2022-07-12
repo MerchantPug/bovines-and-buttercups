@@ -45,7 +45,7 @@ public abstract class BeePollinateGoalMixin {
 
     @Unique
     private Optional<FlowerCow> bovinesandbuttercups$findMoobloom() {
-        FlowerCow moobloom = this.this$0.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && !entity.isBaby() && ((FlowerCow)entity).bee == null), null, this$0.getX(), this$0.getY(), this$0.getZ(), this$0.getBoundingBox().inflate(8.0F, 4.0, 8.0F));
+        FlowerCow moobloom = this.this$0.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level.getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((FlowerCow)entity).bee == null), null, this$0.getX(), this$0.getY(), this$0.getZ(), this$0.getBoundingBox().inflate(8.0F, 4.0, 8.0F));
         if (moobloom != null) {
             return Optional.of(moobloom);
         }

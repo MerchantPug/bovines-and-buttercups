@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "bovinesandbuttercups:lime_dye_from_limelight"
+    ]
+  },
+  "criteria": {
+    "has_limelight": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bovinesandbuttercups:limelight"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bovinesandbuttercups:lime_dye_from_limelight"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_limelight",
+      "has_the_recipe"
+    ]
+  ]
+}

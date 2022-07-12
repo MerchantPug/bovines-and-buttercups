@@ -37,7 +37,7 @@ public class FlowerCowType {
     final int nectarDuration;
     final int naturalSpawnWeight;
 
-    public static final FlowerCowType MISSING = new FlowerCowType(BovinesAndButtercupsCommon.resourceLocation("missing"), Integer.MAX_VALUE, null, null, "cows", null, null, "cows", null, null, null, 0, 0);
+    public static final FlowerCowType MISSING = new FlowerCowType(BovinesAndButtercupsCommon.resourceLocation("missing"), Integer.MAX_VALUE, null, null, "bovines", null, null, "bovines", null, null, null, 0, 0);
 
     FlowerCowType(ResourceLocation resourceLocation, int loadingPriority, @Nullable BlockState flower, @Nullable ResourceLocation flowerModel, String flowerModelVariant, @Nullable BlockState bud, @Nullable ResourceLocation budModel, String budModelVariant, @Nullable MobEffectInstance effectInstance, @Nullable ResourceKey<Biome> biomeKey, @Nullable TagKey<Biome> biomeTagKey, int nectarDuration, int naturalSpawnWeight) {
         if (effectInstance == null && flower == null && !resourceLocation.equals(BovinesAndButtercupsCommon.resourceLocation("missing"))) {
@@ -135,11 +135,11 @@ public class FlowerCowType {
         buf.writeUtf(type.getFlowerModelVariant(), 32767);
 
         buf.writeBoolean(type.getBud() != null);
-        if (type.getFlower() != null) {
+        if (type.getBud() != null) {
             buf.writeUtf(BlockStateParser.serialize(type.getBud()), 32767);
         }
         buf.writeBoolean(type.getBudModel() != null);
-        if (type.getFlowerModel() != null) {
+        if (type.getBudModel() != null) {
             buf.writeResourceLocation(type.getBudModel());
         }
         buf.writeUtf(type.getBudModelVariant(), 32767);
@@ -271,7 +271,7 @@ public class FlowerCowType {
             flowerModelLocation = JsonReadingUtil.readResourceLocation(json.getAsJsonPrimitive("flower_model").getAsString());
         }
 
-        String flowerModelVariant = "cows";
+        String flowerModelVariant = "bovines";
         if (json.has("flower_model_variant")) {
             flowerModelVariant = json.getAsJsonPrimitive("flower_model_variant").getAsString();
         }
@@ -286,7 +286,7 @@ public class FlowerCowType {
             budModelLocation = JsonReadingUtil.readResourceLocation(json.getAsJsonPrimitive("bud_model").getAsString());
         }
 
-        String budModelVariant = "cows";
+        String budModelVariant = "bovines";
         if (json.has("bud_model_variant")) {
             flowerModelVariant = json.getAsJsonPrimitive("bud_model_variant").getAsString();
         }

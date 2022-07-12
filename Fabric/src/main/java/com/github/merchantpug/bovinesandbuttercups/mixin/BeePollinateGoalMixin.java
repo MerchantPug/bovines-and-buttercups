@@ -29,8 +29,8 @@ public abstract class BeePollinateGoalMixin {
 
     @Inject(method = "canBeeUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeePollinateGoal;findNearbyFlower()Ljava/util/Optional;"), cancellable = true)
     private void addMoobloomToBee(CallbackInfoReturnable<Boolean> cir) {
-        if (findMoobloom().isPresent()) {
-            ((BeeAccess)this.field_20377).bovinesandbuttercups$setTargetMoobloom(findMoobloom().get().getUUID());
+        if (bovinesandbuttercups$findMoobloom().isPresent()) {
+            ((BeeAccess)this.field_20377).bovinesandbuttercups$setTargetMoobloom(bovinesandbuttercups$findMoobloom().get().getUUID());
             Entity entity = ((ServerLevel)field_20377.level).getEntity(((BeeAccess)field_20377).bovinesandbuttercups$getTargetMoobloom());
             if (!(entity instanceof FlowerCow moobloom)) {
                 return;
@@ -44,7 +44,7 @@ public abstract class BeePollinateGoalMixin {
     }
 
     @Unique
-    private Optional<FlowerCow> findMoobloom() {
+    private Optional<FlowerCow> bovinesandbuttercups$findMoobloom() {
         FlowerCow moobloom = this.field_20377.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && !entity.isBaby() && ((FlowerCow)entity).bee == null), null, field_20377.getX(), field_20377.getY(), field_20377.getZ(), field_20377.getBoundingBox().inflate(8.0F, 4.0, 8.0F));
         if (moobloom != null) {
             return Optional.of(moobloom);

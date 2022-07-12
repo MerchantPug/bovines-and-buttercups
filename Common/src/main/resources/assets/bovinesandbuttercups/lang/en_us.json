@@ -1,8 +1,10 @@
 {
   "block.bovinesandbuttercups.buttercup": "Buttercup",
   "block.bovinesandbuttercups.pink_daisy": "Pink Daisy",
+  "block.bovinesandbuttercups.limelight": "Limelight",
   "block.bovinesandbuttercups.potted_buttercup": "Potted Buttercup",
   "block.bovinesandbuttercups.potted_pink_daisy": "Potted Pink Daisy",
+  "block.bovinesandbuttercups.potted_limelight": "Potted Limelight",
 
   "item.bovinesandbuttercups.nectar_bowl": "Bowl of Nectar",
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",

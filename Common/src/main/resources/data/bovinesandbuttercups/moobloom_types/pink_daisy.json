@@ -1,6 +1,6 @@
 {
   "flower_block": "bovinesandbuttercups:pink_daisy",
-  "bud_block": "bovinesandbuttercups:pink_daisy[bud=true]",
+  "bud_model": "bovinesandbuttercups:pink_daisy_bud",
   "spawn_biome": "minecraft:flower_forest",
   "nectar_duration": 300,
   "natural_spawn_weight": 1

@@ -17,9 +17,13 @@ import net.minecraft.world.entity.MobCategory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
+
 public class BovinesAndButtercups implements ModInitializer {
 	@Override
 	public void onInitialize() {
+		Constants.LOG.info(Color.decode("4866583").toString());
+
 		BovinesAndButtercupsCommon.init();
 		BovineSpawnRestrictions.register();
 

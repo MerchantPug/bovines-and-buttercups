@@ -28,6 +28,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
@@ -73,7 +74,8 @@ public class FlowerCow extends Cow implements Shearable {
 
     @Override
     public void registerGoals() {
-        this.goalSelector.addGoal(4, new FlowerCow.LookAtBeeGoal());
+        this.goalSelector.addGoal(2, new FlowerCow.LookAtBeeGoal());
+        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, FlowerCow.class, 2.0F, 1.0F, 1.0F, moobloomEntity -> moobloomEntity instanceof FlowerCow && ((FlowerCow) moobloomEntity).standingStillForBeeTicks > 0));
         super.registerGoals();
     }
 

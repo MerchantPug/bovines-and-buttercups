@@ -20,6 +20,7 @@ public class BovineItems {
     public static final RegistryObject<Item> MOOBLOOM_SPAWN_EGG = register("moobloom_spawn_egg", () -> Services.PLATFORM.createSpawnEggItem(BovineEntityTypes.MOOBLOOM, 0xfad200, 0x437f34, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> BUTTERCUP = register("buttercup", () -> new BlockItem(BovineBlocks.BUTTERCUP.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
     public static final RegistryObject<Item> PINK_DAISY = register("pink_daisy", () -> new BlockItem(BovineBlocks.PINK_DAISY.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
+    public static final RegistryObject<Item> LIMELIGHT = register("limelight", () -> new BlockItem(BovineBlocks.LIMELIGHT.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
 
     public static void init() {
 

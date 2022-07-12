@@ -24,13 +24,13 @@ public abstract class ModelBakeryForgeMixin {
 
     @Inject(method = "processLoading", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", ordinal = 2))
     private void initMoobloomFlowers(ProfilerFiller profilerFiller, int p_119250_, CallbackInfo ci) {
-        profilerFiller.popPush("cows");
+        profilerFiller.popPush("bovines");
         Map<ResourceLocation, Resource> blocks = resourceManager.listResources("models/bovines", fileName -> fileName.getPath().endsWith(".json"));
 
         for (ResourceLocation resourceLocation : blocks.keySet()) {
             StringBuilder newId = new StringBuilder(resourceLocation.getPath().replaceFirst("models/bovines/", ""));
             newId.replace(newId.length() - 5 , newId.length(), "");
-            this.loadTopLevel(new ModelResourceLocation(new ResourceLocation(resourceLocation.getNamespace(), newId.toString()), "cows"));
+            this.loadTopLevel(new ModelResourceLocation(new ResourceLocation(resourceLocation.getNamespace(), newId.toString()), "bovines"));
         }
     }
 }

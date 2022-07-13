@@ -3,6 +3,8 @@ package com.github.merchantpug.bovinesandbuttercups.platform;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.level.ServerLevel;
@@ -54,5 +56,10 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public void sendPacketToAllPlayers(ServerLevel serverLevel, IPacket packet) {
         BovineForgePacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), packet);
+    }
+
+    @Override
+    public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
+        return CriteriaTriggers.register(criterionTrigger);
     }
 }

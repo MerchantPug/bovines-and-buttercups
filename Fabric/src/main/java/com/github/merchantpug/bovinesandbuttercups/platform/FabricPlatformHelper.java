@@ -4,7 +4,9 @@ import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -54,5 +56,10 @@ public class FabricPlatformHelper implements IPlatformHelper {
         for (ServerPlayer player : serverLevel.players()) {
             ServerPlayNetworking.send(player, packet.getFabricId(), packet.buf());
         }
+    }
+
+    @Override
+    public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
+        return CriteriaAccessor.callRegister(criterionTrigger);
     }
 }

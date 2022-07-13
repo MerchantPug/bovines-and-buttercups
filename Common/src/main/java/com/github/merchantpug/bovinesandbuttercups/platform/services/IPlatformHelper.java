@@ -1,6 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.platform.services;
 
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
+import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,4 +28,6 @@ public interface IPlatformHelper {
     void sendPacketToPlayer(ServerPlayer player, IPacket packet);
 
     void sendPacketToAllPlayers(ServerLevel serverLevel, IPacket packet);
+
+    CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger);
 }

@@ -1,0 +1,60 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:leather"
+    },
+    "title": {
+      "translate": "advancements.husbandry.family_gathering.title"
+    },
+    "description": {
+      "translate": "advancements.husbandry.family_gathering.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "all_cows_nearby": {
+      "trigger": "bovinesandbuttercups:nearby_entities",
+      "conditions": {
+        "radius": 4.0,
+        "entities": [
+          [
+            {
+              "condition": "minecraft:entity_properties",
+              "predicate": {
+                "type": "minecraft:cow"
+              },
+              "entity": "this"
+            }
+          ],
+          [
+            {
+              "condition": "minecraft:entity_properties",
+              "predicate": {
+                "type": "minecraft:mooshroom"
+              },
+              "entity": "this"
+            }
+          ],
+          [
+            {
+              "condition": "minecraft:entity_properties",
+              "predicate": {
+                "type": "bovinesandbuttercups:moobloom"
+              },
+              "entity": "this"
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "all_cows_nearby"
+    ]
+  ]
+}

@@ -10,7 +10,8 @@
     "LivingEntityMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
-    "PlayerListMixin"
+    "PlayerListMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",

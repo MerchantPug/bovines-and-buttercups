@@ -8,6 +8,7 @@ import static com.github.merchantpug.bovinesandbuttercups.Constants.MOD_ID;
 public class BovinesAndButtercupsCommon {
     public static void init() {
         BovineBlocks.init();
+        BovineCriteriaTriggers.init();
         BovineEffects.init();
         BovineEntityTypes.init();
         BovineItems.init();

@@ -183,6 +183,7 @@ public class FlowerCow extends Cow implements Shearable {
             } else if (this.getFlowerCowType().getFlower() != null && this.getFlowerCowType().getFlower().getBlock() instanceof FlowerBlock) {
                 NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getFlower().getBlock()).getSuspiciousStewEffect(), this.getFlowerCowType().getNectarDuration());
             }
+
             ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player2, itemStack2, false);
             player2.setItemInHand(hand, itemStack3);
             this.playSound(BovineSoundEvents.MOOBLOOM_MILK.get(), 1.0f, 1.0f);

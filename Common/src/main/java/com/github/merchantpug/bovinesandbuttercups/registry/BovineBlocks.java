@@ -1,7 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.block.MoobloomFlowerBlock;
+import com.github.merchantpug.bovinesandbuttercups.block.DataDrivenMoobloomFlowerBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +23,7 @@ public class BovineBlocks {
     public static final RegistryObject<Block> POTTED_PINK_DAISY = register("potted_pink_daisy", () -> new FlowerPotBlock(PINK_DAISY.get(), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
     public static final RegistryObject<Block> POTTED_LIMELIGHT = register("potted_limelight", () -> new FlowerPotBlock(LIMELIGHT.get(), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 
-    public static final RegistryObject<Block> CUSTOM_FLOWER = register("custom_flower", () -> new MoobloomFlowerBlock(MobEffects.REGENERATION, 8, BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
+    public static final RegistryObject<Block> CUSTOM_FLOWER = register("custom_flower", () -> new DataDrivenMoobloomFlowerBlock(MobEffects.REGENERATION, 8, BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS)));
     public static final RegistryObject<Block> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", () -> new FlowerPotBlock(CUSTOM_FLOWER.get(), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 
     public static void init() {

@@ -1,14 +1,24 @@
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'org.quiltmc.loom' version '0.12.+'
     id 'maven-publish'
-    id 'idea'
 }
 
-archivesBaseName = "${mod_name}-fabric-${minecraft_version}"
+archivesBaseName = "${mod_name}-quilt-${minecraft_version}"
 
 repositories {
+
     maven {
-        url "https://maven.terraformersmc.com/"
+        name 'Quilt (Release)'
+        url 'https://maven.quiltmc.org/repository/release/'
+    }
+
+    maven {
+        name 'Quilt (Snapshot)'
+        url 'https://maven.quiltmc.org/repository/snapshot/'
+        content {
+            includeGroup 'org.quiltmc.fabric_api_qsl'
+            includeGroupByRegex 'org\\.quiltmc\\.qsl(?:\\.[a-z_]+)?'
+        }
     }
     maven {
         url 'https://jitpack.io'
@@ -16,13 +26,13 @@ repositories {
 }
 
 dependencies {
+
     minecraft "com.mojang:minecraft:${minecraft_version}"
     mappings loom.officialMojangMappings()
+    modImplementation "org.quiltmc:quilt-loader:${quilt_loader_version}"
 
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-
-    modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
+    modImplementation("org.quiltmc:qsl:${quilt_stdlib_version}+${minecraft_version}")
+    modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${quilted_fapi_version}-${minecraft_version}"
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":Common")
@@ -30,22 +40,16 @@ dependencies {
 
 loom {
     accessWidenerPath = file("src/main/resources/bovinesandbuttercups.accesswidener")
-    mods {
-        register(mod_id) {
-            sourceSet sourceSets.main
-            sourceSet project(":Common").sourceSets.main
-        }
-    }
     runs {
         client {
             client()
-            setConfigName("Fabric Client")
+            setConfigName("Quilt Client")
             ideConfigGenerated(true)
             runDir("run")
         }
         server {
             server()
-            setConfigName("Fabric Server")
+            setConfigName("Quilt Server")
             ideConfigGenerated(true)
             runDir("run")
         }
@@ -53,23 +57,24 @@ loom {
 }
 
 processResources {
+
+    from project(":Common").sourceSets.main.resources
     inputs.property "version", project.version
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("quilt.mod.json") {
         expand "version": project.version
     }
 }
 
+tasks.withType(JavaCompile) {
+
+    source(project(":Common").sourceSets.main.allSource)
+}
+
 jar {
-    from project(":Common").sourceSets.main.output
-}
-
-javadoc {
-    source project(":Common").sourceSets.main.allJava
-}
-
-sourcesJar {
-    from project(":Common").sourceSets.main.allSource
+    from("LICENSE") {
+        rename { "${it}_${mod_name}"}
+    }
 }
 
 publishing {

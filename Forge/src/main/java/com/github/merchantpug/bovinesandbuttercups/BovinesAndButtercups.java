@@ -14,7 +14,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod(Constants.MOD_ID)
 public class BovinesAndButtercups {
@@ -28,9 +27,6 @@ public class BovinesAndButtercups {
         eventBus.addListener((FMLCommonSetupEvent event) -> {
             BovineForgePacketHandler.init();
             event.enqueueWork(() -> SpawnPlacements.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn));
-        });
-        eventBus.addListener((GatherDataEvent event) -> {
-
         });
         MinecraftForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> {
             FlowerCowLoader loader = new FlowerCowLoader();

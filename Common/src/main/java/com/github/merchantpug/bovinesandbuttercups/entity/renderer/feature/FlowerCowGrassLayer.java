@@ -26,6 +26,4 @@ public class FlowerCowGrassLayer extends RenderLayer<FlowerCow, CowModel<FlowerC
         float b = (biomeColor & 0xFF) / 255.0f;
         renderColoredCutoutModel(this.getParentModel(), FLOWER_COW_GRASS_LOCATION, poseStack, buffer, light, flowerCow, r, g, b);
     }
-
-
 }

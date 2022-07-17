@@ -1,5 +1,9 @@
 {
   "flower_block": "bovinesandbuttercups:limelight",
   "bud_model": "bovinesandbuttercups:limelight_bud",
+  "nectar_effect": {
+    "effect": "minecraft:mining_fatigue",
+    "duration": 40
+  },
   "nectar_duration": 600
 }

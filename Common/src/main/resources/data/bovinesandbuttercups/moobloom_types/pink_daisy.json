@@ -2,6 +2,10 @@
   "flower_block": "bovinesandbuttercups:pink_daisy",
   "bud_model": "bovinesandbuttercups:pink_daisy_bud",
   "spawn_biome": "minecraft:flower_forest",
+  "nectar_effect": {
+    "effect": "minecraft:night_vision",
+    "duration": 40
+  },
   "nectar_duration": 300,
   "natural_spawn_weight": 1
 }

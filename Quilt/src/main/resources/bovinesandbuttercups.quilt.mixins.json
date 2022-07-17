@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.merchantpug.bovinesandbuttercups.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BeePollinateGoalMixin",
+    "CriteriaTriggersAccessor"
+  ],
+  "client": [
+    "client.EffectRenderingInventoryScreenQuiltMixin",
+    "client.GuiQuiltMixin",
+    "client.ModelBakeryQuiltMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+  

@@ -25,9 +25,6 @@
     ],
     "client": [
       "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsClient"
-    ],
-    "preLaunch": [
-      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsPreLaunch"
     ]
   },
   "accessWidener": "bovinesandbuttercups.accesswidener",

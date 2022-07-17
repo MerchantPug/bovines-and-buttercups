@@ -1,18 +1,18 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import com.github.merchantpug.bovinesandbuttercups.entity.renderer.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.networking.BovinePacketsS2C;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
-import net.fabricmc.api.ClientModInitializer;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.minecraft.client.model.CowModel;
+import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 
 public class BovinesAndButtercupsClient implements ClientModInitializer {
     @Override
-    public void onInitializeClient() {
+    public void onInitializeClient(ModContainer mod) {
         BovinesAndButtercupsCommonClient.init();
 
         BovinePacketsS2C.register();

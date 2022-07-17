@@ -292,8 +292,8 @@ public class FlowerCowType {
         }
 
         MobEffectInstance flowerEffectInstance = null;
-        if (json.has("flower_effect")) {
-            flowerEffectInstance = JsonReadingUtil.readMobEffectInstance(json.getAsJsonObject("flower_effect"));
+        if (json.has("nectar_effect")) {
+            flowerEffectInstance = JsonReadingUtil.readMobEffectInstance(json.getAsJsonObject("nectar_effect"));
         }
 
         ResourceKey<Biome> spawnBiome = null;

@@ -2,15 +2,11 @@ package com.github.merchantpug.bovinesandbuttercups.network;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowType;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
 
 public class SyncMoobloomTypePacket implements IPacket {
     private final int moobloomId;

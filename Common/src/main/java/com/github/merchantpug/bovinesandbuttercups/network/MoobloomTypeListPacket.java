@@ -1,8 +1,8 @@
 package com.github.merchantpug.bovinesandbuttercups.network;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowType;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowType;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowTypeRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

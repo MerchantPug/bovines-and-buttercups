@@ -1,7 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowLoader;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowLoader;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
 import com.github.merchantpug.bovinesandbuttercups.registry.BiomeModifierSerializerRegistry;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;

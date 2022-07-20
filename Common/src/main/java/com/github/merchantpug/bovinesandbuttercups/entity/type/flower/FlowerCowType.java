@@ -1,12 +1,10 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.type;
+package com.github.merchantpug.bovinesandbuttercups.entity.type.flower;
 
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.util.JsonReadingUtil;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.netty.buffer.Unpooled;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;

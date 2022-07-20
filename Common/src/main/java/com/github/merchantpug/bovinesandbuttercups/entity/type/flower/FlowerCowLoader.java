@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.type;
+package com.github.merchantpug.bovinesandbuttercups.entity.type.flower;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.google.gson.Gson;

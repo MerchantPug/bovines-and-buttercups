@@ -1,8 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin;
 
-import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowType;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowType;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowTypeRegistry;
 import com.github.merchantpug.bovinesandbuttercups.network.MoobloomTypeListPacket;
 import com.github.merchantpug.bovinesandbuttercups.network.SyncMoobloomTypePacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
@@ -13,7 +12,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

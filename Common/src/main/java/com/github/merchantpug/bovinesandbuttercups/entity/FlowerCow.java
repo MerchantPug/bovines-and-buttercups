@@ -1,8 +1,8 @@
 package com.github.merchantpug.bovinesandbuttercups.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowTypeRegistry;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowType;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowType;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineSoundEvents;

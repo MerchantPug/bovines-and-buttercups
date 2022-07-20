@@ -22,9 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */
 
-package com.github.merchantpug.bovinesandbuttercups.entity.type;
+package com.github.merchantpug.bovinesandbuttercups.entity.type.flower;
 
-import com.github.merchantpug.bovinesandbuttercups.entity.type.FlowerCowType;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 

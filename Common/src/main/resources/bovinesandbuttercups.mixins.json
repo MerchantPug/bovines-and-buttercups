@@ -10,6 +10,7 @@
     "LivingEntityMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
+    "MushroomCowMixin",
     "PlayerListMixin",
     "ServerPlayerMixin",
     "SuspiciousStewRecipeMixin"

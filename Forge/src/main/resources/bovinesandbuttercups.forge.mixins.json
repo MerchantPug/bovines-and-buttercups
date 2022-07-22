@@ -8,8 +8,7 @@
   ],
   "client": [
     "client.EffectRenderingInventoryScreenForgeMixin",
-    "client.GuiForgeMixin",
-    "client.ModelBakeryForgeMixin"
+    "client.GuiForgeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

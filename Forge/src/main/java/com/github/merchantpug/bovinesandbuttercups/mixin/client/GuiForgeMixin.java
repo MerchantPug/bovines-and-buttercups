@@ -15,7 +15,7 @@ import net.minecraft.client.resources.MobEffectTextureManager;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraftforge.client.EffectRenderer;
+import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,7 +38,7 @@ public class GuiForgeMixin extends GuiComponent {
     @Unique private int nullifiedEffectTicks;
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void overlayLockdownBorder(PoseStack poseStack, CallbackInfo ci, Collection<MobEffectInstance> collection, Screen screen, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, EffectRenderer effectRenderer, int k, int l, float f) {
+    private void overlayLockdownBorder(PoseStack poseStack, CallbackInfo ci, Collection<MobEffectInstance> collection, Screen screen, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, IClientMobEffectExtensions effectExtensions, int k, int l, float f) {
         List<MobEffectInstance> lockdownEffectInstance = collection.stream().filter(instance -> instance.getEffect() instanceof LockdownEffect).toList();
 
         if (lockdownEffectInstance.isEmpty()) return;
@@ -51,7 +51,7 @@ public class GuiForgeMixin extends GuiComponent {
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void renderLockdownStatusEffectOverlay(PoseStack poseStack, CallbackInfo ci, Collection collection, Screen screen, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var8, MobEffectInstance mobEffectInstance, MobEffect mobEffect, EffectRenderer renderer, int k, int l, float f, TextureAtlasSprite textureAtlasSprite, int n, int o, float g) {
+    private void renderLockdownStatusEffectOverlay(PoseStack poseStack, CallbackInfo ci, Collection collection, Screen screen, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var8, MobEffectInstance mobEffectInstance, MobEffect mobEffect, IClientMobEffectExtensions effectExtensions, int k, int l, float f, TextureAtlasSprite textureAtlasSprite, int n, int o, float g) {
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
 
         List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().toList();

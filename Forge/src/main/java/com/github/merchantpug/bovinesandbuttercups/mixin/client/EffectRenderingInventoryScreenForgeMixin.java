@@ -3,15 +3,21 @@ package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 import com.github.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import com.github.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
 import com.github.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.MobEffectTextureManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import net.minecraftforge.eventbus.api.Event;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,12 +34,34 @@ import java.util.*;
 public abstract class EffectRenderingInventoryScreenForgeMixin<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
     @Shadow protected abstract Component getEffectName(MobEffectInstance mobEffectInstance);
 
-    public EffectRenderingInventoryScreenForgeMixin(T handler, Inventory inventory, Component title) {
-        super(handler, inventory, title);
+    @Unique private int bovinesandbuttercups$nullifiedEffectIndex;
+    @Unique private int bovinesandbuttercups$nullifiedEffectTicks;
+
+    public EffectRenderingInventoryScreenForgeMixin(T menu, Inventory playerInventory, Component title) {
+        super(menu, playerInventory, title);
+    }
+
+    @Inject(method = "renderIcons", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/resources/ResourceLocation;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void drawOverridenEffectSprite(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> mobEffectInstanceIterable, boolean large, CallbackInfo ci, MobEffectTextureManager mobEffectTextureManager, int i, Iterator iterator, MobEffectInstance mobEffectInstance, IClientMobEffectExtensions effectExtensions, MobEffect mobEffect, TextureAtlasSprite sprite) {
+        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
+
+        List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().toList();
+
+        if (statusEffectList.isEmpty()) return;
+        if (bovinesandbuttercups$nullifiedEffectTicks % Math.max(600, 1200 - ((statusEffectList.size() - 2) * 300)) == 0) {
+            bovinesandbuttercups$nullifiedEffectIndex = bovinesandbuttercups$nullifiedEffectIndex < statusEffectList.size() - 1 ? bovinesandbuttercups$nullifiedEffectIndex + 1 : 0;
+        }
+
+        MobEffect mobEffect1 = bovinesandbuttercups$nullifiedEffectIndex > statusEffectList.size() - 1 ? statusEffectList.get(0).getKey() : statusEffectList.get(bovinesandbuttercups$nullifiedEffectIndex).getKey();
+
+        TextureAtlasSprite additionalSprite = mobEffectTextureManager.get(mobEffect1);
+        RenderSystem.setShaderTexture(0, additionalSprite.atlas().getId());
+        InventoryScreen.blit(poseStack, x + (large ? 6 : 7), i + 7, this.getBlitOffset(), 18, 18, additionalSprite);
+        bovinesandbuttercups$nullifiedEffectTicks++;
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void drawEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, Event.Result result, int k, Iterable<MobEffectInstance> iterable) {
+    private void drawEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int result, int k, Iterable<MobEffectInstance> iterable) {
         if (mouseX >= i && mouseX <= i + 119) {
             int l = this.topPos;
             MobEffectInstance mobEffectInstance = null;
@@ -57,7 +85,7 @@ public abstract class EffectRenderingInventoryScreenForgeMixin<T extends Abstrac
     @Unique MobEffectInstance bovinesandbuttercups$capturedMobEffectInstance;
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void getStatusEffectInstance(PoseStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, Event.Result result, int k, Iterable iterable, int l, MobEffectInstance mobEffectInstance, List list) {
+    private void getStatusEffectInstance(PoseStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int result, int k, Iterable iterable, int l, MobEffectInstance mobEffectInstance, List list) {
         this.bovinesandbuttercups$capturedMobEffectInstance = mobEffectInstance;
     }
 

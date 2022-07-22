@@ -27,11 +27,6 @@ import java.util.*;
 
 @Mixin(EffectRenderingInventoryScreen.class)
 public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
-    @Shadow protected abstract Component getEffectName(MobEffectInstance mobEffectInstance);
-
-    @Unique private int bovinesandbuttercups$nullifiedEffectIndex;
-    @Unique private int bovinesandbuttercups$nullifiedEffectTicks;
-
     public EffectRenderingInventoryScreenMixin(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
@@ -49,24 +44,5 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
             blit(poseStack, x, i,0, 0, 0, 32, 32, 64, 32);
             RenderSystem.setShaderTexture(0, INVENTORY_LOCATION);
         }
-    }
-
-    @Inject(method = "renderIcons", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/resources/ResourceLocation;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void drawOverridenEffectSprite(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> mobEffectInstanceIterable, boolean large, CallbackInfo ci, MobEffectTextureManager mobEffectTextureManager, int i, Iterator iterator, MobEffectInstance mobEffectInstance, MobEffect mobEffect, TextureAtlasSprite sprite) {
-        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
-
-        List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().toList();
-
-        if (statusEffectList.isEmpty()) return;
-        if (bovinesandbuttercups$nullifiedEffectTicks % Math.max(600, 1200 - ((statusEffectList.size() - 2) * 300)) == 0) {
-            bovinesandbuttercups$nullifiedEffectIndex = bovinesandbuttercups$nullifiedEffectIndex < statusEffectList.size() - 1 ? bovinesandbuttercups$nullifiedEffectIndex + 1 : 0;
-        }
-
-        MobEffect mobEffect1 = bovinesandbuttercups$nullifiedEffectIndex > statusEffectList.size() - 1 ? statusEffectList.get(0).getKey() : statusEffectList.get(bovinesandbuttercups$nullifiedEffectIndex).getKey();
-
-        TextureAtlasSprite additionalSprite = mobEffectTextureManager.get(mobEffect1);
-        RenderSystem.setShaderTexture(0, additionalSprite.atlas().getId());
-        InventoryScreen.blit(poseStack, x + (large ? 6 : 7), i + 7, this.getBlitOffset(), 18, 18, additionalSprite);
-        bovinesandbuttercups$nullifiedEffectTicks++;
     }
 }

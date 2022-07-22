@@ -11,7 +11,8 @@
     "MobAccessor",
     "MobEffectInstanceMixin",
     "PlayerListMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "SuspiciousStewRecipeMixin"
   ],
   "client": [
     "client.ClientPacketListenerMixin",

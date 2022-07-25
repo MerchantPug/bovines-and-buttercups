@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
 
-public class JsonReadingUtil {
+public class JsonParsingUtil {
     public static ResourceLocation readResourceLocation(String locationString) {
         if (locationString.contains(":")) {
             String[] idSplit = locationString.split(":");

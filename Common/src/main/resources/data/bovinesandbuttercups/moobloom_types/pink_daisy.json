@@ -6,6 +6,6 @@
     "effect": "minecraft:night_vision",
     "duration": 40
   },
-  "nectar_duration": 300,
+  "nectar_duration": 240,
   "natural_spawn_weight": 1
 }

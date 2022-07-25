@@ -6,6 +6,6 @@
     "effect": "minecraft:poison",
     "duration": 40
   },
-  "nectar_duration": 600,
+  "nectar_duration": 760,
   "natural_spawn_weight": 7
 }

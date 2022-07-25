@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "bovinesandbuttercups:block/bird_of_paradise"
+  }
+}

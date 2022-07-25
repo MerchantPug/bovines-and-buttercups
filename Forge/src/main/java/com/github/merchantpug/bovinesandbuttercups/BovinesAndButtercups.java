@@ -1,5 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
+import com.github.merchantpug.bovinesandbuttercups.command.EffectLockdownCommand;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowLoader;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -27,6 +29,9 @@ public class BovinesAndButtercups {
         eventBus.addListener((FMLCommonSetupEvent event) -> {
             BovineForgePacketHandler.init();
             event.enqueueWork(() -> SpawnPlacements.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn));
+        });
+        MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> {
+            EffectLockdownCommand.register(event.getDispatcher());
         });
         MinecraftForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> {
             FlowerCowLoader loader = new FlowerCowLoader();

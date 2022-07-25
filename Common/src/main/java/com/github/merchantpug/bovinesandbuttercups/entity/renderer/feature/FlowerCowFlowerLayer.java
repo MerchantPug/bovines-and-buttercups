@@ -67,7 +67,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.5f, -0.5f, 0.5f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
-        poseStack.translate(1.5f, 0.08, 0.4f);
+        poseStack.translate(1.5f, 0.075f, 0.4f);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
@@ -77,7 +77,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.5f, -0.5f, 0.5f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
-        poseStack.translate(1.0f, 0.08f, 0.3f);
+        poseStack.translate(1.0f, 0.075f, 0.3f);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
@@ -99,7 +99,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(0.35, -0.13, -0.35);
+        poseStack.translate(0.35, -0.133, -0.35);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
@@ -109,7 +109,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(0.5, -0.19, 0.1);
+        poseStack.translate(0.5, -0.195, 0.1);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
@@ -119,7 +119,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(0.6, -0.19, -0.4);
+        poseStack.translate(0.6, -0.195, -0.4);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
@@ -129,7 +129,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(-0.15, -0.256, 0.0);
+        poseStack.translate(-0.15, -0.257, 0.0);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
@@ -139,7 +139,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(0.0, -0.11, 0.0);
+        poseStack.translate(0.0, -0.16, 0.0);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
     }

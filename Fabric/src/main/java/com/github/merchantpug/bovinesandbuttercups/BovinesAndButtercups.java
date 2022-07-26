@@ -11,12 +11,23 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.MobCategory;
 
 public class BovinesAndButtercups implements ModInitializer {
 	@Override
 	public void onInitialize() {
+		FabricLoader.getInstance().getModContainer(Constants.MOD_ID).ifPresent(modContainer -> {
+			String version = modContainer.getMetadata().getVersion().getFriendlyString();
+			if (version.contains("+")) {
+				version = version.split("\\+")[0];
+			}
+			if (version.contains("-")) {
+				version = version.split("-")[0];
+			}
+			BovinesAndButtercupsCommon.VERSION = version;
+		});
 		BovinesAndButtercupsCommon.init();
 		BovineSpawnRestrictions.register();
 

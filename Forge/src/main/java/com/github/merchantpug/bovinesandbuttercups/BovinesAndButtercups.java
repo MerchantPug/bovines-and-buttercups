@@ -13,14 +13,18 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 
 @Mod(Constants.MOD_ID)
 public class BovinesAndButtercups {
     public BovinesAndButtercups() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        BovinesAndButtercupsCommon.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
+
         BovinesAndButtercupsCommon.init();
         BiomeModifierSerializerRegistry.init(eventBus);
         eventBus.addListener((EntityAttributeCreationEvent event) -> {

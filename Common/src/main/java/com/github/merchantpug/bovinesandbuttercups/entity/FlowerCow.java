@@ -1,6 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowBreedingRequirements;
 import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowTypeRegistry;
 import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowType;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
@@ -178,8 +179,8 @@ public class FlowerCow extends Cow implements Shearable {
         } else if (itemStack.is(Items.BOWL) && !this.isBaby()) {
             ItemStack itemStack2;
             itemStack2 = new ItemStack(BovineItems.NECTAR_BOWL.get());
-            if (this.getFlowerCowType().getMobEffectInstance() != null) {
-                NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().getMobEffectInstance().getEffect(), this.getFlowerCowType().getNectarDuration());
+            if (this.getFlowerCowType().getNectarEffectInstance() != null) {
+                NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().getNectarEffectInstance().getEffect(), this.getFlowerCowType().getNectarEffectInstance().getDuration());
             } else if (this.getFlowerCowType().getFlower() != null && this.getFlowerCowType().getFlower().getBlock() instanceof FlowerBlock) {
                 NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getFlower().getBlock()).getSuspiciousStewEffect(), this.getFlowerCowType().getNectarDuration());
             }
@@ -227,9 +228,29 @@ public class FlowerCow extends Cow implements Shearable {
     }
 
     public FlowerCowType chooseBabyType(FlowerCow other) {
-        FlowerCowType type2 = other.getFlowerCowType();
-        FlowerCowType type = this.getFlowerCowType();
-        return this.random.nextBoolean() ? type : type2;
+        HashMap<FlowerCowType, Double> eligbleTypeMap = new HashMap<>();
+        double chancesTotal = 1.0F;
+        for (FlowerCowType flowerCowType : FlowerCowTypeRegistry.valueStream().filter(flowerCowType -> flowerCowType.getBreedingRequirementsList().size() > 0).toList()) {
+           for (FlowerCowBreedingRequirements breedingRequirements : flowerCowType.getBreedingRequirementsList().stream().filter(br -> br.doesApply(this.getFlowerCowType(), other.getFlowerCowType())).toList()) {
+               double chance = breedingRequirements.isBoosted(this.getFlowerCowType(), other.getFlowerCowType()) ? breedingRequirements.boostedChance : breedingRequirements.chance;
+               eligbleTypeMap.put(flowerCowType, chance);
+               chancesTotal -= chance;
+           }
+        }
+
+        eligbleTypeMap.put(this.getFlowerCowType(), chancesTotal / 2);
+        if (!this.getFlowerCowType().equals(other.getFlowerCowType())) {
+            eligbleTypeMap.put(other.getFlowerCowType(), chancesTotal / 2);
+        }
+
+        FlowerCowType babyType = this.getFlowerCowType();
+
+        for (Map.Entry<FlowerCowType, Double> map : eligbleTypeMap.entrySet()) {
+            if (this.random.nextDouble() < map.getValue()) {
+                babyType = map.getKey();
+            }
+        }
+        return babyType;
     }
 
     @Override

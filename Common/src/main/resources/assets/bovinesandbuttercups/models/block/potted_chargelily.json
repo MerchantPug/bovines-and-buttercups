@@ -1,0 +1,7 @@
+{
+  "parent": "bovinesandbuttercups:block/flower_pot_unique_cross_moobloom_flower",
+  "textures": {
+    "plantone": "bovinesandbuttercups:block/chargelily",
+    "planttwo": "bovinesandbuttercups:block/chargelily_stem"
+  }
+}

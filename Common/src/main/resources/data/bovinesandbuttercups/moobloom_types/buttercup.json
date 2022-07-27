@@ -4,8 +4,7 @@
   "spawn_biome": "minecraft:flower_forest",
   "nectar_effect": {
     "effect": "minecraft:poison",
-    "duration": 40
+    "duration": 760
   },
-  "nectar_duration": 760,
   "natural_spawn_weight": 7
 }

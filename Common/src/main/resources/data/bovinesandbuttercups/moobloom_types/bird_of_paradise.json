@@ -3,7 +3,6 @@
   "bud_model": "bovinesandbuttercups:bird_of_paradise_bud",
   "nectar_effect": {
     "effect": "minecraft:slow_falling",
-    "duration": 20
-  },
-  "nectar_duration": 240
+    "duration": 240
+  }
 }

@@ -45,7 +45,33 @@ public class JsonParsingUtil {
             if (json.has("amplifier")) {
                 amplifier = json.get("amplifier").getAsInt();
             }
-            return new MobEffectInstance(optionalEffect.get(), duration, amplifier);
+            boolean ambient = false;
+            if (json.has("ambient")) {
+                ambient = json.get("ambient").getAsBoolean();
+            }
+            boolean visible = false;
+            if (json.has("visible")) {
+                visible = json.get("visible").getAsBoolean();
+            }
+            boolean showIcon = false;
+            if (json.has("show_icon")) {
+                visible = json.get("show_icon").getAsBoolean();
+            }
+            return new MobEffectInstance(optionalEffect.get(), duration, amplifier, ambient, visible, showIcon);
+        } else {
+            throw new JsonSyntaxException("Expected mob effect to be a json object.");
+        }
+    }
+
+    public static MobEffectInstance readNectarEffectInstance(JsonObject json) {
+        if (json.isJsonObject()) {
+            String effectString = json.get("effect").getAsString();
+            Optional<MobEffect> optionalEffect = Registry.MOB_EFFECT.getOptional(ResourceLocation.tryParse(effectString));
+            if (optionalEffect.isEmpty()) {
+                throw new JsonSyntaxException("Could not find mob effect with id: " + effectString);
+            }
+            int duration = json.get("duration").getAsInt();
+            return new MobEffectInstance(optionalEffect.get(), duration);
         } else {
             throw new JsonSyntaxException("Expected mob effect to be a json object.");
         }

@@ -2,6 +2,7 @@ package com.github.merchantpug.bovinesandbuttercups.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -19,9 +20,18 @@ public class DataDrivenMoobloomFlowerBlock extends FlowerBlock implements Entity
         return RenderShape.INVISIBLE;
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return null;
+    }
+
+    @Override
+    public MobEffect getSuspiciousStewEffect() {
+        return MobEffects.ABSORPTION;
+    }
+
+    @Override
+    public int getEffectDuration() {
+        return 0;
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.FlowerBlock;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class FlowerCowBreedingRequirements {
         }
 
         List<ResourceLocation> possibleSecondaryParentList = new ArrayList<>();
-        JsonElement secondaryParent = jsonObject.get("primary_parent");
+        JsonElement secondaryParent = jsonObject.get("secondary_parent");
         if (secondaryParent.isJsonArray()) {
             secondaryParent.getAsJsonArray().forEach(jsonElement -> possibleSecondaryParentList.add(JsonParsingUtil.readResourceLocation(jsonElement.getAsString())));
         } else if (secondaryParent.isJsonPrimitive()) {
@@ -112,13 +113,22 @@ public class FlowerCowBreedingRequirements {
             if (!(potentialItem.get() instanceof BlockItem blockItem)) {
                 throw new ClassCastException("Item with key '" + resourceLocation + "' is not a block item. Moobloom breeding requirements will not be set.");
             }
+            if (!(((BlockItem) potentialItem.get()).getBlock() instanceof FlowerBlock)) {
+                throw new ClassCastException("Item with key '" + resourceLocation + "' is not a flower. Moobloom breeding requirements will not be set.");
+            }
             flowerItem = blockItem;
         }
 
         float chance = jsonObject.getAsJsonPrimitive("chance").getAsFloat();
+        if (chance < 0.0 || chance > 1.0) {
+            throw new IllegalArgumentException("Moobloom breeding chance is either below 0.0 or 1.0.");
+        }
         float boostedChance = chance;
         if (jsonObject.has("boosted_chance")) {
             boostedChance = jsonObject.getAsJsonPrimitive("boosted_chance").getAsFloat();
+            if (boostedChance < 0.0 || boostedChance > 1.0) {
+                throw new IllegalArgumentException("Moobloom boosted breeding chance is either below 0.0 or 1.0.");
+            }
         }
 
         return new FlowerCowBreedingRequirements(possiblePrimaryParentList, possibleSecondaryParentList, flowerItem, chance, boostedChance);

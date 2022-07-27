@@ -37,12 +37,12 @@ public class FlowerCowType {
     @Nullable final TagKey<Biome> biomeTagKey;
     final int nectarDuration;
     final int naturalSpawnWeight;
-    final List<FlowerCowBreedingRequirements> breedingRequirementsList;
+    final List<FlowerCowBreedingRequirements> breedingRequirementsList = new ArrayList<>();
 
-    public static final FlowerCowType MISSING = new FlowerCowType(BovinesAndButtercupsCommon.resourceLocation("missing"), Integer.MAX_VALUE, null, null, "bovines", null, null, "bovines", null, null, null, 0, 0, null);
+    public static final FlowerCowType MISSING = new FlowerCowType(BovinesAndButtercupsCommon.resourceLocation("missing"), Integer.MAX_VALUE, null, null, "bovines", null, null, "bovines", null, null, null, 0, 0);
 
-    FlowerCowType(ResourceLocation resourceLocation, int loadingPriority, @Nullable BlockState flower, @Nullable ResourceLocation flowerModel, String flowerModelVariant, @Nullable BlockState bud, @Nullable ResourceLocation budModel, String budModelVariant, @Nullable MobEffectInstance effectInstance, @Nullable ResourceKey<Biome> biomeKey, @Nullable TagKey<Biome> biomeTagKey, int nectarDuration, int naturalSpawnWeight, List<FlowerCowBreedingRequirements> breedingRequirementsList) {
-        if (effectInstance == null && flower == null && !resourceLocation.equals(BovinesAndButtercupsCommon.resourceLocation("missing"))) {
+    FlowerCowType(ResourceLocation resourceLocation, int loadingPriority, @Nullable BlockState flower, @Nullable ResourceLocation flowerModel, String flowerModelVariant, @Nullable BlockState bud, @Nullable ResourceLocation budModel, String budModelVariant, @Nullable MobEffectInstance nectarEffectInstance, @Nullable ResourceKey<Biome> biomeKey, @Nullable TagKey<Biome> biomeTagKey, @Nullable int nectarDuration, int naturalSpawnWeight) {
+        if (nectarEffectInstance == null && flower == null && !resourceLocation.equals(BovinesAndButtercupsCommon.resourceLocation("missing"))) {
             Constants.LOG.warn("Moobloom Type '" + resourceLocation + "' does not have a flower or a mob effect, its nectar will have no associated effect");
         }
         this.resourceLocation = resourceLocation;
@@ -53,19 +53,18 @@ public class FlowerCowType {
         this.bud = bud;
         this.budModel = budModel;
         this.budModelVariant = budModelVariant;
-        this.effectInstance = effectInstance;
+        this.effectInstance = nectarEffectInstance;
         this.biomeKey = biomeKey;
         this.biomeTagKey = biomeTagKey;
         this.nectarDuration = nectarDuration;
         this.naturalSpawnWeight = naturalSpawnWeight;
-        this.breedingRequirementsList = breedingRequirementsList;
     }
 
     public ResourceLocation getResourceLocation() {
         return this.resourceLocation;
     }
 
-    @Nullable public MobEffectInstance getMobEffectInstance() {
+    @Nullable public MobEffectInstance getNectarEffectInstance() {
         return this.effectInstance;
     }
 
@@ -113,6 +112,14 @@ public class FlowerCowType {
         return this.loadingPriority;
     }
 
+    public void addAllBreedingRequirement(List<FlowerCowBreedingRequirements> breedingRequirements) {
+        breedingRequirementsList.addAll(breedingRequirements);
+    }
+
+    public void addBreedingRequirement(FlowerCowBreedingRequirements breedingRequirements) {
+        breedingRequirementsList.add(breedingRequirements);
+    }
+
     public List<FlowerCowBreedingRequirements> getBreedingRequirementsList() {
         return this.breedingRequirementsList;
     }
@@ -151,11 +158,10 @@ public class FlowerCowType {
         }
         buf.writeUtf(type.getBudModelVariant(), 32767);
 
-        buf.writeBoolean(type.getMobEffectInstance() != null);
-        if (type.getMobEffectInstance() != null) {
-            buf.writeResourceLocation(Objects.requireNonNull(Registry.MOB_EFFECT.getKey(type.getMobEffectInstance().getEffect())));
-            buf.writeInt(type.getMobEffectInstance().getDuration());
-            buf.writeInt(type.getMobEffectInstance().getAmplifier());
+        buf.writeBoolean(type.getNectarEffectInstance() != null);
+        if (type.getNectarEffectInstance() != null) {
+            buf.writeResourceLocation(Objects.requireNonNull(Registry.MOB_EFFECT.getKey(type.getNectarEffectInstance().getEffect())));
+            buf.writeInt(type.getNectarEffectInstance().getDuration());
         }
 
         buf.writeBoolean(type.getBiomeKey() != null);
@@ -216,18 +222,17 @@ public class FlowerCowType {
 
         String budModelVariant = buf.readUtf(32767);
 
-        boolean hasMobEffectInstance = buf.readBoolean();
-        MobEffectInstance flowerEffectInstance = null;
-        if (hasMobEffectInstance) {
-            ResourceLocation mobEffectLocation = buf.readResourceLocation();
-            Optional<MobEffect> optionalEffect = Registry.MOB_EFFECT.getOptional(mobEffectLocation);
+        boolean hasNectarEffectInstance = buf.readBoolean();
+        MobEffectInstance nectarEffectInstance = null;
+        if (hasNectarEffectInstance) {
+            ResourceLocation nectarEffectLocation = buf.readResourceLocation();
+            Optional<MobEffect> optionalEffect = Registry.MOB_EFFECT.getOptional(nectarEffectLocation);
             if (optionalEffect.isEmpty()) {
-                Constants.LOG.warn("Could not find mob effect with id: " + mobEffectLocation);
+                Constants.LOG.warn("Could not find mob effect with id: " + nectarEffectLocation);
             }
             int duration = buf.readInt();
-            int amplifier = buf.readInt();
             if (optionalEffect.isPresent()) {
-                flowerEffectInstance = new MobEffectInstance(optionalEffect.get(), duration, amplifier);
+                nectarEffectInstance = new MobEffectInstance(optionalEffect.get(), duration);
             }
         }
 
@@ -256,8 +261,7 @@ public class FlowerCowType {
             breedingRequirementsList.add(breedingRequirements);
         }
 
-
-        return new FlowerCowType(
+        FlowerCowType type = new FlowerCowType(
                 resourceLocation,
                 loadingPriority,
                 flowerBlock,
@@ -266,12 +270,15 @@ public class FlowerCowType {
                 budBlock,
                 budModelLocation,
                 budModelVariant,
-                flowerEffectInstance,
+                nectarEffectInstance,
                 spawnBiome,
                 spawnBiomeTag,
                 nectarDuration,
-                naturalSpawnWeight,
-                breedingRequirementsList);
+                naturalSpawnWeight);
+
+        type.addAllBreedingRequirement(breedingRequirementsList);
+
+        return type;
     }
 
     public static FlowerCowType fromJson(ResourceLocation resourceLocation, JsonObject json) {
@@ -310,9 +317,9 @@ public class FlowerCowType {
             flowerModelVariant = json.getAsJsonPrimitive("bud_model_variant").getAsString();
         }
 
-        MobEffectInstance flowerEffectInstance = null;
+        MobEffectInstance nectarEffectInstance = null;
         if (json.has("nectar_effect")) {
-            flowerEffectInstance = JsonParsingUtil.readMobEffectInstance(json.getAsJsonObject("nectar_effect"));
+            nectarEffectInstance = JsonParsingUtil.readNectarEffectInstance(json.getAsJsonObject("nectar_effect"));
         }
 
         ResourceKey<Biome> spawnBiome = null;
@@ -325,7 +332,10 @@ public class FlowerCowType {
             spawnBiomeTag = TagKey.create(Registry.BIOME_REGISTRY, JsonParsingUtil.readResourceLocation(json.getAsJsonPrimitive("spawn_biome_tag").getAsString()));
         }
 
-        int nectarDuration = json.getAsJsonPrimitive("nectar_duration").getAsInt();
+        int nectarDuration = 400;
+        if (json.has("nectar_duration")) {
+            json.getAsJsonPrimitive("nectar_duration").getAsInt();
+        }
 
         int naturalSpawnWeight = 0;
         if (json.has("natural_spawn_weight")) {
@@ -344,7 +354,7 @@ public class FlowerCowType {
             }
         }
 
-        return new FlowerCowType(
+        FlowerCowType type = new FlowerCowType(
                 resourceLocation,
                 loadingPriority,
                 flowerBlock,
@@ -353,12 +363,15 @@ public class FlowerCowType {
                 budBlock,
                 budModelLocation,
                 budModelVariant,
-                flowerEffectInstance,
+                nectarEffectInstance,
                 spawnBiome,
                 spawnBiomeTag,
                 nectarDuration,
-                naturalSpawnWeight,
-                breedingRequirementsList);
+                naturalSpawnWeight);
+
+        type.addAllBreedingRequirement(breedingRequirementsList);
+
+        return type;
     }
 
     @Override

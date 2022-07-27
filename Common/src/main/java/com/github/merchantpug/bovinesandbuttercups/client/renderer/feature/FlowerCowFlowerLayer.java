@@ -32,9 +32,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean bl;
         bl = Minecraft.getInstance().shouldEntityAppearGlowing(livingEntity) && livingEntity.isInvisible();
-        if ((livingEntity).isInvisible() && !bl) {
-            return;
-        }
+        if ((livingEntity).isInvisible() && !bl) return;
 
         BlockState blockState = livingEntity.getFlowerCowType().getFlower();
         ModelResourceLocation modelResourceLocation = null;
@@ -50,14 +48,13 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
             if (livingEntity.getFlowerCowType().getBud() != null || livingEntity.getFlowerCowType().getBudModel() != null) {
                 handleMoobudRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
             }
-            return;
-        }
-
-        if (livingEntity.getFlowerCowType().getFlowerModel() != null) {
-            modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getFlowerModel(), livingEntity.getFlowerCowType().getFlowerModelVariant());
-        }
-        if (livingEntity.getFlowerCowType().getFlower() != null || livingEntity.getFlowerCowType().getFlowerModel() != null) {
-            handleMoobloomRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
+        } else {
+            if (livingEntity.getFlowerCowType().getFlowerModel() != null) {
+                modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getFlowerModel(), livingEntity.getFlowerCowType().getFlowerModelVariant());
+            }
+            if (livingEntity.getFlowerCowType().getFlower() != null || livingEntity.getFlowerCowType().getFlowerModel() != null) {
+                handleMoobloomRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
+            }
         }
     }
 

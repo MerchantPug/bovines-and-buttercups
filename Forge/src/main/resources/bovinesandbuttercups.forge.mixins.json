@@ -7,6 +7,7 @@
     "BeePollinateGoalMixin"
   ],
   "client": [
+    "client.ClientPackSourceMixin",
     "client.EffectRenderingInventoryScreenForgeMixin",
     "client.GuiForgeMixin"
   ],

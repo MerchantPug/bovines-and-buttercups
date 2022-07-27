@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature;
+package com.github.merchantpug.bovinesandbuttercups.client.renderer.feature;
 
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;

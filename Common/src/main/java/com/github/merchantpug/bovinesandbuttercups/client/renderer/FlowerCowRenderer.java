@@ -1,11 +1,11 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.renderer;
+package com.github.merchantpug.bovinesandbuttercups.client.renderer;
 
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
+import com.github.merchantpug.bovinesandbuttercups.client.renderer.feature.FlowerCowFlowerLayer;
+import com.github.merchantpug.bovinesandbuttercups.client.renderer.feature.FlowerCowGrassLayer;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
-import com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature.FlowerCowFlowerLayer;
-import com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature.FlowerCowGrassLayer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -18,14 +18,15 @@ public class FlowerCowRenderer extends MobRenderer<FlowerCow, CowModel<FlowerCow
     public FlowerCowRenderer(EntityRendererProvider.Context context) {
         super(context, new CowModel<>(context.bakeLayer(BovineModelLayers.MOOBLOOM_MODEL_LAYER)), 0.7f);
         this.addLayer(new FlowerCowGrassLayer(this));
-        this.addLayer(new FlowerCowFlowerLayer<>(this));
+        this.addLayer(new FlowerCowFlowerLayer<>(this, context.getBlockRenderDispatcher()));
     }
 
     @Override
     public ResourceLocation getTextureLocation(FlowerCow entity) {
-        ResourceLocation textureLocation = new ResourceLocation(entity.getFlowerCowType().getResourceLocation().getNamespace(), "textures/entity/moobloom/" + entity.getFlowerCowType().getResourceLocation().getPath().toLowerCase(Locale.ROOT) + "_moobloom.png");
-        if (Minecraft.getInstance().getResourceManager().getResource(textureLocation).isPresent()) {
-            return textureLocation;
+        ResourceLocation location = new ResourceLocation(entity.getFlowerCowType().getResourceLocation().getNamespace(), "textures/entity/moobloom/" + entity.getFlowerCowType().getResourceLocation().getPath().toLowerCase(Locale.ROOT) + "_moobloom.png");
+        if (BovinesAndButtercupsCommonClient.LOADED_COW_TEXTURES.contains(location)) {
+            return location;
         }
         return BovinesAndButtercupsCommon.resourceLocation("textures/entity/moobloom/missing_moobloom.png");
-    }}
+    }
+}

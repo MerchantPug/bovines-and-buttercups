@@ -2,7 +2,8 @@ package com.github.merchantpug.bovinesandbuttercups.client;
 
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.entity.renderer.FlowerCowRenderer;
+import com.github.merchantpug.bovinesandbuttercups.client.renderer.FlowerCowRenderer;
+import com.github.merchantpug.bovinesandbuttercups.client.resources.CowTextureReloadListener;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.minecraft.client.Minecraft;
@@ -13,10 +14,12 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.Map;
 
@@ -25,6 +28,11 @@ public class BovinesAndButtercupsClient {
     @SubscribeEvent
     public static void onInitializeClient(FMLClientSetupEvent event) {
         BovinesAndButtercupsCommonClient.init();
+    }
+
+    @SubscribeEvent
+    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(new CowTextureReloadListener());
     }
 
     @SubscribeEvent

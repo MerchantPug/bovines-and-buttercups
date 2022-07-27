@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature;
+package com.github.merchantpug.bovinesandbuttercups.client.renderer.feature;
 
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,28 +13,29 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
 public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, CowModel<T>> {
-    public FlowerCowFlowerLayer(RenderLayerParent<T, CowModel<T>> context) {
+    private final BlockRenderDispatcher blockRenderer;
+
+    public FlowerCowFlowerLayer(RenderLayerParent<T, CowModel<T>> context, BlockRenderDispatcher blockRenderer) {
         super(context);
+        this.blockRenderer = blockRenderer;
     }
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean bl;
-        Minecraft minecraft = Minecraft.getInstance();
-        bl = minecraft.shouldEntityAppearGlowing(livingEntity) && livingEntity.isInvisible();
+        bl = Minecraft.getInstance().shouldEntityAppearGlowing(livingEntity) && livingEntity.isInvisible();
         if ((livingEntity).isInvisible() && !bl) {
             return;
         }
 
-        BlockRenderDispatcher blockRenderDispatcher = minecraft.getBlockRenderer();
         BlockState blockState = livingEntity.getFlowerCowType().getFlower();
         ModelResourceLocation modelResourceLocation = null;
         int m = LivingEntityRenderer.getOverlayCoords(livingEntity, 0.0f);
@@ -47,7 +48,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
             }
 
             if (livingEntity.getFlowerCowType().getBud() != null || livingEntity.getFlowerCowType().getBudModel() != null) {
-                handleMoobudRender(poseStack, buffer, packedLight, blockRenderDispatcher, bl, m, blockState, modelResourceLocation);
+                handleMoobudRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
             }
             return;
         }
@@ -56,7 +57,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
             modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getFlowerModel(), livingEntity.getFlowerCowType().getFlowerModelVariant());
         }
         if (livingEntity.getFlowerCowType().getFlower() != null || livingEntity.getFlowerCowType().getFlowerModel() != null) {
-            handleMoobloomRender(poseStack, buffer, packedLight, blockRenderDispatcher, bl, m, blockState, modelResourceLocation);
+            handleMoobloomRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
         }
     }
 
@@ -153,7 +154,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         }
 
         if (outlineAndInvisible) {
-            blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(TextureAtlas.LOCATION_BLOCKS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);
+            blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);
         } else {
             if (flowerState != null) {
                 blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(ItemBlockRenderTypes.getRenderType(flowerState, false)), flowerState, flowerModel, 1.0F, 1.0F, 1.0F, light, overlay);

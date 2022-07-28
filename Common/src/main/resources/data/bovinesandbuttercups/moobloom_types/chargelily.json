@@ -2,7 +2,7 @@
   "flower_block": "bovinesandbuttercups:chargelily",
   "bud_model": "bovinesandbuttercups:chargelily_bud",
   "nectar_effect": {
-    "effect": "minecraft:speed",
-    "duration": 760
+    "effect": "minecraft:haste",
+    "duration": 100
   }
 }

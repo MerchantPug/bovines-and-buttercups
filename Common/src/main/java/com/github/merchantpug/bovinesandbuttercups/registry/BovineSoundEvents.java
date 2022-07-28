@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 public class BovineSoundEvents {
     public static final RegistrationProvider<SoundEvent> SOUND_EVENTS = RegistrationProvider.get(Registry.SOUND_EVENT, Constants.MOD_ID);
 
+    public static final RegistryObject<SoundEvent> MOOBLOOM_DRINK = register("entity.moobloom.drink", () -> new SoundEvent(BovinesAndButtercupsCommon.resourceLocation("entity.moobloom.drink")));
+    public static final RegistryObject<SoundEvent> MOOBLOOM_EAT = register("entity.moobloom.eat", () -> new SoundEvent(BovinesAndButtercupsCommon.resourceLocation("entity.moobloom.eat")));
     public static final RegistryObject<SoundEvent> MOOBLOOM_MILK = register("entity.moobloom.milk", () -> new SoundEvent(BovinesAndButtercupsCommon.resourceLocation("entity.moobloom.milk")));
     public static final RegistryObject<SoundEvent> MOOBLOOM_SHEAR = register("entity.moobloom.shear", () -> new SoundEvent(BovinesAndButtercupsCommon.resourceLocation("entity.moobloom.shear")));
 

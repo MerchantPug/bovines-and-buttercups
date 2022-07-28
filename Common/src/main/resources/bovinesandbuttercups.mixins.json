@@ -10,12 +10,11 @@
     "LivingEntityMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
-    "MushroomCowMixin",
     "PlayerListMixin",
-    "ServerPlayerMixin",
-    "SuspiciousStewRecipeMixin"
+    "ServerPlayerMixin"
   ],
   "client": [
+    "MushroomCowRendererMixin",
     "client.ClientPacketListenerMixin",
     "client.EffectRenderingInventoryScreenMixin",
     "client.ModelBakeryMixin"

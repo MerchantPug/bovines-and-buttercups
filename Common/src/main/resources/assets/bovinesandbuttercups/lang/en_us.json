@@ -17,6 +17,8 @@
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",
 
   "entity.bovinesandbuttercups.moobloom": "Moobloom",
+  "subtitles.entity.moobloom.drink": "Moobloom drinks",
+  "subtitles.entity.moobloom.eat": "Moobloom eats",
   "subtitles.entity.moobloom.milk": "Moobloom gets milked",
 
   "effect.bovinesandbuttercups.lockdown": "Lockdown",

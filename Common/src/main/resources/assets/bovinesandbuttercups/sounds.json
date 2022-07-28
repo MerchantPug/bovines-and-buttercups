@@ -1,4 +1,20 @@
 {
+  "entity.moobloom.drink": {
+    "subtitle": "subtitles.entity.moobloom.drink",
+    "sounds": [
+      "bovinesandbuttercups:mob/moobloom/drink1",
+      "bovinesandbuttercups:mob/moobloom/drink2"
+    ]
+  },
+  "entity.moobloom.eat": {
+    "subtitle": "subtitles.entity.moobloom.eat",
+    "sounds": [
+      "mob/mooshoom/eat1",
+      "mob/mooshroom/eat2",
+      "mob/mooshroom/eat3",
+      "mob/mooshroom/eat4"
+    ]
+  },
   "entity.moobloom.milk": {
     "subtitle": "subtitles.entity.moobloom.milk",
     "sounds": [

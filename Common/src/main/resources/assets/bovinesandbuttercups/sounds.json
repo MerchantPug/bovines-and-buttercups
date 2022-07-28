@@ -9,7 +9,7 @@
   "entity.moobloom.eat": {
     "subtitle": "subtitles.entity.moobloom.eat",
     "sounds": [
-      "mob/mooshoom/eat1",
+      "mob/mooshroom/eat1",
       "mob/mooshroom/eat2",
       "mob/mooshroom/eat3",
       "mob/mooshroom/eat4"

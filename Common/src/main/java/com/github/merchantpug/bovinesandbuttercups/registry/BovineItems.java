@@ -2,6 +2,7 @@ package com.github.merchantpug.bovinesandbuttercups.registry;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.Registry;

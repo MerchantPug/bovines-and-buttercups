@@ -1,0 +1,9 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "flower_block": "bovinesandbuttercups:chargelily",
+  "bud_model": "bovinesandbuttercups:chargelily_bud",
+  "nectar_effect": {
+    "effect": "minecraft:haste",
+    "duration": 100
+  }
+}

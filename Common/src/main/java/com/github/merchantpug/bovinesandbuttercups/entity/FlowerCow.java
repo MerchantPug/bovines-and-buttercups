@@ -1,9 +1,9 @@
 package com.github.merchantpug.bovinesandbuttercups.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowBreedingRequirements;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowTypeRegistry;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowType;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowBreedingRequirements;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowType;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineSoundEvents;
@@ -182,7 +182,9 @@ public class FlowerCow extends Cow implements Shearable {
             if (this.getFlowerCowType().getNectarEffectInstance() != null) {
                 NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().getNectarEffectInstance().getEffect(), this.getFlowerCowType().getNectarEffectInstance().getDuration());
             } else if (this.getFlowerCowType().getFlower() != null && this.getFlowerCowType().getFlower().getBlock() instanceof FlowerBlock) {
-                NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getFlower().getBlock()).getSuspiciousStewEffect(), this.getFlowerCowType().getNectarDuration());
+                NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getFlower().getBlock()).getSuspiciousStewEffect(), 100);
+            } else {
+                return InteractionResult.PASS;
             }
 
             ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player2, itemStack2, false);

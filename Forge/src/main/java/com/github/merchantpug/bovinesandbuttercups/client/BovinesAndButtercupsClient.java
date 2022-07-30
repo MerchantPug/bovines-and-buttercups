@@ -3,10 +3,14 @@ package com.github.merchantpug.bovinesandbuttercups.client;
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.client.renderer.FlowerCowRenderer;
-import com.github.merchantpug.bovinesandbuttercups.client.resources.CowTextureReloadListener;
+import com.github.merchantpug.bovinesandbuttercups.block.renderer.CustomFlowerRenderer;
+import com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.FlowerCowRenderer;
+import com.github.merchantpug.bovinesandbuttercups.CowTextureReloadListener;
+import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -19,6 +23,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -46,8 +51,14 @@ public class BovinesAndButtercupsClient {
     }
 
     @SubscribeEvent
-    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(BovineEntityTypes.MOOBLOOM.get(), FlowerCowRenderer::new);
+        event.registerBlockEntityRenderer(BovineBlockEntityTypes.CUSTOM_FLOWER.get(), CustomFlowerRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+        event.register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
     }
 
     @SubscribeEvent

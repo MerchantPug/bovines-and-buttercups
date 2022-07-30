@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.command;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
+import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import java.util.Locale;
@@ -16,7 +16,7 @@ public class EffectWithoutLockdownSuggestion {
         }
 
         Registry.MOB_EFFECT.keySet().forEach(location -> {
-            if ((location.toString().startsWith(remainder) || location.getNamespace().startsWith(remainder) || location.getNamespace().equals("minecraft") && location.getPath().startsWith(remainder)) && !location.equals(BovinesAndButtercupsCommon.resourceLocation("lockdown"))) {
+            if ((location.toString().startsWith(remainder) || location.getNamespace().startsWith(remainder) || location.getNamespace().equals("minecraft") && location.getPath().startsWith(remainder)) && !location.equals(Constants.resourceLocation("lockdown"))) {
                 builder.suggest(location.toString());
             }
         });

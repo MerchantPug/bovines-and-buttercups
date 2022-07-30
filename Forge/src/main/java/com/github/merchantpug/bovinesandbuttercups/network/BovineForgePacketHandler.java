@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.network;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
+import com.github.merchantpug.bovinesandbuttercups.Constants;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public class BovineForgePacketHandler {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            BovinesAndButtercupsCommon.resourceLocation("main"),
+            Constants.resourceLocation("main"),
             () -> "0",
             "0"::equals,
             "0"::equals

@@ -1,7 +1,9 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
+import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsFabric;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
@@ -61,5 +63,10 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaAccessor.callRegister(criterionTrigger);
+    }
+
+    @Override
+    public CustomFlowerItem getCustomFlowerItem() {
+        return (CustomFlowerItem)BovineItemsFabric.CUSTOM_FLOWER;
     }
 }

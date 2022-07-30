@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.advancements.criterion;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
+import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.*;
@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class NearbyEntitiesTrigger extends SimpleCriterionTrigger<NearbyEntitiesTrigger.TriggerInstance> {
-    static final ResourceLocation ID = BovinesAndButtercupsCommon.resourceLocation("nearby_entities");
+    static final ResourceLocation ID = Constants.resourceLocation("nearby_entities");
 
     @Override
     protected NearbyEntitiesTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext context) {

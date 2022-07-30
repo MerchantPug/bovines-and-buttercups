@@ -2,10 +2,11 @@ package com.github.merchantpug.bovinesandbuttercups;
 
 import com.github.merchantpug.bovinesandbuttercups.command.EffectLockdownCommand;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowLoader;
+import com.github.merchantpug.bovinesandbuttercups.data.CowLoader;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
 import com.github.merchantpug.bovinesandbuttercups.registry.BiomeModifierSerializerRegistry;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsForge;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLModContainer;
 
 @Mod(Constants.MOD_ID)
 public class BovinesAndButtercups {
@@ -26,6 +26,7 @@ public class BovinesAndButtercups {
         BovinesAndButtercupsCommon.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
         BovinesAndButtercupsCommon.init();
+        BovineItemsForge.init();
         BiomeModifierSerializerRegistry.init(eventBus);
         eventBus.addListener((EntityAttributeCreationEvent event) -> {
             event.put(BovineEntityTypes.MOOBLOOM.get(), FlowerCow.createAttributes().build());
@@ -38,7 +39,7 @@ public class BovinesAndButtercups {
             EffectLockdownCommand.register(event.getDispatcher());
         });
         MinecraftForge.EVENT_BUS.addListener((AddReloadListenerEvent event) -> {
-            FlowerCowLoader loader = new FlowerCowLoader();
+            CowLoader loader = new CowLoader();
             event.addListener(loader);
         });
     }

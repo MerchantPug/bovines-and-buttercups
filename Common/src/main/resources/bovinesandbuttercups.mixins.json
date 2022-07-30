@@ -6,6 +6,7 @@
   "mixins": [
     "BeeAccessor",
     "BeeMixin",
+    "BlockMixin",
     "ClientboundUpdateMobEffectPacketMixin",
     "LivingEntityMixin",
     "MobAccessor",
@@ -14,10 +15,11 @@
     "ServerPlayerMixin"
   ],
   "client": [
-    "MushroomCowRendererMixin",
     "client.ClientPacketListenerMixin",
     "client.EffectRenderingInventoryScreenMixin",
-    "client.ModelBakeryMixin"
+    "client.ItemRendererAccessor",
+    "client.ModelBakeryMixin",
+    "client.MushroomCowRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

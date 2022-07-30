@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
+import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import com.github.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -39,7 +39,7 @@ public class GuiFabricMixin extends GuiComponent {
         if (lockdownEffectInstance.isEmpty()) return;
 
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && ((MobEffectInstanceAccess)lockdownEffectInstance.get(0)).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
-            RenderSystem.setShaderTexture(0, BovinesAndButtercupsCommon.resourceLocation("textures/gui/container/lockdown_frame.png"));
+            RenderSystem.setShaderTexture(0, Constants.resourceLocation("textures/gui/container/lockdown_frame.png"));
             blit(poseStack, k, l, this.getBlitOffset(), 36, 4, 24, 24, 64, 32);
             RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);
         }

@@ -1,8 +1,10 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
+import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsForge;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -61,5 +63,10 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaTriggers.register(criterionTrigger);
+    }
+
+    @Override
+    public CustomFlowerItem getCustomFlowerItem() {
+        return (CustomFlowerItem)BovineItemsForge.CUSTOM_FLOWER.get();
     }
 }

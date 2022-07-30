@@ -1,7 +1,9 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin;
 
-import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowType;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.flower.FlowerCowTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
+import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowType;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowTypeRegistry;
 import com.github.merchantpug.bovinesandbuttercups.network.MoobloomTypeListPacket;
 import com.github.merchantpug.bovinesandbuttercups.network.SyncMoobloomTypePacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
@@ -29,13 +31,13 @@ public abstract class PlayerListMixin {
 
     @Inject(method = "placeNewPlayer", at = @At("TAIL"))
     private void sendServerTypesToPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
-        Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()])));
+        Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().keySet().toArray(new ResourceLocation[FlowerTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().values().toArray(new FlowerType[FlowerTypeRegistry.size()])));
     }
 
     @Inject(method = "reloadResources", at = @At("TAIL"))
     private void sendServerTypesToPlayersAfterReload(CallbackInfo ci) {
         for (ServerPlayer player : this.players) {
-            Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()])));
+            Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().keySet().toArray(new ResourceLocation[FlowerTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().values().toArray(new FlowerType[FlowerTypeRegistry.size()])));
         }
         this.getServer().getAllLevels().forEach(level -> {
             level.getEntities(BovineEntityTypes.MOOBLOOM.get(), Entity::isAlive).forEach(flowerCow -> {

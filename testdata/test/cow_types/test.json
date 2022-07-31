@@ -1,0 +1,7 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "nectar_effect": {
+    "effect": "minecraft:haste",
+    "duration": 100
+  }
+}

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:block/poppy"
+    "layer0": "test:block/fire_flower"
   }
 }

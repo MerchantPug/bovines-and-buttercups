@@ -52,6 +52,10 @@ public class FlowerType {
         return this.resourceLocation;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public MutableComponent getOrCreateNameTranslationKey() {
         return name != null ? Component.translatable(name) : Component.translatable("block." + resourceLocation.getNamespace() + "." + resourceLocation.getPath());
     }

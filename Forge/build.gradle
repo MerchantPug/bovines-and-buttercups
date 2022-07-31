@@ -107,6 +107,12 @@ processResources {
     filesMatching('*.mixins.json') {
         expand "refmap_target": "${project.mod_id}."
     }
+
+    def environment = System.getenv("ENVIRONMENT")
+    if (environment != "production") {
+        from(rootProject.rootDir.absolutePath + "/testdata") { into 'data' }
+        from(rootProject.rootDir.absolutePath + "/testassets") { into 'assets'}
+    }
 }
 
 jar.finalizedBy('reobfJar')

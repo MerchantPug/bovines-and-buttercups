@@ -6,7 +6,6 @@
   "mixins": [
     "BeeAccessor",
     "BeeMixin",
-    "BlockMixin",
     "ClientboundUpdateMobEffectPacketMixin",
     "LivingEntityMixin",
     "MobAccessor",
@@ -15,6 +14,7 @@
     "ServerPlayerMixin"
   ],
   "client": [
+    "client.ClientLevelMixin",
     "client.ClientPacketListenerMixin",
     "client.EffectRenderingInventoryScreenMixin",
     "client.ItemRendererAccessor",

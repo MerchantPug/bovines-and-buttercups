@@ -18,34 +18,57 @@ public class CustomFlowerItem extends BlockItem {
     @Override
     public ItemStack getDefaultInstance() {
         ItemStack stack = new ItemStack(this);
-        stack.getOrCreateTag().putString("BlockEntityTag.Type", "bovinesandbuttercups:missing");
+        CompoundTag compound = new CompoundTag();
+        compound.putString("Type", "bovinesandbuttercups:missing");
+        stack.getOrCreateTag().put("BlockEntityTag", compound);
         return stack;
     }
 
     @Nullable public static FlowerType getFlowerItemFromTag(ItemStack customFlower) {
-        if (customFlower.getTag() == null) return null;
-        CompoundTag compoundTag = customFlower.getTag().getCompound("BlockEntityTag");
-        if (!compoundTag.contains("Type")) return null;
-        return FlowerType.fromKey(compoundTag.getString("Type"));
+        if (customFlower.getTag() != null) {
+            CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
+            if (compound.contains("Type")) {
+                return FlowerType.fromKey(compound.getString("Type"));
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getDescriptionId(ItemStack stack) {
+        CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
+        if (compound.contains("Type")) {
+            FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
+            if (flowerType.getName() != null) {
+                return flowerType.getName();
+            }
+        }
+        return this.getDescriptionId();
     }
 
     @Nullable public MobEffect getSuspiciousStewEffect(ItemStack customFlower) {
-        if (customFlower.getTag() == null) return MobEffects.REGENERATION;
-        CompoundTag compoundTag = customFlower.getTag().getCompound("BlockEntityTag");
-        if (!compoundTag.contains("Type")) return null;
-        FlowerType flowerType = FlowerType.fromKey(compoundTag.getString("Type"));
-        if (flowerType.getStewEffectInstance() == null) return MobEffects.REGENERATION;
-
-        return flowerType.getStewEffectInstance().getEffect();
+        if (customFlower.getTag() != null) {
+            CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
+            if (compound.contains("Type")) {
+                FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
+                if (flowerType.getStewEffectInstance() != null) {
+                    return flowerType.getStewEffectInstance().getEffect();
+                }
+            }
+        }
+        return MobEffects.REGENERATION;
     }
 
     public int getSuspiciousStewDuration(ItemStack customFlower) {
-        if (customFlower.getTag() == null) return 0;
-        CompoundTag compoundTag = customFlower.getTag().getCompound("BlockEntityTag");
-        if (!compoundTag.contains("Type")) return 0;
-        FlowerType flowerType = FlowerType.fromKey(compoundTag.getString("Type"));
-        if (flowerType.getStewEffectInstance() == null) return 0;
-
-        return flowerType.getStewEffectInstance().getDuration();
+        if (customFlower.getTag() != null) {
+            CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
+            if (compound.contains("Type")) {
+                FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
+                if (flowerType.getStewEffectInstance() != null) {
+                    return flowerType.getStewEffectInstance().getDuration();
+                }
+            }
+        }
+        return 0;
     }
 }

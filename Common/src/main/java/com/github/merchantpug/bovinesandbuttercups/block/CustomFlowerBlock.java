@@ -1,12 +1,9 @@
 package com.github.merchantpug.bovinesandbuttercups.block;
 
-import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
-import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -16,14 +13,9 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CustomFlowerBlock extends BaseEntityBlock {
     protected static final VoxelShape SHAPE = Block.box(5.0, 0.0, 5.0, 11.0, 10.0, 11.0);
@@ -37,20 +29,17 @@ public class CustomFlowerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState blockState, LootContext.Builder builder) {
-        List<ItemStack> stackList = new ArrayList<>();
-        BlockEntity blockEntity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-            if (!builder.getLevel().isClientSide) {
-                ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomFlowerItem());
-                if (customFlowerBlockEntity.getFlowerTypeName() != null && FlowerTypeRegistry.contains(ResourceLocation.tryParse(customFlowerBlockEntity.getFlowerTypeName()))) {
-                    itemStack.setHoverName(FlowerTypeRegistry.get(ResourceLocation.tryParse(customFlowerBlockEntity.getFlowerTypeName())).getOrCreateNameTranslationKey().withStyle(Style.EMPTY.withItalic(false)));
-                }
-                blockEntity.saveToItem(itemStack);
-                stackList.add(itemStack);
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+        ItemStack itemStack = new ItemStack(this);
+        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
+        if (blockEntity instanceof CustomFlowerBlockEntity cfbe) {
+            CompoundTag compound = new CompoundTag();
+            if (cfbe.getFlowerTypeName() != null) {
+                compound.putString("Type", cfbe.getFlowerTypeName());
+                itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }
-        return stackList;
+        return itemStack;
     }
 
     @Override

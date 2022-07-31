@@ -22,7 +22,7 @@ import java.util.Optional;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
 
-    @Shadow public abstract boolean canBeAffected(MobEffectInstance p_21197_);
+    @Shadow public abstract boolean canBeAffected(MobEffectInstance mobEffectInstance);
 
     @Shadow public abstract Collection<MobEffectInstance> getActiveEffects();
 

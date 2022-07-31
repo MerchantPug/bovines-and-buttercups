@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ModelLocationParticle extends TextureSheetParticle {
     private final BlockPos pos;
@@ -57,7 +55,6 @@ public class ModelLocationParticle extends TextureSheetParticle {
         return i == 0 && this.level.hasChunkAt(this.pos) ? LevelRenderer.getLightColor(this.level, this.pos) : i;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static class Provider implements ParticleProvider<ModelLocationParticleOption> {
         public Particle createParticle(ModelLocationParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             ResourceLocation modelKey = type.getModelKey();

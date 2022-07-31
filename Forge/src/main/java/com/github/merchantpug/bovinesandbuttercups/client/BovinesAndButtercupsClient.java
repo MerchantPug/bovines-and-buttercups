@@ -83,7 +83,6 @@ public class BovinesAndButtercupsClient {
                     Files.createDirectory(path);
                 }
                 Files.copy(inputStream, file.toPath());
-                path.toFile().deleteOnExit();
                 file.deleteOnExit();
             }
 
@@ -109,7 +108,6 @@ public class BovinesAndButtercupsClient {
                     Files.createDirectory(path);
                 }
                 Files.copy(inputStream, file.toPath());
-                path.toFile().deleteOnExit();
                 file.deleteOnExit();
             }
 

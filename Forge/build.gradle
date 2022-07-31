@@ -18,10 +18,10 @@ apply plugin: 'maven-publish'
 archivesBaseName = "${project.mod_name}-forge"
 
 mixin {
-    add sourceSets.main, "${project.mod_id}-refmap.json"
+    add sourceSets.main, "${project.mod_id}.refmap.json"
 
     config "${project.mod_id}.mixins.json"
-    config "${project.mod_id}.forge.mixins.json"
+    config "${project.mod_id}-forge.mixins.json"
 }
 
 minecraft {
@@ -41,7 +41,7 @@ minecraft {
             taskName 'Client'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}.forge.mixins.json"
+            args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}-forge.mixins.json"
             mods {
                 modClientRun {
                     source sourceSets.main
@@ -56,7 +56,7 @@ minecraft {
             taskName 'Server'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}.forge.mixins.json"
+            args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}-forge.mixins.json"
             mods {
                 modServerRun {
                     source sourceSets.main
@@ -72,7 +72,7 @@ minecraft {
             taskName 'Data'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}.forge.mixins.json"
+            args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}-forge.mixins.json"
             mods {
                 modDataRun {
                     source sourceSets.main
@@ -91,19 +91,12 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.4-SNAPSHOT:processor'
 }
 
-jar {
-    from project(":Common").sourceSets.main.output
-}
-
-javadoc {
-    source project(":Common").sourceSets.main.allJava
-}
-
-sourcesJar {
-    from project(":Common").sourceSets.main.allSource
+tasks.withType(JavaCompile) {
+    source(project(":Common").sourceSets.main.allSource)
 }
 
 processResources {
+    from project(":Common").sourceSets.main.resources
     filesMatching('*.mixins.json') {
         expand "refmap_target": "${project.mod_id}."
     }

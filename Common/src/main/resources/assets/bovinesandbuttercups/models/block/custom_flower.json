@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "bovinesandbuttercups:block/fire_flower"
+    "cross": "bovinesandbuttercups:block/missing_flower"
   }
 }

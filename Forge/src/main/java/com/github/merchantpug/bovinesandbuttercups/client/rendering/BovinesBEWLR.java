@@ -1,7 +1,9 @@
-package com.github.merchantpug.bovinesandbuttercups.item;
+package com.github.merchantpug.bovinesandbuttercups.client.rendering;
 
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
+import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItemForge;
 import com.github.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

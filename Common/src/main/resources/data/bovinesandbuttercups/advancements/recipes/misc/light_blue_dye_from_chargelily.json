@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "bovinesandbuttercups:light_blue_dye_from_chargelily"
+    ]
+  },
+  "criteria": {
+    "has_chargelily": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bovinesandbuttercups:chargelily"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bovinesandbuttercups:light_blue_dye_from_chargelily"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_chargelily",
+      "has_the_recipe"
+    ]
+  ]
+}

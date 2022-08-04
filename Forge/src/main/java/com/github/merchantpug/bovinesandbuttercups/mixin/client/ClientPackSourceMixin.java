@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 
-import com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.ClientPackSource;
 import net.minecraft.server.packs.repository.Pack;

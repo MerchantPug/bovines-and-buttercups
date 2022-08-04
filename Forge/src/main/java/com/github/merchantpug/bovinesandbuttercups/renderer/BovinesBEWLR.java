@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.client.rendering;
+package com.github.merchantpug.bovinesandbuttercups.renderer;
 
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;

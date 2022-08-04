@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.client;
+package com.github.merchantpug.bovinesandbuttercups;
 
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;

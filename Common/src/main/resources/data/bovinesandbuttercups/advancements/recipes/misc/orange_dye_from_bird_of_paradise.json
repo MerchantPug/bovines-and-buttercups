@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "bovinesandbuttercups:orange_dye_from_bird_of_paradise"
+    ]
+  },
+  "criteria": {
+    "has_bird_of_paradise": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bovinesandbuttercups:bird_of_paradise"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bovinesandbuttercups:orange_dye_from_bird_of_paradise"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bird_of_paradise",
+      "has_the_recipe"
+    ]
+  ]
+}

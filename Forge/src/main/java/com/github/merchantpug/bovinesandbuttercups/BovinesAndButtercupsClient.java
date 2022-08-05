@@ -53,7 +53,7 @@ public class BovinesAndButtercupsClient {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(BovineEntityTypes.MOOBLOOM.get(), FlowerCowRenderer::new);
-        event.registerBlockEntityRenderer(BovineBlockEntityTypes.CUSTOM_FLOWER.get(), CustomFlowerRenderer::new);
+        event.registerBlockEntityRenderer(BovineBlockEntityTypes.CUSTOM_FLOWER, CustomFlowerRenderer::new);
     }
 
     @SubscribeEvent

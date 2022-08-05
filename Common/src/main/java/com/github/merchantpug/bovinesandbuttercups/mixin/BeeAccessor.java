@@ -6,6 +6,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(Bee.class)
 public interface BeeAccessor {
-    @Accessor
+    @Accessor("ticksWithoutNectarSinceExitingHive")
     int getTicksWithoutNectarSinceExitingHive();
 }

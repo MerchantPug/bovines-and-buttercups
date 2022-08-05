@@ -7,10 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class BovineItemsFabric {
-    public static final Item CUSTOM_FLOWER = register(Constants.resourceLocation("custom_flower"), new CustomFlowerItem(BovineBlocks.CUSTOM_FLOWER.get(), new Item.Properties()));
 
     public static void init() {
-
+        BovineItems.CUSTOM_FLOWER = register(Constants.resourceLocation("custom_flower"), new CustomFlowerItem(BovineBlocks.CUSTOM_FLOWER.get(), new Item.Properties()));
     }
 
     public static Item register(ResourceLocation key, Item item) {

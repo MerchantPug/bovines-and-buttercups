@@ -20,7 +20,7 @@ public class CustomFlowerBlockEntity extends BlockEntity {
     @Nullable private String flowerTypeName;
 
     public CustomFlowerBlockEntity(BlockPos worldPosition, BlockState blockState) {
-        super(BovineBlockEntityTypes.CUSTOM_FLOWER.get(), worldPosition, blockState);
+        super(BovineBlockEntityTypes.CUSTOM_FLOWER, worldPosition, blockState);
     }
 
     @Override

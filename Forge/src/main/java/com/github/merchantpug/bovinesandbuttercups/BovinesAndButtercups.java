@@ -5,6 +5,7 @@ import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.data.CowLoader;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
 import com.github.merchantpug.bovinesandbuttercups.registry.BiomeModifierSerializerRegistry;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsForge;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -26,6 +27,7 @@ public class BovinesAndButtercups {
         BovinesAndButtercupsCommon.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
         BovinesAndButtercupsCommon.init();
+        BovineBlockEntityTypesForge.init();
         BovineItemsForge.init();
         BiomeModifierSerializerRegistry.init(eventBus);
         eventBus.addListener((EntityAttributeCreationEvent event) -> {

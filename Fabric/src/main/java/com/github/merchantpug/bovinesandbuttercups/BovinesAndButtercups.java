@@ -28,6 +28,8 @@ public class BovinesAndButtercups implements ModInitializer {
 			BovinesAndButtercupsCommon.VERSION = version;
 		});
 		BovinesAndButtercupsCommon.init();
+		BovineBlockEntityTypesFabric.init();
+		BovineItemsFabric.init();
 		BovineSpawnRestrictions.register();
 
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {

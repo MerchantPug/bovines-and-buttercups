@@ -12,7 +12,6 @@ public class BovinesAndButtercupsCommon {
         Constants.LOG.info("Bovines and Buttercups v" + VERSION + " is starting up. Moo!");
 
         BovineBlocks.init();
-        BovineBlockEntityTypes.init();
         BovineCriteriaTriggers.init();
         BovineEffects.init();
         BovineEntityTypes.init();

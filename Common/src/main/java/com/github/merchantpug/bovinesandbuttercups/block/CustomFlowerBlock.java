@@ -76,6 +76,6 @@ public class CustomFlowerBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BovineBlockEntityTypes.CUSTOM_FLOWER.get().create(pos, state);
+        return BovineBlockEntityTypes.CUSTOM_FLOWER.create(pos, state);
     }
 }

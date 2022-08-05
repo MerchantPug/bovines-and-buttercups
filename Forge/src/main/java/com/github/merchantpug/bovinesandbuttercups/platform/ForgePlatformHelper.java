@@ -64,9 +64,4 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaTriggers.register(criterionTrigger);
     }
-
-    @Override
-    public CustomFlowerItem getCustomFlowerItem() {
-        return (CustomFlowerItem)BovineItemsForge.CUSTOM_FLOWER.get();
-    }
 }

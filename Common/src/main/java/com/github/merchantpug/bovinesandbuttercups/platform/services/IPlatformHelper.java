@@ -1,6 +1,5 @@
 package com.github.merchantpug.bovinesandbuttercups.platform.services;
 
-import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +30,4 @@ public interface IPlatformHelper {
     void sendPacketToAllPlayers(ServerLevel serverLevel, IPacket packet);
 
     CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger);
-
-    CustomFlowerItem getCustomFlowerItem();
 }

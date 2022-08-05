@@ -28,8 +28,8 @@ public class BovinesAndButtercupsClient implements ClientModInitializer {
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new CowTextureReloadListenerFabric());
 
-        BlockEntityRendererRegistry.register(BovineBlockEntityTypes.CUSTOM_FLOWER.get(), CustomFlowerRenderer::new);
-        BuiltinItemRendererRegistry.INSTANCE.register(BovineItemsFabric.CUSTOM_FLOWER, new CustomFlowerItemRenderer());
+        BlockEntityRendererRegistry.register(BovineBlockEntityTypes.CUSTOM_FLOWER, CustomFlowerRenderer::new);
+        BuiltinItemRendererRegistry.INSTANCE.register(BovineItems.CUSTOM_FLOWER, new CustomFlowerItemRenderer());
         ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
     }
 }

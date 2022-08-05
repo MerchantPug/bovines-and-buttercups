@@ -64,9 +64,4 @@ public class FabricPlatformHelper implements IPlatformHelper {
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaAccessor.callRegister(criterionTrigger);
     }
-
-    @Override
-    public CustomFlowerItem getCustomFlowerItem() {
-        return (CustomFlowerItem)BovineItemsFabric.CUSTOM_FLOWER;
-    }
 }

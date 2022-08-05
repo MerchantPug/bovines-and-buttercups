@@ -63,6 +63,10 @@ processResources {
     }
 }
 
+tasks.withType(JavaCompile) {
+    source(project(":Common").sourceSets.main.allSource)
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {

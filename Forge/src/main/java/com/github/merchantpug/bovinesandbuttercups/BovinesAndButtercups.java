@@ -4,10 +4,8 @@ import com.github.merchantpug.bovinesandbuttercups.command.EffectLockdownCommand
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.data.CowLoader;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
-import com.github.merchantpug.bovinesandbuttercups.registry.BiomeModifierSerializerRegistry;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesForge;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsForge;
+import com.github.merchantpug.bovinesandbuttercups.platform.Services;
+import com.github.merchantpug.bovinesandbuttercups.registry.*;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
@@ -19,6 +17,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(Constants.MOD_ID)
 public class BovinesAndButtercups {
@@ -28,14 +27,19 @@ public class BovinesAndButtercups {
 
         BovinesAndButtercupsCommon.init();
         BovineBlockEntityTypesForge.init();
+        BovineEntityTypesForge.init();
         BovineItemsForge.init();
         BiomeModifierSerializerRegistry.init(eventBus);
+
+        eventBus.addListener((RegisterEvent event) -> {
+        });
+
         eventBus.addListener((EntityAttributeCreationEvent event) -> {
-            event.put(BovineEntityTypes.MOOBLOOM.get(), FlowerCow.createAttributes().build());
+            event.put(Services.PLATFORM.getMoobloomEntity(), FlowerCow.createAttributes().build());
         });
         eventBus.addListener((FMLCommonSetupEvent event) -> {
             BovineForgePacketHandler.init();
-            event.enqueueWork(() -> SpawnPlacements.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn));
+            event.enqueueWork(() -> SpawnPlacements.register(Services.PLATFORM.getMoobloomEntity(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn));
         });
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> {
             EffectLockdownCommand.register(event.getDispatcher());

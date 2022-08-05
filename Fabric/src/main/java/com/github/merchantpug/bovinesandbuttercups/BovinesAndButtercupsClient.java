@@ -3,6 +3,7 @@ package com.github.merchantpug.bovinesandbuttercups;
 import com.github.merchantpug.bovinesandbuttercups.block.renderer.CustomFlowerRenderer;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItemRenderer;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
+import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.*;
 import com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.networking.BovinePacketsS2C;
@@ -24,12 +25,12 @@ public class BovinesAndButtercupsClient implements ClientModInitializer {
         BovinePacketsS2C.register();
 
         EntityModelLayerRegistry.registerModelLayer(BovineModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
-        EntityRendererRegistry.register(BovineEntityTypes.MOOBLOOM.get(), FlowerCowRenderer::new);
+        EntityRendererRegistry.register(Services.PLATFORM.getMoobloomEntity(), FlowerCowRenderer::new);
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new CowTextureReloadListenerFabric());
 
-        BlockEntityRendererRegistry.register(BovineBlockEntityTypes.CUSTOM_FLOWER, CustomFlowerRenderer::new);
-        BuiltinItemRendererRegistry.INSTANCE.register(BovineItems.CUSTOM_FLOWER, new CustomFlowerItemRenderer());
+        BlockEntityRendererRegistry.register(Services.PLATFORM.getCustomFlowerBlockEntity(), CustomFlowerRenderer::new);
+        BuiltinItemRendererRegistry.INSTANCE.register(Services.PLATFORM.getCustomFlowerItem(), new CustomFlowerItemRenderer());
         ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
     }
 }

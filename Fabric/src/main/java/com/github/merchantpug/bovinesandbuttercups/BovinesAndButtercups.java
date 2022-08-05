@@ -3,6 +3,7 @@ package com.github.merchantpug.bovinesandbuttercups;
 import com.github.merchantpug.bovinesandbuttercups.command.EffectLockdownCommand;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.entity.type.CowLoaderFabric;
+import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -29,6 +30,7 @@ public class BovinesAndButtercups implements ModInitializer {
 		});
 		BovinesAndButtercupsCommon.init();
 		BovineBlockEntityTypesFabric.init();
+		BovineEntityTypesFabric.init();
 		BovineItemsFabric.init();
 		BovineSpawnRestrictions.register();
 
@@ -41,8 +43,8 @@ public class BovinesAndButtercups implements ModInitializer {
 			ResourceManagerHelper.registerBuiltinResourcePack(Constants.resourceLocation("no_grass"), modContainer, "No Grass Back", ResourcePackActivationType.NORMAL);
 		});
 
-		BiomeModifications.addSpawn(biomeSelectionContext -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 60, 2, 4);
-		FabricDefaultAttributeRegistry.register(BovineEntityTypes.MOOBLOOM.get(), FlowerCow.createAttributes());
+		BiomeModifications.addSpawn(biomeSelectionContext -> true, MobCategory.CREATURE, Services.PLATFORM.getMoobloomEntity(), 60, 2, 4);
+		FabricDefaultAttributeRegistry.register(Services.PLATFORM.getMoobloomEntity(), FlowerCow.createAttributes());
 
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new CowLoaderFabric());
 	}

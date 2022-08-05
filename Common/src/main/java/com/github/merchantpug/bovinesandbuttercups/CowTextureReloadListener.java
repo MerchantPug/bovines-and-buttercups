@@ -1,6 +1,5 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;

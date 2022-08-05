@@ -7,7 +7,6 @@ import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerC
 import com.github.merchantpug.bovinesandbuttercups.network.MoobloomTypeListPacket;
 import com.github.merchantpug.bovinesandbuttercups.network.SyncMoobloomTypePacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import net.minecraft.network.Connection;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -40,7 +39,7 @@ public abstract class PlayerListMixin {
             Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().keySet().toArray(new ResourceLocation[FlowerTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().values().toArray(new FlowerType[FlowerTypeRegistry.size()])));
         }
         this.getServer().getAllLevels().forEach(level -> {
-            level.getEntities(BovineEntityTypes.MOOBLOOM.get(), Entity::isAlive).forEach(flowerCow -> {
+            level.getEntities(Services.PLATFORM.getMoobloomEntity(), Entity::isAlive).forEach(flowerCow -> {
                 try {
                     ResourceLocation resourceLocation = ResourceLocation.tryParse(flowerCow.getTypeId());
                     if (!FlowerCowTypeRegistry.contains(resourceLocation)) {

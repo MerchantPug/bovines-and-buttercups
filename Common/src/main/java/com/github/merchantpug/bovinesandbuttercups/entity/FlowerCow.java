@@ -5,9 +5,9 @@ import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerC
 import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowTypeRegistry;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowType;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
+import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineSoundEvents;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -257,7 +257,7 @@ public class FlowerCow extends Cow implements Shearable {
 
     @Override
     public FlowerCow getBreedOffspring(ServerLevel serverWorld, AgeableMob ageableMob) {
-        FlowerCow flowerCow = (FlowerCow) BovineEntityTypes.MOOBLOOM.get().create(serverWorld);
+        FlowerCow flowerCow = Services.PLATFORM.getMoobloomEntity().create(serverWorld);
         flowerCow.setType(this.chooseBabyType((FlowerCow)ageableMob));
         return flowerCow;
     }

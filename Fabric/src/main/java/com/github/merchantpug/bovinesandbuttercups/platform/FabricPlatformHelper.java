@@ -1,8 +1,12 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
+import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesFabric;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabric;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsFabric;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -18,6 +22,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;
 
@@ -63,5 +68,20 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaAccessor.callRegister(criterionTrigger);
+    }
+
+    @Override
+    public BlockEntityType<CustomFlowerBlockEntity> getCustomFlowerBlockEntity() {
+        return BovineBlockEntityTypesFabric.CUSTOM_FLOWER;
+    }
+
+    @Override
+    public EntityType<FlowerCow> getMoobloomEntity() {
+        return BovineEntityTypesFabric.MOOBLOOM;
+    }
+
+    @Override
+    public CustomFlowerItem getCustomFlowerItem() {
+        return BovineItemsFabric.CUSTOM_FLOWER;
     }
 }

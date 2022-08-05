@@ -1,14 +1,10 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
-import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.block.renderer.CustomFlowerRenderer;
 import com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.FlowerCowRenderer;
-import com.github.merchantpug.bovinesandbuttercups.CowTextureReloadListener;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
+import com.github.merchantpug.bovinesandbuttercups.platform.Services;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
 import net.minecraft.client.Minecraft;
@@ -52,8 +48,8 @@ public class BovinesAndButtercupsClient {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(BovineEntityTypes.MOOBLOOM.get(), FlowerCowRenderer::new);
-        event.registerBlockEntityRenderer(BovineBlockEntityTypes.CUSTOM_FLOWER, CustomFlowerRenderer::new);
+        event.registerEntityRenderer(Services.PLATFORM.getMoobloomEntity(), FlowerCowRenderer::new);
+        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomFlowerBlockEntity(), CustomFlowerRenderer::new);
     }
 
     @SubscribeEvent

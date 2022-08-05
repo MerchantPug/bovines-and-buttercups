@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.block;
 
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
+import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -76,6 +76,6 @@ public class CustomFlowerBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BovineBlockEntityTypes.CUSTOM_FLOWER.create(pos, state);
+        return Services.PLATFORM.getCustomFlowerBlockEntity().create(pos, state);
     }
 }

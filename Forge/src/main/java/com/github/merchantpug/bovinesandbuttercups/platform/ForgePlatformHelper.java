@@ -1,9 +1,14 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
+import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesForge;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsForge;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
@@ -16,6 +21,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
@@ -63,5 +69,20 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaTriggers.register(criterionTrigger);
+    }
+
+    @Override
+    public BlockEntityType<CustomFlowerBlockEntity> getCustomFlowerBlockEntity() {
+        return BovineBlockEntityTypesForge.CUSTOM_FLOWER.get();
+    }
+
+    @Override
+    public EntityType<FlowerCow> getMoobloomEntity() {
+        return BovineEntityTypesForge.MOOBLOOM.get();
+    }
+
+    @Override
+    public CustomFlowerItem getCustomFlowerItem() {
+        return BovineItemsForge.CUSTOM_FLOWER.get();
     }
 }

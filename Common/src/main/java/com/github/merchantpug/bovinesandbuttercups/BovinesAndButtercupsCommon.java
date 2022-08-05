@@ -19,8 +19,4 @@ public class BovinesAndButtercupsCommon {
         BovineParticleTypes.init();
         BovineSoundEvents.init();
     }
-
-    public static ResourceLocation resourceLocation(String path) {
-        return new ResourceLocation(MOD_ID, path);
-    }
 }

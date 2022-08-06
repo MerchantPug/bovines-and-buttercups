@@ -4,7 +4,6 @@ import com.github.merchantpug.bovinesandbuttercups.block.renderer.CustomFlowerRe
 import com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
 import net.minecraft.client.Minecraft;

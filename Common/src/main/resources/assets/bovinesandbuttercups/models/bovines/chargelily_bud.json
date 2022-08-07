@@ -2,6 +2,6 @@
   "parent": "bovinesandbuttercups:block/unique_cross",
   "textures": {
     "one": "bovinesandbuttercups:block/chargelily_bud",
-    "two": "bovinesandbuttercups:block/chargelily_bud_stem"
+    "two": "bovinesandbuttercups:block/chargelily_bud_other"
   }
 }

@@ -21,6 +21,10 @@ public class BovinesAndButtercupsCommonClient {
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_BIRD_OF_PARADISE.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.CHARGELILY.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_CHARGELILY.get(), RenderType.cutout());
+        Services.PLATFORM.setRenderLayer(BovineBlocks.HYACINTH.get(), RenderType.cutout());
+        Services.PLATFORM.setRenderLayer(BovineBlocks.SNOWDROP.get(), RenderType.cutout());
+        Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_SNOWDROP.get(), RenderType.cutout());
+        Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_HYACINTH.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.CUSTOM_FLOWER.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_CUSTOM_FLOWER.get(), RenderType.cutout());
     }

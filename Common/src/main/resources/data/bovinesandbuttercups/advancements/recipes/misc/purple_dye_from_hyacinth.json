@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "bovinesandbuttercups:purple_dye_from_hyacinth"
+    ]
+  },
+  "criteria": {
+    "has_hyacinth": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bovinesandbuttercups:hyacinth"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bovinesandbuttercups:purple_dye_from_hyacinth"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hyacinth",
+      "has_the_recipe"
+    ]
+  ]
+}

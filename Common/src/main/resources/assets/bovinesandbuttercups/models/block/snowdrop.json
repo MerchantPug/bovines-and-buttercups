@@ -1,0 +1,7 @@
+{
+  "parent": "bovinesandbuttercups:block/unique_cross",
+  "textures": {
+    "one": "bovinesandbuttercups:block/snowdrop",
+    "two": "bovinesandbuttercups:block/snowdrop_other"
+  }
+}

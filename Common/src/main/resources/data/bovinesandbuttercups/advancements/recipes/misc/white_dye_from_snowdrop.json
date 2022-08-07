@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "bovinesandbuttercups:white_dye_from_snowdrop"
+    ]
+  },
+  "criteria": {
+    "has_snowdrop": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bovinesandbuttercups:snowdrop"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bovinesandbuttercups:white_dye_from_snowdrop"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_snowdrop",
+      "has_the_recipe"
+    ]
+  ]
+}

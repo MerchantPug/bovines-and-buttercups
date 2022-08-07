@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.feature;
+package com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature;
 
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;

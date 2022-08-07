@@ -1,8 +1,12 @@
 {
   "replace": false,
   "values": [
+    "bovinesandbuttercups:potted_bird_of_paradise",
     "bovinesandbuttercups:potted_buttercup",
+    "bovinesandbuttercups:potted_chargelily",
+    "bovinesandbuttercups:potted_hyacinth",
     "bovinesandbuttercups:potted_limelight",
-    "bovinesandbuttercups:potted_pink_daisy"
+    "bovinesandbuttercups:potted_pink_daisy",
+    "bovinesandbuttercups:potted_snowdrop"
   ]
 }

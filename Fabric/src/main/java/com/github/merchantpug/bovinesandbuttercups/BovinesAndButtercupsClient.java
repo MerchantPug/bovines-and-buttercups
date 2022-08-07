@@ -5,7 +5,7 @@ import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItemRenderer
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.*;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.FlowerCowRenderer;
+import com.github.merchantpug.bovinesandbuttercups.entity.renderer.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.networking.BovinePacketsS2C;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;

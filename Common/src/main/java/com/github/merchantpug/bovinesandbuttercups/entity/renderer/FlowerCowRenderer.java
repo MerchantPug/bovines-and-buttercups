@@ -1,9 +1,9 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.type.renderer;
+package com.github.merchantpug.bovinesandbuttercups.entity.renderer;
 
 import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.feature.FlowerCowFlowerLayer;
-import com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.feature.FlowerCowGrassLayer;
+import com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature.FlowerCowFlowerLayer;
+import com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature.FlowerCowGrassLayer;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.minecraft.client.model.CowModel;

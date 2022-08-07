@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.entity.type.renderer.feature;
+package com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,6 +21,6 @@ public class MushroomCowMyceliumLayer extends RenderLayer<MushroomCow, CowModel<
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int light, MushroomCow mushroomCow, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
         if (mushroomCow.isInvisible()) return;
-        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityCutoutNoCull(MUSHROOM_COW_MYCELIUM_LOCATION)), light, LivingEntityRenderer.getOverlayCoords(mushroomCow, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(MUSHROOM_COW_MYCELIUM_LOCATION)), light, LivingEntityRenderer.getOverlayCoords(mushroomCow, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

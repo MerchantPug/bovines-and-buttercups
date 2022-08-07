@@ -42,10 +42,6 @@ public abstract class ClientLevelMixin extends Level {
     private void changeParticlesIfCustomBlock(BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
         if (blockState.getBlock() instanceof CustomFlowerBlock && blockState.hasBlockEntity()) {
             if (!(this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity)) return;
-            if (!blockState.isAir()) {
-                SoundType soundtype = blockState.getSoundType();
-                this.playLocalSound(blockPos.getX(), blockPos.getY(), blockPos.getZ(), soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F, false);
-            }
             VoxelShape voxelShape = blockState.getShape(this, blockPos);
             voxelShape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
                 double d1 = Math.min(1.0D, maxX - minX);

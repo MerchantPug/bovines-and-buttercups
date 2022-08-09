@@ -298,7 +298,11 @@ public class FlowerCow extends Cow implements Shearable {
 
     public FlowerCowType.Instance getFlowerCowType() {
         try {
-            if (this.type != null) {
+            if (CowTypeRegistry.contains(ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE) && this.type != CowTypeRegistry.fromName(this.entityData.get(TYPE_ID), BovineCowTypes.FLOWER_COW_TYPE)) {
+                FlowerCowType.Instance instance = (FlowerCowType.Instance)CowTypeRegistry.fromName(this.entityData.get(TYPE_ID), BovineCowTypes.FLOWER_COW_TYPE);
+                this.type = instance;
+                return instance;
+            } else if (this.type != null) {
                 return this.type;
             } else if (CowTypeRegistry.contains(ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE)) {
                 return (FlowerCowType.Instance)CowTypeRegistry.fromName(this.entityData.get(TYPE_ID), BovineCowTypes.FLOWER_COW_TYPE);
@@ -328,10 +332,6 @@ public class FlowerCow extends Cow implements Shearable {
 
     public void setFlowerCowType(FlowerCowType.Instance value) {
         this.entityData.set(TYPE_ID, value.getId().toString());
-        this.type = value;
-    }
-
-    public void setFlowerCowTypeClient(FlowerCowType.Instance value) {
         this.type = value;
     }
 

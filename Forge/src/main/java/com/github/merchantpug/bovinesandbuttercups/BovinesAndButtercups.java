@@ -23,9 +23,9 @@ import net.minecraftforge.registries.RegisterEvent;
 public class BovinesAndButtercups {
     public BovinesAndButtercups() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        BovinesAndButtercupsCommon.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
+        BovinesAndButtercupsXplat.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
-        BovinesAndButtercupsCommon.init();
+        BovinesAndButtercupsXplat.init();
         BovineBlockEntityTypesForge.init();
         BovineEntityTypesForge.init();
         BovineItemsForge.init();

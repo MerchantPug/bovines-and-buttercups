@@ -4,22 +4,22 @@ plugins {
     id 'maven-publish'
 }
 
-archivesBaseName = "${mod_name}-common"
+archivesBaseName = "${mod_name}-xplat"
 
 minecraft {
     version(minecraft_version)
     runs {   
-        if (project.hasProperty('common_runs_enabled') ? project.findProperty('common_runs_enabled').toBoolean() : true) {
+        if (project.hasProperty('xplat_runs_enabled') ? project.findProperty('xplat_runs_enabled').toBoolean() : true) {
         
-            server(project.hasProperty('common_server_run_name') ? project.findProperty('common_server_run_name') : 'vanilla_server') {
+            server(project.hasProperty('xplat_server_run_name') ? project.findProperty('xplat_server_run_name') : 'vanilla_server') {
                 workingDirectory(this.file("run"))
             }
-            client(project.hasProperty('common_client_run_name') ? project.findProperty('common_client_run_name') : 'vanilla_client') {
+            client(project.hasProperty('xplat_client_run_name') ? project.findProperty('xplat_client_run_name') : 'vanilla_client') {
                 workingDirectory(this.file("run"))
             }
         }
     }
-    accessWideners "src/main/resources/bovinesandbuttercupscommon.accesswidener"
+    accessWideners "src/main/resources/bovinesandbuttercupsxplat.accesswidener"
 }
 
 dependencies {

@@ -1,6 +1,5 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommon;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import com.github.merchantpug.bovinesandbuttercups.effect.LockdownEffect;

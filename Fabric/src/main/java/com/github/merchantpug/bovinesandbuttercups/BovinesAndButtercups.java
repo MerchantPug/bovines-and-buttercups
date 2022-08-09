@@ -26,9 +26,9 @@ public class BovinesAndButtercups implements ModInitializer {
 			if (version.contains("-")) {
 				version = version.split("-")[0];
 			}
-			BovinesAndButtercupsCommon.VERSION = version;
+			BovinesAndButtercupsXplat.VERSION = version;
 		});
-		BovinesAndButtercupsCommon.init();
+		BovinesAndButtercupsXplat.init();
 		BovineBlockEntityTypesFabric.init();
 		BovineEntityTypesFabric.init();
 		BovineItemsFabric.init();

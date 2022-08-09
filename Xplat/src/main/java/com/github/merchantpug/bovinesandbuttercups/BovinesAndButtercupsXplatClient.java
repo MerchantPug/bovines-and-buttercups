@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashSet;
 
-public class BovinesAndButtercupsCommonClient {
+public class BovinesAndButtercupsXplatClient {
     public static final HashSet<ResourceLocation> LOADED_COW_TEXTURES = new HashSet<>();
 
     public static void init() {

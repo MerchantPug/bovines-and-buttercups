@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.entity.renderer;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsCommonClient;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsXplatClient;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature.FlowerCowFlowerLayer;
 import com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature.FlowerCowGrassLayer;
@@ -24,7 +24,7 @@ public class FlowerCowRenderer extends MobRenderer<FlowerCow, CowModel<FlowerCow
     @Override
     public ResourceLocation getTextureLocation(FlowerCow entity) {
         ResourceLocation location = new ResourceLocation(entity.getFlowerCowType().getResourceLocation().getNamespace(), "textures/entity/moobloom/" + entity.getFlowerCowType().getResourceLocation().getPath().toLowerCase(Locale.ROOT) + "_moobloom.png");
-        if (BovinesAndButtercupsCommonClient.LOADED_COW_TEXTURES.contains(location)) {
+        if (BovinesAndButtercupsXplatClient.LOADED_COW_TEXTURES.contains(location)) {
             return location;
         }
         return Constants.resourceLocation("textures/entity/moobloom/missing_moobloom.png");

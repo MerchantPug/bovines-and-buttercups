@@ -10,12 +10,12 @@ import java.util.Set;
 public class CowTextureReloadListener extends SimplePreparableReloadListener<Set<ResourceLocation>> {
     @Override
     protected Set<ResourceLocation> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
-        BovinesAndButtercupsCommonClient.LOADED_COW_TEXTURES.clear();
+        BovinesAndButtercupsXplatClient.LOADED_COW_TEXTURES.clear();
         return resourceManager.listResources("textures/entity/moobloom", resourceLocation -> resourceLocation.getPath().endsWith(".png")).keySet();
     }
 
     @Override
     protected void apply(Set<ResourceLocation> object, ResourceManager resourceManager, ProfilerFiller profiler) {
-        BovinesAndButtercupsCommonClient.LOADED_COW_TEXTURES.addAll(object);
+        BovinesAndButtercupsXplatClient.LOADED_COW_TEXTURES.addAll(object);
     }
 }

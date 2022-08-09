@@ -2,7 +2,7 @@ package com.github.merchantpug.bovinesandbuttercups;
 
 import com.github.merchantpug.bovinesandbuttercups.registry.*;
 
-public class BovinesAndButtercupsCommon {
+public class BovinesAndButtercupsXplat {
     public static String VERSION;
 
     public static void init() {

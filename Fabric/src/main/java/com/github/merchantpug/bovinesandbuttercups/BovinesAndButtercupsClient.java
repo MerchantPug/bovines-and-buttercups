@@ -20,7 +20,7 @@ import net.minecraft.server.packs.PackType;
 public class BovinesAndButtercupsClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        BovinesAndButtercupsCommonClient.init();
+        BovinesAndButtercupsXplatClient.init();
 
         BovinePacketsS2C.register();
 

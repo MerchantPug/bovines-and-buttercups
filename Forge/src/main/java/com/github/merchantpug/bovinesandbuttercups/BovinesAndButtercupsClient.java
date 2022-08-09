@@ -32,7 +32,7 @@ import java.util.Map;
 public class BovinesAndButtercupsClient {
     @SubscribeEvent
     public static void onInitializeClient(FMLClientSetupEvent event) {
-        BovinesAndButtercupsCommonClient.init();
+        BovinesAndButtercupsXplatClient.init();
     }
 
     @SubscribeEvent

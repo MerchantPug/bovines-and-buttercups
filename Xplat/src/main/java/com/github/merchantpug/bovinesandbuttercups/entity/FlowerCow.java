@@ -245,9 +245,9 @@ public class FlowerCow extends Cow implements Shearable {
                 if (this.getFlowerCowType().getFlower().getBlockState() != null) {
                     this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), new ItemStack(this.getFlowerCowType().getFlower().getBlockState().getBlock())));
                 } else if (this.getFlowerCowType().getFlower().isWithFlowerBlock() && this.getFlowerCowType().getFlower().getModelLocation() != null) {
-                    ItemStack itemStack = new ItemStack(this.getFlowerCowType().getFlower().getBlockState().getBlock());
+                    ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomFlowerItem());
                     CompoundTag compound = new CompoundTag();
-                    compound.putString("Type", this.getFlowerCowType().getFlower().getModelVariant());
+                    compound.putString("Type", this.getFlowerCowType().getFlower().getResourceLocation().toString());
                     itemStack.getOrCreateTag().put("BlockEntityTag", compound);
                     this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), itemStack));
                 }

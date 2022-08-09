@@ -46,7 +46,7 @@ public class CowTypeRegistry {
         return cowTypes;
     }
 
-    public static ICowType getTypeFromId(ResourceLocation resourceLocation) {
+    @Nullable public static ICowType getTypeFromId(ResourceLocation resourceLocation) {
         Optional<ICowType> cowType = cowTypes.stream().filter(filteredCowType -> filteredCowType.getId().equals(resourceLocation)).findFirst();
         return cowType.isEmpty() ? null : cowType.get();
     }

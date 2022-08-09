@@ -39,6 +39,10 @@ public class CustomFlowerBlockEntity extends BlockEntity {
         return flowerTypeName;
     }
 
+    public void setFlowerTypeName(@Nullable String value) {
+        flowerTypeName = value;
+    }
+
     public FlowerType getFlowerType() {
         try {
             if (flowerTypeName == null) {

@@ -34,25 +34,25 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         bl = Minecraft.getInstance().shouldEntityAppearGlowing(livingEntity) && livingEntity.isInvisible();
         if ((livingEntity).isInvisible() && !bl) return;
 
-        BlockState blockState = livingEntity.getFlowerCowType().getFlower();
+        BlockState blockState = livingEntity.getFlowerCowType().getFlower().getBlockState();
         ModelResourceLocation modelResourceLocation = null;
         int m = LivingEntityRenderer.getOverlayCoords(livingEntity, 0.0f);
 
         if (livingEntity.isBaby()) {
-            blockState = livingEntity.getFlowerCowType().getBud();
+            blockState = livingEntity.getFlowerCowType().getBud().getBlockState();
 
-            if (livingEntity.getFlowerCowType().getBudModel() != null) {
-                modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getBudModel(), livingEntity.getFlowerCowType().getBudModelVariant());
+            if (livingEntity.getFlowerCowType().getBud().getModelLocation() != null) {
+                modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getBud().getModelLocation(), livingEntity.getFlowerCowType().getBud().getModelVariant());
             }
 
-            if (livingEntity.getFlowerCowType().getBud() != null || livingEntity.getFlowerCowType().getBudModel() != null) {
+            if (livingEntity.getFlowerCowType().getBud() != null || livingEntity.getFlowerCowType().getBud().getBlockState() != null) {
                 handleMoobudRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
             }
         } else {
-            if (livingEntity.getFlowerCowType().getFlowerModel() != null) {
-                modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getFlowerModel(), livingEntity.getFlowerCowType().getFlowerModelVariant());
+            if (livingEntity.getFlowerCowType().getFlower().getModelLocation() != null) {
+                modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getFlower().getModelLocation(), livingEntity.getFlowerCowType().getFlower().getModelVariant());
             }
-            if (livingEntity.getFlowerCowType().getFlower() != null || livingEntity.getFlowerCowType().getFlowerModel() != null) {
+            if (livingEntity.getFlowerCowType().getFlower() != null || livingEntity.getFlowerCowType().getFlower().getBlockState() != null) {
                 handleMoobloomRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
             }
         }
@@ -154,7 +154,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
             blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);
         } else {
             if (flowerState != null) {
-                blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(ItemBlockRenderTypes.getRenderType(flowerState, false)), flowerState, flowerModel, 1.0F, 1.0F, 1.0F, light, overlay);
+                blockRenderDispatcher.renderSingleBlock(flowerState, poseStack, buffer, light, overlay);
             } else {
                 blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(Sheets.cutoutBlockSheet()), null, flowerModel, 1.0F, 1.0F, 1.0F, light, overlay);
             }

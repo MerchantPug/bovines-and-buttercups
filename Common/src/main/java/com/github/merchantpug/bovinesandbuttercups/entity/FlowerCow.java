@@ -1,11 +1,13 @@
 package com.github.merchantpug.bovinesandbuttercups.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowBreedingRequirements;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowTypeRegistry;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowType;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -44,6 +46,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -153,13 +156,28 @@ public class FlowerCow extends Cow implements Shearable {
             this.setPollinationTicks(this.getPollinationTicks() - 1);
         }
 
-        if (this.getFlowerCowType().getFlower() != null && !this.level.isClientSide && this.getFlowerCowType().getFlower().canSurvive(this.level, this.blockPosition()) && this.level.getBlockState(this.blockPosition()).isAir() && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
-            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
-            this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getFlower(), 3);
-            this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
-            this.gameEvent(GameEvent.BLOCK_PLACE, this);
-            if (this.getFlowersToGenerate() > 0) {
-                this.timeBetweenFlowerPlacement = this.random.nextInt(60, 80);
+        if (!this.level.isClientSide && this.level.getBlockState(this.blockPosition()).isAir() && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
+            if (this.getFlowerCowType().getFlower().getBlockState() != null && this.getFlowerCowType().getFlower().getBlockState().canSurvive(this.level, this.blockPosition())) {
+                ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
+                this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getFlower().getBlockState(), 3);
+                this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
+                this.gameEvent(GameEvent.BLOCK_PLACE, this);
+                if (this.getFlowersToGenerate() > 0) {
+                    this.timeBetweenFlowerPlacement = this.random.nextInt(60, 80);
+                }
+            } else if (this.getFlowerCowType().getFlower().getModelLocation() != null && this.getFlowerCowType().getFlower().isWithFlowerBlock()) {
+                ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
+                this.level.setBlock(this.blockPosition(), BovineBlocks.CUSTOM_FLOWER.get().defaultBlockState(), 3);
+                BlockEntity blockEntity = this.level.getBlockEntity(this.blockPosition());
+                if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
+                    customFlowerBlockEntity.setFlowerTypeName(this.getFlowerCowType().getFlower().getModelLocation().toString());
+                    customFlowerBlockEntity.setChanged();
+                }
+                this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
+                this.gameEvent(GameEvent.BLOCK_PLACE, this);
+                if (this.getFlowersToGenerate() > 0) {
+                    this.timeBetweenFlowerPlacement = this.random.nextInt(60, 80);
+                }
             }
         }
     }
@@ -181,8 +199,8 @@ public class FlowerCow extends Cow implements Shearable {
             itemStack2 = new ItemStack(BovineItems.NECTAR_BOWL.get());
             if (this.getFlowerCowType().getNectarEffectInstance() != null) {
                 NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().getNectarEffectInstance().getEffect(), this.getFlowerCowType().getNectarEffectInstance().getDuration());
-            } else if (this.getFlowerCowType().getFlower() != null && this.getFlowerCowType().getFlower().getBlock() instanceof FlowerBlock) {
-                NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getFlower().getBlock()).getSuspiciousStewEffect(), 100);
+            } else if (this.getFlowerCowType().getFlower().getBlockState() != null && this.getFlowerCowType().getFlower().getBlockState().getBlock() instanceof FlowerBlock) {
+                NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getFlower().getBlockState().getBlock()).getSuspiciousStewEffect(), 100);
             } else {
                 return InteractionResult.PASS;
             }
@@ -224,7 +242,15 @@ public class FlowerCow extends Cow implements Shearable {
             this.level.addFreshEntity(cowEntity);
             if (this.getFlowerCowType().getFlower() == null) return;
             for (int i = 0; i < 5; ++i) {
-                this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), new ItemStack(this.getFlowerCowType().getFlower().getBlock())));
+                if (this.getFlowerCowType().getFlower().getBlockState() != null) {
+                    this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), new ItemStack(this.getFlowerCowType().getFlower().getBlockState().getBlock())));
+                } else if (this.getFlowerCowType().getFlower().isWithFlowerBlock() && this.getFlowerCowType().getFlower().getModelLocation() != null) {
+                    ItemStack itemStack = new ItemStack(this.getFlowerCowType().getFlower().getBlockState().getBlock());
+                    CompoundTag compound = new CompoundTag();
+                    compound.putString("Type", this.getFlowerCowType().getFlower().getModelVariant());
+                    itemStack.getOrCreateTag().put("BlockEntityTag", compound);
+                    this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), itemStack));
+                }
             }
         }
     }

@@ -25,10 +25,10 @@ public class CustomFlowerRenderer implements BlockEntityRenderer<CustomFlowerBlo
     @Override
     @SuppressWarnings("ConstantConditions")
     public void render(CustomFlowerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.getResourceLocation(), "bovines");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.getModelLocation(), "bovines");
 
-        if (blockEntity.getFlowerType() != null && FlowerTypeRegistry.contains(blockEntity.getFlowerType().getResourceLocation())) {
-            modelResourceLocation = new ModelResourceLocation(blockEntity.getFlowerType().getFlowerModel(), blockEntity.getFlowerType().getFlowerModelVariant());
+        if (blockEntity.getFlowerType() != null && FlowerTypeRegistry.contains(blockEntity.getFlowerType().getResourceLocation()) && FlowerTypeRegistry.get(blockEntity.getFlowerType().getResourceLocation()).isWithFlowerBlock()) {
+            modelResourceLocation = new ModelResourceLocation(blockEntity.getFlowerType().getModelLocation(), blockEntity.getFlowerType().getModelVariant());
         }
 
         BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

@@ -1,0 +1,19 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "flower": {
+    "name": "Fire Flower",
+    "model_location": "test:fire_flower",
+    "stew_effect": {
+      "effect": "minecraft:fire_resistance",
+      "duration": 200
+    },
+    "with_block": true
+  },
+  "bud": {
+    "model_location": "test:fire_flower"
+  },
+  "nectar_effect": {
+    "effect": "minecraft:fire_resistance",
+    "duration": 400
+  }
+}

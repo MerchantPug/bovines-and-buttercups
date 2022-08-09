@@ -48,7 +48,6 @@ public class CowLoader extends SimpleJsonResourceReloadListener {
                 Constants.LOG.error("There was a problem reading Moobloom Type file '" + id.toString() + "' (skipping): " + e.getMessage());
             }
         });
-        FlowerTypeRegistry.register(new FlowerType(new ResourceLocation("test", "fire_flower"), "Fire Flower", null, new ResourceLocation("test", "fire_flower"), "bovines", new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 10), true));
         Constants.LOG.info("Finished loading moobloom types from data files. Registry contains " + FlowerCowTypeRegistry.size() + " moobloom types.");
         Constants.LOG.info("Finished loading flower types from data files. Registry contains " + FlowerTypeRegistry.size() + " flower types.");
     }

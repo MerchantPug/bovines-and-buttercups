@@ -80,9 +80,9 @@ public class FlowerCowBreedingRequirements {
     }
 
 
-    public static FlowerCowBreedingRequirements fromJson(JsonObject jsonObject) {
+    public static FlowerCowBreedingRequirements fromJson(JsonObject json) {
         List<ResourceLocation> possiblePrimaryParentList = new ArrayList<>();
-        JsonElement primaryParent = jsonObject.get("primary_parent");
+        JsonElement primaryParent = json.get("primary_parent");
         if (primaryParent.isJsonArray()) {
             primaryParent.getAsJsonArray().forEach(jsonElement -> possiblePrimaryParentList.add(JsonParsingUtil.readResourceLocation(jsonElement.getAsString())));
         } else if (primaryParent.isJsonPrimitive()) {
@@ -90,7 +90,7 @@ public class FlowerCowBreedingRequirements {
         }
 
         List<ResourceLocation> possibleSecondaryParentList = new ArrayList<>();
-        JsonElement secondaryParent = jsonObject.get("secondary_parent");
+        JsonElement secondaryParent = json.get("secondary_parent");
         if (secondaryParent.isJsonArray()) {
             secondaryParent.getAsJsonArray().forEach(jsonElement -> possibleSecondaryParentList.add(JsonParsingUtil.readResourceLocation(jsonElement.getAsString())));
         } else if (secondaryParent.isJsonPrimitive()) {
@@ -98,8 +98,8 @@ public class FlowerCowBreedingRequirements {
         }
 
         Item associatedItem = null;
-        if (jsonObject.has("effective_item")) {
-            ResourceLocation resourceLocation = JsonParsingUtil.readResourceLocation(jsonObject.getAsJsonPrimitive("effective_item").getAsString());
+        if (json.has("effective_item")) {
+            ResourceLocation resourceLocation = JsonParsingUtil.readResourceLocation(json.getAsJsonPrimitive("effective_item").getAsString());
             Optional<Item> potentialItem = Registry.ITEM.getOptional(resourceLocation);
             if (potentialItem.isEmpty()) {
                 throw new NullPointerException("Could not find item '" + resourceLocation + "' in item registry.");
@@ -107,13 +107,13 @@ public class FlowerCowBreedingRequirements {
             associatedItem = potentialItem.get();
         }
 
-        float chance = jsonObject.getAsJsonPrimitive("chance").getAsFloat();
+        float chance = json.getAsJsonPrimitive("chance").getAsFloat();
         if (chance < 0.0 || chance > 1.0) {
             throw new IllegalArgumentException("Moobloom breeding chance is either below 0.0 or 1.0.");
         }
         float boostedChance = chance;
-        if (jsonObject.has("boosted_chance")) {
-            boostedChance = jsonObject.getAsJsonPrimitive("boosted_chance").getAsFloat();
+        if (json.has("boosted_chance")) {
+            boostedChance = json.getAsJsonPrimitive("boosted_chance").getAsFloat();
             if (boostedChance < 0.0 || boostedChance > 1.0) {
                 throw new IllegalArgumentException("Moobloom boosted breeding chance is either below 0.0 or 1.0.");
             }

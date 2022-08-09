@@ -39,7 +39,7 @@ public class CustomFlowerItem extends BlockItem {
         CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
         if (compound.contains("Type")) {
             FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
-            if (flowerType.getName() != null) {
+            if (flowerType.isWithFlowerBlock() && flowerType.getName() != null) {
                 return flowerType.getName();
             }
         }

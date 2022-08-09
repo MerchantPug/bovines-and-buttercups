@@ -23,10 +23,10 @@ public class CustomFlowerItemRenderer implements BuiltinItemRendererRegistry.Dyn
     @SuppressWarnings("ConstantConditions")
     public void render(ItemStack stack, ItemTransforms.TransformType mode, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         if (!(stack.getItem() instanceof CustomFlowerItem)) return;
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(new ResourceLocation(FlowerType.MISSING.getFlowerModel().getNamespace(), FlowerType.MISSING.getFlowerModel().getPath() + "_item"), "bovines");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(new ResourceLocation(FlowerType.MISSING.getModelLocation().getNamespace(), FlowerType.MISSING.getModelLocation().getPath() + "_item"), "bovines");
 
-        if (CustomFlowerItem.getFlowerItemFromTag(stack) != null && FlowerTypeRegistry.contains(CustomFlowerItem.getFlowerItemFromTag(stack).getResourceLocation())) {
-            modelResourceLocation = new ModelResourceLocation(new ResourceLocation(CustomFlowerItem.getFlowerItemFromTag(stack).getFlowerModel().getNamespace(), CustomFlowerItem.getFlowerItemFromTag(stack).getFlowerModel().getPath() + "_item"), CustomFlowerItem.getFlowerItemFromTag(stack).getFlowerModelVariant());
+        if (CustomFlowerItem.getFlowerItemFromTag(stack) != null && FlowerTypeRegistry.contains(CustomFlowerItem.getFlowerItemFromTag(stack).getResourceLocation()) && FlowerTypeRegistry.get(CustomFlowerItem.getFlowerItemFromTag(stack).getResourceLocation()).isWithFlowerBlock()) {
+            modelResourceLocation = new ModelResourceLocation(new ResourceLocation(CustomFlowerItem.getFlowerItemFromTag(stack).getModelLocation().getNamespace(), CustomFlowerItem.getFlowerItemFromTag(stack).getModelLocation().getPath() + "_item"), CustomFlowerItem.getFlowerItemFromTag(stack).getModelVariant());
         }
 
         BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

@@ -1,7 +1,11 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower_block": "bovinesandbuttercups:bird_of_paradise",
-  "bud_model": "bovinesandbuttercups:bird_of_paradise_bud",
+  "flower": {
+    "block_state": "bovinesandbuttercups:bird_of_paradise"
+  },
+  "bud": {
+    "model_location": "bovinesandbuttercups:bird_of_paradise_bud"
+  },
   "nectar_effect": {
     "effect": "minecraft:night_vision",
     "duration": 800

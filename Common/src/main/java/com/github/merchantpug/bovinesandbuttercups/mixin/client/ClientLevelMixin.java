@@ -61,9 +61,9 @@ public abstract class ClientLevelMixin extends Level {
                             double d9 = d6 * d3 + minZ;
                             ResourceLocation resourceLocation = Constants.resourceLocation("missing_flower");
                             String variant = "bovines";
-                            if (customFlowerBlockEntity.getFlowerType().getFlowerModel() != null) {
-                                resourceLocation = customFlowerBlockEntity.getFlowerType().getFlowerModel();
-                                variant = customFlowerBlockEntity.getFlowerType().getFlowerModelVariant();
+                            if (customFlowerBlockEntity.getFlowerType().getModelLocation() != null) {
+                                resourceLocation = customFlowerBlockEntity.getFlowerType().getModelLocation();
+                                variant = customFlowerBlockEntity.getFlowerType().getModelVariant();
                             }
                             this.addParticle(new ModelLocationParticleOption(resourceLocation, variant), blockPos.getX() + d7, blockPos.getY() + d8, blockPos.getZ() + d9, d4 - 0.5D, d5 - 0.5D, d6 - 0.5D);
                         }

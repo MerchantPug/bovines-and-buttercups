@@ -9,6 +9,7 @@ public class BovinesAndButtercupsXplat {
         Constants.LOG.info("Bovines and Buttercups v" + VERSION + " is starting up. Moo!");
 
         BovineBlocks.init();
+        BovineCowTypes.register();
         BovineCriteriaTriggers.init();
         BovineEffects.init();
         BovineItems.init();

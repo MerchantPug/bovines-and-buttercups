@@ -4,6 +4,6 @@ import com.github.merchantpug.bovinesandbuttercups.Constants;
 import net.minecraft.resources.ResourceLocation;
 
 public class BovinePackets {
-    public static final ResourceLocation MOOBLOOM_TYPE_LIST = Constants.resourceLocation("moobloom_type_list");
-    public static final ResourceLocation SYNC_MOOBLOOM_TYPE = Constants.resourceLocation("sync_moobloom_type");
+    public static final ResourceLocation COW_TYPE_LIST = Constants.resourceLocation("cow_type_list");
+    public static final ResourceLocation FLOWER_TYPE_LIST = Constants.resourceLocation("flower_type_list");
 }

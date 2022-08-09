@@ -27,6 +27,7 @@ package com.github.merchantpug.bovinesandbuttercups.data.block.flower;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -70,7 +71,7 @@ public class FlowerTypeRegistry {
         return idToFlowerType.keySet().stream();
     }
 
-    public static Iterable<Map.Entry<ResourceLocation, FlowerType>> entries() {
+    public static Collection<Map.Entry<ResourceLocation, FlowerType>> entries() {
         return idToFlowerType.entrySet();
     }
 
@@ -78,7 +79,7 @@ public class FlowerTypeRegistry {
         return idToFlowerType.values().stream();
     }
 
-    public static Iterable<FlowerType> values() {
+    public static Collection<FlowerType> values() {
         return idToFlowerType.values();
     }
 

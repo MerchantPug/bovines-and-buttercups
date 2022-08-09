@@ -30,11 +30,11 @@ public class FlowerCowBreedingRequirements {
         this.boostedChance = boostedChance;
     }
 
-    public boolean doesApply(FlowerCowType parent, FlowerCowType otherParent) {
-        return possiblePrimaryParents.stream().anyMatch(rl -> rl.equals(parent.getResourceLocation())) && possibleOtherParents.stream().anyMatch(rl -> rl.equals(otherParent.getResourceLocation())) || possibleOtherParents.stream().anyMatch(rl -> rl.equals(parent.getResourceLocation())) && possiblePrimaryParents.stream().anyMatch(rl -> rl.equals(otherParent.getResourceLocation()));
+    public boolean doesApply(FlowerCowType.Instance parent, FlowerCowType.Instance  otherParent) {
+        return possiblePrimaryParents.stream().anyMatch(rl -> rl.equals(parent.getId())) && possibleOtherParents.stream().anyMatch(rl -> rl.equals(otherParent.getId())) || possibleOtherParents.stream().anyMatch(rl -> rl.equals(parent.getId())) && possiblePrimaryParents.stream().anyMatch(rl -> rl.equals(otherParent.getId()));
     }
 
-    public boolean isBoosted(FlowerCowType parent, FlowerCowType otherParent) {
+    public boolean isBoosted(FlowerCowType.Instance parent, FlowerCowType.Instance  otherParent) {
         return false;
     }
 

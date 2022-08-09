@@ -19,8 +19,8 @@ public class BovineForgePacketHandler {
 
     public static void init() {
         int i = 0;
-        INSTANCE.registerMessage(i++, MoobloomTypeListPacket.class, MoobloomTypeListPacket::encode, MoobloomTypeListPacket::decode, getClientPacketHandler(MoobloomTypeListPacket.Handler::handle));
-        INSTANCE.registerMessage(i++, SyncMoobloomTypePacket.class, SyncMoobloomTypePacket::encode, SyncMoobloomTypePacket::decode, getClientPacketHandler(SyncMoobloomTypePacket.Handler::handle));
+        INSTANCE.registerMessage(i++, CowTypeListPacket.class, CowTypeListPacket::encode, CowTypeListPacket::decode, getClientPacketHandler(CowTypeListPacket.Handler::handle));
+        INSTANCE.registerMessage(i++, FlowerTypeListPacket.class, FlowerTypeListPacket::encode, FlowerTypeListPacket::decode, getClientPacketHandler(FlowerTypeListPacket.Handler::handle));
     }
 
     public static <T> BiConsumer<T, Supplier<NetworkEvent.Context>> getClientPacketHandler(Consumer<T> handler) {

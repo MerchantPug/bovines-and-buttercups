@@ -1,18 +1,14 @@
 package com.github.merchantpug.bovinesandbuttercups.data;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
+import com.github.merchantpug.bovinesandbuttercups.api.ICowType;
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
-import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowType;
-import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowTypeRegistry;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 
 import java.util.Map;
 
@@ -25,30 +21,24 @@ public class CowLoader extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> prepared, ResourceManager resourceManager, ProfilerFiller profiler) {
-        FlowerCowTypeRegistry.reset();
+        CowTypeRegistry.reset();
         FlowerTypeRegistry.reset();
         prepared.forEach((id, je) -> {
             try {
                 if (!je.getAsJsonObject().has("type")) {
-                    Constants.LOG.error("'type' field not found in cow type '" + id.toString() + "'. Skipping.");
+                    throw new NullPointerException("'type' field not found in cow type.");
                 } else {
                     ResourceLocation type = ResourceLocation.tryParse(je.getAsJsonObject().get("type").getAsString());
-                    if (type.equals(Constants.resourceLocation("moobloom"))) {
-                        FlowerCowType moobloomEntityType = FlowerCowType.fromJson(id, je.getAsJsonObject());
-                        if (!FlowerCowTypeRegistry.contains(id)) {
-                            FlowerCowTypeRegistry.register(id, moobloomEntityType);
-                        } else {
-                            if (FlowerCowTypeRegistry.get(id).getLoadingPriority() < moobloomEntityType.getLoadingPriority()) {
-                                FlowerCowTypeRegistry.update(id, moobloomEntityType);
-                            }
-                        }
+                    ICowType cowType = CowTypeRegistry.getTypeFromId(type);
+                    if (cowType == null) {
+                        throw new NullPointerException("'type' field value '" + type + "' not found.");
                     }
+                    ICowType.register(cowType, id, je.getAsJsonObject());
                 }
             } catch (Exception e) {
-                Constants.LOG.error("There was a problem reading Moobloom Type file '" + id.toString() + "' (skipping): " + e.getMessage());
+                Constants.LOG.error("There was a problem reading Cow Type file '" + id.toString() + "' (skipping): " + e.getMessage());
             }
         });
-        Constants.LOG.info("Finished loading moobloom types from data files. Registry contains " + FlowerCowTypeRegistry.size() + " moobloom types.");
-        Constants.LOG.info("Finished loading flower types from data files. Registry contains " + FlowerTypeRegistry.size() + " flower types.");
+        Constants.LOG.info("Finished loading cow types from data files. Registry contains " + CowTypeRegistry.size() + " cow types.");
     }
 }

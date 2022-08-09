@@ -2,6 +2,7 @@ package com.github.merchantpug.bovinesandbuttercups.item;
 
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
@@ -35,15 +36,15 @@ public class CustomFlowerItem extends BlockItem {
     }
 
     @Override
-    public String getDescriptionId(ItemStack stack) {
+    public Component getName(ItemStack stack) {
         CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
         if (compound.contains("Type")) {
             FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
             if (flowerType.isWithFlowerBlock() && flowerType.getName() != null) {
-                return flowerType.getName();
+                return flowerType.getOrCreateNameTranslationKey();
             }
         }
-        return this.getDescriptionId();
+        return super.getName(stack);
     }
 
     public static MobEffect getSuspiciousStewEffect(ItemStack customFlower) {

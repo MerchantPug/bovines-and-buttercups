@@ -18,7 +18,7 @@ public abstract class MushroomCowRendererMixin extends MobRenderer<MushroomCow, 
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void initMyceliumRenderLayer(EntityRendererProvider.Context context, CallbackInfo ci) {
+    private void bovinesandbuttercups$initMyceliumRenderLayer(EntityRendererProvider.Context context, CallbackInfo ci) {
         this.addLayer(new MushroomCowMyceliumLayer(this));
     }
 }

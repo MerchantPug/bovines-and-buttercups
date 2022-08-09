@@ -25,51 +25,51 @@ import java.util.*;
 public abstract class MobEffectInstanceMixin implements MobEffectInstanceAccess {
     @Shadow public abstract MobEffect getEffect();
 
-    private HashMap<MobEffect, Integer> bovinesandbuttercups$nullifiedEffects = new HashMap<>();
+    private HashMap<MobEffect, Integer> bovinesandbuttercups$lockedEffects = new HashMap<>();
 
     @Inject(method = "setDetailsFrom", at = @At("TAIL"))
-    private void copyNullifiedEffects(MobEffectInstance that, CallbackInfo ci) {
+    private void bovinesandbuttercups$copyLockedEffects(MobEffectInstance that, CallbackInfo ci) {
         if (!(that.getEffect() instanceof LockdownEffect)) return;
-        this.bovinesandbuttercups$nullifiedEffects = ((MobEffectInstanceAccess)that).bovinesandbuttercups$getNullifiedEffects();
+        this.bovinesandbuttercups$lockedEffects = ((MobEffectInstanceAccess)that).bovinesandbuttercups$getLockedEffects();
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;tickDownDuration()I"), cancellable = true)
-    private void stopDurationTicks(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
+    private void bovinesandbuttercups$stopDurationTicks(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
         List<MobEffectInstance> effectList = entity.getActiveEffects().stream().filter(statusEffectInstance -> statusEffectInstance.getEffect() == BovineEffects.LOCKDOWN.get()).toList();
         if (effectList.size() > 0) {
             MobEffectInstance effectInstance = effectList.get(0);
-            if (((MobEffectInstanceAccess)effectInstance).bovinesandbuttercups$getNullifiedEffects().containsKey(this.getEffect())) {
+            if (((MobEffectInstanceAccess)effectInstance).bovinesandbuttercups$getLockedEffects().containsKey(this.getEffect())) {
                 cir.setReturnValue(true);
             }
         }
     }
 
     @Inject(method = "tickDownDuration", at = @At("RETURN"))
-    private void updateNullifiedEffectDuration(CallbackInfoReturnable<Integer> cir) {
+    private void bovinesandbuttercups$updateLockedEffectDuration(CallbackInfoReturnable<Integer> cir) {
         if (!(this.getEffect() instanceof LockdownEffect)) return;
         HashMap<MobEffect, Integer> nullifiedEffectsToUpdate = new HashMap<>();
-        bovinesandbuttercups$nullifiedEffects.forEach(((statusEffect, integer) -> {
+        bovinesandbuttercups$lockedEffects.forEach(((statusEffect, integer) -> {
             if (integer > 0) {
                 nullifiedEffectsToUpdate.put(statusEffect, --integer);
             }
         }));
-        bovinesandbuttercups$nullifiedEffects = nullifiedEffectsToUpdate;
+        bovinesandbuttercups$lockedEffects = nullifiedEffectsToUpdate;
     }
 
     @Unique MobEffectInstance bovinesandbuttercups$capturedThatStatusEffect;
 
     @Inject(method = "update", at = @At("HEAD"))
-    private void captureThatStatusEffect(MobEffectInstance that, CallbackInfoReturnable<Boolean> cir) {
+    private void bovinesandbuttercups$captureThatStatusEffect(MobEffectInstance that, CallbackInfoReturnable<Boolean> cir) {
         this.bovinesandbuttercups$capturedThatStatusEffect = that;
     }
 
     @ModifyVariable(method = "update", at = @At(value = "STORE", ordinal = 0))
-    private boolean upgradeNullifiedEffects(boolean bl) {
+    private boolean bovinesandbuttercups$upgradeLockedEffects(boolean bl) {
         if (this.getEffect() instanceof LockdownEffect && bovinesandbuttercups$capturedThatStatusEffect.getEffect() instanceof LockdownEffect) {
             boolean hasAppliedAnEffect = false;
-            for (Map.Entry<MobEffect, Integer> entry : ((MobEffectInstanceAccess)bovinesandbuttercups$capturedThatStatusEffect).bovinesandbuttercups$getNullifiedEffects().entrySet()) {
-                if (!bovinesandbuttercups$nullifiedEffects.containsKey(entry.getKey()) || entry.getValue() > bovinesandbuttercups$nullifiedEffects.get(entry.getKey())) {
-                    bovinesandbuttercups$nullifiedEffects.put(entry.getKey(), entry.getValue());
+            for (Map.Entry<MobEffect, Integer> entry : ((MobEffectInstanceAccess)bovinesandbuttercups$capturedThatStatusEffect).bovinesandbuttercups$getLockedEffects().entrySet()) {
+                if (!bovinesandbuttercups$lockedEffects.containsKey(entry.getKey()) || entry.getValue() > bovinesandbuttercups$lockedEffects.get(entry.getKey())) {
+                    bovinesandbuttercups$lockedEffects.put(entry.getKey(), entry.getValue());
                     hasAppliedAnEffect = true;
                 }
             }
@@ -81,58 +81,58 @@ public abstract class MobEffectInstanceMixin implements MobEffectInstanceAccess 
     }
 
     @Inject(method = "save", at = @At("RETURN"))
-    private void writeNullifiedEffectsAsNbt(CompoundTag tag, CallbackInfoReturnable<CompoundTag> cir) {
+    private void bovinesandbuttercups$writeLockedEffectsAsNbt(CompoundTag tag, CallbackInfoReturnable<CompoundTag> cir) {
         if (!(this.getEffect() instanceof LockdownEffect)) return;
         ListTag list = new ListTag();
-        bovinesandbuttercups$nullifiedEffects.forEach(((statusEffect, integer) -> {
+        bovinesandbuttercups$lockedEffects.forEach(((statusEffect, integer) -> {
             CompoundTag effectCompound = new CompoundTag();
             effectCompound.putByte("Id", (byte)MobEffect.getId(statusEffect));
             effectCompound.putInt("Duration", integer);
             list.add(effectCompound);
         }));
-        tag.put("NullifiedEffects", list);
+        tag.put("LockedEffects", list);
     }
 
     @Inject(method = "loadSpecifiedEffect", at = @At("RETURN"), cancellable = true)
-    private static void readNullifiedEffectsAsNbt(MobEffect type, CompoundTag tag, CallbackInfoReturnable<MobEffectInstance> cir) {
+    private static void bovinesandbuttercups$readLockedEffectsAsNbt(MobEffect type, CompoundTag tag, CallbackInfoReturnable<MobEffectInstance> cir) {
         if (!(type instanceof LockdownEffect)) return;
         MobEffectInstance instance = cir.getReturnValue();
-        if (!tag.contains("NullifiedEffects", Tag.TAG_LIST)) return;
-        ListTag list = tag.getList("NullifiedEffects", Tag.TAG_COMPOUND);
+        if (!tag.contains("LockedEffects", Tag.TAG_LIST)) return;
+        ListTag list = tag.getList("LockedEffects", Tag.TAG_COMPOUND);
         for (Tag nbtElement : list) {
             if (!(nbtElement instanceof CompoundTag compound)) {
-                Constants.LOG.warn("NullifiedEffects NBT is not an NBTCompound.");
+                Constants.LOG.warn("LockedEffects NBT is not an NBTCompound.");
                 continue;
             }
             if (compound.contains("Id", Tag.TAG_BYTE) && compound.contains("Duration", Tag.TAG_INT)) {
-                ((MobEffectInstanceAccess)instance).bovinesandbuttercups$addNullifiedEffect(MobEffect.byId(compound.getByte("Id")), compound.getInt("Duration"));
+                ((MobEffectInstanceAccess)instance).bovinesandbuttercups$addLockedEffect(MobEffect.byId(compound.getByte("Id")), compound.getInt("Duration"));
             }
         }
         cir.setReturnValue(instance);
     }
 
     @Override
-    public HashMap<MobEffect, Integer> bovinesandbuttercups$getNullifiedEffects() {
-        return bovinesandbuttercups$nullifiedEffects;
+    public HashMap<MobEffect, Integer> bovinesandbuttercups$getLockedEffects() {
+        return bovinesandbuttercups$lockedEffects;
     }
 
     @Override
-    public void bovinesandbuttercups$setNullifiedEffects(HashMap<MobEffect, Integer> nullifiedEffects) {
-        this.bovinesandbuttercups$nullifiedEffects = nullifiedEffects;
+    public void bovinesandbuttercups$setLockedEffects(HashMap<MobEffect, Integer> lockedEffects) {
+        this.bovinesandbuttercups$lockedEffects = lockedEffects;
     }
 
     @Override
-    public void bovinesandbuttercups$addNullifiedEffect(MobEffect statusEffect, int duration) {
-        this.bovinesandbuttercups$nullifiedEffects.put(statusEffect, duration);
+    public void bovinesandbuttercups$addLockedEffect(MobEffect statusEffect, int duration) {
+        this.bovinesandbuttercups$lockedEffects.put(statusEffect, duration);
     }
 
     @Override
-    public void bovinesandbuttercups$removeNullifiedEffects(MobEffect statusEffect) {
-        this.bovinesandbuttercups$nullifiedEffects.remove(statusEffect);
+    public void bovinesandbuttercups$removeLockedEffects(MobEffect statusEffect) {
+        this.bovinesandbuttercups$lockedEffects.remove(statusEffect);
     }
 
     @Override
-    public void bovinesandbuttercups$clearNullifiedEffects() {
-        this.bovinesandbuttercups$nullifiedEffects.clear();
+    public void bovinesandbuttercups$clearLockedEffects() {
+        this.bovinesandbuttercups$lockedEffects.clear();
     }
 }

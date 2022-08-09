@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 @Mixin(ClientPackSource.class)
 public class ClientPackSourceMixin {
     @Inject(method = "loadPacks", at = @At(value = "TAIL"))
-    private void loadResourcePacks(Consumer<Pack> consumer, Pack.PackConstructor constructor, CallbackInfo ci) {
+    private void bovinesandbuttercups$loadResourcePacks(Consumer<Pack> consumer, Pack.PackConstructor constructor, CallbackInfo ci) {
         Path path = Path.of(Minecraft.getInstance().gameDirectory.getPath(), "bovinestemp");
         path.toFile().deleteOnExit();
         Pack bovinesMojangPack = BovinesAndButtercupsClient.createMojangMoobloomPack(constructor);

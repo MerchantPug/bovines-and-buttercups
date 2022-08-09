@@ -37,7 +37,7 @@ public abstract class EntityMixin {
     @Shadow public abstract Level getLevel();
 
     @Inject(method = "spawnSprintParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void spawnCustomFlowerSprintParticle(CallbackInfo ci, int i, int j, int k, BlockPos blockPos, BlockState blockState) {
+    public void bovinesandbuttercups$spawnCustomFlowerSprintParticle(CallbackInfo ci, int i, int j, int k, BlockPos blockPos, BlockState blockState) {
         if (blockState.getBlock() instanceof CustomFlowerBlock && blockState.hasBlockEntity()) {
             if (!(this.getLevel().getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity)) return;
             Vec3 vec3 = this.getDeltaMovement();

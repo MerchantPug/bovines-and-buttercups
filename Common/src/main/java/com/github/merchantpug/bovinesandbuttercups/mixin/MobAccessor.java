@@ -8,5 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(Mob.class)
 public interface MobAccessor {
     @Accessor("navigation")
-    PathNavigation getNavigation();
+    PathNavigation bovinesandbuttercups$getNavigation();
 }

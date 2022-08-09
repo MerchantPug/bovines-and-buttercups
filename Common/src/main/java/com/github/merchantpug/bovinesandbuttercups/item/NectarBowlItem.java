@@ -50,7 +50,7 @@ public class NectarBowlItem extends Item {
         }
         CompoundTag compoundTag = itemStack.getTag();
         if (compoundTag != null && compoundTag.contains(EFFECTS_KEY, 9)) {
-            HashMap<MobEffect, Integer> nullifiedEffectHashmap = new HashMap<>();
+            HashMap<MobEffect, Integer> lockedEffectHashmap = new HashMap<>();
             int duration = 0;
             ListTag nbtList = compoundTag.getList(EFFECTS_KEY, 10);
             for (int i = 0; i < nbtList.size(); ++i) {
@@ -62,13 +62,13 @@ public class NectarBowlItem extends Item {
                     if (compoundDuration > duration) {
                         duration = compoundDuration;
                     }
-                    if (!nullifiedEffectHashmap.containsKey(statusEffect) || nullifiedEffectHashmap.containsKey(statusEffect) && duration > nullifiedEffectHashmap.get(statusEffect)) {
-                        nullifiedEffectHashmap.put(statusEffect, compoundDuration);
+                    if (!lockedEffectHashmap.containsKey(statusEffect) || lockedEffectHashmap.containsKey(statusEffect) && duration > lockedEffectHashmap.get(statusEffect)) {
+                        lockedEffectHashmap.put(statusEffect, compoundDuration);
                     }
                 }
             }
             MobEffectInstance instance = new MobEffectInstance(BovineEffects.LOCKDOWN.get(), duration);
-            ((MobEffectInstanceAccess)instance).bovinesandbuttercups$getNullifiedEffects().putAll(nullifiedEffectHashmap);
+            ((MobEffectInstanceAccess)instance).bovinesandbuttercups$getLockedEffects().putAll(lockedEffectHashmap);
             livingEntity.addEffect(instance);
         }
         if (player != null) {

@@ -40,10 +40,10 @@ public abstract class EffectRenderingInventoryScreenFabricMixin<T extends Abstra
     }
 
     @Inject(method = "renderIcons", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderTexture(ILnet/minecraft/resources/ResourceLocation;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void drawOverridenEffectSprite(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> mobEffectInstanceIterable, boolean large, CallbackInfo ci, MobEffectTextureManager mobEffectTextureManager, int i, Iterator iterator, MobEffectInstance mobEffectInstance, MobEffect mobEffect, TextureAtlasSprite sprite) {
+    private void bovinesandbuttercups$drawOverridenEffectSprite(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> mobEffectInstanceIterable, boolean large, CallbackInfo ci, MobEffectTextureManager mobEffectTextureManager, int i, Iterator iterator, MobEffectInstance mobEffectInstance, MobEffect mobEffect, TextureAtlasSprite sprite) {
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
 
-        List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().toList();
+        List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().entrySet().stream().toList();
 
         if (statusEffectList.isEmpty()) return;
         if (bovinesandbuttercups$nullifiedEffectTicks % Math.max(600, 1200 - ((statusEffectList.size() - 2) * 300)) == 0) {
@@ -59,7 +59,7 @@ public abstract class EffectRenderingInventoryScreenFabricMixin<T extends Abstra
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void drawEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int k, Iterable<MobEffectInstance> iterable) {
+    private void bovinesandbuttercups$drawEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int k, Iterable<MobEffectInstance> iterable) {
         if (mouseX >= i && mouseX <= i + 119) {
             int l = this.topPos;
             MobEffectInstance mobEffectInstance = null;
@@ -72,7 +72,7 @@ public abstract class EffectRenderingInventoryScreenFabricMixin<T extends Abstra
             if (mobEffectInstance != null) {
                 List<Component> list = new ArrayList<>();
                 list.add(this.getEffectName(mobEffectInstance));
-                ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getNullifiedEffects().forEach(((statusEffect, duration) -> {
+                ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().forEach(((statusEffect, duration) -> {
                     list.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDurationFromInt(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
                 }));
                 this.renderTooltip(poseStack, list, Optional.empty(), mouseX, mouseY);
@@ -83,16 +83,16 @@ public abstract class EffectRenderingInventoryScreenFabricMixin<T extends Abstra
     @Unique MobEffectInstance bovinesandbuttercups$capturedMobEffectInstance;
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void getStatusEffectInstance(PoseStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int k, Iterable iterable, int l, MobEffectInstance mobEffectInstance, List list) {
+    private void bovinesandbuttercups$getStatusEffectInstance(PoseStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int k, Iterable iterable, int l, MobEffectInstance mobEffectInstance, List list) {
         this.bovinesandbuttercups$capturedMobEffectInstance = mobEffectInstance;
     }
 
     @ModifyArg(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"))
-    private List<Component> drawEffectDescriptions(List<Component> list) {
+    private List<Component> bovinesandbuttercups$drawEffectDescriptions(List<Component> list) {
         if (!(bovinesandbuttercups$capturedMobEffectInstance.getEffect() instanceof LockdownEffect)) return list;
         List<Component> newList = new ArrayList<>();
         newList.add(this.getEffectName(bovinesandbuttercups$capturedMobEffectInstance));
-        ((MobEffectInstanceAccess)bovinesandbuttercups$capturedMobEffectInstance).bovinesandbuttercups$getNullifiedEffects().forEach(((statusEffect, duration) -> {
+        ((MobEffectInstanceAccess)bovinesandbuttercups$capturedMobEffectInstance).bovinesandbuttercups$getLockedEffects().forEach(((statusEffect, duration) -> {
             newList.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDurationFromInt(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
         }));
         return newList;

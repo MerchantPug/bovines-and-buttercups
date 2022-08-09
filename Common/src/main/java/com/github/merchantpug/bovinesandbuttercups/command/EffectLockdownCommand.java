@@ -47,7 +47,7 @@ public class EffectLockdownCommand {
         int j = seconds != null ? seconds * 20 : 600;
         for (Entity entity : targets) {
             MobEffectInstance statusEffectInstance = new MobEffectInstance(BovineEffects.LOCKDOWN.get(), j, 0, false, showParticles);
-            ((MobEffectInstanceAccess)statusEffectInstance).bovinesandbuttercups$addNullifiedEffect(effect, j);
+            ((MobEffectInstanceAccess)statusEffectInstance).bovinesandbuttercups$addLockedEffect(effect, j);
             if (!(entity instanceof LivingEntity) || !((LivingEntity)entity).addEffect(statusEffectInstance, command.getSource().getEntity())) continue;
             ++i;
         }

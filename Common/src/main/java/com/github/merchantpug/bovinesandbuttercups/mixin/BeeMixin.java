@@ -25,21 +25,21 @@ public abstract class BeeMixin extends Animal implements BeeAccess {
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee;hasSavedFlowerPos()Z"))
-    private void writeCustomDataToNbt(CompoundTag tag, CallbackInfo ci) {
+    private void bovinesandbuttercups$writeCustomDataToNbt(CompoundTag tag, CallbackInfo ci) {
         if (this.moobloomUUID != null) {
             tag.putUUID("MoobloomTarget", moobloomUUID);
         }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/animal/Bee;savedFlowerPos:Lnet/minecraft/core/BlockPos;", ordinal = 0))
-    private void readMoobloomFromNbt(CompoundTag tag, CallbackInfo ci) {
+    private void bovinesandbuttercups$readMoobloomFromNbt(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("MoobloomTarget")) {
             moobloomUUID = tag.getUUID("MoobloomTarget");
         }
     }
 
     @Inject(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeeGrowCropGoal;<init>(Lnet/minecraft/world/entity/animal/Bee;)V"))
-    private void addMoveToMoobloomGoal(CallbackInfo ci) {
+    private void bovinesandbuttercups$addMoveToMoobloomGoal(CallbackInfo ci) {
         this.goalSelector.addGoal(6, new MoveToMoobloomGoal((Bee) (Object)this));
     }
 

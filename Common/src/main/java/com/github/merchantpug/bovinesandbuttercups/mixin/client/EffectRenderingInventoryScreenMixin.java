@@ -26,14 +26,14 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
     }
 
     @Inject(method = "renderBackgrounds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", ordinal = 1, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void overlayLockdownBorder(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> mobEffectInstances, boolean wide, CallbackInfo ci, int i, Iterator var7, MobEffectInstance mobEffectInstance) {
+    private void bovinesandbuttercups$overlayLockdownBorder(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> mobEffectInstances, boolean wide, CallbackInfo ci, int i, Iterator var7, MobEffectInstance mobEffectInstance) {
         if (this.minecraft == null || this.minecraft.player == null) return;
 
         List<MobEffectInstance> lockdownEffectInstance = this.minecraft.player.getActiveEffects().stream().filter(instance -> instance.getEffect() instanceof LockdownEffect).toList();
 
         if (lockdownEffectInstance.isEmpty()) return;
 
-        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && ((MobEffectInstanceAccess)lockdownEffectInstance.get(0)).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
+        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && ((MobEffectInstanceAccess)lockdownEffectInstance.get(0)).bovinesandbuttercups$getLockedEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
             RenderSystem.setShaderTexture(0, Constants.resourceLocation("textures/gui/container/lockdown_frame.png"));
             blit(poseStack, x, i,0, 0, 0, 32, 32, 64, 32);
             RenderSystem.setShaderTexture(0, INVENTORY_LOCATION);

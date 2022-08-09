@@ -5,7 +5,7 @@
     "model_location": "test:fire_flower",
     "stew_effect": {
       "effect": "minecraft:fire_resistance",
-      "duration": 200
+      "duration": 80
     },
     "with_block": true
   },

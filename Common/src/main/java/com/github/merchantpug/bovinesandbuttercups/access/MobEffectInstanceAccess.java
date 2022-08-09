@@ -6,13 +6,13 @@ import net.minecraft.world.effect.MobEffect;
 import java.util.HashMap;
 
 public interface MobEffectInstanceAccess {
-    HashMap<MobEffect, Integer> bovinesandbuttercups$getNullifiedEffects();
+    HashMap<MobEffect, Integer> bovinesandbuttercups$getLockedEffects();
 
-    void bovinesandbuttercups$setNullifiedEffects(HashMap<MobEffect, Integer> nullifiedEffects);
+    void bovinesandbuttercups$setLockedEffects(HashMap<MobEffect, Integer> lockedEffects);
 
-    void bovinesandbuttercups$addNullifiedEffect(MobEffect statusEffect, int duration);
+    void bovinesandbuttercups$addLockedEffect(MobEffect statusEffect, int duration);
 
-    void bovinesandbuttercups$removeNullifiedEffects(MobEffect statusEffect);
+    void bovinesandbuttercups$removeLockedEffects(MobEffect statusEffect);
 
-    void bovinesandbuttercups$clearNullifiedEffects();
+    void bovinesandbuttercups$clearLockedEffects();
 }

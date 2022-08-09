@@ -46,7 +46,7 @@ public class CustomFlowerItem extends BlockItem {
         return this.getDescriptionId();
     }
 
-    @Nullable public MobEffect getSuspiciousStewEffect(ItemStack customFlower) {
+    public static MobEffect getSuspiciousStewEffect(ItemStack customFlower) {
         if (customFlower.getTag() != null) {
             CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
@@ -59,7 +59,7 @@ public class CustomFlowerItem extends BlockItem {
         return MobEffects.REGENERATION;
     }
 
-    public int getSuspiciousStewDuration(ItemStack customFlower) {
+    public static int getSuspiciousStewDuration(ItemStack customFlower) {
         if (customFlower.getTag() != null) {
             CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {

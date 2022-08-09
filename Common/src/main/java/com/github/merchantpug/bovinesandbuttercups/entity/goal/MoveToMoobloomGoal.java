@@ -43,8 +43,8 @@ public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
     @Override
     public void stop() {
         this.ticks = 0;
-        ((MobAccessor)bee).getNavigation().stop();
-        ((MobAccessor)bee).getNavigation().resetMaxVisitedNodesMultiplier();
+        ((MobAccessor)bee).bovinesandbuttercups$getNavigation().stop();
+        ((MobAccessor)bee).bovinesandbuttercups$getNavigation().resetMaxVisitedNodesMultiplier();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
             ((BeeAccess)bee).bovinesandbuttercups$setTargetMoobloom(null);
             return;
         }
-        if (((MobAccessor)bee).getNavigation().isInProgress()) {
+        if (((MobAccessor)bee).bovinesandbuttercups$getNavigation().isInProgress()) {
             return;
         }
         if (!bee.position().closerThan(moobloom.position(), 32)) {
@@ -91,12 +91,12 @@ public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
 
         Vec3 vec32 = AirRandomPos.getPosTowards(bee, k, l, i, pos, 0.3141592741012573D);
         if (vec32 != null) {
-            ((MobAccessor)bee).getNavigation().setMaxVisitedNodesMultiplier(0.5F);
-            ((MobAccessor)bee).getNavigation().moveTo(vec32.x, vec32.y, vec32.z, 1.0D);
+            ((MobAccessor)bee).bovinesandbuttercups$getNavigation().setMaxVisitedNodesMultiplier(0.5F);
+            ((MobAccessor)bee).bovinesandbuttercups$getNavigation().moveTo(vec32.x, vec32.y, vec32.z, 1.0D);
         }
     }
 
     private boolean shouldMoveToMoobloom() {
-        return ((BeeAccessor)bee).getTicksWithoutNectarSinceExitingHive() > 2400;
+        return ((BeeAccessor)bee).bovinesandbuttercups$getTicksWithoutNectarSinceExitingHive() > 2400;
     }
 }

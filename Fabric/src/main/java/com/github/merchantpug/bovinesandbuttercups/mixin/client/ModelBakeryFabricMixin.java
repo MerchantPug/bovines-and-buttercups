@@ -27,7 +27,7 @@ public abstract class ModelBakeryFabricMixin {
     @Shadow protected abstract void loadTopLevel(ModelResourceLocation modelResourceLocation);
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;popPush(Ljava/lang/String;)V", ordinal = 2))
-    private void initMoobloomFlowers(ResourceManager resourceManager, BlockColors blockColors, ProfilerFiller profilerFiller, int maxMipmapLevel, CallbackInfo ci) {
+    private void bovinesandbuttercups$initMoobloomFlowers(ResourceManager resourceManager, BlockColors blockColors, ProfilerFiller profilerFiller, int maxMipmapLevel, CallbackInfo ci) {
         profilerFiller.popPush("bovines");
         Map<ResourceLocation, Resource> blocks = resourceManager.listResources("models/bovines", fileName -> fileName.getPath().endsWith(".json"));
 

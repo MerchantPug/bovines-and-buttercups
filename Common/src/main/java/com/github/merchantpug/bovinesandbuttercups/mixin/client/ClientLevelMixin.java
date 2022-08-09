@@ -39,7 +39,7 @@ public abstract class ClientLevelMixin extends Level {
     @Shadow public abstract void playLocalSound(double p_104600_, double p_104601_, double p_104602_, SoundEvent p_104603_, SoundSource p_104604_, float p_104605_, float p_104606_, boolean p_104607_);
 
     @Inject(method = "addDestroyBlockEffect", at = @At("HEAD"), cancellable = true)
-    private void changeParticlesIfCustomBlock(BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
+    private void bovinesandbuttercups$changeParticlesIfCustomBlock(BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
         if (blockState.getBlock() instanceof CustomFlowerBlock && blockState.hasBlockEntity()) {
             if (!(this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity)) return;
             VoxelShape voxelShape = blockState.getShape(this, blockPos);

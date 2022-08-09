@@ -28,7 +28,7 @@ public abstract class BeePollinateGoalMixin {
     @Final @Shadow Bee this$0;
 
     @Inject(method = "canBeeUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeePollinateGoal;findNearbyFlower()Ljava/util/Optional;"), cancellable = true)
-    private void addMoobloomToBee(CallbackInfoReturnable<Boolean> cir) {
+    private void bovinesandbuttercups$addMoobloomToBee(CallbackInfoReturnable<Boolean> cir) {
         if (bovinesandbuttercups$findMoobloom().isPresent()) {
             ((BeeAccess)this.this$0).bovinesandbuttercups$setTargetMoobloom(bovinesandbuttercups$findMoobloom().get().getUUID());
             Entity entity = ((ServerLevel)this$0.level).getEntity(((BeeAccess)this$0).bovinesandbuttercups$getTargetMoobloom());
@@ -38,7 +38,7 @@ public abstract class BeePollinateGoalMixin {
             moobloom.setStandingStillForBeeTicks(600);
             moobloom.setBee(this$0);
             this$0.setSavedFlowerPos(moobloom.blockPosition());
-            ((MobAccessor)this.this$0).getNavigation().moveTo(moobloom.position().x(), moobloom.getBoundingBox().getYsize() * 1.3, moobloom.position().z(), 1.2f);
+            ((MobAccessor)this.this$0).bovinesandbuttercups$getNavigation().moveTo(moobloom.position().x(), moobloom.getBoundingBox().getYsize() * 1.3, moobloom.position().z(), 1.2f);
             cir.setReturnValue(true);
         }
     }
@@ -53,7 +53,7 @@ public abstract class BeePollinateGoalMixin {
     }
 
     @Inject(method = "stop", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee;setHasNectar(Z)V"))
-    private void pollinateMoobloom(CallbackInfo ci) {
+    private void bovinesandbuttercups$pollinateMoobloom(CallbackInfo ci) {
         Entity entity = ((ServerLevel)this$0.level).getEntity(((BeeAccess)this$0).bovinesandbuttercups$getTargetMoobloom());
         if (!(entity instanceof FlowerCow moobloom)) return;
         if (moobloom != null) {
@@ -66,7 +66,7 @@ public abstract class BeePollinateGoalMixin {
     }
 
     @Inject(method = "canBeeContinueToUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee;isFlowerValid(Lnet/minecraft/core/BlockPos;)Z"), cancellable = true)
-    private void removeIfMoobloomRemoved(CallbackInfoReturnable<Boolean> cir) {
+    private void bovinesandbuttercups$removeIfMoobloomRemoved(CallbackInfoReturnable<Boolean> cir) {
         Entity entity = ((ServerLevel)this$0.level).getEntity(((BeeAccess)this$0).bovinesandbuttercups$getTargetMoobloom());
         if (!(entity instanceof FlowerCow moobloom)) return;
         if (this.this$0.tickCount % 20 == 0 && moobloom != null && (!moobloom.isAlive() || moobloom.getLastHurtByMobTimestamp() > moobloom.tickCount - 100)) {
@@ -79,7 +79,7 @@ public abstract class BeePollinateGoalMixin {
     }
 
     @ModifyVariable(method = "tick", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/phys/Vec3;add(DDD)Lnet/minecraft/world/phys/Vec3;"))
-    private Vec3 addMoobloomTargeting(Vec3 value) {
+    private Vec3 bovinesandbuttercups$addMoobloomTargeting(Vec3 value) {
         Entity entity = ((ServerLevel)this$0.level).getEntity(((BeeAccess)this$0).bovinesandbuttercups$getTargetMoobloom());
         if (!(entity instanceof FlowerCow moobloom)) return value;
         if (moobloom != null) {
@@ -91,7 +91,7 @@ public abstract class BeePollinateGoalMixin {
     }
 
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/animal/Bee;savedFlowerPos:Lnet/minecraft/core/BlockPos;", ordinal = 0))
-    private void removeMoobloomIfTakingTooLong(CallbackInfo ci) {
+    private void bovinesandbuttercups$removeMoobloomIfTakingTooLong(CallbackInfo ci) {
         Entity entity = ((ServerLevel)this$0.level).getEntity(((BeeAccess)this$0).bovinesandbuttercups$getTargetMoobloom());
         if (!(entity instanceof FlowerCow moobloom)) return;
         moobloom.setStandingStillForBeeTicks(0);
@@ -101,7 +101,7 @@ public abstract class BeePollinateGoalMixin {
     }
 
     @Inject(method = "tick", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/animal/Bee;savedFlowerPos:Lnet/minecraft/core/BlockPos;", ordinal = 2))
-    private void removeMoobloomIfTakingTooLongTwo(CallbackInfo ci) {
+    private void bovinesandbuttercups$removeMoobloomIfTakingTooLongTwo(CallbackInfo ci) {
         Entity entity = ((ServerLevel)this$0.level).getEntity(((BeeAccess)this$0).bovinesandbuttercups$getTargetMoobloom());
         if (!(entity instanceof FlowerCow moobloom)) return;
         moobloom.setStandingStillForBeeTicks(0);

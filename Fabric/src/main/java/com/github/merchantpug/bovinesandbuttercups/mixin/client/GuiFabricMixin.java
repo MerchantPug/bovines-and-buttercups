@@ -33,12 +33,12 @@ public class GuiFabricMixin extends GuiComponent {
     @Unique private int nullifiedEffectTicks;
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void overlayLockdownBorder(PoseStack poseStack, CallbackInfo ci, Collection<MobEffectInstance> collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l) {
+    private void bovinesandbuttercups$overlayLockdownBorder(PoseStack poseStack, CallbackInfo ci, Collection<MobEffectInstance> collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l) {
         List<MobEffectInstance> lockdownEffectInstance = collection.stream().filter(instance -> instance.getEffect() instanceof LockdownEffect).toList();
 
         if (lockdownEffectInstance.isEmpty()) return;
 
-        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && ((MobEffectInstanceAccess)lockdownEffectInstance.get(0)).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
+        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && ((MobEffectInstanceAccess)lockdownEffectInstance.get(0)).bovinesandbuttercups$getLockedEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
             RenderSystem.setShaderTexture(0, Constants.resourceLocation("textures/gui/container/lockdown_frame.png"));
             blit(poseStack, k, l, this.getBlitOffset(), 36, 4, 24, 24, 64, 32);
             RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);
@@ -46,10 +46,10 @@ public class GuiFabricMixin extends GuiComponent {
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void renderLockdownStatusEffectOverlay(PoseStack poseStack, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l, float f, TextureAtlasSprite sprite, int n, int o, float g) {
+    private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(PoseStack poseStack, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l, float f, TextureAtlasSprite sprite, int n, int o, float g) {
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
 
-        List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getNullifiedEffects().entrySet().stream().toList();
+        List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().entrySet().stream().toList();
 
         if (statusEffectList.isEmpty()) return;
         if (nullifiedEffectTicks % Math.max(600, 1200 - ((statusEffectList.size() - 2) * 300)) == 0) {

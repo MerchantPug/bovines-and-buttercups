@@ -20,7 +20,7 @@ public abstract class ServerPlayerMixin extends Player {
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
-    private void triggerNearbyEntityCriterion(CallbackInfo ci) {
+    private void bovinesandbuttercups$triggerNearbyEntityCriterion(CallbackInfo ci) {
         BovineCriteriaTriggers.NEARBY_ENTITY.trigger((ServerPlayer)(Object)this);
     }
 }

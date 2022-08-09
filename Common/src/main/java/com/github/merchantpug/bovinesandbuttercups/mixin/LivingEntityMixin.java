@@ -31,14 +31,14 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z", at = @At("HEAD"))
-    private void addRandomLockdown(MobEffectInstance effect, Entity source, CallbackInfoReturnable<Boolean> cir) {
-        if (effect.getEffect() instanceof LockdownEffect && ((MobEffectInstanceAccess)effect).bovinesandbuttercups$getNullifiedEffects().size() == 0) {
+    private void bovinesandbuttercups$addRandomLockdown(MobEffectInstance effect, Entity source, CallbackInfoReturnable<Boolean> cir) {
+        if (effect.getEffect() instanceof LockdownEffect && ((MobEffectInstanceAccess)effect).bovinesandbuttercups$getLockedEffects().size() == 0) {
             Optional<Holder<MobEffect>> randomEffect = Registry.MOB_EFFECT.getRandom(this.level.random);
             while (randomEffect.isPresent() && (randomEffect.get().value() instanceof LockdownEffect || !this.canBeAffected(new MobEffectInstance(randomEffect.get().value())))) {
                 randomEffect = Registry.MOB_EFFECT.getRandom(this.level.random);
             }
             randomEffect.ifPresent(statusEffectRegistryEntry -> {
-                ((MobEffectInstanceAccess)effect).bovinesandbuttercups$addNullifiedEffect(statusEffectRegistryEntry.value(), effect.getDuration());
+                ((MobEffectInstanceAccess)effect).bovinesandbuttercups$addLockedEffect(statusEffectRegistryEntry.value(), effect.getDuration());
             });
         }
     }
@@ -46,7 +46,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "canBeAffected", at = @At(value = "RETURN"), cancellable = true)
     private void cancelStatusEffectIfNullified(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
          this.getActiveEffects().forEach(instance -> {
-             if (instance.getEffect() instanceof LockdownEffect && ((MobEffectInstanceAccess)instance).bovinesandbuttercups$getNullifiedEffects().containsKey(effect.getEffect())) {
+             if (instance.getEffect() instanceof LockdownEffect && ((MobEffectInstanceAccess)instance).bovinesandbuttercups$getLockedEffects().containsKey(effect.getEffect())) {
                  cir.setReturnValue(false);
              }
          });

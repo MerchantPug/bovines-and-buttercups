@@ -29,12 +29,12 @@ public abstract class PlayerListMixin {
     @Shadow public abstract MinecraftServer getServer();
 
     @Inject(method = "placeNewPlayer", at = @At("TAIL"))
-    private void sendServerTypesToPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
+    private void bovinesandbuttercups$sendServerTypesToPlayer(Connection connection, ServerPlayer player, CallbackInfo ci) {
         Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().keySet().toArray(new ResourceLocation[FlowerTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().values().toArray(new FlowerType[FlowerTypeRegistry.size()])));
     }
 
     @Inject(method = "reloadResources", at = @At("TAIL"))
-    private void sendServerTypesToPlayersAfterReload(CallbackInfo ci) {
+    private void bovinesandbuttercups$sendServerTypesToPlayersAfterReload(CallbackInfo ci) {
         for (ServerPlayer player : this.players) {
             Services.PLATFORM.sendPacketToPlayer(player, new MoobloomTypeListPacket(FlowerCowTypeRegistry.getIdToMoobloomTypes().keySet().toArray(new ResourceLocation[FlowerCowTypeRegistry.size()]), FlowerCowTypeRegistry.getIdToMoobloomTypes().values().toArray(new FlowerCowType[FlowerCowTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().keySet().toArray(new ResourceLocation[FlowerTypeRegistry.size()]), FlowerTypeRegistry.getIdToFlowerTypes().values().toArray(new FlowerType[FlowerTypeRegistry.size()])));
         }

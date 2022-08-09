@@ -17,34 +17,34 @@ import java.util.List;
 
 @Mixin(ClientboundUpdateMobEffectPacket.class)
 public class ClientboundUpdateMobEffectPacketMixin implements ClientboundUpdateMobEffectPacketAccess {
-    private HashMap<MobEffect, Integer> bovinesandbuttercups$nullifiedEffects = new HashMap<>();
+    private HashMap<MobEffect, Integer> bovinesandbuttercups$lockedEffects = new HashMap<>();
 
     @Inject(method = "<init>(ILnet/minecraft/world/effect/MobEffectInstance;)V", at = @At("TAIL"))
-    private void initNullifiedEffectsInstance(int entityId, MobEffectInstance effect, CallbackInfo ci) {
-        this.bovinesandbuttercups$nullifiedEffects = ((MobEffectInstanceAccess)effect).bovinesandbuttercups$getNullifiedEffects();
+    private void bovinesandbuttercups$initNullifiedEffectsInstance(int entityId, MobEffectInstance effect, CallbackInfo ci) {
+        this.bovinesandbuttercups$lockedEffects = ((MobEffectInstanceAccess)effect).bovinesandbuttercups$getLockedEffects();
     }
 
     @Inject(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At("TAIL"))
-    private void initNullifiedEffectsBuf(FriendlyByteBuf buf, CallbackInfo ci) {
-        HashMap<MobEffect, Integer> nullifiedEffects = new HashMap<>();
+    private void bovinesandbuttercups$initNullifiedEffectsBuf(FriendlyByteBuf buf, CallbackInfo ci) {
+        HashMap<MobEffect, Integer> lockedEffects = new HashMap<>();
         for (int i = 0; i < buf.readInt(); i++) {
-            nullifiedEffects.put(MobEffect.byId(buf.readInt()), buf.readInt());
+            lockedEffects.put(MobEffect.byId(buf.readInt()), buf.readInt());
         }
-        this.bovinesandbuttercups$nullifiedEffects = nullifiedEffects;
+        this.bovinesandbuttercups$lockedEffects = lockedEffects;
     }
 
     @Inject(method = "write", at = @At("TAIL"))
-    private void writeNullifiedEffects(FriendlyByteBuf buf, CallbackInfo ci) {
-        buf.writeInt(bovinesandbuttercups$nullifiedEffects.size());
-        List<MobEffect> statusEffectList = bovinesandbuttercups$nullifiedEffects.keySet().stream().toList();
-        for (int i = 0; i < bovinesandbuttercups$nullifiedEffects.size(); i++) {
+    private void bovinesandbuttercups$writeNullifiedEffects(FriendlyByteBuf buf, CallbackInfo ci) {
+        buf.writeInt(bovinesandbuttercups$lockedEffects.size());
+        List<MobEffect> statusEffectList = bovinesandbuttercups$lockedEffects.keySet().stream().toList();
+        for (int i = 0; i < bovinesandbuttercups$lockedEffects.size(); i++) {
             MobEffect effect = statusEffectList.get(i);
             buf.writeInt(Registry.MOB_EFFECT.getId(effect));
-            buf.writeInt(bovinesandbuttercups$nullifiedEffects.get(effect));
+            buf.writeInt(bovinesandbuttercups$lockedEffects.get(effect));
         }
     }
 
-    public HashMap<MobEffect, Integer> bovinesandbuttercups$getNullifiedEffects() {
-        return bovinesandbuttercups$nullifiedEffects;
+    public HashMap<MobEffect, Integer> bovinesandbuttercups$getLockedEffects() {
+        return bovinesandbuttercups$lockedEffects;
     }
 }

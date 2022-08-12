@@ -1,5 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.block;
 
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +36,7 @@ public class CustomFlowerBlock extends BaseEntityBlock {
         if (blockEntity instanceof CustomFlowerBlockEntity cfbe) {
             CompoundTag compound = new CompoundTag();
             if (cfbe.getFlowerTypeName() != null) {
-                compound.putString("Type", cfbe.getFlowerTypeName());
+                compound.putString("Type", cfbe.getFlowerType().getResourceLocation().toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }

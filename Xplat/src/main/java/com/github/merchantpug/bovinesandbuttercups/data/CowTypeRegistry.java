@@ -71,6 +71,10 @@ public class CowTypeRegistry {
         }
     }
 
+    public static boolean contains(ResourceLocation resourceLocation) {
+        return contains(resourceLocation, null);
+    }
+
     public static boolean contains(ResourceLocation resourceLocation, ICowType filterType) {
         if (filterType == null || idToCowType.containsKey(resourceLocation) && idToCowType.get(resourceLocation).getType() == filterType) {
             return idToCowType.containsKey(resourceLocation);
@@ -86,7 +90,7 @@ public class CowTypeRegistry {
         return idToCowType.keySet().stream();
     }
 
-    public static Iterable<Map.Entry<ResourceLocation, ICowTypeInstance>> entries() {
+    public static Collection<Map.Entry<ResourceLocation, ICowTypeInstance>> entries() {
         return idToCowType.entrySet();
     }
 
@@ -94,7 +98,7 @@ public class CowTypeRegistry {
         return idToCowType.values().stream();
     }
 
-    public static Iterable<ICowTypeInstance> values() {
+    public static Collection<ICowTypeInstance> values() {
         return idToCowType.values();
     }
 
@@ -104,7 +108,7 @@ public class CowTypeRegistry {
 
     public static ICowTypeInstance get(ResourceLocation resourceLocation, @Nullable ICowType filterType) {
         if(!idToCowType.containsKey(resourceLocation)) {
-            throw new IllegalArgumentException("Could not get moobloom type from id '" + resourceLocation.toString() + "', as it was not registered!");
+            throw new IllegalArgumentException("Could not get cow type from id '" + resourceLocation.toString() + "', as it was not registered!");
         }
         if (filterType == null || idToCowType.get(resourceLocation).getType().getClass() == filterType.getClass()) {
             return idToCowType.get(resourceLocation);
@@ -129,7 +133,6 @@ public class CowTypeRegistry {
     public static void reset() {
         idToCowType.clear();
         cowTypes.forEach(cowType -> {
-            if (cowType.getMissingCow() == null) return;
             register(cowType.getMissingCow());
         });
     }

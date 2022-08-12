@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.block;
+package com.github.merchantpug.bovinesandbuttercups.block.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
@@ -16,11 +16,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class CustomFlowerBlockEntity extends BlockEntity {
+public class CustomFlowerPotBlockEntity extends BlockEntity {
     @Nullable private String flowerTypeName;
 
-    public CustomFlowerBlockEntity(BlockPos worldPosition, BlockState blockState) {
-        super(Services.PLATFORM.getCustomFlowerBlockEntity(), worldPosition, blockState);
+    public CustomFlowerPotBlockEntity(BlockPos worldPosition, BlockState blockState) {
+        super(Services.PLATFORM.getCustomFlowerPotBlockEntity(), worldPosition, blockState);
     }
 
     @Override
@@ -47,9 +47,10 @@ public class CustomFlowerBlockEntity extends BlockEntity {
         try {
             if (flowerTypeName == null) {
                 return FlowerType.MISSING;
-            }
-            if (FlowerTypeRegistry.contains(ResourceLocation.tryParse(flowerTypeName))) {
+            } else if (FlowerTypeRegistry.contains(ResourceLocation.tryParse(flowerTypeName))) {
                 return FlowerType.fromKey(flowerTypeName);
+            } else {
+                return FlowerType.MISSING;
             }
         } catch (Exception e) {
             Constants.LOG.warn("Could not load FlowerType at blockpos " + this.getBlockPos().toString() + ": ", e.getMessage());

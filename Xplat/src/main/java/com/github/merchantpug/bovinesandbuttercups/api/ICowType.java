@@ -18,9 +18,7 @@ public interface ICowType<T extends ICowTypeInstance> {
      * @return The cow type instance to use when a cow type instance is missing
      * from the registry.
      */
-    default @Nullable ICowTypeInstance getMissingCow() {
-        return null;
-    }
+    ICowTypeInstance getMissingCow();
 
     /**
      * @param instance The cow type instance to write to the buf.

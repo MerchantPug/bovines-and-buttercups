@@ -1,7 +1,9 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin;
 
 import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.block.CustomMushroomBlock;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -38,10 +40,13 @@ public abstract class EntityMixin {
 
     @Inject(method = "spawnSprintParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void bovinesandbuttercups$spawnCustomFlowerSprintParticle(CallbackInfo ci, int i, int j, int k, BlockPos blockPos, BlockState blockState) {
-        if (blockState.getBlock() instanceof CustomFlowerBlock && blockState.hasBlockEntity()) {
-            if (!(this.getLevel().getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity)) return;
+        if ((blockState.getBlock() instanceof CustomFlowerBlock || blockState.getBlock() instanceof CustomMushroomBlock) && blockState.hasBlockEntity()) {
             Vec3 vec3 = this.getDeltaMovement();
-            this.level.addParticle(new ModelLocationParticleOption(customFlowerBlockEntity.getFlowerType().getModelLocation(), customFlowerBlockEntity.getFlowerType().getModelVariant()), this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, this.getY() + 0.1D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
+            if (this.getLevel().getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
+                this.level.addParticle(new ModelLocationParticleOption(customFlowerBlockEntity.getFlowerType().getModelLocation(), customFlowerBlockEntity.getFlowerType().getModelVariant()), this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, this.getY() + 0.1D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
+            } else if (this.getLevel().getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
+                this.level.addParticle(new ModelLocationParticleOption(customMushroomBlockEntity.getMushroomType().getModelLocation(), customMushroomBlockEntity.getMushroomType().getModelVariant()), this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, this.getY() + 0.1D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
+            }
         }
     }
 }

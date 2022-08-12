@@ -3,6 +3,7 @@ package com.github.merchantpug.bovinesandbuttercups.data;
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.api.ICowType;
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.data.block.mushroom.MushroomTypeRegistry;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,7 @@ public class CowLoader extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> prepared, ResourceManager resourceManager, ProfilerFiller profiler) {
         CowTypeRegistry.reset();
         FlowerTypeRegistry.reset();
+        MushroomTypeRegistry.reset();
         prepared.forEach((id, je) -> {
             try {
                 if (!je.getAsJsonObject().has("type")) {

@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
-import com.github.merchantpug.bovinesandbuttercups.block.renderer.CustomFlowerRenderer;
+import com.github.merchantpug.bovinesandbuttercups.block.renderer.*;
 import com.github.merchantpug.bovinesandbuttercups.entity.renderer.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
@@ -49,6 +49,10 @@ public class BovinesAndButtercupsClient {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(Services.PLATFORM.getMoobloomEntity(), FlowerCowRenderer::new);
         event.registerBlockEntityRenderer(Services.PLATFORM.getCustomFlowerBlockEntity(), CustomFlowerRenderer::new);
+        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomMushroomBlockEntity(), CustomMushroomRenderer::new);
+        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomFlowerPotBlockEntity(), CustomFlowerPotBlockRenderer::new);
+        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomMushroomPotBlockEntity(), CustomMushroomPotBlockRenderer::new);
+        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomHugeMushroomBlockEntity(), CustomHugeMushroomBlockRenderer::new);
     }
 
     @SubscribeEvent

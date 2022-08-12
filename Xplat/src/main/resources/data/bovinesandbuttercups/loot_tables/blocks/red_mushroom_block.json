@@ -1,0 +1,83 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "enchantments": [
+                      {
+                        "enchantment": "minecraft:silk_touch",
+                        "levels": {
+                          "min": 1
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:copy_nbt",
+                  "ops": [
+                    {
+                      "op": "replace",
+                      "source": "Type",
+                      "target": "BlockEntityTag.Type"
+                    }
+                  ],
+                  "source": "block_entity"
+                }
+              ],
+              "name": "minecraft:custom_mushroom_block"
+            },
+            {
+              "type": "minecraft:item",
+              "functions": [
+                {
+                  "add": false,
+                  "count": {
+                    "type": "minecraft:uniform",
+                    "max": 2.0,
+                    "min": -6.0
+                  },
+                  "function": "minecraft:set_count"
+                },
+                {
+                  "function": "minecraft:limit_count",
+                  "limit": {
+                    "min": 0.0
+                  }
+                },
+                {
+                  "function": "minecraft:explosion_decay"
+                },
+                {
+                  "function": "minecraft:copy_nbt",
+                  "ops": [
+                    {
+                      "op": "replace",
+                      "source": "Type",
+                      "target": "BlockEntityTag.Type"
+                    }
+                  ],
+                  "source": "block_entity"
+                }
+              ],
+              "name": "minecraft:custom_mushroom"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

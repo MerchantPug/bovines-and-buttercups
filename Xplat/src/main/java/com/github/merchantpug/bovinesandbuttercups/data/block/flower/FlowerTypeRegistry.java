@@ -41,13 +41,13 @@ public class FlowerTypeRegistry {
 
     public static FlowerType register(ResourceLocation resourceLocation, FlowerType type) {
         if (idToFlowerType.containsKey(resourceLocation)) {
-            throw new IllegalArgumentException("Duplicate moobloom type id! Tried to register: '" + resourceLocation.toString() + "'");
+            throw new IllegalArgumentException("Duplicate flower id! Tried to register: '" + resourceLocation.toString() + "'");
         }
         idToFlowerType.put(resourceLocation, type);
         return type;
     }
 
-    protected static void update(ResourceLocation resourceLocation, FlowerType type) {
+    public static void update(ResourceLocation resourceLocation, FlowerType type) {
         if (idToFlowerType.containsKey(resourceLocation)) {
             idToFlowerType.replace(resourceLocation, type);
         } else {

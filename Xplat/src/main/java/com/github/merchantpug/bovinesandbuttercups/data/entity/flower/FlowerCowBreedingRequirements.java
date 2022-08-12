@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow;
+package com.github.merchantpug.bovinesandbuttercups.data.entity.flower;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.util.JsonParsingUtil;
@@ -34,7 +34,7 @@ public class FlowerCowBreedingRequirements {
         return possiblePrimaryParents.stream().anyMatch(rl -> rl.equals(parent.getId())) && possibleOtherParents.stream().anyMatch(rl -> rl.equals(otherParent.getId())) || possibleOtherParents.stream().anyMatch(rl -> rl.equals(parent.getId())) && possiblePrimaryParents.stream().anyMatch(rl -> rl.equals(otherParent.getId()));
     }
 
-    public boolean isBoosted(FlowerCowType.Instance parent, FlowerCowType.Instance  otherParent) {
+    public boolean isBoosted(FlowerCowType.Instance parent, FlowerCowType.Instance otherParent) {
         return false;
     }
 

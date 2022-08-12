@@ -1,13 +1,9 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import net.minecraft.Util;
-import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

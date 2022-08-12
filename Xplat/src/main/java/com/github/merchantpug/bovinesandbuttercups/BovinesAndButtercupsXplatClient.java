@@ -27,5 +27,7 @@ public class BovinesAndButtercupsXplatClient {
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_HYACINTH.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.CUSTOM_FLOWER.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_CUSTOM_FLOWER.get(), RenderType.cutout());
+        Services.PLATFORM.setRenderLayer(BovineBlocks.CUSTOM_MUSHROOM.get(), RenderType.cutout());
+        Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_CUSTOM_MUSHROOM.get(), RenderType.cutout());
     }
 }

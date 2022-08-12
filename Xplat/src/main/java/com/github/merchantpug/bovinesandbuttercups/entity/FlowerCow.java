@@ -2,10 +2,10 @@ package com.github.merchantpug.bovinesandbuttercups.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.api.ICowTypeInstance;
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
-import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowBreedingRequirements;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.flower.FlowerCowBreedingRequirements;
 import com.github.merchantpug.bovinesandbuttercups.data.CowTypeRegistry;
-import com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow.FlowerCowType;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.flower.FlowerCowType;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlocks;

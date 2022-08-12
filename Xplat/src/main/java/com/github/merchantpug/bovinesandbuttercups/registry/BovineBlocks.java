@@ -1,8 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
-import com.github.merchantpug.bovinesandbuttercups.block.SnowdropFlowerBlock;
+import com.github.merchantpug.bovinesandbuttercups.block.*;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Block;
@@ -11,6 +10,7 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 
 import java.util.function.Supplier;
 
@@ -34,7 +34,11 @@ public class BovineBlocks {
     public static final RegistryObject<Block> POTTED_SNOWDROP = register("potted_snowdrop", () -> new FlowerPotBlock(SNOWDROP.get(), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 
     public static final RegistryObject<Block> CUSTOM_FLOWER = register("custom_flower", () -> new CustomFlowerBlock(BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
-    public static final RegistryObject<Block> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", () -> new FlowerPotBlock(CUSTOM_FLOWER.get(), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
+    public static final RegistryObject<Block> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", () -> new CustomFlowerPotBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
+
+    public static final RegistryObject<Block> CUSTOM_MUSHROOM = register("custom_mushroom", () -> new CustomMushroomBlock(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).lightLevel((value) -> 1)));
+    public static final RegistryObject<Block> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", () -> new CustomHugeMushroomBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(0.2F).sound(SoundType.WOOD)));
+    public static final RegistryObject<Block> POTTED_CUSTOM_MUSHROOM = register("potted_custom_mushroom", () -> new CustomMushroomPotBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 
     public static void init() {
 

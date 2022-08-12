@@ -20,7 +20,6 @@ public class BovineForgePacketHandler {
     public static void init() {
         int i = 0;
         INSTANCE.registerMessage(i++, CowTypeListPacket.class, CowTypeListPacket::encode, CowTypeListPacket::decode, getClientPacketHandler(CowTypeListPacket.Handler::handle));
-        INSTANCE.registerMessage(i++, FlowerTypeListPacket.class, FlowerTypeListPacket::encode, FlowerTypeListPacket::decode, getClientPacketHandler(FlowerTypeListPacket.Handler::handle));
     }
 
     public static <T> BiConsumer<T, Supplier<NetworkEvent.Context>> getClientPacketHandler(Consumer<T> handler) {

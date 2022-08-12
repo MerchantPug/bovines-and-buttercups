@@ -21,24 +21,32 @@ import java.util.Optional;
 
 public class FlowerType {
     final ResourceLocation resourceLocation;
-    final String name;
+    @Nullable final String name;
     @Nullable final BlockState blockState;
     @Nullable final ResourceLocation modelLocation;
     final String modelVariant;
+    @Nullable final ResourceLocation itemModelLocation;
+    final String itemModelVariant;
+    @Nullable final ResourceLocation pottedModelLocation;
+    final String pottedModelVariant;
     final MobEffectInstance stewEffectInstance;
     final boolean withFlowerBlock;
 
-    public FlowerType(ResourceLocation resourceLocation, @Nullable String name, @Nullable BlockState blockState, @Nullable ResourceLocation modelLocation, String modelVariant, @Nullable MobEffectInstance stewEffectInstance, boolean withFlowerBlock) {
+    public FlowerType(ResourceLocation resourceLocation, @Nullable String name, @Nullable BlockState blockState, @Nullable ResourceLocation modelLocation, String modelVariant, @Nullable ResourceLocation itemModelLocation, String itemModelVariant, @Nullable ResourceLocation pottedModelLocation, String pottedModelVariant, @Nullable MobEffectInstance stewEffectInstance, boolean withFlowerBlock) {
         this.resourceLocation = resourceLocation;
         this.name = name;
         this.blockState = blockState;
         this.modelLocation = modelLocation;
         this.modelVariant = modelVariant;
+        this.itemModelLocation = itemModelLocation;
+        this.itemModelVariant = itemModelVariant;
+        this.pottedModelLocation = pottedModelLocation;
+        this.pottedModelVariant = pottedModelVariant;
         this.stewEffectInstance = stewEffectInstance;
         this.withFlowerBlock = withFlowerBlock;
     }
 
-    public static final FlowerType MISSING = new FlowerType(Constants.resourceLocation("missing"), "block.bovinesandbuttercups.custom_flower", null, Constants.resourceLocation("missing_flower"), "bovines", new MobEffectInstance(MobEffects.REGENERATION, 4), false);
+    public static final FlowerType MISSING = new FlowerType(Constants.resourceLocation("missing"), "block.bovinesandbuttercups.custom_flower", null, Constants.resourceLocation("missing_flower"), "bovines", Constants.resourceLocation("missing_flower_item"), "bovines", Constants.resourceLocation("potted_missing_flower"), "bovines", new MobEffectInstance(MobEffects.REGENERATION, 4), false);
 
     public static FlowerType fromKey(String name) {
         try {
@@ -54,7 +62,7 @@ public class FlowerType {
         return this.resourceLocation;
     }
 
-    public String getName() {
+    @Nullable public String getName() {
         return name;
     }
 
@@ -73,6 +81,22 @@ public class FlowerType {
 
     public String getModelVariant() {
         return this.modelVariant;
+    }
+
+    @Nullable public ResourceLocation getItemModelLocation() {
+        return this.itemModelLocation;
+    }
+
+    public String getItemModelVariant() {
+        return this.itemModelVariant;
+    }
+
+    @Nullable public ResourceLocation getPottedModelLocation() {
+        return this.pottedModelLocation;
+    }
+
+    public String getPottedModelVariant() {
+        return this.pottedModelVariant;
     }
 
     @Nullable public MobEffectInstance getStewEffectInstance() {
@@ -111,6 +135,24 @@ public class FlowerType {
 
         String flowerModelVariant = buf.readUtf(32767);
 
+
+        boolean hasItemModel = buf.readBoolean();
+        ResourceLocation itemModel = null;
+        if (hasItemModel) {
+            itemModel = buf.readResourceLocation();
+        }
+
+        String itemModelVariant = buf.readUtf(32767);
+
+
+        boolean hasPottedModel = buf.readBoolean();
+        ResourceLocation pottedModel = null;
+        if (hasPottedModel) {
+            pottedModel = buf.readResourceLocation();
+        }
+
+        String pottedModeLVariant = buf.readUtf(32767);
+
         boolean hasStewEffect = buf.readBoolean();
         MobEffectInstance stewEffect = null;
         if (hasStewEffect) {
@@ -127,7 +169,7 @@ public class FlowerType {
 
         boolean withFlowerBlock = buf.readBoolean();
 
-        return new FlowerType(resourceLocation, name, flowerBlock, flowerModel, flowerModelVariant, stewEffect, withFlowerBlock);
+        return new FlowerType(resourceLocation, name, flowerBlock, flowerModel, flowerModelVariant, itemModel, itemModelVariant, pottedModel, pottedModeLVariant, stewEffect, withFlowerBlock);
     }
 
     public static void write(FlowerType type, FriendlyByteBuf buf) {
@@ -145,6 +187,16 @@ public class FlowerType {
             buf.writeResourceLocation(type.modelLocation);
         }
         buf.writeUtf(type.modelVariant);
+        buf.writeBoolean(type.itemModelLocation != null);
+        if (type.itemModelLocation != null) {
+            buf.writeResourceLocation(type.itemModelLocation);
+        }
+        buf.writeUtf(type.itemModelVariant);
+        buf.writeBoolean(type.pottedModelLocation != null);
+        if (type.pottedModelLocation != null) {
+            buf.writeResourceLocation(type.pottedModelLocation);
+        }
+        buf.writeUtf(type.pottedModelVariant);
         buf.writeBoolean(type.stewEffectInstance != null);
         if (type.stewEffectInstance != null) {
             buf.writeResourceLocation(Objects.requireNonNull(Registry.MOB_EFFECT.getKey(type.stewEffectInstance.getEffect())));
@@ -155,8 +207,8 @@ public class FlowerType {
 
     public static FlowerType fromJson(ResourceLocation resourceLocation, JsonObject json) {
         ResourceLocation resourceLocation2 = resourceLocation;
-        if (json.has("identifier")) {
-            resourceLocation2 = ResourceLocation.tryParse(json.getAsJsonPrimitive("identifier").getAsString());
+        if (json.has("location")) {
+            resourceLocation2 = JsonParsingUtil.readResourceLocation(json.getAsJsonPrimitive("location").getAsString());
         }
 
         String name = null;
@@ -169,11 +221,33 @@ public class FlowerType {
         }
         ResourceLocation modelLocation = null;
         if (json.has("model_location")) {
-            modelLocation = ResourceLocation.tryParse(json.getAsJsonPrimitive("model_location").getAsString());
+            modelLocation = JsonParsingUtil.readResourceLocation(json.getAsJsonPrimitive("model_location").getAsString());
         }
         String modelVariant = "bovines";
         if (json.has("model_variant")) {
             modelVariant = json.getAsJsonPrimitive("model_variant").getAsString();
+        }
+        ResourceLocation itemModelLocation = null;
+        if (modelLocation != null) {
+            itemModelLocation = new ResourceLocation(modelLocation.getNamespace(), modelLocation.getPath() + "_item");
+        }
+        if (json.has("item_model_location")) {
+            itemModelLocation = JsonParsingUtil.readResourceLocation(json.getAsJsonPrimitive("item_model_location").getAsString());
+        }
+        String itemModelVariant = modelVariant;
+        if (json.has("item_model_variant")) {
+            itemModelVariant = json.getAsJsonPrimitive("item_model_variant").getAsString();
+        }
+        ResourceLocation pottedModelLocaton = null;
+        if (modelLocation != null) {
+            pottedModelLocaton = new ResourceLocation(modelLocation.getNamespace(), "potted_" + modelLocation.getPath());
+        }
+        if (json.has("potted_model_location")) {
+            pottedModelLocaton = JsonParsingUtil.readResourceLocation(json.getAsJsonPrimitive("potted_model_location").getAsString());
+        }
+        String pottedModelVariant = modelVariant;
+        if (json.has("potted_model_variant")) {
+            pottedModelVariant = json.getAsJsonPrimitive("potted_model_variant").getAsString();
         }
         MobEffectInstance stewEffectInstance = null;
         if (json.has("stew_effect") && json.get("stew_effect").isJsonObject()) {
@@ -188,6 +262,6 @@ public class FlowerType {
             throw new NullPointerException("Could not find value for either 'block_state' or 'model_location' field in FlowerType '" + resourceLocation.toString() + "'. Set a value for either one and try again.");
         }
 
-        return new FlowerType(resourceLocation2, name, blockState, modelLocation, modelVariant, stewEffectInstance, withFlowerBlock);
+        return new FlowerType(resourceLocation2, name, blockState, modelLocation, modelVariant, itemModelLocation, itemModelVariant, pottedModelLocaton, pottedModelVariant, stewEffectInstance, withFlowerBlock);
     }
 }

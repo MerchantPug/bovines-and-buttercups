@@ -9,6 +9,8 @@
     "ClientboundUpdateMobEffectPacketMixin",
     "EntityMixin",
     "FarmBlockMixin",
+    "FlowerPotBlockAccessor",
+    "FlowerPotBlockMixin",
     "LivingEntityMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
@@ -23,6 +25,8 @@
     "client.EffectRenderingInventoryScreenMixin",
     "client.ItemRendererAccessor",
     "client.ModelBakeryMixin",
+    "client.ModelBlockRendererAccessor",
+    "client.ModelBlockRendererAmbientOcclusionFaceAccessor",
     "client.MushroomCowRendererMixin"
   ],
   "injectors": {

@@ -1,7 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.*;
 import net.minecraft.Util;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,6 +14,10 @@ public class BovineBlockEntityTypesForge {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Constants.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<CustomFlowerBlockEntity>> CUSTOM_FLOWER = BLOCK_ENTITY_TYPES.register("custom_flower", () -> BlockEntityType.Builder.of(CustomFlowerBlockEntity::new, BovineBlocks.CUSTOM_FLOWER.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Constants.resourceLocation("custom_flower").toString())));
+    public static final RegistryObject<BlockEntityType<CustomMushroomBlockEntity>> CUSTOM_MUSHROOM = BLOCK_ENTITY_TYPES.register("custom_mushroom", () -> BlockEntityType.Builder.of(CustomMushroomBlockEntity::new, BovineBlocks.CUSTOM_MUSHROOM.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Constants.resourceLocation("custom_mushroom").toString())));
+    public static final RegistryObject<BlockEntityType<CustomFlowerPotBlockEntity>> POTTED_CUSTOM_FLOWER = BLOCK_ENTITY_TYPES.register("potted_custom_flower", () -> BlockEntityType.Builder.of(CustomFlowerPotBlockEntity::new, BovineBlocks.POTTED_CUSTOM_FLOWER.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Constants.resourceLocation("potted_custom_flower").toString())));
+    public static final RegistryObject<BlockEntityType<CustomMushroomPotBlockEntity>> POTTED_CUSTOM_MUSHROOM = BLOCK_ENTITY_TYPES.register("potted_custom_mushroom", () -> BlockEntityType.Builder.of(CustomMushroomPotBlockEntity::new, BovineBlocks.POTTED_CUSTOM_MUSHROOM.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Constants.resourceLocation("potted_custom_mushroom").toString())));
+    public static final RegistryObject<BlockEntityType<CustomHugeMushroomBlockEntity>> CUSTOM_MUSHROOM_BLOCK = BLOCK_ENTITY_TYPES.register("custom_mushroom_block", () -> BlockEntityType.Builder.of(CustomHugeMushroomBlockEntity::new, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).build(Util.fetchChoiceType(References.BLOCK_ENTITY, Constants.resourceLocation("custom_mushroom_block").toString())));
 
     public static void init() {
         BLOCK_ENTITY_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());

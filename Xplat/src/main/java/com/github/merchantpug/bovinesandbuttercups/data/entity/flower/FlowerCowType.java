@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups.data.entity.flowercow;
+package com.github.merchantpug.bovinesandbuttercups.data.entity.flower;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.api.ICowType;
@@ -26,11 +26,16 @@ import java.util.Optional;
 
 public class FlowerCowType implements ICowType<FlowerCowType.Instance> {
 
-    public static final Instance MISSING = new Instance(Constants.resourceLocation("missing"), Integer.MAX_VALUE, FlowerType.MISSING, FlowerType.MISSING, null, null, null, 0);
+    public static final Instance MISSING = new Instance(Constants.resourceLocation("missing_moobloom"), Integer.MAX_VALUE, FlowerType.MISSING, FlowerType.MISSING, null, null, null, 0);
 
     @Override
     public ResourceLocation getId() {
         return Constants.resourceLocation("moobloom");
+    }
+
+    @Override
+    public ICowTypeInstance getMissingCow() {
+        return MISSING;
     }
 
     public void write(Instance instance, FriendlyByteBuf buf) {
@@ -118,6 +123,10 @@ public class FlowerCowType implements ICowType<FlowerCowType.Instance> {
 
         type.addAllBreedingRequirements(breedingRequirementsList);
 
+
+        FlowerTypeRegistry.update(flowerType.getResourceLocation(), flowerType);
+        FlowerTypeRegistry.update(budFlowerType.getResourceLocation(), budFlowerType);
+
         return type;
     }
 
@@ -138,8 +147,8 @@ public class FlowerCowType implements ICowType<FlowerCowType.Instance> {
         FlowerType flowerType = FlowerType.fromJson(resourceLocation, json.getAsJsonObject("flower"));
         FlowerType budFlowerType = FlowerType.fromJson(new ResourceLocation(resourceLocation.getNamespace(), resourceLocation.getPath() + "_bud"), json.getAsJsonObject("bud"));
 
-        FlowerTypeRegistry.register(flowerType);
-        FlowerTypeRegistry.register(budFlowerType);
+        FlowerTypeRegistry.update(flowerType.getResourceLocation(), flowerType);
+        FlowerTypeRegistry.update(budFlowerType.getResourceLocation(), budFlowerType);
 
         MobEffectInstance nectarEffectInstance = null;
         if (json.has("nectar_effect")) {

@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.block.renderer;
 
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
 import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;

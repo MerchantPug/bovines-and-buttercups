@@ -2,7 +2,9 @@ package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.block.CustomMushroomBlock;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -15,7 +17,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.storage.WritableLevelData;
@@ -40,8 +41,7 @@ public abstract class ClientLevelMixin extends Level {
 
     @Inject(method = "addDestroyBlockEffect", at = @At("HEAD"), cancellable = true)
     private void bovinesandbuttercups$changeParticlesIfCustomBlock(BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
-        if (blockState.getBlock() instanceof CustomFlowerBlock && blockState.hasBlockEntity()) {
-            if (!(this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity)) return;
+        if ((blockState.getBlock() instanceof CustomFlowerBlock || blockState.getBlock() instanceof CustomMushroomBlock) && blockState.hasBlockEntity()) {
             VoxelShape voxelShape = blockState.getShape(this, blockPos);
             voxelShape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
                 double d1 = Math.min(1.0D, maxX - minX);
@@ -61,9 +61,17 @@ public abstract class ClientLevelMixin extends Level {
                             double d9 = d6 * d3 + minZ;
                             ResourceLocation resourceLocation = Constants.resourceLocation("missing_flower");
                             String variant = "bovines";
-                            if (customFlowerBlockEntity.getFlowerType().getModelLocation() != null) {
-                                resourceLocation = customFlowerBlockEntity.getFlowerType().getModelLocation();
-                                variant = customFlowerBlockEntity.getFlowerType().getModelVariant();
+                            if (this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
+                                if (customFlowerBlockEntity.getFlowerType().getModelLocation() != null) {
+                                    resourceLocation = customFlowerBlockEntity.getFlowerType().getModelLocation();
+                                    variant = customFlowerBlockEntity.getFlowerType().getModelVariant();
+                                }
+                            } else if (this.getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
+                                resourceLocation = Constants.resourceLocation("missing_mushroom");
+                                if (customMushroomBlockEntity.getMushroomType().getModelLocation() != null) {
+                                    resourceLocation = customMushroomBlockEntity.getMushroomType().getModelLocation();
+                                    variant = customMushroomBlockEntity.getMushroomType().getModelVariant();
+                                }
                             }
                             this.addParticle(new ModelLocationParticleOption(resourceLocation, variant), blockPos.getX() + d7, blockPos.getY() + d8, blockPos.getZ() + d9, d4 - 0.5D, d5 - 0.5D, d6 - 0.5D);
                         }

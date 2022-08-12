@@ -1,8 +1,10 @@
 package com.github.merchantpug.bovinesandbuttercups.platform.services;
 
-import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlockEntity;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.*;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
+import com.github.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
+import com.github.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
 import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
@@ -37,7 +39,19 @@ public interface IPlatformHelper {
 
     BlockEntityType<CustomFlowerBlockEntity> getCustomFlowerBlockEntity();
 
+    BlockEntityType<CustomMushroomBlockEntity> getCustomMushroomBlockEntity();
+
+    BlockEntityType<CustomHugeMushroomBlockEntity> getCustomHugeMushroomBlockEntity();
+
+    BlockEntityType<CustomFlowerPotBlockEntity> getCustomFlowerPotBlockEntity();
+
+    BlockEntityType<CustomMushroomPotBlockEntity> getCustomMushroomPotBlockEntity();
+
     EntityType<FlowerCow> getMoobloomEntity();
 
     CustomFlowerItem getCustomFlowerItem();
+
+    CustomMushroomItem getCustomMushroomItem();
+
+    CustomHugeMushroomItem getCustomHugeMushroomItem();
 }

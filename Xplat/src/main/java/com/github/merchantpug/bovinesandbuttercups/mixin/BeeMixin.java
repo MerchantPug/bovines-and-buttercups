@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Mixin(Bee.class)
 public abstract class BeeMixin extends Animal implements BeeAccess {
-    @Nullable @Unique private UUID moobloomUUID;
+    @Nullable @Unique private UUID bovinesandbuttercups$moobloomUUID;
 
     protected BeeMixin(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -26,28 +26,23 @@ public abstract class BeeMixin extends Animal implements BeeAccess {
 
     @Inject(method = "addAdditionalSaveData", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee;hasSavedFlowerPos()Z"))
     private void bovinesandbuttercups$writeCustomDataToNbt(CompoundTag tag, CallbackInfo ci) {
-        if (this.moobloomUUID != null) {
-            tag.putUUID("MoobloomTarget", moobloomUUID);
+        if (this.bovinesandbuttercups$moobloomUUID != null) {
+            tag.putUUID("MoobloomTarget", bovinesandbuttercups$moobloomUUID);
         }
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/animal/Bee;savedFlowerPos:Lnet/minecraft/core/BlockPos;", ordinal = 0))
     private void bovinesandbuttercups$readMoobloomFromNbt(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("MoobloomTarget")) {
-            moobloomUUID = tag.getUUID("MoobloomTarget");
+            bovinesandbuttercups$moobloomUUID = tag.getUUID("MoobloomTarget");
         }
     }
 
-    @Inject(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeeGrowCropGoal;<init>(Lnet/minecraft/world/entity/animal/Bee;)V"))
-    private void bovinesandbuttercups$addMoveToMoobloomGoal(CallbackInfo ci) {
-        this.goalSelector.addGoal(6, new MoveToMoobloomGoal((Bee) (Object)this));
-    }
-
     @Nullable public UUID bovinesandbuttercups$getTargetMoobloom() {
-        return moobloomUUID;
+        return bovinesandbuttercups$moobloomUUID;
     }
 
     public void bovinesandbuttercups$setTargetMoobloom(@Nullable UUID value) {
-        moobloomUUID = value;
+        bovinesandbuttercups$moobloomUUID = value;
     }
 }

@@ -2,6 +2,7 @@ package com.github.merchantpug.bovinesandbuttercups.mixin;
 
 import com.github.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import com.github.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
+import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffect;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 
 @Mixin(LivingEntity.class)
@@ -44,7 +46,7 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "canBeAffected", at = @At(value = "RETURN"), cancellable = true)
-    private void cancelStatusEffectIfNullified(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
+    private void bovinesandbuttercups$cancelStatusEffectIfNullified(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
          this.getActiveEffects().forEach(instance -> {
              if (instance.getEffect() instanceof LockdownEffect && ((MobEffectInstanceAccess)instance).bovinesandbuttercups$getLockedEffects().containsKey(effect.getEffect())) {
                  cir.setReturnValue(false);

@@ -11,7 +11,6 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
-import java.util.Objects;
 
 public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
     int ticks;
@@ -26,7 +25,7 @@ public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
 
     @Override
     public boolean canBeeUse() {
-        return !bee.hasRestriction() && this.shouldMoveToMoobloom() && ((BeeAccess)bee).bovinesandbuttercups$getTargetMoobloom() != null && !bee.blockPosition().closerToCenterThan(Objects.requireNonNull(((ServerLevel) bee.level).getEntity(((BeeAccess) bee).bovinesandbuttercups$getTargetMoobloom())).position(), 2);
+        return !bee.hasRestriction() && this.shouldMoveToMoobloom() && ((BeeAccess)bee).bovinesandbuttercups$getTargetMoobloom() != null && ((ServerLevel) bee.level).getEntity(((BeeAccess) bee).bovinesandbuttercups$getTargetMoobloom()) != null && !bee.blockPosition().closerToCenterThan(((ServerLevel) bee.level).getEntity(((BeeAccess) bee).bovinesandbuttercups$getTargetMoobloom()).position(), 2);
     }
 
     @Override

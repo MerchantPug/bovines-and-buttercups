@@ -6,7 +6,9 @@
   "mixins": [
     "BeeAccessor",
     "BeeMixin",
+    "BodyRotationControlMixin",
     "ClientboundUpdateMobEffectPacketMixin",
+    "EntityAccessor",
     "EntityMixin",
     "FarmBlockMixin",
     "FlowerPotBlockAccessor",
@@ -27,7 +29,8 @@
     "client.ModelBakeryMixin",
     "client.ModelBlockRendererAccessor",
     "client.ModelBlockRendererAmbientOcclusionFaceAccessor",
-    "client.MushroomCowRendererMixin"
+    "client.MushroomCowRendererMixin",
+    "client.QuadrupedModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1

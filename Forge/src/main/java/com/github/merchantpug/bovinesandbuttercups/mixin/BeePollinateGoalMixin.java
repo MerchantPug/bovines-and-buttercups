@@ -22,9 +22,6 @@ import java.util.Optional;
 @SuppressWarnings("ConstantConditions")
 @Mixin(targets = "net.minecraft.world.entity.animal.Bee$BeePollinateGoal")
 public abstract class BeePollinateGoalMixin {
-    BeePollinateGoalMixin() {
-    }
-
     @Final @Shadow Bee this$0;
 
     @Inject(method = "canBeeUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeePollinateGoal;findNearbyFlower()Ljava/util/Optional;"), cancellable = true)

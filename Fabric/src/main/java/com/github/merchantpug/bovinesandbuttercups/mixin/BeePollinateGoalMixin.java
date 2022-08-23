@@ -23,9 +23,6 @@ import net.minecraft.world.phys.Vec3;
 @SuppressWarnings("ConstantConditions")
 @Mixin(targets = "net.minecraft.world.entity.animal.Bee$BeePollinateGoal")
 public abstract class BeePollinateGoalMixin {
-    BeePollinateGoalMixin() {
-    }
-
     @Final @Shadow Bee field_20377;
 
     @Inject(method = "canBeeUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeePollinateGoal;findNearbyFlower()Ljava/util/Optional;"), cancellable = true)
@@ -46,7 +43,7 @@ public abstract class BeePollinateGoalMixin {
 
     @Unique
     private Optional<FlowerCow> bovinesandbuttercups$findMoobloom() {
-        FlowerCow moobloom = this.field_20377.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level.getBlockState(entity.blockPosition().above(2)).isPathfindable(entity.level, entity.blockPosition().above(2), PathComputationType.AIR) && !entity.isBaby() && ((FlowerCow)entity).bee == null), null, field_20377.getX(), field_20377.getY(), field_20377.getZ(), field_20377.getBoundingBox().inflate(8.0F, 4.0, 8.0F));
+        FlowerCow moobloom = this.field_20377.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level.getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((FlowerCow)entity).bee == null), null, field_20377.getX(), field_20377.getY(), field_20377.getZ(), field_20377.getBoundingBox().inflate(8.0F, 4.0, 8.0F));
         if (moobloom != null) {
             return Optional.of(moobloom);
         }

@@ -7,6 +7,7 @@ import com.github.merchantpug.bovinesandbuttercups.data.entity.flower.FlowerCowB
 import com.github.merchantpug.bovinesandbuttercups.data.CowTypeRegistry;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.flower.FlowerCowType;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
+import com.github.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
@@ -58,14 +59,14 @@ public class FlowerCow extends Cow implements Shearable {
     private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> POLLINATION_TICKS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> FLOWERS_TO_GENERATE = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
     public FlowerCowType.Instance type;
-    public int standingStillForBeeTicks;
     @Nullable public Bee bee;
     private int timeBetweenFlowerPlacement;
+    private boolean hasRefreshedDimensionsForLaying;
 
     public FlowerCow(EntityType<? extends FlowerCow> entityType, Level level) {
         super(entityType, level);
-        this.standingStillForBeeTicks = 0;
         this.bee = null;
         this.timeBetweenFlowerPlacement = 0;
     }
@@ -76,12 +77,13 @@ public class FlowerCow extends Cow implements Shearable {
         this.entityData.define(TYPE_ID, FlowerCowType.MISSING.getId().toString());
         this.entityData.define(POLLINATION_TICKS, 0);
         this.entityData.define(FLOWERS_TO_GENERATE, 0);
+        this.entityData.define(STANDING_STILL_FOR_BEE_TICKS, 0);
     }
 
     @Override
     public void registerGoals() {
         this.goalSelector.addGoal(2, new FlowerCow.LookAtBeeGoal());
-        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, FlowerCow.class, 2.0F, 1.0F, 1.0F, moobloomEntity -> moobloomEntity instanceof FlowerCow && ((FlowerCow) moobloomEntity).standingStillForBeeTicks > 0));
+        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, FlowerCow.class, 2.0F, 1.0F, 1.0F, moobloomEntity -> moobloomEntity instanceof FlowerCow && ((FlowerCow) moobloomEntity).getStandingStillForBeeTicks() > 0));
         super.registerGoals();
     }
 
@@ -124,8 +126,8 @@ public class FlowerCow extends Cow implements Shearable {
         if (this.isInvulnerableTo(source)) {
             return false;
         }
-        if (bee != null) {
-            standingStillForBeeTicks = 0;
+        if (bee != null && !this.level.isClientSide()) {
+            this.setStandingStillForBeeTicks(0);
             bee = null;
         }
         return super.hurt(source, amount);
@@ -133,17 +135,39 @@ public class FlowerCow extends Cow implements Shearable {
 
     @Override
     public void tick() {
-        if (bee != null && !bee.isAlive()) {
-            standingStillForBeeTicks = 0;
+        if (bee != null && !bee.isAlive() && !this.level.isClientSide()) {
+            this.setStandingStillForBeeTicks(0);
             bee = null;
         }
-        if (standingStillForBeeTicks > 0) {
-            standingStillForBeeTicks--;
+        if (this.getStandingStillForBeeTicks() > 0 && !this.level.isClientSide()) {
+            this.setStandingStillForBeeTicks(this.getStandingStillForBeeTicks() - 1);
         }
         if (!this.level.isClientSide() && this.getPollinationTicks() > 0 && this.tickCount % 8 == 0) {
-            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY(1.1), this.getZ(), 1, 0.3, 0.1, 0.3, 0.0);
+            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + this.getBoundingBox().getYsize(), this.getZ(), 1, 0.3, 0.1, 0.3, 0.0);
         }
         super.tick();
+        if (this.getStandingStillForBeeTicks() > 0) {
+            if (!hasRefreshedDimensionsForLaying) {
+                this.refreshDimensions();
+                ((EntityAccessor)this).bovinesandbuttercups$setEyeHeight(this.getDimensions(this.getPose()).height * 0.85F);
+                hasRefreshedDimensionsForLaying = true;
+            }
+            if (!this.level.isClientSide() && this.bee != null) {
+                this.getLookControl().setLookAt(bee);
+            }
+        } else if (hasRefreshedDimensionsForLaying) {
+            this.refreshDimensions();
+            ((EntityAccessor)this).bovinesandbuttercups$setEyeHeight(this.getDimensions(this.getPose()).height * 0.85F);
+            hasRefreshedDimensionsForLaying = false;
+        }
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        if (this.getStandingStillForBeeTicks() > 0) {
+            return super.getDimensions(pose).scale(1.0F, 0.7F);
+        }
+        return super.getDimensions(pose);
     }
 
     @Override
@@ -154,11 +178,11 @@ public class FlowerCow extends Cow implements Shearable {
             this.timeBetweenFlowerPlacement--;
         }
 
-        if (this.getPollinationTicks() > 0) {
+        if (this.getPollinationTicks() > 0 && !this.level.isClientSide()) {
             this.setPollinationTicks(this.getPollinationTicks() - 1);
         }
 
-        if (!this.level.isClientSide && this.level.getBlockState(this.blockPosition()).isAir() && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
+        if (!this.level.isClientSide() && this.level.getBlockState(this.blockPosition()).isAir() && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
             if (this.getFlowerCowType().getFlower().getBlockState() != null && this.getFlowerCowType().getFlower().getBlockState().canSurvive(this.level, this.blockPosition())) {
                 ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
                 this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getFlower().getBlockState(), 3);
@@ -352,11 +376,11 @@ public class FlowerCow extends Cow implements Shearable {
     }
 
     public int getStandingStillForBeeTicks() {
-        return this.standingStillForBeeTicks;
+        return this.entityData.get(STANDING_STILL_FOR_BEE_TICKS);
     }
 
     public void setStandingStillForBeeTicks(int value) {
-        this.standingStillForBeeTicks = value;
+        this.entityData.set(STANDING_STILL_FOR_BEE_TICKS, value);
     }
 
     @Override
@@ -471,24 +495,17 @@ public class FlowerCow extends Cow implements Shearable {
 
     public class LookAtBeeGoal extends Goal {
         public LookAtBeeGoal() {
-            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE));
+            this.setFlags(EnumSet.of(Goal.Flag.JUMP, Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         @Override
         public boolean canUse() {
-            return FlowerCow.this.standingStillForBeeTicks > 0 && FlowerCow.this.bee != null;
+            return FlowerCow.this.getStandingStillForBeeTicks() > 0;
         }
 
         @Override
         public void start() {
             FlowerCow.this.getNavigation().stop();
-        }
-
-        @Override
-        public void tick() {
-            if (FlowerCow.this.bee != null) {
-                FlowerCow.this.getLookControl().setLookAt(bee, 15.0f, 30.0f);
-            }
         }
     }
 }

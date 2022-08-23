@@ -46,19 +46,24 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
             }
 
             if (livingEntity.getFlowerCowType().getBud() != null || livingEntity.getFlowerCowType().getBud().getBlockState() != null) {
-                handleMoobudRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
+                handleMoobudRender(poseStack, buffer, livingEntity, packedLight, bl, m, blockState, modelResourceLocation);
             }
         } else {
             if (livingEntity.getFlowerCowType().getFlower().getModelLocation() != null) {
                 modelResourceLocation = new ModelResourceLocation(livingEntity.getFlowerCowType().getFlower().getModelLocation(), livingEntity.getFlowerCowType().getFlower().getModelVariant());
             }
             if (livingEntity.getFlowerCowType().getFlower() != null || livingEntity.getFlowerCowType().getFlower().getBlockState() != null) {
-                handleMoobloomRender(poseStack, buffer, packedLight, blockRenderer, bl, m, blockState, modelResourceLocation);
+                handleMoobloomRender(poseStack, buffer, livingEntity, packedLight, bl, m, blockState, modelResourceLocation);
             }
         }
     }
 
-    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, int i, BlockRenderDispatcher blockRenderDispatcher, boolean outlineAndInvisible, int overlay, @Nullable BlockState blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, FlowerCow entity, int i, boolean outlineAndInvisible, int overlay, @Nullable BlockState blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+        poseStack.pushPose();
+        if (entity.getStandingStillForBeeTicks() > 0) {
+            poseStack.translate(0.0f, 11.0F / 16.0F, 0.0f);
+        }
+
         poseStack.pushPose();
         poseStack.translate(0.2f, 0.35f, 0.5f);
         poseStack.translate(0.1f, 0.0f, -0.6f);
@@ -66,7 +71,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.scale(-0.5f, -0.5f, 0.5f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
         poseStack.translate(1.5f, 0.075f, 0.4f);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -76,7 +81,8 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.scale(-0.5f, -0.5f, 0.5f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
         poseStack.translate(1.0f, 0.075f, 0.3f);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        poseStack.popPose();
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -87,18 +93,23 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(0.1, -0.1, -0.1);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
     }
 
-    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, int i, BlockRenderDispatcher blockRenderDispatcher, boolean outlineAndInvisible, int overlay, BlockState blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, FlowerCow entity, int i, boolean outlineAndInvisible, int overlay, @Nullable BlockState blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+        poseStack.pushPose();
+        if (entity.getStandingStillForBeeTicks() > 0) {
+            poseStack.translate(0.0f, 11.0F / 16.0F, 0.0f);
+        }
+
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(0.35, -0.133, -0.35);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -108,7 +119,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(0.5, -0.195, 0.1);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -118,7 +129,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(0.6, -0.195, -0.4);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -128,7 +139,8 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.15, -0.257, 0.0);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
+        poseStack.popPose();
         poseStack.popPose();
 
         poseStack.pushPose();
@@ -138,7 +150,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(0.0, -0.16, 0.0);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderDispatcher, overlay, blockState, modelResourceLocation);
+        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
     }
 

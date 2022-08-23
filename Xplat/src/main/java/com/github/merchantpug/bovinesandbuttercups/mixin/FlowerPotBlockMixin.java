@@ -35,7 +35,7 @@ public abstract class FlowerPotBlockMixin {
     @Shadow protected abstract boolean isEmpty();
 
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Ljava/util/Map;getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void useDataDefinedItemOnPot(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir, ItemStack stack, Item item) {
+    private void bovinesandbuttercups$useDataDefinedItemOnPot(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir, ItemStack stack, Item item) {
         if (item instanceof CustomFlowerItem) {
             if (this.isEmpty()) {
                 level.setBlock(pos, BovineBlocks.POTTED_CUSTOM_FLOWER.get().defaultBlockState(), 3);

@@ -13,7 +13,6 @@ import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsFabriQuil
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.server.level.ServerLevel;
@@ -24,25 +23,27 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.function.Supplier;
 
-public class FabricPlatformHelper implements IPlatformHelper {
+public class QuiltPlatformHelper implements IPlatformHelper {
 
     @Override
     public String getPlatformName() {
-        return "Fabric";
+        return "Quilt";
     }
 
     @Override
     public boolean isModLoaded(String modId) {
-        return FabricLoader.getInstance().isModLoaded(modId);
+        return QuiltLoader.isModLoaded(modId);
     }
 
     @Override
     public boolean isDevelopmentEnvironment() {
-        return FabricLoader.getInstance().isDevelopmentEnvironment();
+        return QuiltLoader.isDevelopmentEnvironment();
     }
+
 
     @Override
     public <T extends Mob> SpawnEggItem createSpawnEggItem(Supplier<EntityType<T>> entityType, int backgroundColor, int highlightColor, Item.Properties properties) {

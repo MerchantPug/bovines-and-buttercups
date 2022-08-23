@@ -28,7 +28,7 @@ public class CowTypeListPacket implements IPacket {
     }
 
     @Override
-    public ResourceLocation getFabricId() {
+    public ResourceLocation getFabriQuiltId() {
         return BovinePackets.COW_TYPE_LIST;
     }
 

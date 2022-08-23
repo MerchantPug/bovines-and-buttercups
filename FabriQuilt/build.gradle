@@ -4,7 +4,7 @@ plugins {
     id 'idea'
 }
 
-archivesBaseName = "${project.mod_name}-Fabric"
+archivesBaseName = "${project.mod_name}-FabriQuilt"
 
 repositories {
     maven {
@@ -25,37 +25,17 @@ dependencies {
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation(project(path: ":FabriQuilt", configuration: "namedElements"))
+    implementation project(":Xplat")
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/bovinesandbuttercups.accesswidener")
+    accessWidenerPath = file("src/main/resources/bovinesandbuttercupsfabriquilt.accesswidener")
     mixin.defaultRefmapName = "bovinesandbuttercups.refmap.json"
-
-    runs {
-        client {
-            client()
-            setConfigName("Fabric Client")
-            ideConfigGenerated(true)
-            runDir("run")
-        }
-        server {
-            server()
-            setConfigName("Fabric Server")
-            ideConfigGenerated(true)
-            runDir("run")
-        }
-    }
 }
 
 processResources {
     from project(":Xplat").sourceSets.main.resources
-    from project(":FabriQuilt").sourceSets.main.resources
     inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
     
     def environment = System.getenv("ENVIRONMENT")
     if (environment != "production") {
@@ -66,7 +46,6 @@ processResources {
 
 tasks.withType(JavaCompile) {
     source(project(":Xplat").sourceSets.main.allSource)
-    source(project(":FabriQuilt").sourceSets.main.allSource)
 }
 
 publishing {

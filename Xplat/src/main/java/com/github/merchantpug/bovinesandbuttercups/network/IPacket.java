@@ -13,5 +13,5 @@ public interface IPacket {
 
     void encode(FriendlyByteBuf buf);
 
-    ResourceLocation getFabricId();
+    ResourceLocation getFabriQuiltId();
 }

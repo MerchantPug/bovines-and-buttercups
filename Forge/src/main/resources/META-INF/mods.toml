@@ -16,13 +16,13 @@ Placeholder
 [[dependencies.bovinesandbuttercups]]
     modId="forge"
     mandatory=true
-    versionRange="[41.1.0,)"
+    versionRange="[43.1.1,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.bovinesandbuttercups]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.20)"
+    versionRange="[1.19.2,1.20)"
     ordering="NONE"
     side="BOTH"

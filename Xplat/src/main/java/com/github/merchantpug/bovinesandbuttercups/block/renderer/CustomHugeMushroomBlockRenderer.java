@@ -25,6 +25,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 
 import java.util.BitSet;
@@ -47,7 +48,7 @@ public class CustomHugeMushroomBlockRenderer implements BlockEntityRenderer<Cust
         }
 
         BakedModel mushroomBlockModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
-        BakedModel mushroomBlockInsideModel = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(Constants.resourceLocation("mushroom_block_inside"), "bovines"));
+        BakedModel mushroomBlockInsideModel = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(new ResourceLocation("mushroom_block_inside"), "bovines"));
 
         boolean northOutwards = blockEntity.getBlockState().getValue(CustomHugeMushroomBlock.NORTH);
         if (northOutwards) {

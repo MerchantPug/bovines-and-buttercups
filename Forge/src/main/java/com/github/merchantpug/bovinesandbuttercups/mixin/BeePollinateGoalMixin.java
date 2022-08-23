@@ -35,7 +35,7 @@ public abstract class BeePollinateGoalMixin {
             moobloom.setStandingStillForBeeTicks(600);
             moobloom.setBee(this$0);
             this$0.setSavedFlowerPos(moobloom.blockPosition());
-            ((MobAccessor)this.this$0).bovinesandbuttercups$getNavigation().moveTo(moobloom.position().x(), moobloom.getBoundingBox().getYsize() * 1.3, moobloom.position().z(), 1.2f);
+            ((MobAccessor)this.this$0).bovinesandbuttercups$getNavigation().moveTo(moobloom.position().x(), moobloom.getBoundingBox().getYsize() * 1.3, moobloom.position().z(), 1.6f);
             cir.setReturnValue(true);
         }
     }

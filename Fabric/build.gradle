@@ -25,6 +25,7 @@ dependencies {
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation(project(path: ":Xplat"))
     implementation(project(path: ":FabriQuilt", configuration: "namedElements"))
 }
 

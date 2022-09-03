@@ -8,7 +8,7 @@
       "effect": "minecraft:fire_resistance",
       "duration": 80
     },
-    "with_block": true
+    "with_blocks": true
   },
   "bud": {
     "key": "test:fire_flower_bud",

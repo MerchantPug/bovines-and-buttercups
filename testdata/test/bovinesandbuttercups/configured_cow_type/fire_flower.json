@@ -1,6 +1,7 @@
 {
   "type": "bovinesandbuttercups:moobloom",
   "flower": {
+    "key": "test:fire_flower",
     "name": "Fire Flower",
     "model_location": "test:fire_flower",
     "stew_effect": {
@@ -10,6 +11,7 @@
     "with_block": true
   },
   "bud": {
+    "key": "test:fire_flower_bud",
     "model_location": "test:fire_flower"
   },
   "nectar_effect": {

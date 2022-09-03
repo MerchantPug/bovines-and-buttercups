@@ -1,6 +1,7 @@
 {
   "type": "bovinesandbuttercups:mooshroom",
   "mushroom": {
+    "key": "test:red_truffle",
     "name": "Red Truffle",
     "model_location": "test:red_truffle",
     "huge_block_name": "Red Truffle Block",

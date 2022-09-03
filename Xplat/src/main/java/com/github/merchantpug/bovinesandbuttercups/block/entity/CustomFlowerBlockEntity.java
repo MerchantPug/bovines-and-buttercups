@@ -1,9 +1,8 @@
 package com.github.merchantpug.bovinesandbuttercups.block.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
-import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
-import com.github.merchantpug.bovinesandbuttercups.data.block.mushroom.MushroomType;
+import com.github.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
+import com.github.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +17,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class CustomFlowerBlockEntity extends BlockEntity {
+    @Nullable private FlowerType cachedFlowerType;
     @Nullable private String flowerTypeName;
 
     public CustomFlowerBlockEntity(BlockPos worldPosition, BlockState blockState) {
@@ -48,13 +48,15 @@ public class CustomFlowerBlockEntity extends BlockEntity {
         try {
             if (flowerTypeName == null) {
                 return FlowerType.MISSING;
-            } else if (FlowerTypeRegistry.contains(ResourceLocation.tryParse(flowerTypeName))) {
-                return FlowerType.fromKey(flowerTypeName);
-            } else {
-                return FlowerType.MISSING;
+            } else if (cachedFlowerType != FlowerType.fromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName))) {
+                cachedFlowerType = FlowerType.fromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName));
+                return cachedFlowerType;
+            } else if (cachedFlowerType != null) {
+                return cachedFlowerType;
             }
         } catch (Exception e) {
-            Constants.LOG.warn("Could not load FlowerType at blockpos " + this.getBlockPos().toString() + ": ", e.getMessage());
+            this.cachedFlowerType = FlowerType.MISSING;
+            Constants.LOG.warn("Could not load FlowerType at BlockPos '" + this.getBlockPos().toString() + "': ", e.getMessage());
         }
         return FlowerType.MISSING;
     }

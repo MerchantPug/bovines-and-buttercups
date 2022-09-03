@@ -4,7 +4,8 @@
   "package": "com.github.merchantpug.bovinesandbuttercups.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "BeePollinateGoalMixin"
+    "BeePollinateGoalMixin",
+    "RegistryAccessMixin"
   ],
   "client": [
     "client.EffectRenderingInventoryScreenFabriQuiltMixin",

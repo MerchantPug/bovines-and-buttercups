@@ -13,11 +13,11 @@
     "FarmBlockMixin",
     "FlowerPotBlockAccessor",
     "FlowerPotBlockMixin",
+    "ItemStackMixin",
     "LivingEntityMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
     "MushroomCowMixin",
-    "PlayerListMixin",
     "ServerPlayerMixin",
     "SuspiciousStewRecipeMixin"
   ],

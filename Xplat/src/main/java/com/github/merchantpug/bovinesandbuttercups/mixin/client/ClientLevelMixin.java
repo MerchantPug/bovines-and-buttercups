@@ -4,6 +4,7 @@ import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.block.CustomMushroomBlock;
+import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -62,15 +63,21 @@ public abstract class ClientLevelMixin extends Level {
                             ResourceLocation resourceLocation = Constants.resourceLocation("missing_flower");
                             String variant = "bovines";
                             if (this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                                if (customFlowerBlockEntity.getFlowerType().getModelLocation() != null) {
-                                    resourceLocation = customFlowerBlockEntity.getFlowerType().getModelLocation();
-                                    variant = customFlowerBlockEntity.getFlowerType().getModelVariant();
+                                if (customFlowerBlockEntity.getFlowerType().modelLocation().isPresent()) {
+                                    resourceLocation = customFlowerBlockEntity.getFlowerType().modelLocation().get();
+                                    variant = customFlowerBlockEntity.getFlowerType().modelVariant();
                                 }
                             } else if (this.getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
                                 resourceLocation = Constants.resourceLocation("missing_mushroom");
-                                if (customMushroomBlockEntity.getMushroomType().getModelLocation() != null) {
-                                    resourceLocation = customMushroomBlockEntity.getMushroomType().getModelLocation();
-                                    variant = customMushroomBlockEntity.getMushroomType().getModelVariant();
+                                if (customMushroomBlockEntity.getMushroomType().modelLocation().isPresent()) {
+                                    resourceLocation = customMushroomBlockEntity.getMushroomType().modelLocation().get();
+                                    variant = customMushroomBlockEntity.getMushroomType().modelVariant();
+                                }
+                            } else if (this.getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {
+                                resourceLocation = Constants.resourceLocation("missing_mushroom");
+                                if (customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelLocation().isPresent()) {
+                                    resourceLocation = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelLocation().get();
+                                    variant = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelVariant();
                                 }
                             }
                             this.addParticle(new ModelLocationParticleOption(resourceLocation, variant), blockPos.getX() + d7, blockPos.getY() + d8, blockPos.getZ() + d9, d4 - 0.5D, d5 - 0.5D, d6 - 0.5D);

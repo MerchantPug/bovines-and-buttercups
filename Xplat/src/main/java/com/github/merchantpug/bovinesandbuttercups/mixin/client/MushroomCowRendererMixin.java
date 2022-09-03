@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 
-import com.github.merchantpug.bovinesandbuttercups.entity.renderer.feature.MushroomCowMyceliumLayer;
+import com.github.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMyceliumLayer;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

@@ -1,7 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
-import com.github.merchantpug.bovinesandbuttercups.block.renderer.*;
-import com.github.merchantpug.bovinesandbuttercups.entity.renderer.FlowerCowRenderer;
+import com.github.merchantpug.bovinesandbuttercups.client.renderer.block.*;
+import com.github.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;

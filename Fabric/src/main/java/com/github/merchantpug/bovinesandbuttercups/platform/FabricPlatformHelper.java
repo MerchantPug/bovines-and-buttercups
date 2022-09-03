@@ -1,23 +1,22 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
+import com.github.merchantpug.bovinesandbuttercups.api.CowType;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.*;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
-import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesFabriQuilt;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriQuilt;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsFabriQuilt;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineRegistriesFabriQuilt;
+import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
@@ -55,20 +54,13 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public void sendPacketToPlayer(ServerPlayer player, IPacket packet) {
-        ServerPlayNetworking.send(player, packet.getFabriQuiltId(), packet.buf());
-    }
-
-    @Override
-    public void sendPacketToAllPlayers(ServerLevel serverLevel, IPacket packet) {
-        for (ServerPlayer player : serverLevel.players()) {
-            ServerPlayNetworking.send(player, packet.getFabriQuiltId(), packet.buf());
-        }
-    }
-
-    @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaAccessor.callRegister(criterionTrigger);
+    }
+
+    @Override
+    public Codec<CowType<?>> getCowTypeCodec() {
+        return BovineRegistriesFabriQuilt.COW_TYPE.byNameCodec();
     }
 
     @Override

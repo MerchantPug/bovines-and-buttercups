@@ -1,0 +1,16 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "flower": {
+    "block_state": {
+      "Name": "bovinesandbuttercups:snowdrop"
+    }
+  },
+  "bud": {
+    "key": "bovinesandbuttercups:snowdrop_bud",
+    "model_location": "bovinesandbuttercups:snowdrop_bud"
+  },
+  "nectar_effect": {
+    "effect": "minecraft:slowness",
+    "duration": 800
+  }
+}

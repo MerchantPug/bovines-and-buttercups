@@ -101,7 +101,7 @@ public abstract class MobEffectInstanceMixin implements MobEffectInstanceAccess 
         ListTag list = tag.getList("LockedEffects", Tag.TAG_COMPOUND);
         for (Tag nbtElement : list) {
             if (!(nbtElement instanceof CompoundTag compound)) {
-                Constants.LOG.warn("LockedEffects NBT is not an NBTCompound.");
+                Constants.LOG.warn("LockedEffects NBT is not a CompoundTag.");
                 continue;
             }
             if (compound.contains("Id", Tag.TAG_BYTE) && compound.contains("Duration", Tag.TAG_INT)) {

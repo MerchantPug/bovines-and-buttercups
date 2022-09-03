@@ -39,7 +39,7 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
         if (blockEntity instanceof CustomHugeMushroomBlockEntity chmbe) {
             CompoundTag compound = new CompoundTag();
             if (chmbe.getMushroomType() != null) {
-                compound.putString("Type", chmbe.getMushroomType().getResourceLocation().toString());
+                compound.putString("Type", chmbe.getMushroomType().key().toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }

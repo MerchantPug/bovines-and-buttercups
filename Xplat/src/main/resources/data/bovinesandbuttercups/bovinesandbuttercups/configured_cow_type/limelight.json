@@ -1,0 +1,16 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "flower": {
+    "block_state": {
+      "Name": "bovinesandbuttercups:limelight"
+    }
+  },
+  "bud": {
+    "key": "bovinesandbuttercups:limelight_bud",
+    "model_location": "bovinesandbuttercups:limelight_bud"
+  },
+  "nectar_effect": {
+    "effect": "minecraft:mining_fatigue",
+    "duration": 1200
+  }
+}

@@ -1,15 +1,20 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
-import com.github.merchantpug.bovinesandbuttercups.data.CowTypeRegistry;
-import com.github.merchantpug.bovinesandbuttercups.data.entity.flower.FlowerCowType;
-import com.github.merchantpug.bovinesandbuttercups.data.entity.mushroom.MushroomCowType;
+import com.github.merchantpug.bovinesandbuttercups.api.CowType;
+import com.github.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
+import com.github.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 
 public class BovineCowTypes {
-    public static final FlowerCowType FLOWER_COW_TYPE = new FlowerCowType();
-    public static final MushroomCowType MUSHROOM_COW_TYPE = new MushroomCowType();
+    public static final CowType<FlowerCowConfiguration> FLOWER_COW_TYPE = new CowType<>(asMapCodec(FlowerCowConfiguration.CODEC));
+    public static final CowType<MushroomCowConfiguration> MUSHROOM_COW_TYPE = new CowType<>(asMapCodec(MushroomCowConfiguration.CODEC));
 
-    public static void register() {
-        CowTypeRegistry.registerType(FLOWER_COW_TYPE);
-        CowTypeRegistry.registerType(MUSHROOM_COW_TYPE);
+    public static <C> MapCodec<C> asMapCodec(Codec<C> codec) {
+        if (codec instanceof MapCodec.MapCodecCodec) {
+            return ((MapCodec.MapCodecCodec<C>) codec).codec();
+        }
+        return codec.fieldOf("value");
     }
 }

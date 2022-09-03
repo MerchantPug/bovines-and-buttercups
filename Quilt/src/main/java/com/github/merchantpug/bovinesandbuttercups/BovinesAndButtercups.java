@@ -1,6 +1,5 @@
 package com.github.merchantpug.bovinesandbuttercups;
 
-import com.github.merchantpug.bovinesandbuttercups.entity.type.CowLoaderQuilt;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import org.quiltmc.loader.api.ModContainer;
@@ -24,7 +23,5 @@ public class BovinesAndButtercups implements ModInitializer {
 
         ResourceLoader.registerBuiltinResourcePack(Constants.resourceLocation("mojang"), mod, ResourcePackActivationType.NORMAL, Component.literal("Mojang Textures"));
         ResourceLoader.registerBuiltinResourcePack(Constants.resourceLocation("no_grass"), mod, ResourcePackActivationType.NORMAL, Component.literal("No Grass Back"));
-
-        ResourceLoader.get(PackType.SERVER_DATA).registerReloader(new CowLoaderQuilt());
     }
 }

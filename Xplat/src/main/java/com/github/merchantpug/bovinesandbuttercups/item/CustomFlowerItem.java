@@ -1,7 +1,8 @@
 package com.github.merchantpug.bovinesandbuttercups.item;
 
-import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerType;
-import com.github.merchantpug.bovinesandbuttercups.data.block.flower.FlowerTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
+import com.github.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import com.github.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.github.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -18,9 +19,11 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class CustomFlowerItem extends BlockItem {
     public CustomFlowerItem(Block block, Properties properties) {
@@ -36,48 +39,53 @@ public class CustomFlowerItem extends BlockItem {
         return stack;
     }
 
-    @Nullable public static FlowerType getFlowerTypeFromTag(ItemStack stack) {
+    public static Optional<FlowerType> getFlowerTypeFromTag(LevelAccessor level, ItemStack stack) {
         if (stack.getTag() != null) {
             CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
-                return FlowerType.fromKey(compound.getString("Type"));
+                FlowerType flowerType = FlowerType.fromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
+                if (flowerType != FlowerType.MISSING) {
+                    return Optional.of(flowerType);
+                }
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public Component getName(ItemStack stack) {
-        CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
-        if (compound.contains("Type")) {
-            FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
-            if (flowerType.isWithFlowerBlock()) {
-                return flowerType.getOrCreateNameTranslationKey();
+        if (((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel() != null) {
+            CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
+            if (compound.contains("Type")) {
+                FlowerType flowerType = FlowerType.fromKey(((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel(), ResourceLocation.tryParse(compound.getString("Type")));
+                if (flowerType.withFlowerBlock()) {
+                    return flowerType.getOrCreateNameTranslationKey();
+                }
             }
         }
         return super.getName(stack);
     }
 
-    public static MobEffect getSuspiciousStewEffect(ItemStack customFlower) {
+    public static MobEffect getSuspiciousStewEffect(LevelAccessor level, ItemStack customFlower) {
         if (customFlower.getTag() != null) {
             CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
-                FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
-                if (flowerType.getStewEffectInstance() != null) {
-                    return flowerType.getStewEffectInstance().getEffect();
+                FlowerType flowerType = FlowerType.fromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
+                if (flowerType.stewEffectInstance().isPresent()) {
+                    return flowerType.stewEffectInstance().get().getEffect();
                 }
             }
         }
         return MobEffects.REGENERATION;
     }
 
-    public static int getSuspiciousStewDuration(ItemStack customFlower) {
+    public static int getSuspiciousStewDuration(LevelAccessor level, ItemStack customFlower) {
         if (customFlower.getTag() != null) {
             CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
-                FlowerType flowerType = FlowerType.fromKey(compound.getString("Type"));
-                if (flowerType.getStewEffectInstance() != null) {
-                    return flowerType.getStewEffectInstance().getDuration();
+                FlowerType flowerType = FlowerType.fromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
+                if (flowerType.stewEffectInstance().isPresent()) {
+                    return flowerType.stewEffectInstance().get().getDuration();
                 }
             }
         }
@@ -85,10 +93,10 @@ public class CustomFlowerItem extends BlockItem {
     }
 
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemTransforms.TransformType transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.getItemModelLocation(), FlowerType.MISSING.getItemModelVariant());
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.itemModelLocation().get(), FlowerType.MISSING.itemModelVariant());
 
-        if (CustomFlowerItem.getFlowerTypeFromTag(stack) != null && FlowerTypeRegistry.contains(CustomFlowerItem.getFlowerTypeFromTag(stack).getResourceLocation()) && CustomFlowerItem.getFlowerTypeFromTag(stack).getItemModelLocation() != null && CustomFlowerItem.getFlowerTypeFromTag(stack).isWithFlowerBlock()) {
-            modelResourceLocation = new ModelResourceLocation(CustomFlowerItem.getFlowerTypeFromTag(stack).getItemModelLocation(), CustomFlowerItem.getFlowerTypeFromTag(stack).getItemModelVariant());
+        if (CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).isPresent() && CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelLocation().isPresent() && CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().withFlowerBlock()) {
+            modelResourceLocation = new ModelResourceLocation(CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelLocation().get(), CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelVariant());
         }
 
         BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

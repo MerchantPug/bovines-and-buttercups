@@ -1,15 +1,14 @@
 package com.github.merchantpug.bovinesandbuttercups.platform.services;
 
+import com.github.merchantpug.bovinesandbuttercups.api.CowType;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.*;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
-import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
+import com.mojang.serialization.Codec;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
@@ -31,11 +30,9 @@ public interface IPlatformHelper {
 
     void setRenderLayer(Block block, RenderType renderType);
 
-    void sendPacketToPlayer(ServerPlayer player, IPacket packet);
-
-    void sendPacketToAllPlayers(ServerLevel serverLevel, IPacket packet);
-
     CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger);
+
+    Codec<CowType<?>> getCowTypeCodec();
 
     BlockEntityType<CustomFlowerBlockEntity> getCustomFlowerBlockEntity();
 

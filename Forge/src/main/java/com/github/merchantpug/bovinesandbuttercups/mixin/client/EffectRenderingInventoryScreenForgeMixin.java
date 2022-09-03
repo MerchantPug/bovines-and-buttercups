@@ -17,6 +17,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import net.minecraftforge.eventbus.api.Event;
 import org.spongepowered.asm.mixin.Mixin;
@@ -61,7 +62,7 @@ public abstract class EffectRenderingInventoryScreenForgeMixin<T extends Abstrac
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$drawEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int result, int k, Iterable<MobEffectInstance> iterable) {
+    private void bovinesandbuttercups$drawEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean flag, ScreenEvent.RenderInventoryMobEffects event, int k, Iterable<MobEffectInstance> iterable) {
         if (mouseX >= i && mouseX <= i + 119) {
             int l = this.topPos;
             MobEffectInstance mobEffectInstance = null;
@@ -85,7 +86,7 @@ public abstract class EffectRenderingInventoryScreenForgeMixin<T extends Abstrac
     @Unique MobEffectInstance bovinesandbuttercups$capturedMobEffectInstance;
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderTooltip(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/util/List;Ljava/util/Optional;II)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$getStatusEffectInstance(PoseStack matrices, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int result, int k, Iterable iterable, int l, MobEffectInstance mobEffectInstance, List list) {
+    private void bovinesandbuttercups$getStatusEffectInstance(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean flag, ScreenEvent.RenderInventoryMobEffects event, int k, Iterable iterable, int l, MobEffectInstance mobEffectInstance, List list) {
         this.bovinesandbuttercups$capturedMobEffectInstance = mobEffectInstance;
     }
 

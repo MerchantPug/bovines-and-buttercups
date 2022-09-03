@@ -1,22 +1,22 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
+import com.github.merchantpug.bovinesandbuttercups.api.CowType;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.*;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
-import com.github.merchantpug.bovinesandbuttercups.network.BovineForgePacketHandler;
-import com.github.merchantpug.bovinesandbuttercups.network.IPacket;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypesForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsForge;
+import com.github.merchantpug.bovinesandbuttercups.registry.BovineRegistriesForge;
+import com.mojang.serialization.Codec;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -58,18 +57,13 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public void sendPacketToPlayer(ServerPlayer player, IPacket packet) {
-        BovineForgePacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
-    }
-
-    @Override
-    public void sendPacketToAllPlayers(ServerLevel serverLevel, IPacket packet) {
-        BovineForgePacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), packet);
-    }
-
-    @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaTriggers.register(criterionTrigger);
+    }
+
+    @Override
+    public Codec<CowType<?>> getCowTypeCodec() {
+        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.COW_TYPE_REGISTRY.get().getCodec());
     }
 
     @Override

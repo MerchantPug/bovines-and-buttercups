@@ -1,7 +1,5 @@
 package com.github.merchantpug.bovinesandbuttercups.block;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.ResourceLocationException;
@@ -17,8 +15,6 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -43,7 +39,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
         if (blockEntity instanceof CustomMushroomBlockEntity cmbe) {
             CompoundTag compound = new CompoundTag();
             if (cmbe.getMushroomType() != null) {
-                compound.putString("Type", cmbe.getMushroomType().getResourceLocation().toString());
+                compound.putString("Type", cmbe.getMushroomType().key().toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }
@@ -102,37 +98,38 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
     }
 
     public boolean growMushroom(ServerLevel level, BlockPos pos, BlockState state, RandomSource randomSource) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
         if (state.hasBlockEntity() && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity) {
             level.removeBlock(pos, false);
             StructureTemplateManager structureTemplateManager = level.getStructureManager();
 
-            ResourceLocation resourceLocation = mushroomBlockEntity.getMushroomType().getHugeMushroomStructureList().get(randomSource.nextInt() % mushroomBlockEntity.getMushroomType().getHugeMushroomStructureList().size());
-            Optional<StructureTemplate> optional = Optional.empty();
-            try {
-                optional = structureTemplateManager.get(resourceLocation);
-            } catch (ResourceLocationException ignored) {
-            }
-
-            if (optional.isPresent()) {
-                StructureTemplate structureTemplate = optional.get();
-                if (ChunkPos.rangeClosed(new ChunkPos(pos), new ChunkPos(pos.offset(structureTemplate.getSize()))).allMatch((p_214542_) -> level.isLoaded(p_214542_.getWorldPosition()))) {
-                    BlockPos centeredPos = new BlockPos(pos.getX() - Math.floor((float)structureTemplate.getSize().getX() / 2), pos.getY(), pos.getZ() - Math.floor((float)structureTemplate.getSize().getZ() / 2));
-                    structureTemplate.placeInWorld(level, centeredPos, centeredPos, new StructurePlaceSettings(), randomSource, 2);
-                    return true;
+            if (mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().isPresent()) {
+                ResourceLocation resourceLocation = mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().get().get(randomSource.nextInt() % mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().get().size());
+                Optional<StructureTemplate> optional = Optional.empty();
+                try {
+                    optional = structureTemplateManager.get(resourceLocation);
+                } catch (ResourceLocationException ignored) {
                 }
+
+                if (optional.isPresent()) {
+                    StructureTemplate structureTemplate = optional.get();
+                    if (ChunkPos.rangeClosed(new ChunkPos(pos), new ChunkPos(pos.offset(structureTemplate.getSize()))).allMatch((p_214542_) -> level.isLoaded(p_214542_.getWorldPosition()))) {
+                        BlockPos centeredPos = new BlockPos(pos.getX() - Math.floor((float)structureTemplate.getSize().getX() / 2), pos.getY(), pos.getZ() - Math.floor((float)structureTemplate.getSize().getZ() / 2));
+                        structureTemplate.placeInWorld(level, centeredPos, centeredPos, new StructurePlaceSettings(), randomSource, 2);
+                        return true;
+                    }
+                }
+                level.setBlock(pos, state, 3);
+                ((CustomMushroomBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(mushroomBlockEntity.getMushroomTypeName());
+                level.getBlockEntity(pos).setChanged();
+                level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
             }
-            level.setBlock(pos, state, 3);
-            ((CustomMushroomBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(mushroomBlockEntity.getMushroomTypeName());
-            level.getBlockEntity(pos).setChanged();
-            level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
         }
         return false;
     }
 
     public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
         if (state.hasBlockEntity() && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity) {
-            return !mushroomBlockEntity.getMushroomType().getHugeMushroomStructureList().isEmpty();
+            return mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().isPresent();
         }
         return false;
     }

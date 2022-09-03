@@ -1,5 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin;
 
+import com.github.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -16,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public class SuspiciousStewRecipeMixin {
     @Inject(method = "assemble(Lnet/minecraft/world/inventory/CraftingContainer;)Lnet/minecraft/world/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getItem()Lnet/minecraft/world/item/Item;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     private void bovinesandbuttercups$saveCustomFlowerMobEffect(CraftingContainer container, CallbackInfoReturnable<ItemStack> cir, ItemStack flowerStack, ItemStack stewStack) {
-        if (flowerStack.getItem() instanceof CustomFlowerItem) {
-            MobEffect effect = CustomFlowerItem.getSuspiciousStewEffect(flowerStack);
-            int duration = CustomFlowerItem.getSuspiciousStewDuration(flowerStack);
+        if (flowerStack.getItem() instanceof CustomFlowerItem && ((ItemStackAccess)(Object)flowerStack).bovinesandbuttercups$getLevel() != null) {
+            MobEffect effect = CustomFlowerItem.getSuspiciousStewEffect(((ItemStackAccess)(Object)flowerStack).bovinesandbuttercups$getLevel(), flowerStack);
+            int duration = CustomFlowerItem.getSuspiciousStewDuration(((ItemStackAccess)(Object)flowerStack).bovinesandbuttercups$getLevel(), flowerStack);
             SuspiciousStewItem.saveMobEffect(stewStack, effect, duration);
         }
     }

@@ -2,11 +2,11 @@
   "schema_version": 1,
   "quilt_loader": {
     "group": "com.github.merchantpug",
-    "id": "bella",
+    "id": "bovinesandbuttercups",
     "version": "${version}",
     "metadata": {
-      "name": "Bella",
-      "description": "A single feature mod that adds the ability to put bells on animals.",
+      "name": "Bovines and Buttercups",
+      "description": "Placeholder",
       "contributors": {
         "MerchantPug": "Owner",
         "SpiderKolo": "Artist"

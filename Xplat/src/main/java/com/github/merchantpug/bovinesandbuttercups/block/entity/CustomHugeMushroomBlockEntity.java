@@ -1,8 +1,8 @@
 package com.github.merchantpug.bovinesandbuttercups.block.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.data.block.mushroom.MushroomType;
-import com.github.merchantpug.bovinesandbuttercups.data.block.mushroom.MushroomTypeRegistry;
+import com.github.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import com.github.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 
 public class CustomHugeMushroomBlockEntity extends BlockEntity {
+    @Nullable private MushroomType cachedMushroomType;
     @Nullable private String mushroomTypeName;
 
     public CustomHugeMushroomBlockEntity(BlockPos worldPosition, BlockState blockState) {
@@ -47,13 +48,15 @@ public class CustomHugeMushroomBlockEntity extends BlockEntity {
         try {
             if (mushroomTypeName == null) {
                 return MushroomType.MISSING;
-            } else if (MushroomTypeRegistry.contains(ResourceLocation.tryParse(mushroomTypeName))) {
-                return MushroomType.fromKey(mushroomTypeName);
-            } else {
-                return MushroomType.MISSING;
+            } else if (cachedMushroomType != MushroomType.fromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName))) {
+                cachedMushroomType = MushroomType.fromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName));
+                return cachedMushroomType;
+            } else if (cachedMushroomType != null) {
+                return cachedMushroomType;
             }
         } catch (Exception e) {
-            Constants.LOG.warn("Could not load MushroomType at blockpos " + this.getBlockPos().toString() + ": ", e.getMessage());
+            this.cachedMushroomType = MushroomType.MISSING;
+            Constants.LOG.warn("Could not load FlowerType at BlockPos '" + this.getBlockPos().toString() + "': ", e.getMessage());
         }
         return MushroomType.MISSING;
     }

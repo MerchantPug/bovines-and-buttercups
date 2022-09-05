@@ -1,5 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
+import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import com.github.merchantpug.bovinesandbuttercups.api.CowType;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.*;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
@@ -16,6 +18,8 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -59,6 +63,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaTriggers.register(criterionTrigger);
+    }
+
+    @Override
+    public ResourceKey<Registry<ConfiguredCowType<?, ?>>> getConfiguredCowTypeResourceKey() {
+        return ResourceKey.createRegistryKey(Constants.resourceLocation("configured_cow_type"));
     }
 
     @Override

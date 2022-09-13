@@ -13,6 +13,7 @@ import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTyp
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsForge;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineRegistriesForge;
+import com.google.auto.service.AutoService;
 import com.mojang.serialization.Codec;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
@@ -33,6 +34,7 @@ import net.minecraftforge.fml.loading.FMLLoader;
 
 import java.util.function.Supplier;
 
+@AutoService(IPlatformHelper.class)
 public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override

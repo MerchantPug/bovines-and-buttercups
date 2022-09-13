@@ -20,8 +20,8 @@
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
-      "init": "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups",
-      "client_init": "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsClient"
+      "init": "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsQuilt",
+      "client_init": "com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientQuilt"
     },
     "depends": [
       {

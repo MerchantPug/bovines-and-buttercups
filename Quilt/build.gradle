@@ -47,6 +47,9 @@ dependencies {
     modRuntimeOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
+    annotationProcessor group:'com.google.auto.service', name:'auto-service', version:'1.0.1'
+
     implementation project(":Xplat")
     implementation(project(path: ":FabriQuilt", configuration: "namedElements"))
 }

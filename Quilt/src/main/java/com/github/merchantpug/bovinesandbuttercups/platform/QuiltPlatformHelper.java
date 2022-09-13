@@ -13,6 +13,7 @@ import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTyp
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriQuilt;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItemsFabriQuilt;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineRegistriesFabriQuilt;
+import com.google.auto.service.AutoService;
 import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
@@ -30,6 +31,7 @@ import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.function.Supplier;
 
+@AutoService(IPlatformHelper.class)
 public class QuiltPlatformHelper implements IPlatformHelper {
 
     @Override

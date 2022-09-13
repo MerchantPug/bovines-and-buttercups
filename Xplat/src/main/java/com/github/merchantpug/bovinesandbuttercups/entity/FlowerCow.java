@@ -1,9 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.entity;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import com.github.merchantpug.bovinesandbuttercups.api.CowType;
-import com.github.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.FlowerCowBreedingRequirements;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
@@ -11,7 +9,6 @@ import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import com.github.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
-import com.github.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineSoundEvents;
 import com.github.merchantpug.bovinesandbuttercups.util.ConfiguredCowTypeRegistryUtil;
@@ -23,7 +20,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -336,11 +332,11 @@ public class FlowerCow extends Cow implements Shearable {
                     return (ConfiguredCowType<FlowerCowConfiguration, ?>) instance;
                 }
             }
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), Constants.resourceLocation("missing_moobloom"));
-            return (ConfiguredCowType<FlowerCowConfiguration, ?>) ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), Constants.resourceLocation("missing_moobloom"));
+            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"));
+            return (ConfiguredCowType<FlowerCowConfiguration, ?>) ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"));
         } catch (Exception e) {
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), Constants.resourceLocation("missing_moobloom"));
-            return (ConfiguredCowType<FlowerCowConfiguration, ?>) ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), Constants.resourceLocation("missing_moobloom"));
+            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"));
+            return (ConfiguredCowType<FlowerCowConfiguration, ?>) ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"));
         }
     }
 
@@ -353,7 +349,7 @@ public class FlowerCow extends Cow implements Shearable {
         try {
             this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(value));
         } catch (Exception e) {
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), Constants.resourceLocation("missing_moobloom"));
+            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"));
         }
     }
 
@@ -442,7 +438,7 @@ public class FlowerCow extends Cow implements Shearable {
         if (!moobloomList.isEmpty()) {
             return moobloomList.get(index);
         } else {
-            return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, Constants.resourceLocation("missing_moobloom"));
+            return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"));
         }
     }
 
@@ -476,7 +472,7 @@ public class FlowerCow extends Cow implements Shearable {
         if (!moobloomList.isEmpty()) {
             return moobloomList.get(index);
         } else {
-            return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, Constants.resourceLocation("missing_moobloom"));
+            return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"));
         }
     }
 

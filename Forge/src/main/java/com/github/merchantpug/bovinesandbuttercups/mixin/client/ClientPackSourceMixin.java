@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsClient;
+import com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientForge;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.ClientPackSource;
 import net.minecraft.server.packs.repository.Pack;
@@ -18,12 +18,12 @@ public class ClientPackSourceMixin {
     private void bovinesandbuttercups$loadResourcePacks(Consumer<Pack> consumer, Pack.PackConstructor constructor, CallbackInfo ci) {
         Path path = Path.of(Minecraft.getInstance().gameDirectory.getPath(), "bovinestemp");
         path.toFile().deleteOnExit();
-        Pack bovinesMojangPack = BovinesAndButtercupsClient.createMojangMoobloomPack(constructor);
+        Pack bovinesMojangPack = BovinesAndButtercupsClientForge.createMojangMoobloomPack(constructor);
         if (bovinesMojangPack != null) {
             consumer.accept(bovinesMojangPack);
         }
 
-        Pack noGrassPack = BovinesAndButtercupsClient.createNoGrassPack(constructor);
+        Pack noGrassPack = BovinesAndButtercupsClientForge.createNoGrassPack(constructor);
         if (noGrassPack != null) {
             consumer.accept(noGrassPack);
         }

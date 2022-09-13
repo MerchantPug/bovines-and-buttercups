@@ -1,9 +1,9 @@
-package com.github.merchantpug.bovinesandbuttercups;
+package com.github.merchantpug.bovinesandbuttercups.client;
 
 import com.github.merchantpug.bovinesandbuttercups.client.renderer.block.*;
-import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItemRenderer;
-import com.github.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItemRenderer;
-import com.github.merchantpug.bovinesandbuttercups.item.CustomMushroomItemRenderer;
+import com.github.merchantpug.bovinesandbuttercups.client.item.CustomFlowerItemRenderer;
+import com.github.merchantpug.bovinesandbuttercups.client.item.CustomHugeMushroomItemRenderer;
+import com.github.merchantpug.bovinesandbuttercups.client.item.CustomMushroomItemRenderer;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.*;
@@ -17,7 +17,7 @@ import net.minecraft.client.model.CowModel;
 
 public class BovinesAndButtercupsClientFabriQuilt {
     public static void init() {
-        BovinesAndButtercupsXplatClient.init();
+        BovinesAndButtercupsClient.init();
 
         EntityModelLayerRegistry.registerModelLayer(BovineModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
         EntityRendererRegistry.register(Services.PLATFORM.getMoobloomEntity(), FlowerCowRenderer::new);

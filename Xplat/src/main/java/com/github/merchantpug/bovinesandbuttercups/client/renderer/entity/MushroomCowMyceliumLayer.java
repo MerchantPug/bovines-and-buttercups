@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.MushroomCow;
 
 public class MushroomCowMyceliumLayer extends RenderLayer<MushroomCow, CowModel<MushroomCow>> {
-    private static final ResourceLocation MUSHROOM_COW_MYCELIUM_LOCATION = Constants.resourceLocation("textures/entity/mooshroom/mooshroom_mycelium.png");
+    private static final ResourceLocation MUSHROOM_COW_MYCELIUM_LOCATION = BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png");
 
     public MushroomCowMyceliumLayer(RenderLayerParent<MushroomCow, CowModel<MushroomCow>> context) {
         super(context);

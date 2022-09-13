@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin.client;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import com.github.merchantpug.bovinesandbuttercups.block.CustomMushroomBlock;
@@ -60,7 +60,7 @@ public abstract class ClientLevelMixin extends Level {
                             double d7 = d4 * d1 + minX;
                             double d8 = d5 * d2 + minY;
                             double d9 = d6 * d3 + minZ;
-                            ResourceLocation resourceLocation = Constants.resourceLocation("missing_flower");
+                            ResourceLocation resourceLocation = BovinesAndButtercups.asResource("missing_flower");
                             String variant = "bovines";
                             if (this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
                                 if (customFlowerBlockEntity.getFlowerType().modelLocation().isPresent()) {
@@ -68,13 +68,13 @@ public abstract class ClientLevelMixin extends Level {
                                     variant = customFlowerBlockEntity.getFlowerType().modelVariant();
                                 }
                             } else if (this.getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
-                                resourceLocation = Constants.resourceLocation("missing_mushroom");
+                                resourceLocation = BovinesAndButtercups.asResource("missing_mushroom");
                                 if (customMushroomBlockEntity.getMushroomType().modelLocation().isPresent()) {
                                     resourceLocation = customMushroomBlockEntity.getMushroomType().modelLocation().get();
                                     variant = customMushroomBlockEntity.getMushroomType().modelVariant();
                                 }
                             } else if (this.getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {
-                                resourceLocation = Constants.resourceLocation("missing_mushroom");
+                                resourceLocation = BovinesAndButtercups.asResource("missing_mushroom");
                                 if (customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelLocation().isPresent()) {
                                     resourceLocation = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelLocation().get();
                                     variant = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelVariant();

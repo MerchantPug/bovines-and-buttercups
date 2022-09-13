@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.item;
 
-import com.github.merchantpug.bovinesandbuttercups.BovinesBEWLR;
+import com.github.merchantpug.bovinesandbuttercups.client.BovinesBEWLR;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;

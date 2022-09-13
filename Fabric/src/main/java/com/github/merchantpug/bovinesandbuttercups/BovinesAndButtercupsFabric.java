@@ -5,10 +5,10 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 
-public class BovinesAndButtercups implements ModInitializer {
+public class BovinesAndButtercupsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        FabricLoader.getInstance().getModContainer(Constants.MOD_ID).ifPresent(modContainer -> {
+        FabricLoader.getInstance().getModContainer(BovinesAndButtercups.MOD_ID).ifPresent(modContainer -> {
             String version = modContainer.getMetadata().getVersion().getFriendlyString();
             if (version.contains("+")) {
                 version = version.split("\\+")[0];
@@ -16,13 +16,13 @@ public class BovinesAndButtercups implements ModInitializer {
             if (version.contains("-")) {
                 version = version.split("-")[0];
             }
-            BovinesAndButtercupsXplat.VERSION = version;
+            BovinesAndButtercups.VERSION = version;
         });
         BovinesAndButtercupsFabriQuilt.init();
 
-        FabricLoader.getInstance().getModContainer(Constants.MOD_ID).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(Constants.resourceLocation("mojang"), modContainer, "Mojang Textures", ResourcePackActivationType.NORMAL);
-            ResourceManagerHelper.registerBuiltinResourcePack(Constants.resourceLocation("no_grass"), modContainer, "No Grass Back", ResourcePackActivationType.NORMAL);
+        FabricLoader.getInstance().getModContainer(BovinesAndButtercups.MOD_ID).ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), modContainer, "Mojang Textures", ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), modContainer, "No Grass Back", ResourcePackActivationType.NORMAL);
         });
     }
 }

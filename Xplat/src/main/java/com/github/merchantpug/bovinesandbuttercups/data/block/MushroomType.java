@@ -1,8 +1,7 @@
 package com.github.merchantpug.bovinesandbuttercups.data.block;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
-import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.util.ConfiguredCowTypeRegistryUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -54,7 +53,7 @@ public record MushroomType(
             Codec.BOOL.optionalFieldOf("with_blocks", false).forGetter(MushroomType::withMushroomBlocks)
     ).apply(builder, (t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16) -> new MushroomType(t1.isEmpty() && t3.isPresent() ? Optional.of(Registry.BLOCK.getKey(t3.get().getBlock())) : t1, t2, t3, t4, t5, t4.map(resourceLocation -> t6.orElse(new ResourceLocation(resourceLocation.getNamespace(), resourceLocation.getPath() + "_item"))), t7.orElse(t5), t4.map(resourceLocation -> t8.orElse(new ResourceLocation(resourceLocation.getNamespace(), "potted_" + resourceLocation.getPath()))), t9.orElse(t5), t10, t4.map(resourceLocation -> t11.orElse(new ResourceLocation(resourceLocation.getNamespace(), resourceLocation.getPath() + "_block"))), t12.orElse(t5), t4.map(resourceLocation -> t13.orElse(new ResourceLocation(resourceLocation.getNamespace(), resourceLocation.getPath() + "_block_item"))), t14.orElse(t5), t15, t16)));
 
-    public static final MushroomType MISSING = new MushroomType(Optional.of(Constants.resourceLocation("missing_mushroom")), Optional.of("block.bovinesandbuttercups.custom_mushroom"), Optional.empty(), Optional.of(Constants.resourceLocation("missing_mushroom")), "bovines", Optional.of(Constants.resourceLocation("missing_mushroom_item")), "bovines", Optional.of(Constants.resourceLocation("potted_missing_mushroom")), "bovines", Optional.of("block.bovinesandbuttercups.custom_mushroom_block"), Optional.of(Constants.resourceLocation("missing_mushroom_block")), "bovines", Optional.of(Constants.resourceLocation("missing_mushroom_block_item")), "bovines", Optional.empty(), false);
+    public static final MushroomType MISSING = new MushroomType(Optional.of(BovinesAndButtercups.asResource("missing_mushroom")), Optional.of("block.bovinesandbuttercups.custom_mushroom"), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_mushroom")), "bovines", Optional.of(BovinesAndButtercups.asResource("missing_mushroom_item")), "bovines", Optional.of(BovinesAndButtercups.asResource("potted_missing_mushroom")), "bovines", Optional.of("block.bovinesandbuttercups.custom_mushroom_block"), Optional.of(BovinesAndButtercups.asResource("missing_mushroom_block")), "bovines", Optional.of(BovinesAndButtercups.asResource("missing_mushroom_block_item")), "bovines", Optional.empty(), false);
 
     public static MushroomType fromKey(LevelAccessor level, ResourceLocation key) {
         try {
@@ -63,7 +62,7 @@ public record MushroomType(
                 return mushroomTypes.get(0);
             }
         } catch (Exception exception) {
-            Constants.LOG.warn("Could not get Flower type from name '" + key.toString() + "'.");
+            BovinesAndButtercups.LOG.warn("Could not get Flower type from name '" + key.toString() + "'.");
         }
         return MISSING;
     }

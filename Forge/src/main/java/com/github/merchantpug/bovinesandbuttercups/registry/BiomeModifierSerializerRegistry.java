@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.data.AddSpawnsExceptBiomeModifier;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class BiomeModifierSerializerRegistry {
-    public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Constants.MOD_ID);
+    public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<Codec<AddSpawnsExceptBiomeModifier>> ADD_SPAWNS_EXCEPT_BIOME_MODIFIER_TYPE = BIOME_MODIFIER_SERIALIZERS.register("add_spawns_except", () ->
             RecordCodecBuilder.create(builder -> builder.group(

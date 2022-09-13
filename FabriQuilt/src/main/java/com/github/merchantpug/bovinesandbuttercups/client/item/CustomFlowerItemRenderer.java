@@ -1,5 +1,6 @@
-package com.github.merchantpug.bovinesandbuttercups.item;
+package com.github.merchantpug.bovinesandbuttercups.client.item;
 
+import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.client.renderer.MultiBufferSource;

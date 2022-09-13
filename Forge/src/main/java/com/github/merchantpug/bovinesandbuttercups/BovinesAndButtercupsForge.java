@@ -16,13 +16,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.RegisterEvent;
 
-@Mod(Constants.MOD_ID)
-public class BovinesAndButtercups {
-    public BovinesAndButtercups() {
+@Mod(BovinesAndButtercups.MOD_ID)
+public class BovinesAndButtercupsForge {
+    public BovinesAndButtercupsForge() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        BovinesAndButtercupsXplat.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
+        BovinesAndButtercups.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
-        BovinesAndButtercupsXplat.init();
+        BovinesAndButtercups.init();
         BovineBlockEntityTypesForge.init();
         BovineEntityTypesForge.init();
         BovineItemsForge.init();

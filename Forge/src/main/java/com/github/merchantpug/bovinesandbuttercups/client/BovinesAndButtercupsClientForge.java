@@ -1,5 +1,7 @@
-package com.github.merchantpug.bovinesandbuttercups;
+package com.github.merchantpug.bovinesandbuttercups.client;
 
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsForge;
 import com.github.merchantpug.bovinesandbuttercups.client.renderer.block.*;
 import com.github.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
@@ -28,11 +30,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class BovinesAndButtercupsClient {
+@Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public class BovinesAndButtercupsClientForge {
     @SubscribeEvent
     public static void onInitializeClient(FMLClientSetupEvent event) {
-        BovinesAndButtercupsXplatClient.init();
+        BovinesAndButtercupsClient.init();
     }
 
     @SubscribeEvent
@@ -73,7 +75,7 @@ public class BovinesAndButtercupsClient {
 
     public static Pack createMojangMoobloomPack(Pack.PackConstructor constructor) {
         try {
-            InputStream inputStream = BovinesAndButtercups.class.getClassLoader().getResourceAsStream("resourcepacks/bovinesandbuttercups/mojang.zip");
+            InputStream inputStream = BovinesAndButtercupsForge.class.getClassLoader().getResourceAsStream("resourcepacks/bovinesandbuttercups/mojang.zip");
             File file = new File("./bovinestemp", "mojang.zip");
 
             if (inputStream != null && !Files.exists(file.toPath())) {
@@ -91,14 +93,14 @@ public class BovinesAndButtercupsClient {
                 }
             }, constructor, Pack.Position.TOP, PackSource.BUILT_IN);
         } catch (Exception ex) {
-            Constants.LOG.warn("Could not load Bovines and Buttercups Mojang resource pack. Will not register it as a built-in resource pack.", ex);
+            BovinesAndButtercups.LOG.warn("Could not load Bovines and Buttercups Mojang resource pack. Will not register it as a built-in resource pack.", ex);
             return null;
         }
     }
 
     public static Pack createNoGrassPack(Pack.PackConstructor constructor) {
         try {
-            InputStream inputStream = BovinesAndButtercups.class.getClassLoader().getResourceAsStream("resourcepacks/bovinesandbuttercups/no_grass.zip");
+            InputStream inputStream = BovinesAndButtercupsForge.class.getClassLoader().getResourceAsStream("resourcepacks/bovinesandbuttercups/no_grass.zip");
             File file = new File("./bovinestemp", "no_grass.zip");
 
             if (inputStream != null && !Files.exists(file.toPath())) {
@@ -116,7 +118,7 @@ public class BovinesAndButtercupsClient {
                 }
             }, constructor, Pack.Position.TOP, PackSource.BUILT_IN);
         } catch (Exception ex) {
-            Constants.LOG.warn("Could not load Bovines and Buttercups No Grass resource pack. Will not register it as a built-in resource pack.", ex);
+            BovinesAndButtercups.LOG.warn("Could not load Bovines and Buttercups No Grass resource pack. Will not register it as a built-in resource pack.", ex);
             return null;
         }
     }

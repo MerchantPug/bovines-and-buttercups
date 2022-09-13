@@ -1,6 +1,5 @@
 package com.github.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;

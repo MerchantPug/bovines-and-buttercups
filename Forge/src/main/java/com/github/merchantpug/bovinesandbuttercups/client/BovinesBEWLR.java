@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups;
+package com.github.merchantpug.bovinesandbuttercups.client;
 
 import com.github.merchantpug.bovinesandbuttercups.item.*;
 import com.mojang.blaze3d.vertex.PoseStack;

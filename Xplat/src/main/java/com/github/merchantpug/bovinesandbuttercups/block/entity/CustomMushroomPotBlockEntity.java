@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.block.entity;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -55,7 +55,7 @@ public class CustomMushroomPotBlockEntity extends BlockEntity {
             }
         } catch (Exception e) {
             this.cachedMushroomType = MushroomType.MISSING;
-            Constants.LOG.warn("Could not load FlowerType at BlockPos '" + this.getBlockPos().toString() + "': ", e.getMessage());
+            BovinesAndButtercups.LOG.warn("Could not load FlowerType at BlockPos '" + this.getBlockPos().toString() + "': ", e.getMessage());
         }
         return MushroomType.MISSING;
     }

@@ -1,21 +1,17 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
-import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import com.github.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.Registry;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SpawnEggItem;
 
 import java.util.function.Supplier;
 
 public class BovineItems {
-    public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registry.ITEM, Constants.MOD_ID);
+    public static final RegistrationProvider<Item> ITEMS = RegistrationProvider.get(Registry.ITEM, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<Item> NECTAR_BOWL = register("nectar_bowl", () -> new NectarBowlItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> MOOBLOOM_SPAWN_EGG = register("moobloom_spawn_egg", () -> Services.PLATFORM.createSpawnEggItem(Services.PLATFORM::getMoobloomEntity, 0xfad200, 0x437f34, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));

@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups;
+package com.github.merchantpug.bovinesandbuttercups.client;
 
 import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashSet;
 
-public class BovinesAndButtercupsXplatClient {
+public class BovinesAndButtercupsClient {
     public static final HashSet<ResourceLocation> LOADED_COW_TEXTURES = new HashSet<>();
 
     public static void init() {

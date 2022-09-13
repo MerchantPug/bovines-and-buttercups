@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.util;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;
 import net.minecraft.core.Registry;
@@ -14,7 +14,7 @@ public class ConfiguredCowTypeRegistryUtil {
     public static boolean isConfiguredCowTypeInRegistry(LevelAccessor level, ResourceLocation key) {
         Optional<? extends Registry<ConfiguredCowType<?, ?>>> registry = level.registryAccess().registry(BovineRegistryKeys.CONFIGURED_COW_TYPE_KEY);
         if (registry.isEmpty()) {
-            Constants.LOG.warn("Could not get ConfiguredCowType registry for entry check.");
+            BovinesAndButtercups.LOG.warn("Could not get ConfiguredCowType registry for entry check.");
             return false;
         }
         return registry.get().containsKey(key);

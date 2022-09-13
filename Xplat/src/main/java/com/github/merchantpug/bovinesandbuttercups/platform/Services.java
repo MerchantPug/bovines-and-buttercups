@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 
 import java.util.ServiceLoader;
@@ -14,7 +14,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        Constants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
+        BovinesAndButtercups.LOG.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }

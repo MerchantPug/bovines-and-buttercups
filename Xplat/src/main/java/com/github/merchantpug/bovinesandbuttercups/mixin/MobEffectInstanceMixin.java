@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.mixin;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import com.github.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
 import com.github.merchantpug.bovinesandbuttercups.registry.BovineEffects;
@@ -101,7 +101,7 @@ public abstract class MobEffectInstanceMixin implements MobEffectInstanceAccess 
         ListTag list = tag.getList("LockedEffects", Tag.TAG_COMPOUND);
         for (Tag nbtElement : list) {
             if (!(nbtElement instanceof CompoundTag compound)) {
-                Constants.LOG.warn("LockedEffects NBT is not a CompoundTag.");
+                BovinesAndButtercups.LOG.warn("LockedEffects NBT is not a CompoundTag.");
                 continue;
             }
             if (compound.contains("Id", Tag.TAG_BYTE) && compound.contains("Duration", Tag.TAG_INT)) {

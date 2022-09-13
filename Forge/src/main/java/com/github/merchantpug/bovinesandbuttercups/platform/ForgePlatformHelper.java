@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.platform;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import com.github.merchantpug.bovinesandbuttercups.api.CowType;
 import com.github.merchantpug.bovinesandbuttercups.block.entity.*;
@@ -67,7 +67,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public ResourceKey<Registry<ConfiguredCowType<?, ?>>> getConfiguredCowTypeResourceKey() {
-        return ResourceKey.createRegistryKey(Constants.resourceLocation("configured_cow_type"));
+        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("configured_cow_type"));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
@@ -10,7 +10,7 @@ import net.minecraft.core.particles.ParticleType;
 import java.util.function.Function;
 
 public class BovineParticleTypes {
-    public static final RegistrationProvider<ParticleType<?>> PARTICLE_TYPES = RegistrationProvider.get(Registry.PARTICLE_TYPE, Constants.MOD_ID);
+    public static final RegistrationProvider<ParticleType<?>> PARTICLE_TYPES = RegistrationProvider.get(Registry.PARTICLE_TYPE, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<ParticleType<ModelLocationParticleOption>> MODEL_LOCATION = register("model_location", false, ModelLocationParticleOption.DESERIALIZER, (particleType) -> {
         return ModelLocationParticleOption.CODEC;

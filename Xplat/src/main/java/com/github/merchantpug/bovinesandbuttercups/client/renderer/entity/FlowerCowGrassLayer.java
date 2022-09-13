@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.CowModel;
@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 
 public class FlowerCowGrassLayer extends RenderLayer<FlowerCow, CowModel<FlowerCow>> {
-    private static final ResourceLocation FLOWER_COW_GRASS_LOCATION = Constants.resourceLocation("textures/entity/moobloom/moobloom_grass.png");
+    private static final ResourceLocation FLOWER_COW_GRASS_LOCATION = BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png");
 
     public FlowerCowGrassLayer(RenderLayerParent<FlowerCow, CowModel<FlowerCow>> context) {
         super(context);

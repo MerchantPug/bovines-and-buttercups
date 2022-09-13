@@ -1,7 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.data.entity;
 
 import com.github.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import com.github.merchantpug.bovinesandbuttercups.platform.Services;
 import com.github.merchantpug.bovinesandbuttercups.util.ConfiguredCowTypeRegistryUtil;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;

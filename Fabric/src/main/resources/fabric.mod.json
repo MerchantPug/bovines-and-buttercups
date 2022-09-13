@@ -21,10 +21,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups"
+      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
     ],
     "client": [
-      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsClient"
+      "com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientFabric"
     ]
   },
   "accessWidener": "bovinesandbuttercups.accesswidener",

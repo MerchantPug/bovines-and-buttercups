@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 
 public class BovinesAndButtercupsFabriQuilt {
 	public static void init() {
-		BovinesAndButtercupsXplat.init();
+		BovinesAndButtercups.init();
 
 		BovineCowTypeRegistry.register();
 		BovineBlockEntityTypesFabriQuilt.init();

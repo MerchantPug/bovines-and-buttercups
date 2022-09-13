@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import com.github.merchantpug.bovinesandbuttercups.api.CowType;
 import com.github.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
@@ -13,10 +13,10 @@ import net.minecraftforge.registries.RegistryBuilder;
 import java.util.function.Supplier;
 
 public class BovineRegistriesForge {
-    public static final DeferredRegister<CowType<?>> COW_TYPE = DeferredRegister.create(BovineRegistryKeys.COW_TYPE_KEY.location(), Constants.MOD_ID);
-    public static final Supplier<IForgeRegistry<CowType<?>>> COW_TYPE_REGISTRY = COW_TYPE.makeRegistry(() -> new RegistryBuilder<CowType<?>>().setDefaultKey(Constants.resourceLocation("moobloom")).disableSaving().hasTags());
+    public static final DeferredRegister<CowType<?>> COW_TYPE = DeferredRegister.create(BovineRegistryKeys.COW_TYPE_KEY.location(), BovinesAndButtercups.MOD_ID);
+    public static final Supplier<IForgeRegistry<CowType<?>>> COW_TYPE_REGISTRY = COW_TYPE.makeRegistry(() -> new RegistryBuilder<CowType<?>>().setDefaultKey(BovinesAndButtercups.asResource("moobloom")).disableSaving().hasTags());
 
-    public static final DeferredRegister<ConfiguredCowType<?, ?>> CONFIGURED_COW_TYPE = DeferredRegister.create(BovineRegistryKeys.CONFIGURED_COW_TYPE_KEY.location(), Constants.MOD_ID);
+    public static final DeferredRegister<ConfiguredCowType<?, ?>> CONFIGURED_COW_TYPE = DeferredRegister.create(BovineRegistryKeys.CONFIGURED_COW_TYPE_KEY.location(), BovinesAndButtercups.MOD_ID);
     public static final Supplier<IForgeRegistry<ConfiguredCowType<?, ?>>> CONFIGURED_COW_TYPE_REGISTRY = CONFIGURED_COW_TYPE.makeRegistry(() -> new RegistryBuilder<ConfiguredCowType<?, ?>>().disableSaving().dataPackRegistry(ConfiguredCowType.CODEC, ConfiguredCowType.CODEC).hasTags());
 
     public static void init(IEventBus eventBus) {

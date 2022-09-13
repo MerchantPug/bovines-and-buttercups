@@ -1,4 +1,4 @@
-package com.github.merchantpug.bovinesandbuttercups;
+package com.github.merchantpug.bovinesandbuttercups.client;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class CowTextureReloadListener extends SimplePreparableReloadListener<Set<ResourceLocation>> {
     @Override
     protected Set<ResourceLocation> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
-        BovinesAndButtercupsXplatClient.LOADED_COW_TEXTURES.clear();
+        BovinesAndButtercupsClient.LOADED_COW_TEXTURES.clear();
         Set<ResourceLocation> cowTextures = new HashSet<>();
         cowTextures.addAll(resourceManager.listResources("textures/entity/cow", resourceLocation -> resourceLocation.getPath().endsWith(".png")).keySet());
         cowTextures.addAll(resourceManager.listResources("textures/entity/moobloom", resourceLocation -> resourceLocation.getPath().endsWith(".png")).keySet());
@@ -21,6 +21,6 @@ public class CowTextureReloadListener extends SimplePreparableReloadListener<Set
 
     @Override
     protected void apply(Set<ResourceLocation> object, ResourceManager resourceManager, ProfilerFiller profiler) {
-        BovinesAndButtercupsXplatClient.LOADED_COW_TEXTURES.addAll(object);
+        BovinesAndButtercupsClient.LOADED_COW_TEXTURES.addAll(object);
     }
 }

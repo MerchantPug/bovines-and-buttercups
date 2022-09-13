@@ -1,6 +1,6 @@
 package com.github.merchantpug.bovinesandbuttercups.registry;
 
-import com.github.merchantpug.bovinesandbuttercups.Constants;
+import com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import com.github.merchantpug.bovinesandbuttercups.block.*;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
@@ -10,12 +10,11 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 
 import java.util.function.Supplier;
 
 public class BovineBlocks {
-    public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registry.BLOCK, Constants.MOD_ID);
+    public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registry.BLOCK, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<Block> BUTTERCUP = register("buttercup", () -> new FlowerBlock(MobEffects.POISON, 12, BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
     public static final RegistryObject<Block> PINK_DAISY = register("pink_daisy", () -> new FlowerBlock(MobEffects.MOVEMENT_SPEED, 4, BlockBehaviour.Properties.of(Material.PLANT).noCollission().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));

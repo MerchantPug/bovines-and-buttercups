@@ -98,7 +98,7 @@ public class FlowerCow extends Cow implements Shearable {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Type")) {
-            this.setFlowerCowType(compound.getString("Type"));
+            this.setFlowerCowType(compound.getString("Type"), this.getLevel());
         }
         if (compound.contains("PollinationTicks", 99)) {
             this.setPollinationTicks(compound.getInt("PollinationTicks"));
@@ -308,7 +308,7 @@ public class FlowerCow extends Cow implements Shearable {
     @Override
     public FlowerCow getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         FlowerCow flowerCow = Services.PLATFORM.getMoobloomEntity().create(serverLevel);
-        flowerCow.setFlowerCowType(this.chooseBabyType(serverLevel, (FlowerCow)ageableMob));
+        flowerCow.setFlowerCowType(this.chooseBabyType(serverLevel, (FlowerCow)ageableMob), this.getLevel());
         return flowerCow;
     }
 
@@ -344,17 +344,17 @@ public class FlowerCow extends Cow implements Shearable {
         return this.entityData.get(TYPE_ID);
     }
 
-    public void setFlowerCowType(String value) {
+    public void setFlowerCowType(String value, LevelAccessor level) {
         this.entityData.set(TYPE_ID, value);
         try {
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(value));
+            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, ResourceLocation.tryParse(value));
         } catch (Exception e) {
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"));
+            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"));
         }
     }
 
-    public void setFlowerCowType(ConfiguredCowType<?, ?> value) {
-        this.entityData.set(TYPE_ID, ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(this.getLevel(), value).toString());
+    public void setFlowerCowType(ConfiguredCowType<?, ?> value, LevelAccessor level) {
+        this.entityData.set(TYPE_ID, ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(level, value).toString());
         this.type = value;
     }
 
@@ -386,9 +386,9 @@ public class FlowerCow extends Cow implements Shearable {
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData entityData, @Nullable CompoundTag entityTag) {
         if (getTotalSpawnWeight(level, this.blockPosition()) > 0) {
-            this.setFlowerCowType(getAndSetMoobloomSpawnTypeDependingOnBiome(level, level.getRandom()));
+            this.setFlowerCowType(getMoobloomSpawnTypeDependingOnBiome(level, this.blockPosition(), level.getRandom()), level);
         } else {
-            this.setFlowerCowType(getAndSetMoobloomSpawnType(level, level.getRandom()));
+            this.setFlowerCowType(getMoobloomSpawnType(level, level.getRandom()), level);
         }
         return super.finalizeSpawn(level, difficulty, spawnType, entityData, entityTag);
     }
@@ -417,7 +417,7 @@ public class FlowerCow extends Cow implements Shearable {
         return totalWeight;
     }
 
-    public ConfiguredCowType<?, ?> getAndSetMoobloomSpawnType(LevelAccessor level, RandomSource random) {
+    public ConfiguredCowType<?, ?> getMoobloomSpawnType(LevelAccessor level, RandomSource random) {
         int totalWeight = 0;
 
         List<ConfiguredCowType<FlowerCowConfiguration, ?>> moobloomList = new ArrayList<>();
@@ -442,7 +442,7 @@ public class FlowerCow extends Cow implements Shearable {
         }
     }
 
-    public ConfiguredCowType<?, ?> getAndSetMoobloomSpawnTypeDependingOnBiome(LevelAccessor level, RandomSource random) {
+    public ConfiguredCowType<?, ?> getMoobloomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {
         List<ConfiguredCowType<FlowerCowConfiguration, ?>> moobloomList = new ArrayList<>();
 
         Registry<Biome> registry = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
@@ -458,14 +458,14 @@ public class FlowerCow extends Cow implements Shearable {
                 if(optionalList.isPresent()) {
                     entryList = optionalList.get();
                 }
-                if (entryList != null && entryList.contains(level.getBiome(this.blockPosition()))) {
+                if (entryList != null && entryList.contains(level.getBiome(pos))) {
                     moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, ?>) cowType);
                 }
             }
         }
 
         int index = 0;
-        for (double r = random.nextDouble() * getTotalSpawnWeight(level, this.blockPosition()); index < moobloomList.size() - 1; ++index) {
+        for (double r = random.nextDouble() * getTotalSpawnWeight(level, pos); index < moobloomList.size() - 1; ++index) {
             r -= moobloomList.get(index).getConfiguration().naturalSpawnWeight();
             if (r <= 0.0) break;
         }

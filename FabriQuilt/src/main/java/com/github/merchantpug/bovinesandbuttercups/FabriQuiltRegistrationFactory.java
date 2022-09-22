@@ -2,7 +2,6 @@ package com.github.merchantpug.bovinesandbuttercups;
 
 import com.github.merchantpug.bovinesandbuttercups.registry.RegistrationProvider;
 import com.github.merchantpug.bovinesandbuttercups.registry.RegistryObject;
-import com.google.auto.service.AutoService;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -14,7 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
 
-@AutoService(RegistrationProvider.Factory.class)
 public class FabriQuiltRegistrationFactory implements RegistrationProvider.Factory {
 
     @Override

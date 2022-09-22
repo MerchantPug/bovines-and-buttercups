@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "bovinesandbuttercups:blue_dye_from_snapdragon"
+    ]
+  },
+  "criteria": {
+    "has_snapdragon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bovinesandbuttercups:snapdragon"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bovinesandbuttercups:blue_dye_from_snapdragon"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_snapdragon",
+      "has_the_recipe"
+    ]
+  ]
+}

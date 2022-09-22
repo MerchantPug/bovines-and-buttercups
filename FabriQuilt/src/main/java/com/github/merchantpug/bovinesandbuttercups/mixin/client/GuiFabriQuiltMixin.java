@@ -28,9 +28,6 @@ import java.util.*;
 @Mixin(Gui.class)
 public class GuiFabriQuiltMixin extends GuiComponent {
     @Shadow @Final private Minecraft minecraft;
-    @Unique private int nullifiedEffectIndex;
-    @Unique private int nullifiedEffectRunningOutIndex;
-    @Unique private int nullifiedEffectTicks;
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     private void bovinesandbuttercups$overlayLockdownBorder(PoseStack poseStack, CallbackInfo ci, Collection<MobEffectInstance> collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l) {
@@ -52,26 +49,23 @@ public class GuiFabriQuiltMixin extends GuiComponent {
         List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().entrySet().stream().toList();
 
         if (statusEffectList.isEmpty()) return;
-        if (nullifiedEffectTicks % Math.max(600, 1200 - ((statusEffectList.size() - 2) * 300)) == 0) {
-            nullifiedEffectIndex = nullifiedEffectIndex < statusEffectList.size() - 1 ? nullifiedEffectIndex + 1 : 0;
-        }
+        int lockdownEffectIndex = minecraft.player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();
 
-        MobEffect statusEffect1 = nullifiedEffectIndex > statusEffectList.size() - 1 ? statusEffectList.get(0).getKey() : statusEffectList.get(nullifiedEffectIndex).getKey();
+        MobEffect statusEffect1 = statusEffectList.get(lockdownEffectIndex).getKey();
 
         List<Map.Entry<MobEffect, Integer>> runningOutEffectList = statusEffectList.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() <= 200).toList();
 
         float alpha = g;
         if (statusEffectList.size() > 1) {
             if (!runningOutEffectList.isEmpty()) {
-                if (nullifiedEffectTicks % Math.max(600, 1200 - ((runningOutEffectList.size() - 2) * 300)) == 0) {
-                    nullifiedEffectRunningOutIndex = nullifiedEffectRunningOutIndex < runningOutEffectList.size() - 1 ? nullifiedEffectRunningOutIndex + 1 : 0;
-                }
+                int runningOutEffectIndex = minecraft.player.tickCount / (160 / runningOutEffectList.size()) % runningOutEffectList.size();
+
                 if (!mobEffectInstance.isAmbient()) {
-                    int duration = nullifiedEffectRunningOutIndex > runningOutEffectList.size() - 1 ? runningOutEffectList.get(0).getValue() : runningOutEffectList.get(nullifiedEffectRunningOutIndex).getValue();
+                    int duration = runningOutEffectList.get(runningOutEffectIndex).getValue();
                     int m = 10 - duration / 20;
                     alpha = Mth.clamp((float)duration / 10.0f / 5.0f * 0.5f, 0.0f, 0.5f) + Mth.cos((float)duration * (float)Math.PI / 5.0f) * Mth.clamp((float)m / 10.0f * 0.25f, 0.0f, 0.25f);
                 }
-                statusEffect1 = nullifiedEffectRunningOutIndex > runningOutEffectList.size() - 1 ? runningOutEffectList.get(0).getKey() :  runningOutEffectList.get(nullifiedEffectRunningOutIndex).getKey();
+                statusEffect1 = runningOutEffectList.get(runningOutEffectIndex).getKey();
             }
         }
 
@@ -83,7 +77,5 @@ public class GuiFabriQuiltMixin extends GuiComponent {
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, a);
             blit(poseStack, n + 3, o + 3, this.getBlitOffset(), 18, 18, additionalSprite);
         });
-        if (this.minecraft != null && this.minecraft.isPaused()) return;
-        nullifiedEffectTicks++;
     }
 }

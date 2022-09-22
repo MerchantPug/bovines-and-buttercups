@@ -21,7 +21,8 @@
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
       "init": "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsQuilt",
-      "client_init": "com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientQuilt"
+      "client_init": "com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientQuilt",
+      "inspecio": "com.github.merchantpug.bovinesandbuttercups.client.integration.inspecio.BovinesAndButtercupsInspecioPlugin"
     },
     "depends": [
       {
@@ -40,6 +41,7 @@
   },
   "mixin": [
     "bovinesandbuttercups.mixins.json",
-    "bovinesandbuttercups-fabriquilt.mixins.json"
+    "bovinesandbuttercups-fabriquilt.mixins.json",
+    "bovinesandbuttercups-quilt.mixins.json"
   ]
 }

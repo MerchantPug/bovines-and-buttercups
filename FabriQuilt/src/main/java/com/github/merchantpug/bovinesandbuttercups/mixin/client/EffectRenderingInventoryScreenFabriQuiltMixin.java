@@ -6,6 +6,7 @@ import com.github.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -32,9 +33,6 @@ import java.util.*;
 public abstract class EffectRenderingInventoryScreenFabriQuiltMixin<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
     @Shadow protected abstract Component getEffectName(MobEffectInstance mobEffectInstance);
 
-    @Unique private int bovinesandbuttercups$nullifiedEffectIndex;
-    @Unique private int bovinesandbuttercups$nullifiedEffectTicks;
-
     public EffectRenderingInventoryScreenFabriQuiltMixin(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
@@ -46,16 +44,13 @@ public abstract class EffectRenderingInventoryScreenFabriQuiltMixin<T extends Ab
         List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().entrySet().stream().toList();
 
         if (statusEffectList.isEmpty()) return;
-        if (bovinesandbuttercups$nullifiedEffectTicks % Math.max(600, 1200 - ((statusEffectList.size() - 2) * 300)) == 0) {
-            bovinesandbuttercups$nullifiedEffectIndex = bovinesandbuttercups$nullifiedEffectIndex < statusEffectList.size() - 1 ? bovinesandbuttercups$nullifiedEffectIndex + 1 : 0;
-        }
+        int lockdownEffectIndex = minecraft.player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();
 
-        MobEffect mobEffect1 = bovinesandbuttercups$nullifiedEffectIndex > statusEffectList.size() - 1 ? statusEffectList.get(0).getKey() : statusEffectList.get(bovinesandbuttercups$nullifiedEffectIndex).getKey();
+        MobEffect mobEffect1 = statusEffectList.get(lockdownEffectIndex).getKey();
 
         TextureAtlasSprite additionalSprite = mobEffectTextureManager.get(mobEffect1);
         RenderSystem.setShaderTexture(0, additionalSprite.atlas().getId());
         InventoryScreen.blit(poseStack, x + (large ? 6 : 7), i + 7, this.getBlitOffset(), 18, 18, additionalSprite);
-        bovinesandbuttercups$nullifiedEffectTicks++;
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;)V"), locals = LocalCapture.CAPTURE_FAILHARD)

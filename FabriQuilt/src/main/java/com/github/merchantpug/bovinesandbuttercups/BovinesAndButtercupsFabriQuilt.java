@@ -8,7 +8,7 @@ public class BovinesAndButtercupsFabriQuilt {
 	public static void init() {
 		BovinesAndButtercups.init();
 
-		BovineCowTypeRegistry.register();
+		BovineCowTypesFabriQuilt.register();
 		BovineBlockEntityTypesFabriQuilt.init();
 		BovineEntityTypesFabriQuilt.init();
 		BovineItemsFabriQuilt.init();

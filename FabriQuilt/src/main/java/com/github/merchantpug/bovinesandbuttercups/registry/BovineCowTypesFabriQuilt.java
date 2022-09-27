@@ -6,7 +6,7 @@ import com.github.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfigur
 import com.github.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.minecraft.core.Registry;
 
-public class BovineCowTypeRegistry {
+public class BovineCowTypesFabriQuilt {
     public static void register() {
         Registry.register(BovineRegistriesFabriQuilt.COW_TYPE, BovinesAndButtercups.asResource("moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
         Registry.register(BovineRegistriesFabriQuilt.COW_TYPE, BovinesAndButtercups.asResource("mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE);

@@ -13,7 +13,7 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 
 public class BovineRegistriesFabriQuilt {
-    public static final Registry<CowType<?>> COW_TYPE = FabricRegistryBuilder.createSimple(ClassUtil.<CowType<?>>castClass(CowType.class), BovinesAndButtercups.asResource("cow_type")).buildAndRegister();
+    public static final Registry<CowType<?>> COW_TYPE = FabricRegistryBuilder.createSimple(ClassUtil.<CowType<?>>castClass(CowType.class), BovineRegistryKeys.COW_TYPE_KEY.location()).buildAndRegister();
 
     public static final Registry<ConfiguredCowType<?, ?>> CONFIGURED_COW_TYPE = BuiltinRegistries.registerSimple(BovineRegistryKeys.CONFIGURED_COW_TYPE_KEY, BovineRegistriesFabriQuilt::bootstrap);
 

@@ -20,9 +20,10 @@
     },
     "intermediate_mappings": "net.fabricmc:intermediary",
     "entrypoints": {
-      "init": "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsQuilt",
-      "client_init": "com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientQuilt",
-      "inspecio": "com.github.merchantpug.bovinesandbuttercups.client.integration.inspecio.BovinesAndButtercupsInspecioPlugin"
+      "init": "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsQuilt",
+      "client_init": "net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientQuilt",
+      "inspecio": "net.merchantpug.bovinesandbuttercups.client.integration.inspecio.BovinesAndButtercupsInspecioPlugin",
+      "cardinal-components": "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponentInitializer"
     },
     "depends": [
       {
@@ -39,6 +40,9 @@
       }
     ]
   },
+  "cardinal-components": [
+    "bovinesandbuttercups:cow_type"
+  ],
   "mixin": [
     "bovinesandbuttercups.mixins.json",
     "bovinesandbuttercups-fabriquilt.mixins.json",

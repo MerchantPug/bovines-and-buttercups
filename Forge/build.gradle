@@ -9,13 +9,30 @@ buildscript {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
 apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'maven-publish'
 
-archivesBaseName = "${project.mod_name}-Forge"
+archivesBaseName = "${project.mod_name}-forge"
+
+configurations {
+    library
+    shade
+    implementation.extendsFrom(shade)
+}
+
+// Used to manually add non-mc libraries to the runtime classpaths found in build/classpath
+// If you have any module issues, check these files to make sure there are no duplicate dependencies
+minecraft.runs.all {
+    lazyToken('minecraft_classpath') {
+        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+    }
+}
 
 mixin {
     add sourceSets.main, "${project.mod_id}.refmap.json"
@@ -85,11 +102,21 @@ minecraft {
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
+repositories {
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
+
+    shade fg.deobf("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
+    library fg.deobf("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
+    annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
 
     compileOnly project(":Xplat")
     annotationProcessor 'org.spongepowered:mixin:0.8.4-SNAPSHOT:processor'
@@ -112,7 +139,19 @@ processResources {
     }
 }
 
-jar.finalizedBy('reobfJar')
+shadowJar {
+    configurations = [project.configurations.shade]
+
+    classifier ''
+    relocate 'com.llamalad7', 'net.merchantpug.shadowed.com.llamalad7'
+
+    finalizedBy 'reobfShadowJar'
+    mergeServiceFiles()
+}
+
+reobf {
+    shadowJar {}
+}
 
 publishing {
     publications {
@@ -123,9 +162,15 @@ publishing {
             artifact jar
         }
     }
+
     repositories {
         maven {
-            url "file://" + System.getenv("local_maven")
+            name = "merchantpug"
+            url = "https://maven.merchantpug.net/releases"
+            credentials(PasswordCredentials)
+            authentication {
+                create("basic", BasicAuthentication)
+            }
         }
     }
 }

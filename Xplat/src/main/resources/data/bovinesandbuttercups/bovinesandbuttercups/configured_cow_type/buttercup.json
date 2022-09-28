@@ -9,6 +9,7 @@
     "key": "bovinesandbuttercups:buttercup_bud",
     "model_location": "bovinesandbuttercups:buttercup_bud"
   },
+  "texture_location": "bovinesandbuttercups:textures/entity/buttercup_moobloom.png",
   "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
   "nectar_effect": {
     "effect": "minecraft:poison",

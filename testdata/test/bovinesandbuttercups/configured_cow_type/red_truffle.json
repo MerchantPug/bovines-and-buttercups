@@ -8,5 +8,6 @@
     "huge_block_model_location": "test:red_truffle_block",
     "huge_structure_templates": "test:red_truffle",
     "with_blocks": true
-  }
+  },
+  "texture_location": "test:textures/entity/mooshroom/red_truffle_mooshroom.png"
 }

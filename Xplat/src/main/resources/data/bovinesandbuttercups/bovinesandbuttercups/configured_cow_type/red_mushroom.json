@@ -1,0 +1,9 @@
+{
+  "type": "bovinesandbuttercups:mooshroom",
+  "mushroom": {
+    "block_state": {
+      "Name": "minecraft:red_mushroom"
+    }
+  },
+  "texture_location": "minecraft:textures/entity/cow/red_mooshroom.png"
+}

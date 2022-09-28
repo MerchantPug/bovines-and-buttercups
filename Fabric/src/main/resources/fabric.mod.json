@@ -21,10 +21,18 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
+      "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric"
     ],
     "client": [
-      "com.github.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientFabric"
+      "net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientFabric"
+    ],
+    "cardinal-components": [
+      "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponentInitializer"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "bovinesandbuttercups:cow_type"
     ]
   },
   "accessWidener": "bovinesandbuttercups.accesswidener",

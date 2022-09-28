@@ -1,7 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.github.merchantpug.bovinesandbuttercups.mixin",
+  "package": "net.merchantpug.bovinesandbuttercups.mixin",
+  "plugin": "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BeeAccessor",
@@ -29,6 +30,7 @@
     "client.ModelBakeryMixin",
     "client.ModelBlockRendererAccessor",
     "client.ModelBlockRendererAmbientOcclusionFaceAccessor",
+    "client.MushroomCowMushroomLayerMixin",
     "client.MushroomCowRendererMixin",
     "client.QuadrupedModelMixin"
   ],

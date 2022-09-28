@@ -1,0 +1,31 @@
+package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
+
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
+import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
+import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowTypeRegistryUtil;
+import net.minecraft.client.model.CowModel;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.resources.ResourceLocation;
+
+import java.util.Locale;
+
+public class FlowerCowRenderer extends MobRenderer<FlowerCow, CowModel<FlowerCow>> {
+
+    public FlowerCowRenderer(EntityRendererProvider.Context context) {
+        super(context, new CowModel<>(context.bakeLayer(BovineModelLayers.MOOBLOOM_MODEL_LAYER)), 0.7f);
+        this.addLayer(new FlowerCowGrassLayer(this));
+        this.addLayer(new FlowerCowFlowerLayer<>(this, context.getBlockRenderDispatcher()));
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(FlowerCow entity) {
+        ResourceLocation location = entity.getFlowerCowType().getConfiguration().cowTexture().isPresent() ? entity.getFlowerCowType().getConfiguration().cowTexture().get() : new ResourceLocation(ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), entity.getFlowerCowType()).getNamespace(), "textures/entity/moobloom/" + ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), entity.getFlowerCowType()).getPath().toLowerCase(Locale.ROOT) + "_moobloom.png");
+        if (BovinesAndButtercupsClient.LOADED_COW_TEXTURES.contains(location)) {
+            return location;
+        }
+        return BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png");
+    }
+}

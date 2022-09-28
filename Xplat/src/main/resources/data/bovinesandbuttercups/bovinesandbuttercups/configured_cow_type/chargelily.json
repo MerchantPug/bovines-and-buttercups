@@ -9,6 +9,7 @@
     "key": "bovinesandbuttercups:chargelily_bud",
     "model_location": "bovinesandbuttercups:chargelily_bud"
   },
+  "texture_location": "bovinesandbuttercups:textures/entity/chargelily_moobloom.png",
   "nectar_effect": {
     "effect": "minecraft:haste",
     "duration": 400

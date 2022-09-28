@@ -9,6 +9,7 @@
     "key": "bovinesandbuttercups:bird_of_paradise_bud",
     "model_location": "bovinesandbuttercups:bird_of_paradise_bud"
   },
+  "texture_location": "bovinesandbuttercups:textures/entity/bird_of_paradise_moobloom.png",
   "nectar_effect": {
     "effect": "minecraft:night_vision",
     "duration": 800

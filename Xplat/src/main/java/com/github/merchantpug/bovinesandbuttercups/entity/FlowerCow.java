@@ -216,7 +216,7 @@ public class FlowerCow extends Cow implements Shearable {
             player2.setItemInHand(hand, itemStack3);
             this.setFlowersToGenerate(12);
             this.setPollinationTicks(0);
-            this.playSound(SoundEvents.HONEY_DRINK, 1.0f, 1.0f);
+            this.playSound(BovineSoundEvents.MOOBLOOM_DRINK.get(), 1.0f, 1.0f);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else if (itemStack.is(Items.BOWL) && !this.isBaby()) {
             ItemStack itemStack2;

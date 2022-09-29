@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -82,9 +83,20 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public ResourceLocation getMushroomCowTypeResourceLocation(MushroomCow cow) {
+        LazyOptional<MushroomCowTypeCapabilityImpl> capability = cow.getCapability(MushroomCowTypeCapability.INSTANCE);
+        return capability.map(MushroomCowTypeCapabilityImpl::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
+    }
+
+    @Override
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowTypeFromCow(MushroomCow cow) {
         LazyOptional<MushroomCowTypeCapabilityImpl> capability = cow.getCapability(MushroomCowTypeCapability.INSTANCE);
         return capability.map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(cow.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE));
+    }
+
+    @Override
+    public void setMushroomCowType(MushroomCow cow, ResourceLocation cowTypeKey) {
+        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setMushroomCowType(cowTypeKey));
     }
 
     @Override

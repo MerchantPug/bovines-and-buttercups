@@ -13,6 +13,7 @@ import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.MushroomCow;
@@ -42,7 +43,11 @@ public interface IPlatformHelper {
 
     Codec<CowType<?>> getCowTypeCodec();
 
+    ResourceLocation getMushroomCowTypeResourceLocation(MushroomCow cow);
+
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowTypeFromCow(MushroomCow cow);
+
+    void setMushroomCowType(MushroomCow cow, ResourceLocation cowTypeKey);
 
     BlockEntityType<CustomFlowerBlockEntity> getCustomFlowerBlockEntity();
 

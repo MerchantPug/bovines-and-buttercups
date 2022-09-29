@@ -9,7 +9,6 @@
     "key": "bovinesandbuttercups:hyacinth_bud",
     "model_location": "bovinesandbuttercups:hyacinth_bud"
   },
-  "texture_location": "bovinesandbuttercups:textures/entity/hyacinth_moobloom.png",
   "nectar_effect": {
     "effect": "minecraft:strength",
     "duration": 400

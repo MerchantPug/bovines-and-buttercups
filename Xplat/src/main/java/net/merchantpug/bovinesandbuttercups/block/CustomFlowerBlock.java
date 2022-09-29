@@ -35,8 +35,8 @@ public class CustomFlowerBlock extends BaseEntityBlock {
         BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
         if (blockEntity instanceof CustomFlowerBlockEntity cfbe) {
             CompoundTag compound = new CompoundTag();
-            if (cfbe.getFlowerTypeName() != null) {
-                compound.putString("Type", cfbe.getFlowerType().key().toString());
+            if (cfbe.getFlowerType() != null && cfbe.getFlowerType().key().isPresent() && cfbe.getFlowerType().withFlowerBlock()) {
+                compound.putString("Type", cfbe.getFlowerType().key().get().toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }

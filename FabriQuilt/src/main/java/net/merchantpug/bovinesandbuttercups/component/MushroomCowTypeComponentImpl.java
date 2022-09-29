@@ -7,7 +7,6 @@ import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,26 +23,14 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
 
     @Override
     public void readFromNbt(CompoundTag tag) {
-        if (tag.contains("type", Tag.TAG_STRING)) {
-            this.typeId = ResourceLocation.tryParse(tag.getString("type"));
-        } else if (this.provider.getMushroomType() == MushroomCow.MushroomType.BROWN) {
-            this.typeId = BovinesAndButtercups.asResource("brown_mushroom");
-        } else if (this.provider.getMushroomType() == MushroomCow.MushroomType.RED) {
-            this.typeId = BovinesAndButtercups.asResource("red_mushroom");
-        }
+        this.setMushroomCowType(ResourceLocation.tryParse(tag.getString("type")));
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        if (this.typeId == null) {
-            if (this.provider.getMushroomType() == MushroomCow.MushroomType.BROWN) {
-                this.typeId = BovinesAndButtercups.asResource("brown_mushroom");
-            } else if (this.provider.getMushroomType() == MushroomCow.MushroomType.RED) {
-                this.typeId = BovinesAndButtercups.asResource("red_mushroom");
-            }
+        if (this.typeId != null) {
+            tag.putString("type", this.typeId.toString());
         }
-
-        tag.putString("type", this.typeId.toString());
     }
 
     @Override
@@ -65,8 +52,14 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
     }
 
     @Override
+    public ResourceLocation getMushroomCowTypeKey() {
+        return this.typeId;
+    }
+
+    @Override
     public void setMushroomCowType(ResourceLocation key) {
         this.typeId = key;
+        BovineEntityComponentInitializer.MUSHROOM_COW_TYPE_COMPONENT.sync(provider);
     }
 
     @Override

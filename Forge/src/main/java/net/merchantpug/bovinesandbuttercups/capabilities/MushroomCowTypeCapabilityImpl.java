@@ -60,6 +60,12 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
         }
     }
 
+    @Override
+    public ResourceLocation getMushroomCowTypeKey() {
+        return this.typeId;
+    }
+
+    @Override
     public void setMushroomCowType(ResourceLocation key) {
         this.typeId = key;
     }

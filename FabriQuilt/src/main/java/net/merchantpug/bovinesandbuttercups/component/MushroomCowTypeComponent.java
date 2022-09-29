@@ -7,5 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 
 public interface MushroomCowTypeComponent extends Component {
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowType();
+    ResourceLocation getMushroomCowTypeKey();
     void setMushroomCowType(ResourceLocation key);
 }

@@ -9,7 +9,6 @@
     "key": "bovinesandbuttercups:snowdrop_bud",
     "model_location": "bovinesandbuttercups:snowdrop_bud"
   },
-  "texture_location": "bovinesandbuttercups:textures/entity/snowdrop_moobloom.png",
   "nectar_effect": {
     "effect": "minecraft:slowness",
     "duration": 800

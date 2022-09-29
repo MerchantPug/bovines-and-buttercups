@@ -9,7 +9,6 @@
     "key": "bovinesandbuttercups:snapdragon_bud",
     "model_location": "bovinesandbuttercups:snapdragon_bud"
   },
-  "texture_location": "bovinesandbuttercups:textures/entity/snapdragon_moobloom.png",
   "nectar_effect": {
     "effect": "minecraft:water_breathing",
     "duration": 800

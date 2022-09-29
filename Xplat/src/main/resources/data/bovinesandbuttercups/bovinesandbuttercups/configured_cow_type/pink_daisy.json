@@ -9,7 +9,6 @@
     "key": "bovinesandbuttercups:pink_daisy_bud",
     "model_location": "bovinesandbuttercups:pink_daisy_bud"
   },
-  "texture_location": "bovinesandbuttercups:textures/entity/pink_daisy_moobloom.png",
   "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
   "nectar_effect": {
     "effect": "minecraft:speed",

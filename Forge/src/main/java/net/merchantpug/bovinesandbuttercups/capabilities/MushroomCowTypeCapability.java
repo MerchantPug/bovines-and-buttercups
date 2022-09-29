@@ -13,5 +13,6 @@ public interface MushroomCowTypeCapability extends INBTSerializable<CompoundTag>
     Capability<MushroomCowTypeCapabilityImpl> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowType();
+    ResourceLocation getMushroomCowTypeKey();
     void setMushroomCowType(ResourceLocation key);
 }

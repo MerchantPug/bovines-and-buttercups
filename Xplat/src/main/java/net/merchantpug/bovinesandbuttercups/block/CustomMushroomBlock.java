@@ -38,8 +38,8 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
         BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
         if (blockEntity instanceof CustomMushroomBlockEntity cmbe) {
             CompoundTag compound = new CompoundTag();
-            if (cmbe.getMushroomType() != null) {
-                compound.putString("Type", cmbe.getMushroomType().key().toString());
+            if (cmbe.getMushroomType() != null && cmbe.getMushroomType().key().isPresent() && cmbe.getMushroomType().withMushroomBlocks()) {
+                compound.putString("Type", cmbe.getMushroomType().key().get().toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }
@@ -78,6 +78,9 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
 
             if (level.isEmptyBlock(blockpos1) && state.canSurvive(level, blockpos1)) {
                 level.setBlock(blockpos1, state, 2);
+                ((CustomMushroomBlockEntity)level.getBlockEntity(blockpos1)).setMushroomTypeName(((CustomMushroomBlockEntity)level.getBlockEntity(pos)).getMushroomTypeName());
+                level.getBlockEntity(pos).setChanged();
+                level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
             }
         }
 

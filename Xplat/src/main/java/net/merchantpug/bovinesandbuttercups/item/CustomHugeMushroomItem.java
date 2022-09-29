@@ -66,8 +66,8 @@ public class CustomHugeMushroomItem extends BlockItem {
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemTransforms.TransformType transformType) {
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.hugeBlockItemModelLocation().get(), MushroomType.MISSING.hugeBlockItemModelVariant());
 
-        if (CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).isPresent() && CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().hugeBlockModelLocation().isPresent() && CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().withMushroomBlocks()) {
-            modelResourceLocation = new ModelResourceLocation(CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().hugeBlockModelLocation().get(), CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().hugeBlockModelVariant());
+        if (CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).isPresent() && CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().hugeBlockItemModelLocation().isPresent() && CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().withMushroomBlocks()) {
+            modelResourceLocation = new ModelResourceLocation(CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().hugeBlockItemModelLocation().get(), CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().hugeBlockItemModelVariant());
         }
 
         BakedModel mushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

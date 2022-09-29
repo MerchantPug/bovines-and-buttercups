@@ -1,0 +1,15 @@
+{
+  "type": "bovinesandbuttercups:mooshroom",
+  "mushroom": {
+    "key": "test:green_truffle",
+    "name": "Green Truffle",
+    "model_location": "test:green_truffle",
+    "huge_name": "Green Truffle Block",
+    "huge_model_location": "test:green_truffle_block",
+    "huge_structures": [
+      "test:green_truffle"
+    ],
+    "with_blocks": true
+  },
+  "texture_location": "test:textures/entity/mooshroom/green_truffle_mooshroom.png"
+}

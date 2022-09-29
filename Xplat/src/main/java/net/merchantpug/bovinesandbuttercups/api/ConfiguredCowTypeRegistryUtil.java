@@ -43,9 +43,9 @@ public class ConfiguredCowTypeRegistryUtil {
         if (!registry.get().containsKey(key)) {
             throw new NullPointerException("Could not find ConfiguredCowType at location " + key + ".");
         }
-        ConfiguredCowType<?, ?> cfc = registry.get().get(key);
-        if (optional.isEmpty() || cfc.getCowType() == optional.get()) {
-            return cfc;
+        ConfiguredCowType<?, ?> cct = registry.get().get(key);
+        if (optional.isEmpty() || cct.getCowType() == optional.get()) {
+            return cct;
         }
         throw new ClassCastException("ConfiguredCowType at location " + key + " does not match mob type for entity. Expected: " + BovineRegistryKeys.COW_TYPE_KEY);
     }

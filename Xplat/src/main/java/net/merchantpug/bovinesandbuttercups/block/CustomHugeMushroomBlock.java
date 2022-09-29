@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.block;
 
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,8 +38,8 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
         BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
         if (blockEntity instanceof CustomHugeMushroomBlockEntity chmbe) {
             CompoundTag compound = new CompoundTag();
-            if (chmbe.getMushroomType() != null) {
-                compound.putString("Type", chmbe.getMushroomType().key().toString());
+            if (chmbe.getMushroomType() != null && chmbe.getMushroomType().key().isPresent() && chmbe.getMushroomType().withMushroomBlocks()) {
+                compound.putString("Type", chmbe.getMushroomType().key().get().toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }
@@ -48,11 +49,11 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockGetter level = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        String type = "";
         if (level.getBlockEntity(pos) instanceof CustomHugeMushroomBlockEntity) {
-            type = ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).getMushroomTypeName();
+            MushroomType type = ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).getMushroomType();
+            return this.defaultBlockState().setValue(DOWN,  !(level.getBlockEntity(pos.below()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.below())).getMushroomType().equals(type))).setValue(UP, !(level.getBlockEntity(pos.above()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.above())).getMushroomType().equals(type))).setValue(NORTH, !(level.getBlockEntity(pos.north()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.north())).getMushroomType().equals(type))).setValue(EAST, !(level.getBlockEntity(pos.east()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.east())).getMushroomType().equals(type))).setValue(SOUTH, !(level.getBlockEntity(pos.south()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.south())).getMushroomType().equals(type))).setValue(WEST, !(level.getBlockEntity(pos.west()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.west())).getMushroomType().equals(type)));
         }
-        return this.defaultBlockState().setValue(DOWN,  !(level.getBlockEntity(pos.below()) instanceof CustomHugeMushroomBlockEntity && Objects.equals(((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.below())).getMushroomTypeName(), type))).setValue(UP, !(level.getBlockEntity(pos.above()) instanceof CustomHugeMushroomBlockEntity && Objects.equals(((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.above())).getMushroomTypeName(), type))).setValue(NORTH, !(level.getBlockEntity(pos.north()) instanceof CustomHugeMushroomBlockEntity && Objects.equals(((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.north())).getMushroomTypeName(), type))).setValue(EAST, !(level.getBlockEntity(pos.east()) instanceof CustomHugeMushroomBlockEntity && Objects.equals(((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.east())).getMushroomTypeName(), type))).setValue(SOUTH, !(level.getBlockEntity(pos.south()) instanceof CustomHugeMushroomBlockEntity && Objects.equals(((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.south())).getMushroomTypeName(), type))).setValue(WEST, !(level.getBlockEntity(pos.west()) instanceof CustomHugeMushroomBlockEntity && Objects.equals(((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.west())).getMushroomTypeName(), type)));
+        return super.getStateForPlacement(context);
     }
 
     public BlockState updateShape(BlockState $$0, Direction $$1, BlockState $$2, LevelAccessor $$3, BlockPos $$4, BlockPos $$5) {

@@ -9,7 +9,6 @@
     "key": "bovinesandbuttercups:limelight_bud",
     "model_location": "bovinesandbuttercups:limelight_bud"
   },
-  "texture_location": "bovinesandbuttercups:textures/entity/limelight_moobloom.png",
   "nectar_effect": {
     "effect": "minecraft:mining_fatigue",
     "duration": 1200

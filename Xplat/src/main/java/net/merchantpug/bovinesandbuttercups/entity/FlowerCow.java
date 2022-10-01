@@ -13,7 +13,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovineSoundEvents;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowTypeRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -182,20 +182,20 @@ public class FlowerCow extends Cow implements Shearable {
         }
 
         if (!this.level.isClientSide() && this.level.getBlockState(this.blockPosition()).isAir() && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
-            if (this.getFlowerCowType().getConfiguration().flower().blockState().isPresent() && this.getFlowerCowType().getConfiguration().flower().blockState().get().canSurvive(this.level, this.blockPosition())) {
+            if (this.getFlowerCowType().getConfiguration().flowerBlockState().isPresent() && this.getFlowerCowType().getConfiguration().flowerBlockState().get().canSurvive(this.level, this.blockPosition())) {
                 ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
-                this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getConfiguration().flower().blockState().get(), 3);
+                this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getConfiguration().flowerBlockState().get(), 3);
                 this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
                 this.gameEvent(GameEvent.BLOCK_PLACE, this);
                 if (this.getFlowersToGenerate() > 0) {
                     this.timeBetweenFlowerPlacement = this.random.nextInt(60, 80);
                 }
-            } else if (this.getFlowerCowType().getConfiguration().flower().modelLocation().isPresent() && this.getFlowerCowType().getConfiguration().flower().withFlowerBlock()) {
+            } else if (this.getFlowerCowType().getConfiguration().getFlowerType(this.getLevel()).isPresent()) {
                 ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
                 this.level.setBlock(this.blockPosition(), BovineBlocks.CUSTOM_FLOWER.get().defaultBlockState(), 3);
                 BlockEntity blockEntity = this.level.getBlockEntity(this.blockPosition());
                 if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                    customFlowerBlockEntity.setFlowerTypeName(this.getFlowerCowType().getConfiguration().flower().modelLocation().toString());
+                    customFlowerBlockEntity.setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlowerType(this.getLevel()).get()).toString());
                     customFlowerBlockEntity.setChanged();
                 }
                 this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
@@ -224,8 +224,8 @@ public class FlowerCow extends Cow implements Shearable {
             itemStack2 = new ItemStack(BovineItems.NECTAR_BOWL.get());
             if (this.getFlowerCowType().getConfiguration().nectarEffectInstance().isPresent()) {
                 NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().getConfiguration().nectarEffectInstance().get().getEffect(), this.getFlowerCowType().getConfiguration().nectarEffectInstance().get().getDuration());
-            } else if (this.getFlowerCowType().getConfiguration().flower().blockState().isPresent() && this.getFlowerCowType().getConfiguration().flower().blockState().get().getBlock() instanceof FlowerBlock) {
-                NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getConfiguration().flower().blockState().get().getBlock()).getSuspiciousStewEffect(), 600);
+            } else if (this.getFlowerCowType().getConfiguration().flowerBlockState().isPresent() && this.getFlowerCowType().getConfiguration().flowerBlockState().get().getBlock() instanceof FlowerBlock) {
+                NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getConfiguration().flowerBlockState().get().getBlock()).getSuspiciousStewEffect(), 600);
             } else {
                 return InteractionResult.PASS;
             }
@@ -266,12 +266,12 @@ public class FlowerCow extends Cow implements Shearable {
             cowEntity.setInvulnerable(this.isInvulnerable());
             this.level.addFreshEntity(cowEntity);
             for (int i = 0; i < 5; ++i) {
-                if (this.getFlowerCowType().getConfiguration().flower().blockState().isPresent()) {
-                    this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), new ItemStack(this.getFlowerCowType().getConfiguration().flower().blockState().get().getBlock())));
-                } else if (this.getFlowerCowType().getConfiguration().flower().withFlowerBlock() && this.getFlowerCowType().getConfiguration().flower().modelLocation().isPresent()) {
+                if (this.getFlowerCowType().getConfiguration().flowerBlockState().isPresent()) {
+                    this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), new ItemStack(this.getFlowerCowType().getConfiguration().flowerBlockState().get().getBlock())));
+                } else if (this.getFlowerCowType().getConfiguration().getFlowerType(this.getLevel()).isPresent()) {
                     ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomFlowerItem());
                     CompoundTag compound = new CompoundTag();
-                    compound.putString("Type", this.getFlowerCowType().getConfiguration().flower().key().toString());
+                    compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlowerType(this.getLevel()).get()).toString());
                     itemStack.getOrCreateTag().put("BlockEntityTag", compound);
                     this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), itemStack));
                 }
@@ -282,7 +282,7 @@ public class FlowerCow extends Cow implements Shearable {
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow other) {
         HashMap<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>, Double> eligbleTypeMap = new HashMap<>();
         double chancesTotal = 1.0F;
-        for (ConfiguredCowType<?, ?> cowTypeInstance : ConfiguredCowTypeRegistryUtil.configuredCowTypeStream(this.getLevel()).filter(cowTypeInstance -> cowTypeInstance.getConfiguration() instanceof FlowerCowConfiguration && ((FlowerCowConfiguration)cowTypeInstance.getConfiguration()).breedingRequirements().isPresent()).toList()) {
+        for (ConfiguredCowType<?, ?> cowTypeInstance : BovineRegistryUtil.configuredCowTypeStream(this.getLevel()).filter(cowTypeInstance -> cowTypeInstance.getConfiguration() instanceof FlowerCowConfiguration && ((FlowerCowConfiguration)cowTypeInstance.getConfiguration()).breedingRequirements().isPresent()).toList()) {
             FlowerCowConfiguration flowerCowType = (FlowerCowConfiguration)cowTypeInstance.getConfiguration();
             for (FlowerCowBreedingRequirements breedingRequirements : flowerCowType.breedingRequirements().stream().filter(br -> br.doesApply(level, this.getFlowerCowType(), other.getFlowerCowType())).toList()) {
                double chance = breedingRequirements.isBoosted(this.getFlowerCowType().getConfiguration(), other.getFlowerCowType().getConfiguration()) ? breedingRequirements.boostedChance() : breedingRequirements.chance();
@@ -320,17 +320,17 @@ public class FlowerCow extends Cow implements Shearable {
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getFlowerCowType() {
         try {
-            if (ConfiguredCowTypeRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID))) && this.type.getConfiguration() != ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE).getConfiguration()) {
-                return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE);
+            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID))) && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE.get()).getConfiguration()) {
+                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE.get());
             } else if (this.type != null) {
                 return this.type;
-            } else if (ConfiguredCowTypeRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)))) {
-                return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE);
+            } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)))) {
+                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE.get());
             }
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
             return this.type;
         } catch (Exception e) {
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
             return this.type;
         }
     }
@@ -342,14 +342,14 @@ public class FlowerCow extends Cow implements Shearable {
     public void setFlowerCowType(String value, LevelAccessor level) {
         this.entityData.set(TYPE_ID, value);
         try {
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, ResourceLocation.tryParse(value), BovineCowTypes.FLOWER_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(level, ResourceLocation.tryParse(value), BovineCowTypes.FLOWER_COW_TYPE.get());
         } catch (Exception e) {
-            this.type = ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
         }
     }
 
     public void setFlowerCowType(ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> value, LevelAccessor level) {
-        this.entityData.set(TYPE_ID, ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(level, value).toString());
+        this.entityData.set(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(level, value).toString());
         this.type = value;
     }
 
@@ -395,7 +395,7 @@ public class FlowerCow extends Cow implements Shearable {
 
         HolderSet<Biome> entryList = null;
 
-        for (ConfiguredCowType<?, ?> cowType : ConfiguredCowTypeRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
 
             if (configuration.naturalSpawnWeight() > 0 && configuration.biomeTagKey().isPresent()) {
@@ -417,7 +417,7 @@ public class FlowerCow extends Cow implements Shearable {
 
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> moobloomList = new ArrayList<>();
 
-        for (ConfiguredCowType<?, ?> cowType : ConfiguredCowTypeRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration flowerCowConfiguration)) continue;
 
             if (flowerCowConfiguration.naturalSpawnWeight() > 0) {
@@ -433,7 +433,7 @@ public class FlowerCow extends Cow implements Shearable {
         if (!moobloomList.isEmpty()) {
             return moobloomList.get(index);
         } else {
-            return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
         }
     }
 
@@ -444,7 +444,7 @@ public class FlowerCow extends Cow implements Shearable {
 
         HolderSet<Biome> entryList = null;
 
-        for (ConfiguredCowType<?, ?> cowType : ConfiguredCowTypeRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration flowerCowConfiguration)) continue;
 
             if (flowerCowConfiguration.naturalSpawnWeight() > 0 && flowerCowConfiguration.biomeTagKey().isPresent()) {
@@ -467,7 +467,7 @@ public class FlowerCow extends Cow implements Shearable {
         if (!moobloomList.isEmpty()) {
             return moobloomList.get(index);
         } else {
-            return ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
         }
     }
 

@@ -1,14 +1,9 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower": {
-    "block_state": {
-      "Name": "bovinesandbuttercups:buttercup"
-    }
+  "flower_block_state": {
+    "Name": "bovinesandbuttercups:buttercup"
   },
-  "bud": {
-    "key": "bovinesandbuttercups:buttercup_bud",
-    "model_location": "bovinesandbuttercups:buttercup_bud"
-  },
+  "bud_model_location": "bovinesandbuttercups:buttercup_bud",
   "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
   "nectar_effect": {
     "effect": "minecraft:poison",

@@ -15,9 +15,10 @@ public class ItemStackMixin implements ItemStackAccess {
 
     @Inject(method = "inventoryTick", at = @At("HEAD"))
     private void bovinesandbuttercups$setLevel(Level level, Entity entity, int i, boolean bl, CallbackInfo ci) {
-        this.bovinesandbuttercups$level = level;
+        if (this.bovinesandbuttercups$getLevel() == null) {
+            this.bovinesandbuttercups$setLevel(level);
+        }
     }
-
 
     @Override
     public Level bovinesandbuttercups$getLevel() {

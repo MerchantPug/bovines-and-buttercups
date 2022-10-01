@@ -41,17 +41,25 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         int m = LivingEntityRenderer.getOverlayCoords(livingEntity, 0.0f);
 
         if (livingEntity.isBaby()) {
-            if (configuration.bud().modelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.bud().modelLocation().get(), configuration.bud().modelVariant());
+            if (configuration.budModelLocation().isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.budModelLocation().get(), configuration.budModelVariant());
             }
 
-            handleMoobudRender(poseStack, buffer, livingEntity, packedLight, bl, m, configuration.bud().blockState(), modelResourceLocation);
+            if (configuration.getBudType(livingEntity.getLevel()).isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.getBudType(livingEntity.getLevel()).get().modelLocation(), configuration.getBudType(livingEntity.getLevel()).get().modelVariant());
+            }
+
+            handleMoobudRender(poseStack, buffer, livingEntity, packedLight, bl, m, configuration.budBlockState(), modelResourceLocation);
         } else {
-            if (configuration.flower().modelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.flower().modelLocation().get(), configuration.flower().modelVariant());
+            if (configuration.flowerModelLocation().isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.flowerModelLocation().get(), configuration.flowerModelVariant());
             }
 
-            handleMoobloomRender(poseStack, buffer, livingEntity, packedLight, bl, m, configuration.flower().blockState(), modelResourceLocation);
+            if (configuration.getFlowerType(livingEntity.getLevel()).isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.getFlowerType(livingEntity.getLevel()).get().modelLocation(), configuration.getFlowerType(livingEntity.getLevel()).get().modelVariant());
+            }
+
+            handleMoobloomRender(poseStack, buffer, livingEntity, packedLight, bl, m, configuration.flowerBlockState(), modelResourceLocation);
         }
     }
 

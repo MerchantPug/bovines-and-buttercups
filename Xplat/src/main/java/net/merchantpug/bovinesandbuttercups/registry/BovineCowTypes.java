@@ -7,8 +7,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 
 public class BovineCowTypes {
-    public static final CowType<FlowerCowConfiguration> FLOWER_COW_TYPE = new CowType<>(asMapCodec(FlowerCowConfiguration.CODEC));
-    public static final CowType<MushroomCowConfiguration> MUSHROOM_COW_TYPE = new CowType<>(asMapCodec(MushroomCowConfiguration.CODEC));
+    public static final RegistrationProvider<CowType<?>> COW_TYPE_REGISTRY = RegistrationProvider.Factory.INSTANCE.create(BovineRegistryKeys.COW_TYPE_KEY, "bovinesandbuttercups");
+
+    public static final RegistryObject<CowType<FlowerCowConfiguration>> FLOWER_COW_TYPE = COW_TYPE_REGISTRY.register("moobloom", () -> new CowType<>(asMapCodec(FlowerCowConfiguration.CODEC)));
+    public static final RegistryObject<CowType<MushroomCowConfiguration>> MUSHROOM_COW_TYPE = COW_TYPE_REGISTRY.register("mooshroom", () -> new CowType<>(asMapCodec(MushroomCowConfiguration.CODEC)));
+
+    public static void init() {
+
+    }
 
     public static <C> MapCodec<C> asMapCodec(Codec<C> codec) {
         if (codec instanceof MapCodec.MapCodecCodec) {

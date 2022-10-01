@@ -3,6 +3,8 @@ package net.merchantpug.bovinesandbuttercups.platform.services;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.block.entity.*;
+import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
@@ -41,9 +43,13 @@ public interface IPlatformHelper {
 
     ResourceKey<Registry<ConfiguredCowType<?, ?>>> getConfiguredCowTypeResourceKey();
 
+    ResourceKey<Registry<FlowerType>> getFlowerTypeResourceKey();
+
+    ResourceKey<Registry<MushroomType>> getMushroomTypeResourceKey();
+
     Codec<CowType<?>> getCowTypeCodec();
 
-    ResourceLocation getMushroomCowTypeResourceLocation(MushroomCow cow);
+    ResourceLocation getMushroomCowTypeResource(MushroomCow cow);
 
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowTypeFromCow(MushroomCow cow);
 

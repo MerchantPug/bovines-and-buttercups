@@ -23,6 +23,7 @@ public class BovinesAndButtercupsForge {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BovinesAndButtercups.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
+        BovineRegistriesForge.initCowTypeRegistry(eventBus);
         BovinesAndButtercups.init();
         BovineBlockEntityTypesForge.init();
         BovineEntityTypesForge.init();

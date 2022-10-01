@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.block;
 
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.core.BlockPos;
@@ -36,10 +38,10 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
     public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = new ItemStack(this);
         BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
-        if (blockEntity instanceof CustomMushroomBlockEntity cmbe) {
+        if (blockEntity instanceof CustomMushroomBlockEntity cmbe && cmbe.getLevel() != null) {
             CompoundTag compound = new CompoundTag();
-            if (cmbe.getMushroomType() != null && cmbe.getMushroomType().key().isPresent() && cmbe.getMushroomType().withMushroomBlocks()) {
-                compound.putString("Type", cmbe.getMushroomType().key().get().toString());
+            if (cmbe.getMushroomType() != null && !cmbe.getMushroomType().equals(MushroomType.MISSING)) {
+                compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(cmbe.getLevel(), cmbe.getMushroomType()).toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }
@@ -106,7 +108,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
             StructureTemplateManager structureTemplateManager = level.getStructureManager();
 
             if (mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().isPresent()) {
-                ResourceLocation resourceLocation = mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().get().get(randomSource.nextInt() % mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().get().size());
+                ResourceLocation resourceLocation = mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().get().get(Math.abs(level.random.nextInt()) % mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().get().size());
                 Optional<StructureTemplate> optional = Optional.empty();
                 try {
                     optional = structureTemplateManager.get(resourceLocation);

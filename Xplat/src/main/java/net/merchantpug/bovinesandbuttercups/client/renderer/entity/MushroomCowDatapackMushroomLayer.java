@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowTypeRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.client.Minecraft;
@@ -25,34 +25,38 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class MushroomCowDataMushroomLayer<T extends MushroomCow> extends RenderLayer<T, CowModel<T>> {
+public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends RenderLayer<T, CowModel<T>> {
     private final BlockRenderDispatcher blockRenderer;
 
-    public MushroomCowDataMushroomLayer(RenderLayerParent<T, CowModel<T>> context, BlockRenderDispatcher blockRenderer) {
+    public MushroomCowDatapackMushroomLayer(RenderLayerParent<T, CowModel<T>> context, BlockRenderDispatcher blockRenderer) {
         super(context);
         this.blockRenderer = blockRenderer;
     }
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        boolean bl;
-        bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
-        if ((entity).isInvisible() && !bl || entity.isBaby()
-                || (ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(entity.level, Services.PLATFORM.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("red_mushroom"))
-                && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().mushroom().blockState().isPresent() && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().mushroom().blockState().get().is(Blocks.RED_MUSHROOM))
-                || (ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(entity.level, Services.PLATFORM.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("brown_mushroom"))
-                && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().mushroom().blockState().isPresent() && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().mushroom().blockState().get().is(Blocks.BROWN_MUSHROOM))) return;
+        boolean bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
+        if (entity.isInvisible() && !bl
+                || entity.isBaby()
+                || (BovineRegistryUtil.getConfiguredCowTypeKey(entity.level, Services.PLATFORM.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("red_mushroom"))
+                && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().blockState().isPresent() && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().blockState().get().is(Blocks.RED_MUSHROOM))
+                || (BovineRegistryUtil.getConfiguredCowTypeKey(entity.level, Services.PLATFORM.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("brown_mushroom"))
+                && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().blockState().isPresent() && Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().blockState().get().is(Blocks.BROWN_MUSHROOM))) return;
 
         MushroomCowConfiguration configuration = Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration();
 
         ModelResourceLocation modelResourceLocation = null;
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
-        if (configuration.mushroom().modelLocation().isPresent()) {
-            modelResourceLocation = new ModelResourceLocation(configuration.mushroom().modelLocation().get(), configuration.mushroom().modelVariant());
+        if (configuration.blockModelLocation().isPresent()) {
+            modelResourceLocation = new ModelResourceLocation(configuration.blockModelLocation().get(), configuration.blockModelVariant());
         }
 
-        handleMooshroomRender(poseStack, buffer, packedLight, bl, m, configuration.mushroom().blockState(), modelResourceLocation);
+        if (configuration.getMushroomType(entity.getLevel()).isPresent()) {
+            modelResourceLocation = new ModelResourceLocation(configuration.getMushroomType(entity.getLevel()).get().modelLocation(), configuration.getMushroomType(entity.getLevel()).get().modelVariant());
+        }
+
+        handleMooshroomRender(poseStack, buffer, packedLight, bl, m, configuration.blockState(), modelResourceLocation);
     }
 
     private void handleMooshroomRender(PoseStack poseStack, MultiBufferSource buffer, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
@@ -84,17 +88,16 @@ public class MushroomCowDataMushroomLayer<T extends MushroomCow> extends RenderL
         poseStack.popPose();
     }
 
-    private void renderMushroomBlock(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> flowerState, ModelResourceLocation resourceLocation) {
-        BakedModel flowerModel;
-        flowerModel = flowerState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> Minecraft.getInstance().getModelManager().getModel(resourceLocation));
+    private void renderMushroomBlock(PoseStack poseStack, MultiBufferSource buffer, int light, boolean outlineAndInvisible, BlockRenderDispatcher blockRenderDispatcher, int overlay, Optional<BlockState> mushroomState, ModelResourceLocation resourceLocation) {
+        BakedModel mushroomModel = mushroomState.map(blockRenderDispatcher::getBlockModel).orElseGet(() -> Minecraft.getInstance().getModelManager().getModel(resourceLocation));
 
         if (outlineAndInvisible) {
-            blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, flowerModel, 0.0f, 0.0f, 0.0f, light, overlay);
+            blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(RenderType.outline(InventoryMenu.BLOCK_ATLAS)), null, mushroomModel, 0.0f, 0.0f, 0.0f, light, overlay);
         } else {
-            if (flowerState.isPresent()) {
-                blockRenderDispatcher.renderSingleBlock(flowerState.get(), poseStack, buffer, light, overlay);
+            if (mushroomState.isPresent()) {
+                blockRenderDispatcher.renderSingleBlock(mushroomState.get(), poseStack, buffer, light, overlay);
             } else {
-                blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(Sheets.cutoutBlockSheet()), null, flowerModel, 1.0F, 1.0F, 1.0F, light, overlay);
+                blockRenderDispatcher.getModelRenderer().renderModel(poseStack.last(), buffer.getBuffer(Sheets.cutoutBlockSheet()), null, mushroomModel, 1.0F, 1.0F, 1.0F, light, overlay);
             }
         }
     }

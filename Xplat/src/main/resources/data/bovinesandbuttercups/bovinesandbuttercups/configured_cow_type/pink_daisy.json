@@ -1,14 +1,9 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower": {
-    "block_state": {
-      "Name": "bovinesandbuttercups:pink_daisy"
-    }
+  "flower_block_state": {
+    "Name": "bovinesandbuttercups:pink_daisy"
   },
-  "bud": {
-    "key": "bovinesandbuttercups:pink_daisy_bud",
-    "model_location": "bovinesandbuttercups:pink_daisy_bud"
-  },
+  "bud_model_location": "bovinesandbuttercups:pink_daisy_bud",
   "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
   "nectar_effect": {
     "effect": "minecraft:speed",

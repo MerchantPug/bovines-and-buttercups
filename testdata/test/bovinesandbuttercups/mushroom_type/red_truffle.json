@@ -1,0 +1,11 @@
+{
+    "key": "test:red_truffle",
+    "name": "Red Truffle",
+    "model_location": "test:red_truffle",
+    "huge_name": "Red Truffle Block",
+    "huge_structures": [
+        "test:red_truffle_small",
+        "test:red_truffle_medium",
+        "test:red_truffle_large"
+    ]
+}

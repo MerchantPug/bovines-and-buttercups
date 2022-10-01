@@ -2,11 +2,13 @@ package net.merchantpug.bovinesandbuttercups.platform;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowTypeRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.block.entity.*;
 import net.merchantpug.bovinesandbuttercups.capabilities.MushroomCowTypeCapability;
 import net.merchantpug.bovinesandbuttercups.capabilities.MushroomCowTypeCapabilityImpl;
+import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
@@ -29,7 +31,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -78,12 +79,22 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public ResourceKey<Registry<FlowerType>> getFlowerTypeResourceKey() {
+        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("flower_type"));
+    }
+
+    @Override
+    public ResourceKey<Registry<MushroomType>> getMushroomTypeResourceKey() {
+        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("mushroom_type"));
+    }
+
+    @Override
     public Codec<CowType<?>> getCowTypeCodec() {
         return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.COW_TYPE_REGISTRY.get().getCodec());
     }
 
     @Override
-    public ResourceLocation getMushroomCowTypeResourceLocation(MushroomCow cow) {
+    public ResourceLocation getMushroomCowTypeResource(MushroomCow cow) {
         LazyOptional<MushroomCowTypeCapabilityImpl> capability = cow.getCapability(MushroomCowTypeCapability.INSTANCE);
         return capability.map(MushroomCowTypeCapabilityImpl::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
     }
@@ -91,7 +102,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowTypeFromCow(MushroomCow cow) {
         LazyOptional<MushroomCowTypeCapabilityImpl> capability = cow.getCapability(MushroomCowTypeCapability.INSTANCE);
-        return capability.map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeFromKey(cow.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE));
+        return capability.map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(cow.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get()));
     }
 
     @Override

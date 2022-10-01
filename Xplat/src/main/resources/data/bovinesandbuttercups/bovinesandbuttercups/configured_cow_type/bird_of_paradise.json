@@ -1,14 +1,9 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower": {
-    "block_state": {
-      "Name": "bovinesandbuttercups:bird_of_paradise"
-    }
+  "flower_block_state": {
+    "Name": "bovinesandbuttercups:bird_of_paradise"
   },
-  "bud": {
-    "key": "bovinesandbuttercups:bird_of_paradise_bud",
-    "model_location": "bovinesandbuttercups:bird_of_paradise_bud"
-  },
+  "bud_model_location": "bovinesandbuttercups:bird_of_paradise_bud",
   "nectar_effect": {
     "effect": "minecraft:night_vision",
     "duration": 800

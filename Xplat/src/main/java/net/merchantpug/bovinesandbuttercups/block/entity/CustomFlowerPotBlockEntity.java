@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.block.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -45,13 +46,15 @@ public class CustomFlowerPotBlockEntity extends BlockEntity {
 
     public FlowerType getFlowerType() {
         try {
-            if (flowerTypeName == null) {
-                return FlowerType.MISSING;
-            } else if (cachedFlowerType != FlowerType.fromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName))) {
-                cachedFlowerType = FlowerType.fromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName));
-                return cachedFlowerType;
-            } else if (cachedFlowerType != null) {
-                return cachedFlowerType;
+            if (this.getLevel() != null) {
+                if (flowerTypeName == null) {
+                    return FlowerType.MISSING;
+                } else if (cachedFlowerType != BovineRegistryUtil.getFlowerTypeFromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName))) {
+                    cachedFlowerType = BovineRegistryUtil.getFlowerTypeFromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName));
+                    return cachedFlowerType;
+                } else if (cachedFlowerType != null) {
+                    return cachedFlowerType;
+                }
             }
         } catch (Exception e) {
             this.cachedFlowerType = FlowerType.MISSING;

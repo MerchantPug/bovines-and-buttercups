@@ -24,10 +24,10 @@ public class CustomMushroomPotBlockRenderer implements BlockEntityRenderer<Custo
     @Override
     @SuppressWarnings("ConstantConditions")
     public void render(CustomMushroomPotBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.pottedModelLocation().get(), MushroomType.MISSING.pottedModelVariant());
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.pottedModelLocation(), MushroomType.MISSING.pottedModelVariant());
 
-        if (blockEntity.getMushroomType() != null && blockEntity.getMushroomType().pottedModelLocation().isPresent() && blockEntity.getMushroomType().withMushroomBlocks()) {
-            modelResourceLocation = new ModelResourceLocation(blockEntity.getMushroomType().pottedModelLocation().get(), blockEntity.getMushroomType().pottedModelVariant());
+        if (blockEntity.getMushroomType() != null) {
+            modelResourceLocation = new ModelResourceLocation(blockEntity.getMushroomType().pottedModelLocation(), blockEntity.getMushroomType().pottedModelVariant());
         }
 
         BakedModel pottedMushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

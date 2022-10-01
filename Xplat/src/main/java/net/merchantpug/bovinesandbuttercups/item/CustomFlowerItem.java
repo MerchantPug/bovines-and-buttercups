@@ -1,9 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.item;
 
 import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -41,7 +43,7 @@ public class CustomFlowerItem extends BlockItem {
         if (stack.getTag() != null) {
             CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
-                FlowerType flowerType = FlowerType.fromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
+                FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
                 if (flowerType != FlowerType.MISSING) {
                     return Optional.of(flowerType);
                 }
@@ -55,10 +57,8 @@ public class CustomFlowerItem extends BlockItem {
         if (((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel() != null) {
             CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
-                FlowerType flowerType = FlowerType.fromKey(((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel(), ResourceLocation.tryParse(compound.getString("Type")));
-                if (flowerType.withFlowerBlock()) {
-                    return flowerType.getOrCreateNameTranslationKey();
-                }
+                FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel(), ResourceLocation.tryParse(compound.getString("Type")));
+                return flowerType.getOrCreateNameTranslationKey(((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel());
             }
         }
         return super.getName(stack);
@@ -68,7 +68,7 @@ public class CustomFlowerItem extends BlockItem {
         if (customFlower.getTag() != null) {
             CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
-                FlowerType flowerType = FlowerType.fromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
+                FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
                 if (flowerType.stewEffectInstance().isPresent()) {
                     return flowerType.stewEffectInstance().get().getEffect();
                 }
@@ -81,7 +81,7 @@ public class CustomFlowerItem extends BlockItem {
         if (customFlower.getTag() != null) {
             CompoundTag compound = customFlower.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
-                FlowerType flowerType = FlowerType.fromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
+                FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(level, ResourceLocation.tryParse(compound.getString("Type")));
                 if (flowerType.stewEffectInstance().isPresent()) {
                     return flowerType.stewEffectInstance().get().getDuration();
                 }
@@ -91,10 +91,10 @@ public class CustomFlowerItem extends BlockItem {
     }
 
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemTransforms.TransformType transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.itemModelLocation().get(), FlowerType.MISSING.itemModelVariant());
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.itemModelLocation(), FlowerType.MISSING.itemModelVariant());
 
-        if (CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).isPresent() && CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelLocation().isPresent() && CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().withFlowerBlock()) {
-            modelResourceLocation = new ModelResourceLocation(CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelLocation().get(), CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelVariant());
+        if (CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).isPresent()) {
+            modelResourceLocation = new ModelResourceLocation(CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelLocation(), CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, stack).get().itemModelVariant());
         }
 
         BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

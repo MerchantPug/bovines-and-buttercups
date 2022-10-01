@@ -15,6 +15,7 @@ public class BovinesAndButtercups {
         LOG.info("Bovines and Buttercups v" + VERSION + " is starting up. Moo!");
 
         BovineBlocks.init();
+        BovineCowTypes.init();
         BovineCriteriaTriggers.init();
         BovineEffects.init();
         BovineItems.init();

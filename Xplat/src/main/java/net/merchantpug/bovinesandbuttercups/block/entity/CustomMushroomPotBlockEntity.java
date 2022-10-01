@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.block.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -45,17 +46,19 @@ public class CustomMushroomPotBlockEntity extends BlockEntity {
 
     public MushroomType getMushroomType() {
         try {
-            if (mushroomTypeName == null) {
-                return MushroomType.MISSING;
-            } else if (cachedMushroomType != MushroomType.fromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName))) {
-                cachedMushroomType = MushroomType.fromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName));
-                return cachedMushroomType;
-            } else if (cachedMushroomType != null) {
-                return cachedMushroomType;
+            if (this.getLevel() != null) {
+                if (mushroomTypeName == null) {
+                    return MushroomType.MISSING;
+                } else if (cachedMushroomType != BovineRegistryUtil.getMushroomTypeFromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName))) {
+                    cachedMushroomType = BovineRegistryUtil.getMushroomTypeFromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName));
+                    return cachedMushroomType;
+                } else if (cachedMushroomType != null) {
+                    return cachedMushroomType;
+                }
             }
         } catch (Exception e) {
             this.cachedMushroomType = MushroomType.MISSING;
-            BovinesAndButtercups.LOG.warn("Could not load FlowerType at BlockPos '" + this.getBlockPos().toString() + "': ", e.getMessage());
+            BovinesAndButtercups.LOG.warn("Could not load MushroomType at BlockPos '" + this.getBlockPos().toString() + "': ", e.getMessage());
         }
         return MushroomType.MISSING;
     }

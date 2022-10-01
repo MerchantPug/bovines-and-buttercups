@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowTypeRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
@@ -28,6 +28,8 @@ import java.util.Optional;
 public abstract class MushroomCowMixin extends Animal {
     @Shadow public abstract MushroomCow.MushroomType getMushroomType();
 
+    @Shadow protected abstract void setMushroomType(MushroomCow.MushroomType $$0);
+
     protected MushroomCowMixin(EntityType<? extends Animal> $$0, Level $$1) {
         super($$0, $$1);
     }
@@ -35,12 +37,18 @@ public abstract class MushroomCowMixin extends Animal {
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void bovinesandbuttercups$backwardsCompatibilityLayer(CompoundTag tag, CallbackInfo ci) {
         MushroomCow cow = (MushroomCow)(Object) this;
-        if (ConfiguredCowTypeRegistryUtil.configuredCowTypeStream(level).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).allMatch(cct -> ((MushroomCowConfiguration) cct.getConfiguration()).naturalSpawnWeight() == 0)) {
-            if (Services.PLATFORM.getMushroomCowTypeResourceLocation(cow) == null) {
+        if (BovineRegistryUtil.configuredCowTypeStream(level).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).allMatch(cct -> ((MushroomCowConfiguration) cct.getConfiguration()).naturalSpawnWeight() == 0)) {
+            if (Services.PLATFORM.getMushroomCowTypeFromCow(cow) == null) {
                 if (cow.getMushroomType() == MushroomCow.MushroomType.BROWN) {
                     Services.PLATFORM.setMushroomCowType(cow, BovinesAndButtercups.asResource("brown_mushroom"));
                 } else if (cow.getMushroomType() == MushroomCow.MushroomType.RED) {
                     Services.PLATFORM.setMushroomCowType(cow, BovinesAndButtercups.asResource("red_mushroom"));
+                }
+            } else {
+                if (BovineRegistryUtil.getConfiguredCowTypeKey(this.level, Services.PLATFORM.getMushroomCowTypeFromCow((MushroomCow)(Object)this)).equals(BovinesAndButtercups.asResource("brown_mushroom"))) {
+                    this.setMushroomType(MushroomCow.MushroomType.BROWN);
+                } else if (BovineRegistryUtil.getConfiguredCowTypeKey(this.level, Services.PLATFORM.getMushroomCowTypeFromCow((MushroomCow)(Object)this)).equals(BovinesAndButtercups.asResource("red_mushroom"))) {
+                    this.setMushroomType(MushroomCow.MushroomType.RED);
                 }
             }
         }

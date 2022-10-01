@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.data.entity;
 
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowTypeRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -14,13 +14,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public record FlowerCowBreedingRequirements(List<Pair<ResourceLocation, ResourceLocation>> parentCombinations,
                                             Optional<TagKey<Item>> associatedItems,
                                             Optional<TagKey<Biome>> associatedBiomes,
-                                            Float chance,
-                                            Float boostedChance) {
+                                            float chance,
+                                            float boostedChance) {
 
     public static final MapCodec<FlowerCowBreedingRequirements> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Codec.list(Codec.pair(ResourceLocation.CODEC, ResourceLocation.CODEC)).fieldOf("parent_combinations").forGetter(FlowerCowBreedingRequirements::parentCombinations),
@@ -31,10 +32,26 @@ public record FlowerCowBreedingRequirements(List<Pair<ResourceLocation, Resource
     ).apply(builder, (t1, t2, t3, t4, t5) -> new FlowerCowBreedingRequirements(t1, t2, t3, t4, t5.orElse(t4))));
 
     public boolean doesApply(LevelAccessor level, ConfiguredCowType<FlowerCowConfiguration, ?> parent, ConfiguredCowType<FlowerCowConfiguration, ?> otherParent) {
-        return parentCombinations.stream().anyMatch(pair -> pair.getFirst().equals(ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(level, parent)) && pair.getSecond().equals(ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(level, otherParent)) || pair.getFirst().equals(ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(level, otherParent)) && pair.getSecond().equals(ConfiguredCowTypeRegistryUtil.getConfiguredCowTypeKey(level, parent)));
+        return parentCombinations.stream().anyMatch(pair -> pair.getFirst().equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, parent)) && pair.getSecond().equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, otherParent)) || pair.getFirst().equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, otherParent)) && pair.getSecond().equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, parent)));
     }
 
     public boolean isBoosted(FlowerCowConfiguration parent, FlowerCowConfiguration otherParent) {
         return false;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == this)
+            return true;
+
+        if (!(obj instanceof FlowerCowBreedingRequirements other))
+            return false;
+
+        return other.parentCombinations.equals(this.parentCombinations) && other.associatedItems.equals(this.associatedItems) && other.associatedBiomes.equals(this.associatedBiomes) && other.chance == this.chance && other.boostedChance == this.boostedChance;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.parentCombinations, this.associatedItems, this.associatedBiomes, this.chance, this.boostedChance);
     }
 }

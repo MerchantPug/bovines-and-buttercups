@@ -1,14 +1,11 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower": {
+  "flower_block_state": {
     "block_state": {
       "Name": "bovinesandbuttercups:hyacinth"
     }
   },
-  "bud": {
-    "key": "bovinesandbuttercups:hyacinth_bud",
-    "model_location": "bovinesandbuttercups:hyacinth_bud"
-  },
+  "bud_model_location": "bovinesandbuttercups:hyacinth_bud",
   "nectar_effect": {
     "effect": "minecraft:strength",
     "duration": 400

@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.block;
 
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
@@ -36,10 +37,10 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = new ItemStack(this);
         BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
-        if (blockEntity instanceof CustomHugeMushroomBlockEntity chmbe) {
+        if (blockEntity instanceof CustomHugeMushroomBlockEntity chmbe && chmbe.getLevel() != null) {
             CompoundTag compound = new CompoundTag();
-            if (chmbe.getMushroomType() != null && chmbe.getMushroomType().key().isPresent() && chmbe.getMushroomType().withMushroomBlocks()) {
-                compound.putString("Type", chmbe.getMushroomType().key().get().toString());
+            if (chmbe.getMushroomType() != null && !chmbe.getMushroomType().equals(MushroomType.MISSING)) {
+                compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(chmbe.getLevel(), chmbe.getMushroomType()).toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }

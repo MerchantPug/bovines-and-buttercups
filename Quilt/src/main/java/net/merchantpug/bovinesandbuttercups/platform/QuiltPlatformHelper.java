@@ -1,14 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
-import dev.onyxstudios.cca.internal.entity.CardinalComponentsEntity;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowTypeRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.block.entity.*;
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponentInitializer;
-import net.merchantpug.bovinesandbuttercups.component.MushroomCowTypeComponent;
-import net.merchantpug.bovinesandbuttercups.component.MushroomCowTypeComponentImpl;
+import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
@@ -76,12 +74,22 @@ public class QuiltPlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public ResourceKey<Registry<FlowerType>> getFlowerTypeResourceKey() {
+        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("bovinesandbuttercups/flower_type"));
+    }
+
+    @Override
+    public ResourceKey<Registry<MushroomType>> getMushroomTypeResourceKey() {
+        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("bovinesandbuttercups/mushroom_type"));
+    }
+
+    @Override
     public Codec<CowType<?>> getCowTypeCodec() {
         return BovineRegistriesFabriQuilt.COW_TYPE.byNameCodec();
     }
 
     @Override
-    public ResourceLocation getMushroomCowTypeResourceLocation(MushroomCow cow) {
+    public ResourceLocation getMushroomCowTypeResource(MushroomCow cow) {
         return BovineEntityComponentInitializer.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowTypeKey();
     }
 

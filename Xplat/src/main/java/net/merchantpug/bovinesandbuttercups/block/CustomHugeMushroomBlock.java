@@ -1,9 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.block;
 
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,13 +15,14 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Objects;
 
 public class CustomHugeMushroomBlock extends BaseEntityBlock {
     public static final BooleanProperty NORTH = PipeBlock.NORTH;
@@ -47,18 +51,9 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
         return itemStack;
     }
 
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockGetter level = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        if (level.getBlockEntity(pos) instanceof CustomHugeMushroomBlockEntity) {
-            MushroomType type = ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).getMushroomType();
-            return this.defaultBlockState().setValue(DOWN,  !(level.getBlockEntity(pos.below()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.below())).getMushroomType().equals(type))).setValue(UP, !(level.getBlockEntity(pos.above()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.above())).getMushroomType().equals(type))).setValue(NORTH, !(level.getBlockEntity(pos.north()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.north())).getMushroomType().equals(type))).setValue(EAST, !(level.getBlockEntity(pos.east()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.east())).getMushroomType().equals(type))).setValue(SOUTH, !(level.getBlockEntity(pos.south()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.south())).getMushroomType().equals(type))).setValue(WEST, !(level.getBlockEntity(pos.west()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.west())).getMushroomType().equals(type)));
-        }
-        return super.getStateForPlacement(context);
-    }
-
-    public BlockState updateShape(BlockState $$0, Direction $$1, BlockState $$2, LevelAccessor $$3, BlockPos $$4, BlockPos $$5) {
-        return $$2.is(this) ? $$0.setValue(PROPERTY_BY_DIRECTION.get($$1), Boolean.FALSE) : super.updateShape($$0, $$1, $$2, $$3, $$4, $$5);
+    public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor level, BlockPos pos, BlockPos pos2) {
+        ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).flagChanged();
+        return super.updateShape(state, direction, state2, level, pos, pos2);
     }
 
     public BlockState rotate(BlockState $$0, Rotation $$1) {
@@ -77,5 +72,10 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return Services.PLATFORM.getCustomHugeMushroomBlockEntity().create(pos, state);
+    }
+
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> entityType) {
+        return level.isClientSide ? null : createTickerHelper(entityType, Services.PLATFORM.getCustomHugeMushroomBlockEntity(), CustomHugeMushroomBlockEntity::serverTick);
     }
 }

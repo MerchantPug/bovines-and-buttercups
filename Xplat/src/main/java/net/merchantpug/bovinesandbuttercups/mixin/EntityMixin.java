@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
+import net.merchantpug.bovinesandbuttercups.block.CustomHugeMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.block.CustomMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
@@ -41,7 +42,7 @@ public abstract class EntityMixin {
 
     @Inject(method = "spawnSprintParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getRenderShape()Lnet/minecraft/world/level/block/RenderShape;"), locals = LocalCapture.CAPTURE_FAILHARD)
     public void bovinesandbuttercups$spawnCustomFlowerSprintParticle(CallbackInfo ci, int i, int j, int k, BlockPos blockPos, BlockState blockState) {
-        if ((blockState.getBlock() instanceof CustomFlowerBlock || blockState.getBlock() instanceof CustomMushroomBlock) && blockState.hasBlockEntity()) {
+        if ((blockState.getBlock() instanceof CustomFlowerBlock || blockState.getBlock() instanceof CustomMushroomBlock || blockState.getBlock() instanceof CustomHugeMushroomBlock) && blockState.hasBlockEntity()) {
             Vec3 vec3 = this.getDeltaMovement();
             if (this.getLevel().getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
                 this.level.addParticle(new ModelLocationParticleOption(customFlowerBlockEntity.getFlowerType().modelLocation(), customFlowerBlockEntity.getFlowerType().modelVariant()), this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, this.getY() + 0.1D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);

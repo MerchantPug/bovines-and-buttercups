@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.mixin.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
+import net.merchantpug.bovinesandbuttercups.block.CustomHugeMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.block.CustomMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
@@ -42,7 +43,7 @@ public abstract class ClientLevelMixin extends Level {
 
     @Inject(method = "addDestroyBlockEffect", at = @At("HEAD"), cancellable = true)
     private void bovinesandbuttercups$changeParticlesIfCustomBlock(BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
-        if ((blockState.getBlock() instanceof CustomFlowerBlock || blockState.getBlock() instanceof CustomMushroomBlock) && blockState.hasBlockEntity()) {
+        if ((blockState.getBlock() instanceof CustomFlowerBlock || blockState.getBlock() instanceof CustomMushroomBlock || blockState.getBlock() instanceof CustomHugeMushroomBlock) && blockState.hasBlockEntity()) {
             VoxelShape voxelShape = blockState.getShape(this, blockPos);
             voxelShape.forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> {
                 double d1 = Math.min(1.0D, maxX - minX);
@@ -69,7 +70,6 @@ public abstract class ClientLevelMixin extends Level {
                                 resourceLocation = customMushroomBlockEntity.getMushroomType().modelLocation();
                                 variant = customMushroomBlockEntity.getMushroomType().modelVariant();
                             } else if (this.getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {
-                                resourceLocation = BovinesAndButtercups.asResource("missing_mushroom");
                                 resourceLocation = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelLocation();
                                 variant = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelVariant();
                             }

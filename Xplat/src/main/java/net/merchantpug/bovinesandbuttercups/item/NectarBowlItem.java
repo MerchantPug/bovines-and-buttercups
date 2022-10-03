@@ -5,6 +5,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -57,7 +58,7 @@ public class NectarBowlItem extends Item {
                 MobEffect statusEffect;
                 CompoundTag compoundTag2 = nbtList.getCompound(i);
                 if ((statusEffect = MobEffect.byId(compoundTag2.getByte(EFFECT_ID_KEY))) == null) continue;
-                if (compoundTag2.contains(EFFECT_DURATION_KEY, 3)) {
+                if (compoundTag2.contains(EFFECT_DURATION_KEY, Tag.TAG_INT)) {
                     int compoundDuration = compoundTag2.getInt(EFFECT_DURATION_KEY);
                     if (compoundDuration > duration) {
                         duration = compoundDuration;

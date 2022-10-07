@@ -73,9 +73,7 @@ public abstract class MobEffectInstanceMixin implements MobEffectInstanceAccess 
                     hasAppliedAnEffect = true;
                 }
             }
-            if (hasAppliedAnEffect) {
-                return bl = true;
-            }
+            return bl = hasAppliedAnEffect;
         }
         return bl;
     }

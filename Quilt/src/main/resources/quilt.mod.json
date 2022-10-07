@@ -45,7 +45,7 @@
   ],
   "mixin": [
     "bovinesandbuttercups.mixins.json",
-    "bovinesandbuttercups-fabriquilt.mixins.json",
+    "bovinesandbuttercups-fabriclike.mixins.json",
     "bovinesandbuttercups-quilt.mixins.json"
   ]
 }

@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "particle": "block/flower_pot"
+  },
+  "render_type": "cutout"
+}

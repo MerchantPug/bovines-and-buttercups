@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "particle": "bovinesandbuttercups:block/missing_flower"
+  },
+  "render_type": "cutout"
+}

@@ -18,7 +18,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'maven-publish'
 
-archivesBaseName = "${project.mod_name}-forge"
+archivesBaseName = "${project.mod_name}-Forge"
 
 configurations {
     library
@@ -62,7 +62,7 @@ minecraft {
             mods {
                 modClientRun {
                     source sourceSets.main
-                    source project(":Xplat").sourceSets.main
+                    source project(":Common").sourceSets.main
                 }
             }
         }
@@ -77,7 +77,7 @@ minecraft {
             mods {
                 modServerRun {
                     source sourceSets.main
-                    source project(":Xplat").sourceSets.main
+                    source project(":Common").sourceSets.main
                 }
             }
         }
@@ -93,7 +93,7 @@ minecraft {
             mods {
                 modDataRun {
                     source sourceSets.main
-                    source project(":Xplat").sourceSets.main
+                    source project(":Common").sourceSets.main
                 }
             }
         }
@@ -118,16 +118,16 @@ dependencies {
     library fg.deobf("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
     annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
 
-    compileOnly project(":Xplat")
+    compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.4-SNAPSHOT:processor'
 }
 
 tasks.withType(JavaCompile) {
-    source(project(":Xplat").sourceSets.main.allSource)
+    source(project(":Common").sourceSets.main.allSource)
 }
 
 processResources {
-    from project(":Xplat").sourceSets.main.resources
+    from project(":Common").sourceSets.main.resources
     filesMatching('*.mixins.json') {
         expand "refmap_target": "${project.mod_id}."
     }

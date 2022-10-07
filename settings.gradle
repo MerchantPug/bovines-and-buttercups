@@ -30,4 +30,4 @@ pluginManagement {
 }
 
 rootProject.name = 'bovines-and-buttercups'
-include("Xplat", "FabriQuilt", "Fabric",  "Forge", "Quilt")
+include("Common", "Fabriclike", "Fabric",  "Forge", "Quilt")

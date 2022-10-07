@@ -16,7 +16,6 @@ import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import com.google.auto.service.AutoService;
 import com.mojang.serialization.Codec;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +30,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.quiltmc.loader.api.QuiltLoader;
+import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
 
 import java.util.function.Supplier;
 
@@ -60,7 +60,7 @@ public class QuiltPlatformHelper implements IPlatformHelper {
 
     @Override
     public void setRenderLayer(Block block, RenderType renderType) {
-        BlockRenderLayerMap.INSTANCE.putBlock(block, renderType);
+        BlockRenderLayerMap.put(renderType, block);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class QuiltPlatformHelper implements IPlatformHelper {
 
     @Override
     public Codec<CowType<?>> getCowTypeCodec() {
-        return BovineRegistriesFabriQuilt.COW_TYPE.byNameCodec();
+        return BovineRegistriesFabriclike.COW_TYPE.byNameCodec();
     }
 
     @Override
@@ -105,46 +105,46 @@ public class QuiltPlatformHelper implements IPlatformHelper {
 
     @Override
     public BlockEntityType<CustomFlowerBlockEntity> getCustomFlowerBlockEntity() {
-        return BovineBlockEntityTypesFabriQuilt.CUSTOM_FLOWER;
+        return BovineBlockEntityTypesFabriclike.CUSTOM_FLOWER;
     }
 
     @Override
     public BlockEntityType<CustomMushroomBlockEntity> getCustomMushroomBlockEntity() {
-        return BovineBlockEntityTypesFabriQuilt.CUSTOM_MUSHROOM;
+        return BovineBlockEntityTypesFabriclike.CUSTOM_MUSHROOM;
     }
 
     @Override
     public BlockEntityType<CustomHugeMushroomBlockEntity> getCustomHugeMushroomBlockEntity() {
-        return BovineBlockEntityTypesFabriQuilt.CUSTOM_MUSHROOM_BLOCK;
+        return BovineBlockEntityTypesFabriclike.CUSTOM_MUSHROOM_BLOCK;
     }
 
     @Override
     public BlockEntityType<CustomFlowerPotBlockEntity> getCustomFlowerPotBlockEntity() {
-        return BovineBlockEntityTypesFabriQuilt.POTTED_CUSTOM_FLOWER;
+        return BovineBlockEntityTypesFabriclike.POTTED_CUSTOM_FLOWER;
     }
 
     @Override
     public BlockEntityType<CustomMushroomPotBlockEntity> getCustomMushroomPotBlockEntity() {
-        return BovineBlockEntityTypesFabriQuilt.POTTED_CUSTOM_MUSHROOM;
+        return BovineBlockEntityTypesFabriclike.POTTED_CUSTOM_MUSHROOM;
     }
 
     @Override
     public EntityType<FlowerCow> getMoobloomEntity() {
-        return BovineEntityTypesFabriQuilt.MOOBLOOM;
+        return BovineEntityTypesFabriclike.MOOBLOOM;
     }
 
     @Override
     public CustomFlowerItem getCustomFlowerItem() {
-        return BovineItemsFabriQuilt.CUSTOM_FLOWER;
+        return BovineItemsFabriclike.CUSTOM_FLOWER;
     }
 
     @Override
     public CustomMushroomItem getCustomMushroomItem() {
-        return BovineItemsFabriQuilt.CUSTOM_MUSHROOM;
+        return BovineItemsFabriclike.CUSTOM_MUSHROOM;
     }
 
     @Override
     public CustomHugeMushroomItem getCustomHugeMushroomItem() {
-        return BovineItemsFabriQuilt.CUSTOM_MUSHROOM_BLOCK;
+        return BovineItemsFabriclike.CUSTOM_MUSHROOM_BLOCK;
     }
 }

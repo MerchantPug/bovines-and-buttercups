@@ -1,5 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
@@ -27,19 +29,26 @@ public class BovineRegistriesForge {
     public static final DeferredRegister<MushroomType> MUSHROOM_TYPE = DeferredRegister.create(BovineRegistryKeys.MUSHROOM_TYPE_KEY.location(), BovinesAndButtercups.MOD_ID);
     public static final Supplier<IForgeRegistry<MushroomType>> MUSHROOM_TYPE_REGISTRY = MUSHROOM_TYPE.makeRegistry(() -> new RegistryBuilder<MushroomType>().disableSaving().dataPackRegistry(MushroomType.CODEC.codec(), MushroomType.CODEC.codec()).hasTags());
 
-    public static void initCowTypeRegistry(IEventBus eventBus) {
-        COW_TYPE.register(eventBus);
-    }
-
     public static void init(IEventBus eventBus) {
+        COW_TYPE.register(eventBus);
+        COW_TYPE.register("moobloom", () -> BovineCowTypes.FLOWER_COW_TYPE);
+        COW_TYPE.register("mooshroom", () -> BovineCowTypes.MUSHROOM_COW_TYPE);
+
         CONFIGURED_COW_TYPE.register(eventBus);
-        CONFIGURED_COW_TYPE.register("missing_moobloom", () -> new ConfiguredCowType<>(BovineCowTypes.FLOWER_COW_TYPE.get(), FlowerCowConfiguration.MISSING));
-        CONFIGURED_COW_TYPE.register("missing_mooshroom", () -> new ConfiguredCowType<>(BovineCowTypes.MUSHROOM_COW_TYPE.get(), MushroomCowConfiguration.MISSING));
+        CONFIGURED_COW_TYPE.register("missing_moobloom", () -> new ConfiguredCowType<>(BovineCowTypes.FLOWER_COW_TYPE, FlowerCowConfiguration.MISSING));
+        CONFIGURED_COW_TYPE.register("missing_mooshroom", () -> new ConfiguredCowType<>(BovineCowTypes.MUSHROOM_COW_TYPE, MushroomCowConfiguration.MISSING));
 
         FLOWER_TYPE.register(eventBus);
         FLOWER_TYPE.register("missing", () -> FlowerType.MISSING);
 
         MUSHROOM_TYPE.register(eventBus);
         MUSHROOM_TYPE.register("missing", () -> MushroomType.MISSING);
+    }
+
+    public static <C> MapCodec<C> asMapCodec(Codec<C> codec) {
+        if (codec instanceof MapCodec.MapCodecCodec) {
+            return ((MapCodec.MapCodecCodec<C>) codec).codec();
+        }
+        return codec.fieldOf("value");
     }
 }

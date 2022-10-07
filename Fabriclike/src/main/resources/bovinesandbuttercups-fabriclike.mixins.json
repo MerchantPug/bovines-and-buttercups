@@ -1,0 +1,22 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.merchantpug.bovinesandbuttercups.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BeePollinateGoalMixin",
+    "MushroomCowAccessor",
+    "MushroomCowMixinFabriclike",
+    "RegistryAccessMixin"
+  ],
+  "client": [
+    "client.EffectRenderingInventoryScreenFabriclikeMixin",
+    "client.GuiFabriclikeMixin",
+    "client.ModelBakeryFabriclikeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "bovinesandbuttercups.refmap.json"
+}
+  

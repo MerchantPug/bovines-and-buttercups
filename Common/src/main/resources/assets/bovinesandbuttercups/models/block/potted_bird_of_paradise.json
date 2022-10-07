@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/flower_pot_cross",
+  "textures": {
+    "plant": "bovinesandbuttercups:block/bird_of_paradise"
+  },
+  "render_type": "cutout"
+}

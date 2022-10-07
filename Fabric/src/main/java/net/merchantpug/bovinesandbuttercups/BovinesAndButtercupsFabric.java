@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups;
 
-import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriQuilt;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriclike;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -21,9 +21,9 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             }
             BovinesAndButtercups.VERSION = version;
         });
-        BovinesAndButtercupsFabriQuilt.init();
+        BovinesAndButtercupsFabriclike.init();
 
-        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypesFabriQuilt.MOOBLOOM, 60, 2, 4);
+        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypesFabriclike.MOOBLOOM, 60, 2, 4);
 
         FabricLoader.getInstance().getModContainer(BovinesAndButtercups.MOD_ID).ifPresent(modContainer -> {
             ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), modContainer, "Mojang Textures", ResourcePackActivationType.NORMAL);

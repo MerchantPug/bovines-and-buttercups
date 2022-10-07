@@ -7,7 +7,7 @@ import net.minecraft.server.packs.PackType;
 public class BovinesAndButtercupsClientFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        BovinesAndButtercupsClientFabriQuilt.init();
+        BovinesAndButtercupsClientFabriclike.init();
 
         ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(new CowTextureReloadListenerFabric());
     }

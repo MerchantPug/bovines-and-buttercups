@@ -14,5 +14,6 @@ public interface MushroomCowTypeCapability extends INBTSerializable<CompoundTag>
 
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowType();
     ResourceLocation getMushroomCowTypeKey();
-    void setMushroomCowType(ResourceLocation key);
+    void setMushroomType(ResourceLocation key);
+    void syncMushroomType();
 }

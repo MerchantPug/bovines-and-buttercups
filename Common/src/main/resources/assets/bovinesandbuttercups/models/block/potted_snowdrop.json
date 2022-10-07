@@ -1,0 +1,7 @@
+{
+  "parent": "bovinesandbuttercups:block/flower_pot_cross_moobloom_flower",
+  "textures": {
+    "plant": "bovinesandbuttercups:block/snowdrop"
+  },
+  "render_type": "cutout"
+}

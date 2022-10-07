@@ -38,7 +38,7 @@
   "accessWidener": "bovinesandbuttercups.accesswidener",
   "mixins": [
     "bovinesandbuttercups.mixins.json",
-    "bovinesandbuttercups-fabriquilt.mixins.json"
+    "bovinesandbuttercups-fabriclike.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.6",

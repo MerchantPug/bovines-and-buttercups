@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups;
 
-import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriQuilt;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriclike;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.MobCategory;
 import org.quiltmc.loader.api.ModContainer;
@@ -21,9 +21,9 @@ public class BovinesAndButtercupsQuilt implements ModInitializer {
             version = version.split("-")[0];
         }
         BovinesAndButtercups.VERSION = version;
-        BovinesAndButtercupsFabriQuilt.init();
+        BovinesAndButtercupsFabriclike.init();
 
-        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypesFabriQuilt.MOOBLOOM, 60, 2, 4);
+        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypesFabriclike.MOOBLOOM, 60, 2, 4);
 
         ResourceLoader.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), mod, ResourcePackActivationType.NORMAL, Component.literal("Mojang Textures"));
         ResourceLoader.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), mod, ResourcePackActivationType.NORMAL, Component.literal("No Grass Back"));

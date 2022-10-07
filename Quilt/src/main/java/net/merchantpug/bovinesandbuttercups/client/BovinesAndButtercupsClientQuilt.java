@@ -8,7 +8,7 @@ import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
 public class BovinesAndButtercupsClientQuilt implements ClientModInitializer {
     @Override
     public void onInitializeClient(ModContainer mod) {
-        BovinesAndButtercupsClientFabriQuilt.init();
+        BovinesAndButtercupsClientFabriclike.init();
         ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(new CowTextureReloadListenerQuilt());
     }
 }

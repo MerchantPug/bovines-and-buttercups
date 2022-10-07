@@ -5,11 +5,17 @@ import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
+import net.merchantpug.bovinesandbuttercups.mixin.MushroomCowAccessor;
+import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
+import net.merchantpug.bovinesandbuttercups.network.s2c.SyncMushroomCowTypePacket;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.network.PacketDistributor;
 
 public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability {
     ResourceLocation typeId;
@@ -23,39 +29,37 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        if (this.typeId == null) {
-            if (this.provider.getMushroomType() == MushroomCow.MushroomType.BROWN) {
-                this.typeId = BovinesAndButtercups.asResource("brown_mushroom");
-            } else if (this.provider.getMushroomType() == MushroomCow.MushroomType.RED) {
-                this.typeId = BovinesAndButtercups.asResource("red_mushroom");
-            }
+        if (this.typeId != null) {
+            tag.putString("type", this.typeId.toString());
         }
-
-        tag.putString("type", this.typeId.toString());
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         if (tag.contains("type", Tag.TAG_STRING)) {
-            this.typeId = ResourceLocation.tryParse(tag.getString("type"));
+            ResourceLocation typeKey = ResourceLocation.tryParse(tag.getString("type"));
+            this.setMushroomType(typeKey);
+            this.syncMushroomType();
         }
     }
 
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowType() {
         try {
-            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(provider.getLevel(), typeId) && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get()).getConfiguration()) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get());
+            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(provider.getLevel(), typeId) && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE).getConfiguration()) {
+                this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE);
+                return this.type;
             } else if (this.type != null) {
                 return this.type;
             } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(provider.getLevel(), typeId)) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get());
+                this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE);
+                return this.type;
             }
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get());
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE);
             return this.type;
         } catch (Exception e) {
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get());
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE);
             return this.type;
         }
     }
@@ -66,7 +70,23 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
     }
 
     @Override
-    public void setMushroomCowType(ResourceLocation key) {
+    public void setMushroomType(ResourceLocation key) {
         this.typeId = key;
+
+        if (BovineRegistryUtil.getConfiguredCowTypeKey(provider.level, Services.PLATFORM.getMushroomCowTypeFromCow(provider)).equals(BovinesAndButtercups.asResource("brown_mushroom"))) {
+            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetMushroomType(MushroomCow.MushroomType.BROWN);
+        } else if (BovineRegistryUtil.getConfiguredCowTypeKey(provider.level, Services.PLATFORM.getMushroomCowTypeFromCow(provider)).equals(BovinesAndButtercups.asResource("red_mushroom"))) {
+            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetMushroomType(MushroomCow.MushroomType.RED);
+        }
+
+        if (!this.provider.level.isClientSide) {
+            this.syncMushroomType();
+        }
+    }
+
+    @Override
+    public void syncMushroomType() {
+        if (this.typeId == null) return;
+        BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncMushroomCowTypePacket(provider.getId(), this.typeId));
     }
 }

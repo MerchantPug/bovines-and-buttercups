@@ -1,0 +1,6 @@
+{
+  "textures": {
+    "particle": "bovinesandbuttercups:block/missing_mushroom"
+  },
+  "render_type": "cutout"
+}

@@ -14,6 +14,8 @@ import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
 import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
+import net.merchantpug.bovinesandbuttercups.network.s2c.SyncMushroomCowTypePacket;
 import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import com.google.auto.service.AutoService;
@@ -37,6 +39,7 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.function.Supplier;
 
@@ -65,7 +68,8 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public void setRenderLayer(Block block, RenderType renderType) {
-        ItemBlockRenderTypes.setRenderLayer(block, renderType);
+        // Handled through block model JSON
+        // ItemBlockRenderTypes.setRenderLayer(block, renderType);
     }
 
     @Override
@@ -95,19 +99,17 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public ResourceLocation getMushroomCowTypeResource(MushroomCow cow) {
-        LazyOptional<MushroomCowTypeCapabilityImpl> capability = cow.getCapability(MushroomCowTypeCapability.INSTANCE);
-        return capability.map(MushroomCowTypeCapabilityImpl::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
+        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
     }
 
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowTypeFromCow(MushroomCow cow) {
-        LazyOptional<MushroomCowTypeCapabilityImpl> capability = cow.getCapability(MushroomCowTypeCapability.INSTANCE);
-        return capability.map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(cow.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get()));
+        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(cow.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE));
     }
 
     @Override
     public void setMushroomCowType(MushroomCow cow, ResourceLocation cowTypeKey) {
-        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setMushroomCowType(cowTypeKey));
+        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setMushroomType(cowTypeKey));
     }
 
     @Override

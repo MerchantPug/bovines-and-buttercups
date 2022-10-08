@@ -39,7 +39,7 @@ public abstract class FlowerPotBlockMixin {
         if (item instanceof CustomFlowerItem) {
             if (this.isEmpty()) {
                 level.setBlock(pos, BovineBlocks.POTTED_CUSTOM_FLOWER.get().defaultBlockState(), 3);
-                ((CustomFlowerPotBlockEntity)level.getBlockEntity(pos)).setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(level, Objects.requireNonNullElse(CustomFlowerItem.getFlowerTypeFromTag(level, stack).get(), FlowerType.MISSING)).toString());
+                ((CustomFlowerPotBlockEntity)level.getBlockEntity(pos)).setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(level, CustomFlowerItem.getFlowerTypeFromTag(level, stack).orElse(FlowerType.MISSING)).toString());
                 level.getBlockEntity(pos).setChanged();
                 level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
                 player.awardStat(Stats.POT_FLOWER);
@@ -54,7 +54,7 @@ public abstract class FlowerPotBlockMixin {
         } else if (item instanceof CustomMushroomItem) {
             if (this.isEmpty()) {
                 level.setBlock(pos, BovineBlocks.POTTED_CUSTOM_MUSHROOM.get().defaultBlockState(), 3);
-                ((CustomMushroomPotBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(BovineRegistryUtil.getMushroomTypeKey(level, Objects.requireNonNullElse(CustomMushroomItem.getMushroomTypeFromTag(level, stack).get(), MushroomType.MISSING)).toString());
+                ((CustomMushroomPotBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(BovineRegistryUtil.getMushroomTypeKey(level, CustomMushroomItem.getMushroomTypeFromTag(level, stack).orElse(MushroomType.MISSING)).toString());
                 level.getBlockEntity(pos).setChanged();
                 level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
                 player.awardStat(Stats.POT_FLOWER);

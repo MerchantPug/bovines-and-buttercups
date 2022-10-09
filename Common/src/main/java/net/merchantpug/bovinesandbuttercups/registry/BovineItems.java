@@ -23,7 +23,7 @@ public class BovineItems {
     public static final RegistryObject<Item> CHARGELILY = register("chargelily", () -> new BlockItem(BovineBlocks.CHARGELILY.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
     public static final RegistryObject<Item> HYACINTH = register("hyacinth", () -> new BlockItem(BovineBlocks.HYACINTH.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
     public static final RegistryObject<Item> SNOWDROP = register("snowdrop", () -> new BlockItem(BovineBlocks.SNOWDROP.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
-    public static final RegistryObject<Item> SNAPDRAGON = register("snapdragon", () -> new BlockItem(BovineBlocks.SNAPDRAGON.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
+    public static final RegistryObject<Item> TROPICAL_BLUE = register("tropical_blue", () -> new BlockItem(BovineBlocks.TROPICAL_BLUE.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
 
     public static void init() {
 

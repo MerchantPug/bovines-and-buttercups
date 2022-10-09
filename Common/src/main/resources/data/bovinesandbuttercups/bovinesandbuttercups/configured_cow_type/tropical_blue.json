@@ -1,0 +1,11 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "flower_block_state": {
+    "Name": "bovinesandbuttercups:tropical_blue"
+  },
+  "bud_model_location": "bovinesandbuttercups:tropical_blue_bud",
+  "nectar_effect": {
+    "effect": "minecraft:slowfall",
+    "duration": 800
+  }
+}

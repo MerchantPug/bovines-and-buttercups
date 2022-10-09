@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "bovinesandbuttercups:blue_dye_from_snapdragon"
+      "bovinesandbuttercups:blue_dye_from_tropical_blue"
     ]
   },
   "criteria": {
-    "has_snapdragon": {
+    "has_tropical_blue": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "bovinesandbuttercups:snapdragon"
+              "bovinesandbuttercups:tropical_blue"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "bovinesandbuttercups:blue_dye_from_snapdragon"
+        "recipe": "bovinesandbuttercups:blue_dye_from_tropical_blue"
       }
     }
   },
   "requirements": [
     [
-      "has_snapdragon",
+      "has_tropical_blue",
       "has_the_recipe"
     ]
   ]

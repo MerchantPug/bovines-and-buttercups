@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "bovinesandbuttercups:block/snapdragon_bud"
+    "cross": "bovinesandbuttercups:block/tropical_blue_bud"
   }
 }

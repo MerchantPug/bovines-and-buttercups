@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "bovinesandbuttercups:block/snapdragon"
+    "cross": "bovinesandbuttercups:block/tropical_blue"
   },
   "render_type": "cutout"
 }

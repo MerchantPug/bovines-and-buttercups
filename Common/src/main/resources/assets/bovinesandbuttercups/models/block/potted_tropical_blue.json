@@ -1,7 +1,7 @@
 {
   "parent": "bovinesandbuttercups:block/flower_pot_cross_moobloom_flower",
   "textures": {
-    "plant": "bovinesandbuttercups:block/snapdragon"
+    "plant": "bovinesandbuttercups:block/tropical_blue"
   },
   "render_type": "cutout"
 }

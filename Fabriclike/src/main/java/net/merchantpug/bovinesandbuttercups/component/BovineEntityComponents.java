@@ -7,8 +7,8 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import net.minecraft.world.entity.animal.MushroomCow;
 
-public class BovineEntityComponentInitializer implements EntityComponentInitializer {
-    public static final ComponentKey<MushroomCowTypeComponent> MUSHROOM_COW_TYPE_COMPONENT = ComponentRegistry.getOrCreate(BovinesAndButtercups.asResource("cow_type"), MushroomCowTypeComponent.class);
+public class BovineEntityComponents implements EntityComponentInitializer {
+    public static final ComponentKey<MushroomCowTypeComponent> MUSHROOM_COW_TYPE_COMPONENT = ComponentRegistry.getOrCreate(BovinesAndButtercups.asResource("mooshroom_type"), MushroomCowTypeComponent.class);
 
     @Override
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {

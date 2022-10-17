@@ -22,7 +22,6 @@ import java.util.Objects;
 public class CustomHugeMushroomBlockEntity extends BlockEntity {
     @Nullable private MushroomType cachedMushroomType;
     @Nullable private String mushroomTypeName;
-    private boolean hasChanged;
 
     public CustomHugeMushroomBlockEntity(BlockPos worldPosition, BlockState blockState) {
         super(Services.PLATFORM.getCustomHugeMushroomBlockEntity(), worldPosition, blockState);
@@ -48,10 +47,6 @@ public class CustomHugeMushroomBlockEntity extends BlockEntity {
         mushroomTypeName = value;
     }
 
-    public void flagChanged() {
-        this.hasChanged = false;
-    }
-
     public MushroomType getMushroomType() {
         try {
             if (this.getLevel() != null) {
@@ -59,7 +54,6 @@ public class CustomHugeMushroomBlockEntity extends BlockEntity {
                     return MushroomType.MISSING;
                 } else if (cachedMushroomType != BovineRegistryUtil.getMushroomTypeFromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName))) {
                     cachedMushroomType = BovineRegistryUtil.getMushroomTypeFromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName));
-                    this.hasChanged = false;
                     return cachedMushroomType;
                 } else if (cachedMushroomType != null) {
                     return cachedMushroomType;
@@ -83,37 +77,35 @@ public class CustomHugeMushroomBlockEntity extends BlockEntity {
         return saveWithoutMetadata();
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, CustomHugeMushroomBlockEntity blockEntity) {
-        if (!blockEntity.hasChanged) {
-            BlockState newState = state;
+    public void updateState() {
+        Level level = this.getLevel();
+        BlockPos pos = this.getBlockPos();
+        BlockState newState = this.getBlockState();
 
-            if (level.getBlockState(pos.above()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.above()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.above())).getMushroomTypeName().equals(blockEntity.getMushroomTypeName())) {
-                newState = newState.setValue(CustomHugeMushroomBlock.UP, Boolean.FALSE);
-            }
-
-            if (level.getBlockState(pos.below()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.below()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.below())).getMushroomTypeName().equals(blockEntity.getMushroomTypeName())) {
-                newState = newState.setValue(CustomHugeMushroomBlock.DOWN, Boolean.FALSE);
-            }
-
-            if (level.getBlockState(pos.west()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.west()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.west())).getMushroomTypeName().equals(blockEntity.getMushroomTypeName())) {
-                newState = newState.setValue(CustomHugeMushroomBlock.WEST, Boolean.FALSE);
-            }
-
-            if (level.getBlockState(pos.north()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.north()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.north())).getMushroomTypeName().equals(blockEntity.getMushroomTypeName())) {
-                newState = newState.setValue(CustomHugeMushroomBlock.NORTH, Boolean.FALSE);
-            }
-
-            if (level.getBlockState(pos.east()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.east()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.east())).getMushroomTypeName().equals(blockEntity.getMushroomTypeName())) {
-                newState = newState.setValue(CustomHugeMushroomBlock.EAST, Boolean.FALSE);
-            }
-
-            if (level.getBlockState(pos.south()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.south()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.south())).getMushroomTypeName().equals(blockEntity.getMushroomTypeName())) {
-                newState = newState.setValue(CustomHugeMushroomBlock.SOUTH, Boolean.FALSE);
-            }
-
-            level.setBlock(pos, newState, 3);
-
-            blockEntity.hasChanged = true;
+        if (level.getBlockState(pos.above()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.above()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.above())).getMushroomTypeName().equals(this.getMushroomTypeName())) {
+            newState = newState.setValue(CustomHugeMushroomBlock.UP, Boolean.FALSE);
         }
+
+        if (level.getBlockState(pos.below()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.below()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.below())).getMushroomTypeName().equals(this.getMushroomTypeName())) {
+            newState = newState.setValue(CustomHugeMushroomBlock.DOWN, Boolean.FALSE);
+        }
+
+        if (level.getBlockState(pos.west()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.west()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.west())).getMushroomTypeName().equals(this.getMushroomTypeName())) {
+            newState = newState.setValue(CustomHugeMushroomBlock.WEST, Boolean.FALSE);
+        }
+
+        if (level.getBlockState(pos.north()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.north()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.north())).getMushroomTypeName().equals(this.getMushroomTypeName())) {
+            newState = newState.setValue(CustomHugeMushroomBlock.NORTH, Boolean.FALSE);
+        }
+
+        if (level.getBlockState(pos.east()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.east()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.east())).getMushroomTypeName().equals(this.getMushroomTypeName())) {
+            newState = newState.setValue(CustomHugeMushroomBlock.EAST, Boolean.FALSE);
+        }
+
+        if (level.getBlockState(pos.south()).is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos.south()) instanceof CustomHugeMushroomBlockEntity && ((CustomHugeMushroomBlockEntity) level.getBlockEntity(pos.south())).getMushroomTypeName().equals(this.getMushroomTypeName())) {
+            newState = newState.setValue(CustomHugeMushroomBlock.SOUTH, Boolean.FALSE);
+        }
+
+        level.setBlock(pos, newState, 3);
     }
 }

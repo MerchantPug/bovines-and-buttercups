@@ -45,7 +45,7 @@ public abstract class EffectRenderingInventoryScreenForgeMixin<T extends Abstrac
         List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().entrySet().stream().toList();
 
         if (statusEffectList.isEmpty()) return;
-        int lockdownEffectIndex =minecraft.player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();
+        int lockdownEffectIndex = minecraft.player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();
 
         MobEffect mobEffect1 = statusEffectList.get(lockdownEffectIndex).getKey();
 

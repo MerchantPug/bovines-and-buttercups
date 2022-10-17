@@ -52,7 +52,7 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     }
 
     public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor level, BlockPos pos, BlockPos pos2) {
-        ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).flagChanged();
+        ((CustomHugeMushroomBlockEntity)level.getBlockEntity(pos)).updateState();
         return super.updateShape(state, direction, state2, level, pos, pos2);
     }
 
@@ -72,10 +72,5 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return Services.PLATFORM.getCustomHugeMushroomBlockEntity().create(pos, state);
-    }
-
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> entityType) {
-        return level.isClientSide ? null : createTickerHelper(entityType, Services.PLATFORM.getCustomHugeMushroomBlockEntity(), CustomHugeMushroomBlockEntity::serverTick);
     }
 }

@@ -1,4 +1,17 @@
 {
+  "entity.moobloom.convert": {
+    "sounds": [
+      {
+        "name": "mob/mooshroom/convert1",
+        "volume": 0.75
+      },
+      {
+        "name": "mob/mooshroom/convert2",
+        "volume": 0.75
+      }
+    ],
+    "subtitle": "subtitles.entity.moobloom.convert"
+  },
   "entity.moobloom.drink": {
     "subtitle": "subtitles.entity.moobloom.drink",
     "sounds": [

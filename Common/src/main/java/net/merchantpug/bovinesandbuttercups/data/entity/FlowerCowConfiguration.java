@@ -2,8 +2,10 @@ package net.merchantpug.bovinesandbuttercups.data.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -13,59 +15,77 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public record FlowerCowConfiguration(Optional<BlockState> flowerBlockState,
-                                     Optional<ResourceLocation> flowerModelLocation,
-                                     String flowerModelVariant,
-                                     Optional<ResourceLocation> customFlower,
-                                     Optional<BlockState> budBlockState,
-                                     Optional<ResourceLocation> budModelLocation,
-                                     String budModelVariant,
-                                     Optional<ResourceLocation> customBud,
-                                     Optional<ResourceLocation> cowTexture,
-                                     ResourceLocation backTexture,
-                                     boolean backGrassTinted,
-                                     Optional<MobEffectInstance> nectarEffectInstance,
-                                     Optional<FlowerCowBreedingRequirements> breedingRequirements,
-                                     Optional<TagKey<Biome>> biomeTagKey,
-                                     int naturalSpawnWeight) implements CowTypeConfiguration {
+public class FlowerCowConfiguration extends CowTypeConfiguration {
+    private final FlowerCowFlower flower;
+    private final FlowerCowFlower bud;
+    private final ResourceLocation backTexture;
+    private final boolean backGrassTinted;
+    private final Optional<MobEffectInstance> nectarEffectInstance;
+    private final Optional<TagKey<Block>> breedingRequirements;
 
-    public static final Codec<FlowerCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            BlockState.CODEC.optionalFieldOf("flower_block_state").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::flowerBlockState),
-            ResourceLocation.CODEC.optionalFieldOf("flower_model_location").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::flowerModelLocation),
-            Codec.STRING.optionalFieldOf("flower_model_variant", "bovines").forGetter(FlowerCowConfiguration::flowerModelVariant),
-            ResourceLocation.CODEC.optionalFieldOf("custom_flower").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::customFlower),
-            BlockState.CODEC.optionalFieldOf("bud_block_state").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::budBlockState),
-            ResourceLocation.CODEC.optionalFieldOf("bud_model_location").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::budModelLocation),
-            Codec.STRING.optionalFieldOf("bud_model_variant", "bovines").forGetter(FlowerCowConfiguration::budModelVariant),
-            ResourceLocation.CODEC.optionalFieldOf("custom_bud").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::customBud),
-            ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::cowTexture),
-            ResourceLocation.CODEC.optionalFieldOf("back_texture_location", BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png")).forGetter(FlowerCowConfiguration::backTexture),
-            Codec.BOOL.optionalFieldOf("back_grass_tinted", true).forGetter(FlowerCowConfiguration::backGrassTinted),
-            MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::nectarEffectInstance),
-            FlowerCowBreedingRequirements.CODEC.codec().optionalFieldOf("breeding_requirements").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::breedingRequirements),
-            TagKey.codec(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biome_tag").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::biomeTagKey),
-            Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(FlowerCowConfiguration::naturalSpawnWeight)
-    ).apply(builder, FlowerCowConfiguration::new));
-
-    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing")), Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing")), Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true, Optional.empty(), Optional.empty(), Optional.empty(), 0);
-
-    public Optional<FlowerType> getFlowerType(LevelAccessor level) {
-        if (this.customFlower.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(BovineRegistryUtil.getFlowerTypeFromKey(level, this.customFlower.get()));
+    FlowerCowConfiguration(Optional<ResourceLocation> cowTexture,
+                           Optional<TagKey<Biome>> biomeTagKey,
+                           int naturalSpawnWeight,
+                           Optional<List<WeightedConfiguredCowType>> thunderConverts,
+                           FlowerCowFlower flower,
+                           FlowerCowFlower bud,
+                           ResourceLocation backTexture,
+                           boolean backGrassTinted,
+                           Optional<MobEffectInstance> nectarEffectInstance,
+                           Optional<TagKey<Block>> breedingRequirements) {
+        super(cowTexture, biomeTagKey, naturalSpawnWeight, thunderConverts);
+        this.flower = flower;
+        this.bud = bud;
+        this.backTexture = backTexture;
+        this.backGrassTinted = backGrassTinted;
+        this.nectarEffectInstance = nectarEffectInstance;
+        this.breedingRequirements = breedingRequirements;
     }
 
-    public Optional<FlowerType> getBudType(LevelAccessor level) {
-        if (this.customBud.isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(BovineRegistryUtil.getFlowerTypeFromKey(level, this.customBud.get()));
+    public static final Codec<FlowerCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+            ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getCowTexture),
+            TagKey.codec(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biome_tag").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getBiomeTagKey),
+            Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(CowTypeConfiguration::getNaturalSpawnWeight),
+            Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getThunderConversionTypes),
+            FlowerCowFlower.CODEC.fieldOf("flower").forGetter(FlowerCowConfiguration::getFlower),
+            FlowerCowFlower.CODEC.fieldOf("bud").forGetter(FlowerCowConfiguration::getBud),
+            ResourceLocation.CODEC.optionalFieldOf("back_texture_location", BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png")).forGetter(FlowerCowConfiguration::getBackTexture),
+            Codec.BOOL.optionalFieldOf("tint_back_texture", true).forGetter(FlowerCowConfiguration::isBackGrassTinted),
+            MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
+            TagKey.codec(Registry.BLOCK_REGISTRY).optionalFieldOf("breeding_requirements").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingRequirements)
+    ).apply(builder, FlowerCowConfiguration::new));
+
+    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true, Optional.empty(), Optional.empty());
+
+    public FlowerCowFlower getFlower() {
+        return this.flower;
+    }
+
+    public FlowerCowFlower getBud() {
+        return this.bud;
+    }
+
+    public ResourceLocation getBackTexture() {
+        return this.backTexture;
+    }
+
+    public boolean isBackGrassTinted() {
+        return this.backGrassTinted;
+    }
+
+    public Optional<MobEffectInstance> getNectarEffectInstance() {
+        return this.nectarEffectInstance;
+    }
+
+    public Optional<TagKey<Block>> getBreedingRequirements() {
+        return this.breedingRequirements;
     }
 
     @Override
@@ -76,11 +96,44 @@ public record FlowerCowConfiguration(Optional<BlockState> flowerBlockState,
         if (!(obj instanceof FlowerCowConfiguration other))
             return false;
 
-        return other.flowerBlockState.equals(this.flowerBlockState) && other.flowerModelLocation.equals(this.flowerModelLocation) && other.flowerModelVariant.equals(this.flowerModelVariant) && other.customFlower.equals(this.customFlower) && other.budBlockState.equals(this.budBlockState) && other.budModelLocation.equals(this.budModelLocation) && other.budModelVariant.equals(this.budModelVariant) && other.customBud.equals(this.customBud) && other.cowTexture.equals(this.cowTexture) && other.backTexture.equals(this.backTexture) && other.backGrassTinted == this.backGrassTinted && other.nectarEffectInstance.equals(this.nectarEffectInstance) && other.breedingRequirements.equals(this.breedingRequirements) && other.biomeTagKey.equals(this.biomeTagKey) && other.naturalSpawnWeight == this.naturalSpawnWeight;
+        return super.equals(obj) && other.flower.equals(this.flower) && other.bud.equals(this.bud) && other.backTexture.equals(this.backTexture) && other.backGrassTinted == this.backGrassTinted && other.nectarEffectInstance.equals(this.nectarEffectInstance) && other.breedingRequirements.equals(this.breedingRequirements);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.flowerBlockState, this.flowerModelLocation, this.flowerModelVariant, this.customFlower, this.budBlockState, this.budModelLocation, this.budModelVariant, this.customBud, this.cowTexture, this.backTexture, this.backGrassTinted, this.nectarEffectInstance, this.breedingRequirements, this.biomeTagKey, this.naturalSpawnWeight);
+        return Objects.hash(super.getCowTexture(), super.getBiomeTagKey(), super.getNaturalSpawnWeight(), this.flower, this.bud, this.backTexture, this.backGrassTinted, this.nectarEffectInstance, this.breedingRequirements);
+    }
+
+    public record FlowerCowFlower(Optional<BlockState> blockState,
+                                  Optional<ResourceLocation> modelLocation,
+                                  String modelVariant,
+                                  Optional<ResourceLocation> flowerType) {
+
+        public static final Codec<FlowerCowFlower> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+                BlockState.CODEC.optionalFieldOf("block_state").orElseGet(Optional::empty).forGetter(FlowerCowFlower::blockState),
+                ResourceLocation.CODEC.optionalFieldOf("model_location").orElseGet(Optional::empty).forGetter(FlowerCowFlower::modelLocation),
+                Codec.STRING.optionalFieldOf("model_variant", "bovines").forGetter(FlowerCowFlower::modelVariant),
+                ResourceLocation.CODEC.optionalFieldOf("flower_type").orElseGet(Optional::empty).forGetter(FlowerCowFlower::flowerType)
+        ).apply(builder, FlowerCowFlower::new));
+
+        public Optional<FlowerType> getFlowerType(LevelAccessor level) {
+            return flowerType.map(resourceLocation -> BovineRegistryUtil.getFlowerTypeFromKey(level, resourceLocation));
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            if (obj == this)
+                return true;
+
+            if (!(obj instanceof FlowerCowConfiguration.FlowerCowFlower other))
+                return false;
+
+            return other.blockState.equals(this.blockState) && other.modelLocation.equals(this.modelLocation) && other.modelVariant.equals(this.modelVariant) && other.flowerType.equals(this.flowerType);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.blockState, this.modelLocation, this.modelVariant, this.flowerType);
+        }
     }
 }

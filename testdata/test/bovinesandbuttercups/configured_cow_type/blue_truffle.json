@@ -1,5 +1,17 @@
 {
   "type": "bovinesandbuttercups:mooshroom",
-  "custom_mushroom": "test:blue_truffle",
-  "texture_location": "test:textures/entity/mooshroom/blue_truffle_mooshroom.png"
+  "mushroom": {
+    "mushroom_type": "test:blue_truffle"
+  },
+  "texture_location": "test:textures/entity/mooshroom/blue_truffle_mooshroom.png",
+  "thunder_conversion_types": [
+    {
+      "type": "test:red_truffle",
+      "weight": 1
+    },
+    {
+      "type": "test:green_truffle",
+      "weight": 2
+    }
+  ]
 }

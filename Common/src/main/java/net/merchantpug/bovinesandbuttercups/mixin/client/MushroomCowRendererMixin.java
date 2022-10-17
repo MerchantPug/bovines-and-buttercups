@@ -34,8 +34,10 @@ public abstract class MushroomCowRendererMixin extends MobRenderer<MushroomCow, 
 
     @Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/MushroomCow;)Lnet/minecraft/resources/ResourceLocation;", at = @At("RETURN"), cancellable = true)
     private void bovinesandbuttercups$changeTextureLocation(MushroomCow entity, CallbackInfoReturnable<ResourceLocation> cir) {
-        ResourceLocation location = Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().cowTexture().orElseGet(() -> new ResourceLocation(BovineRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), Services.PLATFORM.getMushroomCowTypeFromCow(entity)).getNamespace(), "textures/entity/mooshroom/" + BovineRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), Services.PLATFORM.getMushroomCowTypeFromCow(entity)).getPath().toLowerCase(Locale.ROOT) + "_mooshroom.png"));
-        if (BovinesAndButtercupsClient.LOADED_COW_TEXTURES.contains(location)) {
+        ResourceLocation location = Services.PLATFORM.getMushroomCowTypeFromCow(entity).getConfiguration().getCowTexture().orElseGet(() -> new ResourceLocation(BovineRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), Services.PLATFORM.getMushroomCowTypeFromCow(entity)).getNamespace(), "textures/entity/mooshroom/" + BovineRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), Services.PLATFORM.getMushroomCowTypeFromCow(entity)).getPath().toLowerCase(Locale.ROOT) + "_mooshroom.png"));
+        if (location.equals(cir.getReturnValue())) {
+
+        } else if (BovinesAndButtercupsClient.LOADED_COW_TEXTURES.contains(location)) {
             cir.setReturnValue(location);
         } else {
             cir.setReturnValue(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png"));

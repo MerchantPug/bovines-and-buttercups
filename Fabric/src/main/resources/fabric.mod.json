@@ -27,12 +27,12 @@
       "net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientFabric"
     ],
     "cardinal-components": [
-      "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponentInitializer"
+      "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
     ]
   },
   "custom": {
     "cardinal-components": [
-      "bovinesandbuttercups:cow_type"
+      "bovinesandbuttercups:mooshroom_type"
     ]
   },
   "accessWidener": "bovinesandbuttercups.accesswidener",

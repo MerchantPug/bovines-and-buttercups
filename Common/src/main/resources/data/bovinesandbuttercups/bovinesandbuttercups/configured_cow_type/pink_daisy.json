@@ -1,13 +1,22 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower_block_state": {
-    "Name": "bovinesandbuttercups:pink_daisy"
+  "flower": {
+    "block_state": {
+      "Name": "bovinesandbuttercups:pink_daisy"
+    }
   },
-  "bud_model_location": "bovinesandbuttercups:pink_daisy_bud",
-  "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
+  "bud": {
+    "model_location": "bovinesandbuttercups:pink_daisy_bud"
+  },
   "nectar_effect": {
     "effect": "minecraft:speed",
     "duration": 800
   },
-  "natural_spawn_weight": 1
+  "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
+  "natural_spawn_weight": 1,
+  "thunder_conversion_types": [
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
+  ]
 }

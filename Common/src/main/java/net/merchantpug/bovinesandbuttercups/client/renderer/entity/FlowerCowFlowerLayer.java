@@ -1,5 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -30,40 +33,42 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean bl;
-        bl = Minecraft.getInstance().shouldEntityAppearGlowing(livingEntity) && livingEntity.isInvisible();
-        if ((livingEntity).isInvisible() && !bl) return;
+        bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
+        if ((entity).isInvisible() && !bl) return;
 
-        FlowerCowConfiguration configuration = livingEntity.getFlowerCowType().getConfiguration();
+        FlowerCowConfiguration configuration = entity.getFlowerCowType().getConfiguration();
 
-        ModelResourceLocation modelResourceLocation = null;
-        int m = LivingEntityRenderer.getOverlayCoords(livingEntity, 0.0f);
+        int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 
-        if (livingEntity.isBaby()) {
-            if (configuration.budModelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.budModelLocation().get(), configuration.budModelVariant());
+        Optional<BlockState> blockState;
+        ModelResourceLocation modelResourceLocation;
+
+        if (entity.isBaby()) {
+            if (configuration.getBud().modelLocation().isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.getBud().modelLocation().get(), configuration.getBud().modelVariant());
+            } else if (configuration.getBud().getFlowerType(entity.getLevel()).isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.getBud().getFlowerType(entity.getLevel()).get().modelLocation(), configuration.getBud().getFlowerType(entity.getLevel()).get().modelVariant());
+            } else {
+                modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.modelLocation(), FlowerType.MISSING.modelVariant());
             }
-
-            if (configuration.getBudType(livingEntity.getLevel()).isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.getBudType(livingEntity.getLevel()).get().modelLocation(), configuration.getBudType(livingEntity.getLevel()).get().modelVariant());
-            }
-
-            handleMoobudRender(poseStack, buffer, livingEntity, packedLight, bl, m, configuration.budBlockState(), modelResourceLocation);
+            blockState = configuration.getBud().blockState();
         } else {
-            if (configuration.flowerModelLocation().isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.flowerModelLocation().get(), configuration.flowerModelVariant());
+            if (configuration.getFlower().modelLocation().isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.getFlower().modelLocation().get(), configuration.getFlower().modelVariant());
+            } else if (configuration.getFlower().getFlowerType(entity.getLevel()).isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(configuration.getFlower().getFlowerType(entity.getLevel()).get().modelLocation(), configuration.getFlower().getFlowerType(entity.getLevel()).get().modelVariant());
+            } else {
+                modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.modelLocation(), FlowerType.MISSING.modelVariant());
             }
-
-            if (configuration.getFlowerType(livingEntity.getLevel()).isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.getFlowerType(livingEntity.getLevel()).get().modelLocation(), configuration.getFlowerType(livingEntity.getLevel()).get().modelVariant());
-            }
-
-            handleMoobloomRender(poseStack, buffer, livingEntity, packedLight, bl, m, configuration.flowerBlockState(), modelResourceLocation);
+            blockState = configuration.getFlower().blockState();
         }
+
+        handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
     }
 
-    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, FlowerCow entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+    private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
         poseStack.pushPose();
         if (entity.getStandingStillForBeeTicks() > 0) {
             poseStack.translate(0.0f, 11.0F / 16.0F, 0.0f);
@@ -102,7 +107,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
         poseStack.popPose();
     }
 
-    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, FlowerCow entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
+    private void handleMoobloomRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
         poseStack.pushPose();
         if (entity.getStandingStillForBeeTicks() > 0) {
             poseStack.translate(0.0f, 11.0F / 16.0F, 0.0f);

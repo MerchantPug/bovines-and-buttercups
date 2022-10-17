@@ -1,8 +1,33 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2019 simibubi
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package net.merchantpug.bovinesandbuttercups.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsForge;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
+import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
@@ -11,8 +36,10 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.FilePackResources;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
@@ -21,9 +48,13 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.locating.IModFile;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -73,53 +104,19 @@ public class BovinesAndButtercupsClientForge {
         }
     }
 
-    public static Pack createMojangMoobloomPack(Pack.PackConstructor constructor) {
-        try {
-            InputStream inputStream = BovinesAndButtercupsForge.class.getClassLoader().getResourceAsStream("resourcepacks/bovinesandbuttercups/mojang.zip");
-            File file = new File("./bovinestemp", "mojang.zip");
-
-            if (inputStream != null && !Files.exists(file.toPath())) {
-                Path path = Path.of(".", "bovinestemp");
-                if (!Files.exists(path)) {
-                    Files.createDirectory(path);
-                }
-                Files.copy(inputStream, file.toPath());
-                file.deleteOnExit();
+    @SubscribeEvent
+    public static void addPackFinders(AddPackFindersEvent event) {
+        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+            IModFileInfo modFileInfo = ModList.get().getModFileById(BovinesAndButtercups.MOD_ID);
+            if (modFileInfo == null) {
+                BovinesAndButtercups.LOG.error("Could not find Bovines and Buttercups mod file info; built-in resource packs will be missing!");
+                return;
             }
-
-            return Pack.create("bovinesandbuttercups/mojang", false, () -> new FilePackResources(file) {
-                public String getName() {
-                    return "Mojang Textures";
-                }
-            }, constructor, Pack.Position.TOP, PackSource.BUILT_IN);
-        } catch (Exception ex) {
-            BovinesAndButtercups.LOG.warn("Could not load Bovines and Buttercups Mojang resource pack. Will not register it as a built-in resource pack.", ex);
-            return null;
-        }
-    }
-
-    public static Pack createNoGrassPack(Pack.PackConstructor constructor) {
-        try {
-            InputStream inputStream = BovinesAndButtercupsForge.class.getClassLoader().getResourceAsStream("resourcepacks/bovinesandbuttercups/no_grass.zip");
-            File file = new File("./bovinestemp", "no_grass.zip");
-
-            if (inputStream != null && !Files.exists(file.toPath())) {
-                Path path = Path.of(".", "bovinestemp");
-                if (!Files.exists(path)) {
-                    Files.createDirectory(path);
-                }
-                Files.copy(inputStream, file.toPath());
-                file.deleteOnExit();
-            }
-
-            return Pack.create("bovinesandbuttercups/no_grass", false, () -> new FilePackResources(file) {
-                public String getName() {
-                    return "No Grass Back";
-                }
-            }, constructor, Pack.Position.TOP, PackSource.BUILT_IN);
-        } catch (Exception ex) {
-            BovinesAndButtercups.LOG.warn("Could not load Bovines and Buttercups No Grass resource pack. Will not register it as a built-in resource pack.", ex);
-            return null;
+            IModFile modFile = modFileInfo.getFile();
+            event.addRepositorySource((consumer, constructor) -> {
+                consumer.accept(Pack.create(BovinesAndButtercups.asResource("mojang").toString(), false, () -> new ModFilePackResources("Moobloom Mojang Textures", modFile, "resourcepacks/mojang"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
+                consumer.accept(Pack.create(BovinesAndButtercups.asResource("no_grass").toString(), false, () -> new ModFilePackResources("No Grass Back", modFile, "resourcepacks/no_grass"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
+            });
         }
     }
 }

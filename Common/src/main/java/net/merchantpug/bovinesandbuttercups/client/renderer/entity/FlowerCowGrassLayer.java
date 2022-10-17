@@ -26,7 +26,7 @@ public class FlowerCowGrassLayer extends RenderLayer<FlowerCow, CowModel<FlowerC
         float g = 1.0F;
         float b = 1.0F;
 
-        if (flowerCow.getFlowerCowType().getConfiguration().backGrassTinted()) {
+        if (flowerCow.getFlowerCowType().getConfiguration().isBackGrassTinted()) {
             int biomeColor = BiomeColors.getAverageGrassColor(flowerCow.level, flowerCow.blockPosition());
             r = (biomeColor >> 16 & 0xFF) / 255.0F;
             g = (biomeColor >> 8 & 0xFF) / 255.0F;

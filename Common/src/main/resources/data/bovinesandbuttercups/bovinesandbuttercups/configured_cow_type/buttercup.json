@@ -1,13 +1,22 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower_block_state": {
-    "Name": "bovinesandbuttercups:buttercup"
+  "flower": {
+    "block_state": {
+      "Name": "bovinesandbuttercups:buttercup"
+    }
   },
-  "bud_model_location": "bovinesandbuttercups:buttercup_bud",
-  "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
+  "bud": {
+    "model_location": "bovinesandbuttercups:buttercup_bud"
+  },
   "nectar_effect": {
     "effect": "minecraft:poison",
     "duration": 800
   },
-  "natural_spawn_weight": 7
+  "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
+  "natural_spawn_weight": 7,
+  "thunder_conversion_types": [
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
+  ]
 }

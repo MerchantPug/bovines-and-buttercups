@@ -1,11 +1,20 @@
 {
   "type": "bovinesandbuttercups:moobloom",
-  "flower_block_state": {
-    "Name": "bovinesandbuttercups:hyacinth"
+  "flower": {
+    "block_state": {
+      "Name": "bovinesandbuttercups:hyacinth"
+    }
   },
-  "bud_model_location": "bovinesandbuttercups:hyacinth_bud",
+  "bud": {
+    "model_location": "bovinesandbuttercups:hyacinth_bud"
+  },
   "nectar_effect": {
     "effect": "minecraft:strength",
     "duration": 400
-  }
+  },
+  "thunder_conversion_types": [
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
+  ]
 }

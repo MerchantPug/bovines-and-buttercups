@@ -13,6 +13,7 @@ public class BovineSoundEvents {
     public static final RegistryObject<SoundEvent> MOOBLOOM_EAT = register("entity.moobloom.eat", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.eat")));
     public static final RegistryObject<SoundEvent> MOOBLOOM_MILK = register("entity.moobloom.milk", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.milk")));
     public static final RegistryObject<SoundEvent> MOOBLOOM_SHEAR = register("entity.moobloom.shear", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.shear")));
+    public static final RegistryObject<SoundEvent> MOOBLOOM_CONVERT = register("entity.moobloom.convert", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.convert")));
 
     public static void init() {
 

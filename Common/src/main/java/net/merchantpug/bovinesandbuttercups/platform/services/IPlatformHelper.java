@@ -21,10 +21,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public interface IPlatformHelper {
@@ -43,17 +43,27 @@ public interface IPlatformHelper {
 
     ResourceKey<Registry<ConfiguredCowType<?, ?>>> getConfiguredCowTypeResourceKey();
 
+    Codec<ConfiguredCowType<?, ?>> getConfiguredCowTypeByNameCodec();
+
     ResourceKey<Registry<FlowerType>> getFlowerTypeResourceKey();
+
+    Codec<FlowerType> getFlowerTypeByNameCodec();
 
     ResourceKey<Registry<MushroomType>> getMushroomTypeResourceKey();
 
-    Codec<CowType<?>> getCowTypeCodec();
+    Codec<MushroomType> getMushroomTypeByNameCodec();
 
-    ResourceLocation getMushroomCowTypeResource(MushroomCow cow);
+    Codec<CowType<?>> getCowTypeCodec();
 
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowTypeFromCow(MushroomCow cow);
 
-    void setMushroomCowType(MushroomCow cow, ResourceLocation cowTypeKey);
+    ResourceLocation getMushroomCowTypeKeyFromCow(MushroomCow cow);
+
+    Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow);
+
+    void setMushroomCowType(MushroomCow cow, ResourceLocation key);
+
+    void setPreviousMushroomCowType(MushroomCow cow, ResourceLocation key);
 
     BlockEntityType<CustomFlowerBlockEntity> getCustomFlowerBlockEntity();
 

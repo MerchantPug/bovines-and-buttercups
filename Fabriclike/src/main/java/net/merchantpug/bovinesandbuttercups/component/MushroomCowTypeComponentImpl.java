@@ -5,7 +5,6 @@ import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.mixin.MushroomCowAccessor;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
@@ -15,9 +14,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.animal.MushroomCow;
 
+import javax.annotation.Nullable;
+
 public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, AutoSyncedComponent {
-    ResourceLocation typeId;
-    ConfiguredCowType<MushroomCowConfiguration, ?> type;
+    private ResourceLocation typeId;
+    private ResourceLocation previousTypeId;
+    private ConfiguredCowType<MushroomCowConfiguration, ?> type;
     private final MushroomCow provider;
 
     public MushroomCowTypeComponentImpl(MushroomCow provider) {
@@ -64,13 +66,27 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
     @Override
     public void setMushroomCowType(ResourceLocation key) {
         this.typeId = key;
-        BovineEntityComponentInitializer.MUSHROOM_COW_TYPE_COMPONENT.sync(provider);
 
         if (key.equals(BovinesAndButtercups.asResource("brown_mushroom"))) {
             ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetMushroomType(MushroomCow.MushroomType.BROWN);
         } else if (key.equals(BovinesAndButtercups.asResource("red_mushroom"))) {
             ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetMushroomType(MushroomCow.MushroomType.RED);
         }
+
+        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.sync(provider);
+
+        this.getMushroomCowType();
+    }
+
+    @Override
+    @Nullable
+    public ResourceLocation getPreviousMushroomCowTypeKey() {
+        return this.previousTypeId;
+    }
+
+    @Override
+    public void setPreviousMushroomCowTypeKey(@Nullable ResourceLocation key) {
+        this.previousTypeId = key;
     }
 
     @Override
@@ -86,5 +102,6 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
         if (buf.readBoolean()) {
             this.typeId = buf.readResourceLocation();
         }
+        this.getMushroomCowType();
     }
 }

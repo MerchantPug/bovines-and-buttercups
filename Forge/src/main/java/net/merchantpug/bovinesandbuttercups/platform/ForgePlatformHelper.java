@@ -14,15 +14,12 @@ import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
 import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
-import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
-import net.merchantpug.bovinesandbuttercups.network.s2c.SyncMushroomCowTypePacket;
 import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import com.google.auto.service.AutoService;
 import com.mojang.serialization.Codec;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -36,11 +33,11 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.network.PacketDistributor;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @AutoService(IPlatformHelper.class)
@@ -83,8 +80,18 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public Codec<ConfiguredCowType<?, ?>> getConfiguredCowTypeByNameCodec() {
+        return BovineRegistriesForge.CONFIGURED_COW_TYPE_REGISTRY.get().getCodec();
+    }
+
+    @Override
     public ResourceKey<Registry<FlowerType>> getFlowerTypeResourceKey() {
         return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("flower_type"));
+    }
+
+    @Override
+    public Codec<FlowerType> getFlowerTypeByNameCodec() {
+        return BovineRegistriesForge.FLOWER_TYPE_REGISTRY.get().getCodec();
     }
 
     @Override
@@ -93,13 +100,13 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public Codec<CowType<?>> getCowTypeCodec() {
-        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.COW_TYPE_REGISTRY.get().getCodec());
+    public Codec<MushroomType> getMushroomTypeByNameCodec() {
+        return BovineRegistriesForge.MUSHROOM_TYPE_REGISTRY.get().getCodec();
     }
 
     @Override
-    public ResourceLocation getMushroomCowTypeResource(MushroomCow cow) {
-        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
+    public Codec<CowType<?>> getCowTypeCodec() {
+        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.COW_TYPE_REGISTRY.get().getCodec());
     }
 
     @Override
@@ -108,8 +115,23 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public void setMushroomCowType(MushroomCow cow, ResourceLocation cowTypeKey) {
-        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setMushroomType(cowTypeKey));
+    public ResourceLocation getMushroomCowTypeKeyFromCow(MushroomCow cow) {
+        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
+    }
+
+    @Override
+    public Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow) {
+        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getPreviousMushroomTypeKey).or(Optional::empty);
+    }
+
+    @Override
+    public void setMushroomCowType(MushroomCow cow, ResourceLocation key) {
+        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setMushroomType(key));
+    }
+
+    @Override
+    public void setPreviousMushroomCowType(MushroomCow cow, @Nullable ResourceLocation key) {
+        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setPreviousMushroomTypeKey(key));
     }
 
     @Override

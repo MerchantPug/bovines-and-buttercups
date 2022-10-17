@@ -16,9 +16,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability {
     ResourceLocation typeId;
+    @Nullable ResourceLocation previousTypeId;
     ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> type;
     MushroomCow provider;
 
@@ -32,15 +36,19 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
         if (this.typeId != null) {
             tag.putString("type", this.typeId.toString());
         }
+        if (this.previousTypeId != null) {
+            tag.putString("previousType", this.previousTypeId.toString());
+        }
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         if (tag.contains("type", Tag.TAG_STRING)) {
-            ResourceLocation typeKey = ResourceLocation.tryParse(tag.getString("type"));
-            this.setMushroomType(typeKey);
-            this.syncMushroomType();
+            this.setMushroomType(ResourceLocation.tryParse(tag.getString("type")));
+        }
+        if (tag.contains("previousType")) {
+            this.setPreviousMushroomTypeKey(ResourceLocation.tryParse(tag.getString("previousType")));
         }
     }
 
@@ -82,11 +90,24 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
         if (!this.provider.level.isClientSide) {
             this.syncMushroomType();
         }
+
+        this.getMushroomCowType();
+    }
+
+    @Override
+    public ResourceLocation getPreviousMushroomTypeKey() {
+        return this.previousTypeId;
+    }
+
+    @Override
+    public void setPreviousMushroomTypeKey(@Nullable ResourceLocation key) {
+        this.previousTypeId = key;
+        this.syncMushroomType();
     }
 
     @Override
     public void syncMushroomType() {
         if (this.typeId == null) return;
-        BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncMushroomCowTypePacket(provider.getId(), this.typeId));
+        BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncMushroomCowTypePacket(provider.getId(), this.typeId, this.previousTypeId));
     }
 }

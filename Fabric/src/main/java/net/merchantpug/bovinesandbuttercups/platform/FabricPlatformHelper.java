@@ -4,7 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.block.entity.*;
-import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponentInitializer;
+import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
@@ -35,6 +35,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 @AutoService(IPlatformHelper.class)
@@ -76,8 +77,18 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public Codec<ConfiguredCowType<?, ?>> getConfiguredCowTypeByNameCodec() {
+        return BovineRegistriesFabriclike.CONFIGURED_COW_TYPE.byNameCodec();
+    }
+
+    @Override
     public ResourceKey<Registry<FlowerType>> getFlowerTypeResourceKey() {
         return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("bovinesandbuttercups/flower_type"));
+    }
+
+    @Override
+    public Codec<FlowerType> getFlowerTypeByNameCodec() {
+        return BovineRegistriesFabriclike.FLOWER_TYPE.byNameCodec();
     }
 
     @Override
@@ -86,23 +97,38 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public Codec<MushroomType> getMushroomTypeByNameCodec() {
+        return BovineRegistriesFabriclike.MUSHROOM_TYPE.byNameCodec();
+    }
+
+    @Override
     public Codec<CowType<?>> getCowTypeCodec() {
         return BovineRegistriesFabriclike.COW_TYPE.byNameCodec();
     }
 
     @Override
-    public ResourceLocation getMushroomCowTypeResource(MushroomCow cow) {
-        return BovineEntityComponentInitializer.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowTypeKey();
-    }
-
-    @Override
     public ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowTypeFromCow(MushroomCow cow) {
-        return BovineEntityComponentInitializer.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowType();
+        return BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowType();
     }
 
     @Override
-    public void setMushroomCowType(MushroomCow cow, ResourceLocation cowTypeKey) {
-        BovineEntityComponentInitializer.MUSHROOM_COW_TYPE_COMPONENT.get(cow).setMushroomCowType(cowTypeKey);
+    public ResourceLocation getMushroomCowTypeKeyFromCow(MushroomCow cow) {
+        return BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowTypeKey();
+    }
+
+    @Override
+    public Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow) {
+        return Optional.ofNullable(BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getPreviousMushroomCowTypeKey());
+    }
+
+    @Override
+    public void setMushroomCowType(MushroomCow cow, ResourceLocation key) {
+        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).setMushroomCowType(key);
+    }
+
+    @Override
+    public void setPreviousMushroomCowType(MushroomCow cow, ResourceLocation key) {
+        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).setPreviousMushroomCowTypeKey(key);
     }
 
     @Override

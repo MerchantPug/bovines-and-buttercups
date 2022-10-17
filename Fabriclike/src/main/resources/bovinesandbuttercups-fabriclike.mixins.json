@@ -6,7 +6,6 @@
   "mixins": [
     "BeePollinateGoalMixin",
     "MushroomCowAccessor",
-    "MushroomCowMixinFabriclike",
     "RegistryAccessMixin"
   ],
   "client": [
@@ -19,4 +18,3 @@
   },
   "refmap": "bovinesandbuttercups.refmap.json"
 }
-  

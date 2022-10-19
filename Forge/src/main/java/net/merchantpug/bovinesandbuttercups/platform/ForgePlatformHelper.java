@@ -121,7 +121,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getPreviousMushroomTypeKey).or(Optional::empty);
+        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(x -> Optional.ofNullable(x.getPreviousMushroomTypeKey())).orElseGet(Optional::empty);
     }
 
     @Override

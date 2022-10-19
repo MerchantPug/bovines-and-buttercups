@@ -11,6 +11,7 @@
     "ClientboundUpdateMobEffectPacketMixin",
     "EntityAccessor",
     "EntityMixin",
+    "EntitySuperMixin",
     "FarmBlockMixin",
     "FlowerPotBlockAccessor",
     "FlowerPotBlockMixin",

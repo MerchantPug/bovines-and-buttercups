@@ -21,7 +21,7 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
     private final MushroomCowMushroom mushroom;
     private final ResourceLocation backTexture;
     private final boolean backGrassTinted;
-    private final boolean canMakeSuspiciousStew;
+    private final boolean canEatFlowers;
 
     public MushroomCowConfiguration(Optional<ResourceLocation> cowTexture,
                                     Optional<TagKey<Biome>> biomeTagKey,
@@ -30,12 +30,12 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
                                     MushroomCowMushroom mushroom,
                                     ResourceLocation backTexture,
                                     boolean backGrassTinted,
-                                    boolean canMakeSuspiciousStew) {
+                                    boolean canEatFlowers) {
         super(cowTexture, biomeTagKey, naturalSpawnWeight, thunderConverts);
         this.mushroom = mushroom;
         this.backTexture = backTexture;
         this.backGrassTinted = backGrassTinted;
-        this.canMakeSuspiciousStew = canMakeSuspiciousStew;
+        this.canEatFlowers = canEatFlowers;
     }
 
     public static final Codec<MushroomCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
@@ -46,7 +46,7 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
             MushroomCowMushroom.CODEC.fieldOf("mushroom").forGetter(MushroomCowConfiguration::getMushroom),
             ResourceLocation.CODEC.optionalFieldOf("back_texture_location", BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png")).forGetter(MushroomCowConfiguration::getBackTexture),
             Codec.BOOL.optionalFieldOf("tint_back_texture", false).forGetter(MushroomCowConfiguration::isBackGrassTinted),
-            Codec.BOOL.optionalFieldOf("can_make_suspicious_stew", false).forGetter(MushroomCowConfiguration::canMakeSuspiciousStew)
+            Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers)
     ).apply(builder, MushroomCowConfiguration::new));
 
     public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png")),Optional.empty(), 0, Optional.empty(), new MushroomCowMushroom(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false, false);
@@ -63,8 +63,8 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
         return this.backGrassTinted;
     }
 
-    public boolean canMakeSuspiciousStew() {
-        return this.canMakeSuspiciousStew;
+    public boolean canEatFlowers() {
+        return this.canEatFlowers;
     }
 
     @Override
@@ -75,12 +75,12 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
         if (!(obj instanceof MushroomCowConfiguration other))
             return false;
 
-        return super.equals(obj) && other.mushroom.equals(this.mushroom) && other.backTexture.equals(this.backTexture) && other.backGrassTinted == this.backGrassTinted && other.canMakeSuspiciousStew == this.canMakeSuspiciousStew;
+        return super.equals(obj) && other.mushroom.equals(this.mushroom) && other.backTexture.equals(this.backTexture) && other.backGrassTinted == this.backGrassTinted && other.canEatFlowers == this.canEatFlowers;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getCowTexture(), super.getBiomeTagKey(), super.getNaturalSpawnWeight(), this.mushroom, this.backTexture, this.backGrassTinted, this.canMakeSuspiciousStew);
+        return Objects.hash(super.getCowTexture(), super.getBiomeTagKey(), super.getNaturalSpawnWeight(), this.mushroom, this.backTexture, this.backGrassTinted, this.canEatFlowers);
     }
 
     public record MushroomCowMushroom(Optional<BlockState> blockState,

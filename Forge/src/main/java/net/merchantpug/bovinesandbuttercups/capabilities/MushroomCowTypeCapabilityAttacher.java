@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 public class MushroomCowTypeCapabilityAttacher {
     private static class MushroomCowTypeCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-        public static final ResourceLocation IDENTIFIER = BovinesAndButtercups.asResource("cow_type");
+        public static final ResourceLocation IDENTIFIER = BovinesAndButtercups.asResource("mooshroom_type");
 
         private MushroomCowTypeCapabilityImpl backend;
         private final LazyOptional<MushroomCowTypeCapabilityImpl> optionalData = LazyOptional.of(() -> backend);

@@ -5,6 +5,7 @@
       "Name": "minecraft:brown_mushroom"
     }
   },
+  "can_eat_flowers": true,
   "texture_location": "minecraft:textures/entity/cow/brown_mooshroom.png",
   "thunder_conversion_types": [
     {

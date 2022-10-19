@@ -102,7 +102,9 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
     @Override
     public void setPreviousMushroomTypeKey(@Nullable ResourceLocation key) {
         this.previousTypeId = key;
-        this.syncMushroomType();
+        if (!this.provider.level.isClientSide) {
+            this.syncMushroomType();
+        }
     }
 
     @Override

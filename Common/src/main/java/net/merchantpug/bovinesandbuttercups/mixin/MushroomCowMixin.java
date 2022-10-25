@@ -32,9 +32,9 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
     @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getMushroomType()Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;"))
     private MushroomCow.MushroomType bovinesandbuttercups$allowFlowerFeeding(MushroomCow instance) {
         MushroomCow cow = (MushroomCow)(Object)this;
-        if (this.getMushroomType() == MushroomCow.MushroomType.RED && Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
+        if (this.getMushroomType() == MushroomCow.MushroomType.RED && Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
             return MushroomCow.MushroomType.BROWN;
-        } else if (this.getMushroomType() == MushroomCow.MushroomType.BROWN && !Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
+        } else if (this.getMushroomType() == MushroomCow.MushroomType.BROWN && !Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
             return MushroomCow.MushroomType.RED;
         }
         return instance.getMushroomType();
@@ -43,19 +43,19 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
     @Inject(method = "thunderHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;setMushroomType(Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;)V", shift = At.Shift.AFTER), cancellable = true)
     private void bovinesandbuttercups$changeTypeOnThunderHit(ServerLevel level, LightningBolt bolt, CallbackInfo ci) {
         MushroomCow cow = (MushroomCow)(Object)this;
-        if (Services.PLATFORM.getPreviousMushroomCowTypeKeyFromCow(cow).isPresent()) {
-            Services.PLATFORM.setMushroomCowType(cow, Services.PLATFORM.getPreviousMushroomCowTypeKeyFromCow(cow).get());
-            Services.PLATFORM.setPreviousMushroomCowType(cow, null);
-        } else if (Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().isEmpty()) {
+        if (Services.COMPONENT.getPreviousMushroomCowTypeKeyFromCow(cow).isPresent()) {
+            Services.COMPONENT.setMushroomCowType(cow, Services.COMPONENT.getPreviousMushroomCowTypeKeyFromCow(cow).get());
+            Services.COMPONENT.setPreviousMushroomCowType(cow, null);
+        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().isEmpty()) {
             this.bovinesandbuttercups$thunderHit(level, bolt);
             ci.cancel();
         } else {
-            Services.PLATFORM.setPreviousMushroomCowType(cow, Services.PLATFORM.getMushroomCowTypeKeyFromCow(cow));
+            Services.COMPONENT.setPreviousMushroomCowType(cow, Services.COMPONENT.getMushroomCowTypeKeyFromCow(cow));
 
             List<CowTypeConfiguration.WeightedConfiguredCowType> compatibleList = new ArrayList<>();
             int totalWeight = 0;
 
-            for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().get()) {
+            for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().get()) {
                 if (weightedCowType.getConfiguredCowType(((Entity)(Object)this).getLevel()).isEmpty() || !(weightedCowType.getConfiguredCowType(((Entity)(Object)this).getLevel()).get().getConfiguration() instanceof MushroomCowConfiguration))
                     continue;
 
@@ -68,12 +68,12 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
                 this.bovinesandbuttercups$thunderHit(level, bolt);
                 ci.cancel();
             } else if (compatibleList.size() == 1) {
-                Services.PLATFORM.setMushroomCowType(cow, compatibleList.get(0).configuredCowType());
+                Services.COMPONENT.setMushroomCowType(cow, compatibleList.get(0).configuredCowType());
             } else {
                 for (CowTypeConfiguration.WeightedConfiguredCowType cct : compatibleList) {
                     totalWeight -= cct.weight();
                     if (totalWeight <= 0) {
-                        Services.PLATFORM.setMushroomCowType(cow, compatibleList.get(0).configuredCowType());
+                        Services.COMPONENT.setMushroomCowType(cow, compatibleList.get(0).configuredCowType());
                         break;
                     }
                 }

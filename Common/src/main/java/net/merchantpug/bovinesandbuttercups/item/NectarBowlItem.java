@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.item;
 
-import net.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.nbt.CompoundTag;
@@ -69,7 +69,8 @@ public class NectarBowlItem extends Item {
                 }
             }
             MobEffectInstance instance = new MobEffectInstance(BovineEffects.LOCKDOWN.get(), duration);
-            ((MobEffectInstanceAccess)instance).bovinesandbuttercups$getLockedEffects().putAll(lockedEffectHashmap);
+            lockedEffectHashmap.forEach((effect, integer) -> Services.COMPONENT.addLockdownMobEffect(livingEntity, effect, integer));
+            Services.COMPONENT.syncLockdownMobEffects(livingEntity);
             livingEntity.addEffect(instance);
         }
         if (player != null) {

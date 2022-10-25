@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceKey;
 
 public class BovineRegistryKeys {
     public static final ResourceKey<Registry<CowType<?>>> COW_TYPE_KEY = ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("cow_type"));
-    public static final ResourceKey<Registry<ConfiguredCowType<?, ?>>> CONFIGURED_COW_TYPE_KEY = Services.PLATFORM.getConfiguredCowTypeResourceKey();
-    public static final ResourceKey<Registry<FlowerType>> FLOWER_TYPE_KEY = Services.PLATFORM.getFlowerTypeResourceKey();
-    public static final ResourceKey<Registry<MushroomType>> MUSHROOM_TYPE_KEY = Services.PLATFORM.getMushroomTypeResourceKey();
+    public static final ResourceKey<Registry<ConfiguredCowType<?, ?>>> CONFIGURED_COW_TYPE_KEY = Services.DATA.getConfiguredCowTypeResourceKey();
+    public static final ResourceKey<Registry<FlowerType>> FLOWER_TYPE_KEY = Services.DATA.getFlowerTypeResourceKey();
+    public static final ResourceKey<Registry<MushroomType>> MUSHROOM_TYPE_KEY = Services.DATA.getMushroomTypeResourceKey();
 }

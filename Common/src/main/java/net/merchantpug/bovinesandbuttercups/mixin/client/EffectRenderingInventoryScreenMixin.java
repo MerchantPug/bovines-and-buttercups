@@ -1,10 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.mixin.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.network.chat.Component;
@@ -33,7 +33,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
 
         if (lockdownEffectInstance.isEmpty()) return;
 
-        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && ((MobEffectInstanceAccess)lockdownEffectInstance.get(0)).bovinesandbuttercups$getLockedEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
+        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && Services.COMPONENT.getLockdownMobEffects(this.minecraft.player).entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
             RenderSystem.setShaderTexture(0, BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"));
             blit(poseStack, x, i,0, 0, 0, 32, 32, 64, 32);
             RenderSystem.setShaderTexture(0, INVENTORY_LOCATION);

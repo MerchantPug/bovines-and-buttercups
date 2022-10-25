@@ -28,15 +28,21 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
 
     @Override
     public void readFromNbt(CompoundTag tag) {
-        if (tag.contains("type", Tag.TAG_STRING)) {
-            this.setMushroomCowType(ResourceLocation.tryParse(tag.getString("type")));
+        if (tag.contains("Type", Tag.TAG_STRING)) {
+            this.setMushroomCowType(ResourceLocation.tryParse(tag.getString("Type")));
+        }
+        if (tag.contains("PreviousType", Tag.TAG_STRING)) {
+            this.setPreviousMushroomCowTypeKey(ResourceLocation.tryParse(tag.getString("PreviousType")));
         }
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
         if (this.typeId != null) {
-            tag.putString("type", this.typeId.toString());
+            tag.putString("Type", this.typeId.toString());
+        }
+        if (this.previousTypeId != null) {
+            tag.putString("PreviousType", this.previousTypeId.toString());
         }
     }
 

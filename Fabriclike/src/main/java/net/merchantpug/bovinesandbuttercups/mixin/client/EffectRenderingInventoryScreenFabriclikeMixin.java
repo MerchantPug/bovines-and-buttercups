@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin.client;
 
-import net.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -40,7 +40,7 @@ public abstract class EffectRenderingInventoryScreenFabriclikeMixin<T extends Ab
     private void bovinesandbuttercups$drawOverridenEffectSprite(PoseStack poseStack, int x, int height, Iterable<MobEffectInstance> mobEffectInstanceIterable, boolean large, CallbackInfo ci, MobEffectTextureManager mobEffectTextureManager, int i, Iterator iterator, MobEffectInstance mobEffectInstance, MobEffect mobEffect, TextureAtlasSprite sprite) {
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
 
-        List<Map.Entry<MobEffect, Integer>> statusEffectList = ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().entrySet().stream().toList();
+        List<Map.Entry<MobEffect, Integer>> statusEffectList = Services.COMPONENT.getLockdownMobEffects(minecraft.player).entrySet().stream().toList();
 
         if (statusEffectList.isEmpty()) return;
         int lockdownEffectIndex = minecraft.player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();
@@ -66,7 +66,7 @@ public abstract class EffectRenderingInventoryScreenFabriclikeMixin<T extends Ab
             if (mobEffectInstance != null) {
                 List<Component> list = new ArrayList<>();
                 list.add(this.getEffectName(mobEffectInstance));
-                ((MobEffectInstanceAccess)mobEffectInstance).bovinesandbuttercups$getLockedEffects().forEach(((statusEffect, duration) -> {
+                Services.COMPONENT.getLockdownMobEffects(minecraft.player).forEach(((statusEffect, duration) -> {
                     list.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDurationFromInt(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
                 }));
                 this.renderTooltip(poseStack, list, Optional.empty(), mouseX, mouseY);
@@ -86,7 +86,7 @@ public abstract class EffectRenderingInventoryScreenFabriclikeMixin<T extends Ab
         if (!(bovinesandbuttercups$capturedMobEffectInstance.getEffect() instanceof LockdownEffect)) return list;
         List<Component> newList = new ArrayList<>();
         newList.add(this.getEffectName(bovinesandbuttercups$capturedMobEffectInstance));
-        ((MobEffectInstanceAccess)bovinesandbuttercups$capturedMobEffectInstance).bovinesandbuttercups$getLockedEffects().forEach(((statusEffect, duration) -> {
+        Services.COMPONENT.getLockdownMobEffects(minecraft.player).forEach(((statusEffect, duration) -> {
             newList.add(statusEffect.getDisplayName().plainCopy().append(" ").append(MobEffectUtil.formatDurationFromInt(duration, 1.0F)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
         }));
         return newList;

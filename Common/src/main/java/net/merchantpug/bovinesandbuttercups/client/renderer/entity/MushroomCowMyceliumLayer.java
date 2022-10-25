@@ -23,12 +23,12 @@ public class MushroomCowMyceliumLayer extends RenderLayer<MushroomCow, CowModel<
         float g = 1.0F;
         float b = 1.0F;
 
-        if (Services.PLATFORM.getMushroomCowTypeFromCow(mushroomCow).getConfiguration().isBackGrassTinted()) {
+        if (Services.COMPONENT.getMushroomCowTypeFromCow(mushroomCow).getConfiguration().isBackGrassTinted()) {
             int biomeColor = BiomeColors.getAverageGrassColor(mushroomCow.level, mushroomCow.blockPosition());
             r = (biomeColor >> 16 & 0xFF) / 255.0F;
             g = (biomeColor >> 8 & 0xFF) / 255.0F;
             b = (biomeColor & 0xFF) / 255.0f;
         }
-        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(Services.PLATFORM.getMushroomCowTypeFromCow(mushroomCow).getConfiguration().getBackTexture())), light, LivingEntityRenderer.getOverlayCoords(mushroomCow, 0.0F), r, g, b, 1.0F);
+        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(Services.COMPONENT.getMushroomCowTypeFromCow(mushroomCow).getConfiguration().getBackTexture())), light, LivingEntityRenderer.getOverlayCoords(mushroomCow, 0.0F), r, g, b, 1.0F);
     }
 }

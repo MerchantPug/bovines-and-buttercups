@@ -10,8 +10,6 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 public interface MushroomCowTypeCapability extends INBTSerializable<CompoundTag> {
     Capability<MushroomCowTypeCapabilityImpl> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
@@ -22,5 +20,5 @@ public interface MushroomCowTypeCapability extends INBTSerializable<CompoundTag>
     @Nullable ResourceLocation getPreviousMushroomTypeKey();
     void setPreviousMushroomTypeKey(@Nullable ResourceLocation key);
 
-    void syncMushroomType();
+    void sync();
 }

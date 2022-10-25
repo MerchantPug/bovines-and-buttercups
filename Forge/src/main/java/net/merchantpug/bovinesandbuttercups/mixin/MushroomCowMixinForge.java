@@ -21,24 +21,24 @@ public abstract class MushroomCowMixinForge {
     @Inject(method = "shearInternal", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
     private void bovinesandbuttercups$cancelItemDroppingIfUnnecessary(SoundSource source, CallbackInfoReturnable<List<ItemStack>> cir) {
         MushroomCow cow = (MushroomCow)(Object)this;
-        if (Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().isEmpty() && Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().mushroomType().isEmpty()) {
+        if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().isEmpty() && Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().mushroomType().isEmpty()) {
             cir.setReturnValue(List.of(ItemStack.EMPTY));
         }
     }
 
-    @Inject(method = "shearInternal", at = @At(value = "RETURN", target = "Lnet/minecraft/world/entity/item/ItemEntity;<init>(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/item/ItemStack;)V"), remap = false)
+    @Inject(method = "shearInternal", at = @At(value = "RETURN", target = "Lnet/minecraft/world/entity/item/ItemEntity;<init>(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/item/ItemStack;)V"), remap = false, cancellable = true)
     private void bovinesandbuttercups$modifyShearItem(SoundSource source, CallbackInfoReturnable<List<ItemStack>> cir) {
         List<ItemStack> list = new ArrayList<>();
         MushroomCow cow = (MushroomCow)(Object)this;
-        if (Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().isPresent()) {
+        if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().isPresent()) {
             for(int i = 0; i < 5; ++i) {
-                list.add(new ItemStack(Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().get().getBlock()));
+                list.add(new ItemStack(Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().get().getBlock()));
             }
             cir.setReturnValue(list);
-        } else if (Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).isPresent()) {
+        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).isPresent()) {
             ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomMushroomItem());
             CompoundTag compound = new CompoundTag();
-            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(((Entity)(Object)this).getLevel(), Services.PLATFORM.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).get()).toString());
+            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(((Entity)(Object)this).getLevel(), Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).get()).toString());
             itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             for(int i = 0; i < 5; ++i) {
                 list.add(itemStack);

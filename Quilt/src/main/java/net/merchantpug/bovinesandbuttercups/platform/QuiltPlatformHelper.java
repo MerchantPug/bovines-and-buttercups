@@ -1,13 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.block.entity.*;
-import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
-import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
-import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
+import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
@@ -15,16 +9,12 @@ import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import com.google.auto.service.AutoService;
-import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
@@ -32,7 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 @AutoService(IPlatformHelper.class)
@@ -67,66 +56,6 @@ public class QuiltPlatformHelper implements IPlatformHelper {
     @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
         return CriteriaAccessor.callRegister(criterionTrigger);
-    }
-
-    @Override
-    public ResourceKey<Registry<ConfiguredCowType<?, ?>>> getConfiguredCowTypeResourceKey() {
-        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("bovinesandbuttercups/configured_cow_type"));
-    }
-
-    @Override
-    public Codec<ConfiguredCowType<?, ?>> getConfiguredCowTypeByNameCodec() {
-        return BovineRegistriesFabriclike.CONFIGURED_COW_TYPE.byNameCodec();
-    }
-
-    @Override
-    public ResourceKey<Registry<FlowerType>> getFlowerTypeResourceKey() {
-        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("bovinesandbuttercups/flower_type"));
-    }
-
-    @Override
-    public Codec<FlowerType> getFlowerTypeByNameCodec() {
-        return BovineRegistriesFabriclike.FLOWER_TYPE.byNameCodec();
-    }
-
-    @Override
-    public ResourceKey<Registry<MushroomType>> getMushroomTypeResourceKey() {
-        return ResourceKey.createRegistryKey(BovinesAndButtercups.asResource("bovinesandbuttercups/mushroom_type"));
-    }
-
-    @Override
-    public Codec<MushroomType> getMushroomTypeByNameCodec() {
-        return BovineRegistriesFabriclike.MUSHROOM_TYPE.byNameCodec();
-    }
-
-    @Override
-    public Codec<CowType<?>> getCowTypeCodec() {
-        return BovineRegistriesFabriclike.COW_TYPE.byNameCodec();
-    }
-
-    @Override
-    public ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowTypeFromCow(MushroomCow cow) {
-        return BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowType();
-    }
-
-    @Override
-    public ResourceLocation getMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowTypeKey();
-    }
-
-    @Override
-    public Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return Optional.ofNullable(BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getPreviousMushroomCowTypeKey());
-    }
-
-    @Override
-    public void setMushroomCowType(MushroomCow cow, ResourceLocation key) {
-        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).setMushroomCowType(key);
-    }
-
-    @Override
-    public void setPreviousMushroomCowType(MushroomCow cow, ResourceLocation key) {
-        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).setPreviousMushroomCowTypeKey(key);
     }
 
     @Override
@@ -172,5 +101,10 @@ public class QuiltPlatformHelper implements IPlatformHelper {
     @Override
     public CustomHugeMushroomItem getCustomHugeMushroomItem() {
         return BovineItemsFabriclike.CUSTOM_MUSHROOM_BLOCK;
+    }
+
+    @Override
+    public Supplier<MobEffect> getLockdownEffectSupplier() {
+        return LockdownEffect::new;
     }
 }

@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 
 public class CowType<CTC extends CowTypeConfiguration> {
-    public static final Codec<CowType<?>> CODEC = Services.PLATFORM.getCowTypeCodec();
+    public static final Codec<CowType<?>> CODEC = Services.DATA.getCowTypeCodec();
 
     private final Codec<ConfiguredCowType<CTC, CowType<CTC>>> configuredCodec;
 

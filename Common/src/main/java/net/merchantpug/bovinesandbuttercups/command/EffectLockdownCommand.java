@@ -1,6 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.command;
 
-import net.merchantpug.bovinesandbuttercups.access.MobEffectInstanceAccess;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -8,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,8 +47,10 @@ public class EffectLockdownCommand {
         int j = seconds != null ? seconds * 20 : 600;
         for (Entity entity : targets) {
             MobEffectInstance statusEffectInstance = new MobEffectInstance(BovineEffects.LOCKDOWN.get(), j, 0, false, showParticles);
-            ((MobEffectInstanceAccess)statusEffectInstance).bovinesandbuttercups$addLockedEffect(effect, j);
-            if (!(entity instanceof LivingEntity) || !((LivingEntity)entity).addEffect(statusEffectInstance, command.getSource().getEntity())) continue;
+            if (!(entity instanceof LivingEntity)) continue;
+            Services.COMPONENT.addLockdownMobEffect((LivingEntity)entity, effect, j);
+            Services.COMPONENT.syncLockdownMobEffects((LivingEntity)entity);
+            if (!((LivingEntity)entity).addEffect(statusEffectInstance, command.getSource().getEntity())) continue;
             ++i;
         }
         if (i == 0) {

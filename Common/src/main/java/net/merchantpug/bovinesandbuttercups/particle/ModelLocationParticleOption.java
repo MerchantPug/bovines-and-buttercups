@@ -26,13 +26,10 @@ public class ModelLocationParticleOption implements ParticleOptions {
     private final ResourceLocation modelKey;
     private final String modelVariant;
 
-    public static final Codec<ModelLocationParticleOption> CODEC = RecordCodecBuilder.create((instance) -> {
-        return instance.group(ResourceLocation.CODEC.fieldOf("key").forGetter((resourceLocation) -> {
-            return resourceLocation.modelKey;
-        }), Codec.STRING.fieldOf("variant").forGetter((string) -> {
-            return string.modelVariant;
-        })).apply(instance, ModelLocationParticleOption::new);
-    });
+    public static final Codec<ModelLocationParticleOption> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+            ResourceLocation.CODEC.fieldOf("key").forGetter((resourceLocation) -> resourceLocation.modelKey),
+            Codec.STRING.fieldOf("variant").forGetter((string) -> string.modelVariant)
+    ).apply(instance, ModelLocationParticleOption::new));
 
     public ModelLocationParticleOption(ResourceLocation modelKey, String modelVariant) {
         this.modelKey = modelKey;

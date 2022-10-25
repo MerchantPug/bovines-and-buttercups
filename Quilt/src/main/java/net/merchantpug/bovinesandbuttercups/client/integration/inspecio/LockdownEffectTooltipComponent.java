@@ -2,11 +2,12 @@ package net.merchantpug.bovinesandbuttercups.client.integration.inspecio;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.mixin.inspecio.StatusEffectTooltipComponentAccessor;
-import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;

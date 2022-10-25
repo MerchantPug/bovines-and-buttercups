@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BeePollinateGoalMixin",
+    "LivingEntityMixin",
     "MushroomCowAccessor",
     "MushroomCowMixinFabriclike",
-    "RegistryAccessMixin"
+    "RegistryAccessMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
     "client.EffectRenderingInventoryScreenFabriclikeMixin",

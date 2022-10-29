@@ -6,25 +6,31 @@ import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapabilit
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public record SyncFlowerCowTargetPacket(int entityId, UUID cowUUID) {
+public record SyncFlowerCowTargetPacket(int entityId, @Nullable UUID cowUUID) {
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(entityId);
-        buf.writeUUID(cowUUID);
+        buf.writeBoolean(cowUUID != null);
+        if (cowUUID != null) {
+            buf.writeUUID(cowUUID);
+        }
     }
 
     public static SyncFlowerCowTargetPacket decode(FriendlyByteBuf buf) {
         int entityId = buf.readInt();
-        UUID cowUUID = buf.readUUID();
+        UUID cowUUID = null;
+        if (buf.readBoolean()) {
+            cowUUID = buf.readUUID();
+        }
         return new SyncFlowerCowTargetPacket(entityId, cowUUID);
     }
 

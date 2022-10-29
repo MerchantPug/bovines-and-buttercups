@@ -77,12 +77,12 @@ public class ForgeComponentHelper implements IComponentHelper {
     }
 
     @Override
-    public @Nullable Optional<UUID> getMoobloomTarget(Bee bee) {
+    public Optional<UUID> getMoobloomTarget(Bee bee) {
         return bee.getCapability(FlowerCowTargetCapability.INSTANCE).map(x -> Optional.ofNullable(x.getMoobloom())).orElseGet(Optional::empty);
     }
 
     @Override
-    public void setMoobloomTarget(Bee bee, @org.jetbrains.annotations.Nullable UUID uUID) {
+    public void setMoobloomTarget(Bee bee, @Nullable UUID uUID) {
         bee.getCapability(FlowerCowTargetCapability.INSTANCE).ifPresent(cap -> cap.setMoobloom(uUID));
     }
 }

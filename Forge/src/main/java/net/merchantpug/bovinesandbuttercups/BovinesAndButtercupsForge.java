@@ -88,7 +88,7 @@ public class BovinesAndButtercupsForge {
         });
 
         MinecraftForge.EVENT_BUS.addListener((LivingEvent.LivingTickEvent event) -> {
-            if (!event.getEntity().getLevel().isClientSide() && ((BeeAccess)(Object)event.getEntity()).getPollinateFlowerCowGoal() != null && event.getEntity() instanceof Bee bee) {
+            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)(Object)event.getEntity()).getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)(Object)bee).getPollinateFlowerCowGoal().tickCooldown();
             }
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {

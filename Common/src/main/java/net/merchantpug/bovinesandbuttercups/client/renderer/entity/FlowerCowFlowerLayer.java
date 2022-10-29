@@ -24,10 +24,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, CowModel<T>> {
+public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> extends RenderLayer<T, M> {
     private final BlockRenderDispatcher blockRenderer;
 
-    public FlowerCowFlowerLayer(RenderLayerParent<T, CowModel<T>> context, BlockRenderDispatcher blockRenderer) {
+    public FlowerCowFlowerLayer(RenderLayerParent<T, M> context, BlockRenderDispatcher blockRenderer) {
         super(context);
         this.blockRenderer = blockRenderer;
     }
@@ -54,6 +54,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
                 modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.modelLocation(), FlowerType.MISSING.modelVariant());
             }
             blockState = configuration.getBud().blockState();
+            handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
         } else {
             if (configuration.getFlower().modelLocation().isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(configuration.getFlower().modelLocation().get(), configuration.getFlower().modelVariant());
@@ -63,9 +64,8 @@ public class FlowerCowFlowerLayer<T extends FlowerCow> extends RenderLayer<T, Co
                 modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.modelLocation(), FlowerType.MISSING.modelVariant());
             }
             blockState = configuration.getFlower().blockState();
+            handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
         }
-
-        handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
     }
 
     private void handleMoobudRender(PoseStack poseStack, MultiBufferSource buffer, T entity, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {

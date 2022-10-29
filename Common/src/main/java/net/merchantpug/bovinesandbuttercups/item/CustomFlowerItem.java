@@ -56,7 +56,7 @@ public class CustomFlowerItem extends BlockItem {
 
     @Override
     public Component getName(ItemStack stack) {
-        Level level = ((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel();
+        Level level = ((ItemStackAccess)(Object)stack).getLevel();
         if (level != null) {
             CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
             ResourceLocation resource = ResourceLocation.tryParse(compound.getString("Type"));

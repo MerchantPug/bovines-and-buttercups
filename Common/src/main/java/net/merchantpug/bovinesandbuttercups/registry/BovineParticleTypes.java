@@ -12,9 +12,7 @@ import java.util.function.Function;
 public class BovineParticleTypes {
     public static final RegistrationProvider<ParticleType<?>> PARTICLE_TYPES = RegistrationProvider.get(Registry.PARTICLE_TYPE, BovinesAndButtercups.MOD_ID);
 
-    public static final RegistryObject<ParticleType<ModelLocationParticleOption>> MODEL_LOCATION = register("model_location", false, ModelLocationParticleOption.DESERIALIZER, (particleType) -> {
-        return ModelLocationParticleOption.CODEC;
-    });
+    public static final RegistryObject<ParticleType<ModelLocationParticleOption>> MODEL_LOCATION = register("model_location", false, ModelLocationParticleOption.DESERIALIZER, (particleType) -> ModelLocationParticleOption.CODEC);
 
     public static void init() {
 

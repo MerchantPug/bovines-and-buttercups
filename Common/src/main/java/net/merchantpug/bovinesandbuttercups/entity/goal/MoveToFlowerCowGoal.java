@@ -1,9 +1,9 @@
 package net.merchantpug.bovinesandbuttercups.entity.goal;
 
-import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
 import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.mixin.BeeAccessor;
 import net.merchantpug.bovinesandbuttercups.mixin.MobAccessor;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.util.AirRandomPos;
@@ -12,11 +12,11 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
-    int ticks;
-    Bee bee;
+public class MoveToFlowerCowGoal extends Bee.BaseBeeGoal {
+    private int ticks;
+    private final Bee bee;
 
-    public MoveToMoobloomGoal(Bee bee) {
+    public MoveToFlowerCowGoal(Bee bee) {
         bee.super();
         this.bee = bee;
         this.ticks = bee.level.random.nextInt(10);
@@ -25,7 +25,7 @@ public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
 
     @Override
     public boolean canBeeUse() {
-        return !bee.hasRestriction() && this.shouldMoveToMoobloom() && ((BeeAccess)bee).bovinesandbuttercups$getTargetMoobloom() != null && ((ServerLevel) bee.level).getEntity(((BeeAccess) bee).bovinesandbuttercups$getTargetMoobloom()) != null && !bee.blockPosition().closerToCenterThan(((ServerLevel) bee.level).getEntity(((BeeAccess) bee).bovinesandbuttercups$getTargetMoobloom()).position(), 2);
+        return !bee.hasRestriction() && this.shouldMoveToMoobloom() && Services.COMPONENT.getMoobloomTarget(bee).isPresent() && ((ServerLevel) bee.level).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()) != null && !bee.blockPosition().closerToCenterThan(((ServerLevel) bee.level).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()).position(), 2);
     }
 
     @Override
@@ -48,23 +48,23 @@ public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
 
     @Override
     public void tick() {
-        if (((BeeAccess)bee).bovinesandbuttercups$getTargetMoobloom() == null) {
+        if (Services.COMPONENT.getMoobloomTarget(bee).isEmpty()) {
             return;
         }
-        Entity entity = ((ServerLevel)bee.level).getEntity(((BeeAccess) bee).bovinesandbuttercups$getTargetMoobloom());
+        Entity entity = ((ServerLevel)bee.level).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get());
         if (!(entity instanceof FlowerCow moobloom)) {
             return;
         }
         ++this.ticks;
         if (this.ticks > this.adjustedTickDelay(600)) {
-            ((BeeAccess)bee).bovinesandbuttercups$setTargetMoobloom(null);
+            Services.COMPONENT.setMoobloomTarget(bee, null);
             return;
         }
         if (((MobAccessor)bee).bovinesandbuttercups$getNavigation().isInProgress()) {
             return;
         }
         if (!bee.position().closerThan(moobloom.position(), 32)) {
-            ((BeeAccess)bee).bovinesandbuttercups$setTargetMoobloom(null);
+            Services.COMPONENT.setMoobloomTarget(bee, null);
             return;
         }
         this.startMovingTo(bee, moobloom.position().add(0.0f, moobloom.getBoundingBox().getYsize() * 1.3, 0.0f));
@@ -91,7 +91,7 @@ public class MoveToMoobloomGoal extends Bee.BaseBeeGoal {
         Vec3 vec32 = AirRandomPos.getPosTowards(bee, k, l, i, pos, 0.3141592741012573D);
         if (vec32 != null) {
             ((MobAccessor)bee).bovinesandbuttercups$getNavigation().setMaxVisitedNodesMultiplier(0.5F);
-            ((MobAccessor)bee).bovinesandbuttercups$getNavigation().moveTo(vec32.x, vec32.y, vec32.z, 1.0D);
+            ((MobAccessor)bee).bovinesandbuttercups$getNavigation().moveTo(vec32.x, vec32.y, vec32.z, 1.0F);
         }
     }
 

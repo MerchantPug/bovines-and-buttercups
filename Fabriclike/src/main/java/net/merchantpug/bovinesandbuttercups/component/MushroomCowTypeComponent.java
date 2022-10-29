@@ -11,6 +11,7 @@ public interface MushroomCowTypeComponent extends Component {
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowType();
     ResourceLocation getMushroomCowTypeKey();
     void setMushroomCowType(ResourceLocation key);
+
     @Nullable ResourceLocation getPreviousMushroomCowTypeKey();
     void setPreviousMushroomCowTypeKey(@Nullable ResourceLocation key);
 }

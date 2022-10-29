@@ -6,7 +6,7 @@
     "version": "${version}",
     "metadata": {
       "name": "Bovines and Buttercups",
-      "description": "Placeholder",
+      "description": "A mod that implements a new take on the Moobloom.",
       "contributors": {
         "MerchantPug": "Owner",
         "SpiderKolo": "Artist"
@@ -41,6 +41,7 @@
   },
   "cardinal-components": [
     "bovinesandbuttercups:lockdown",
+    "bovinesandbuttercups:moobloom_target",
     "bovinesandbuttercups:mooshroom_type"
   ],
   "mixin": [

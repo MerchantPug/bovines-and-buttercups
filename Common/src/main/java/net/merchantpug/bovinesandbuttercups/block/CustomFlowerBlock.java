@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.block;
 
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
@@ -37,7 +38,7 @@ public class CustomFlowerBlock extends BaseEntityBlock {
         if (blockEntity instanceof CustomFlowerBlockEntity cfbe) {
             CompoundTag compound = new CompoundTag();
             if (cfbe.getFlowerType() != null && !cfbe.getFlowerType().equals(FlowerType.MISSING)) {
-                compound.putString("Type", cfbe.getFlowerType().toString());
+                compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(cfbe.getLevel(), cfbe.getFlowerType()).toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }

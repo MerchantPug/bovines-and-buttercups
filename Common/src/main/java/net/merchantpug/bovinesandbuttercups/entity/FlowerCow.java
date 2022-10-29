@@ -9,12 +9,8 @@ import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
-import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
-import net.merchantpug.bovinesandbuttercups.registry.BovineSoundEvents;
+import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -25,10 +21,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -49,6 +45,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -202,6 +199,11 @@ public class FlowerCow extends Cow implements Shearable {
         if (!this.level.isClientSide() && this.getPollinationTicks() > 0 && this.tickCount % 8 == 0) {
             ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + this.getBoundingBox().getYsize(), this.getZ(), 1, 0.3, 0.1, 0.3, 0.0);
         }
+
+        if (!this.level.isClientSide() && this.getFlowersToGenerate() > 0 && this.tickCount % 12 == 0) {
+            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY(), this.getZ(), 1, 0.3, 0.1, 0.3, 0.0);
+        }
+
         super.tick();
         if (this.getStandingStillForBeeTicks() > 0) {
             if (!hasRefreshedDimensionsForLaying) {
@@ -239,7 +241,7 @@ public class FlowerCow extends Cow implements Shearable {
             this.setPollinationTicks(this.getPollinationTicks() - 1);
         }
 
-        if (!this.level.isClientSide() && this.level.getBlockState(this.blockPosition()).isAir() && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
+        if (!this.level.isClientSide() && this.level.getBlockState(this.blockPosition()).isAir() && (this.level.getBlockState(this.blockPosition().below()).is(BlockTags.DIRT) || this.level.getBlockState(this.blockPosition().below()).is(Blocks.FARMLAND)) && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
             if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent() && this.getFlowerCowType().getConfiguration().getFlower().blockState().get().canSurvive(this.level, this.blockPosition())) {
                 ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
                 this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getConfiguration().getFlower().blockState().get(), 3);
@@ -266,13 +268,15 @@ public class FlowerCow extends Cow implements Shearable {
     }
 
     @Override
-    public InteractionResult mobInteract(Player player2, InteractionHand hand) {
-        ItemStack itemStack = player2.getItemInHand(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
         if (itemStack.is(Items.HONEY_BOTTLE) && this.getPollinationTicks() > 0) {
-            ItemStack itemStack2;
-            itemStack2 = new ItemStack(Items.GLASS_BOTTLE);
-            ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player2, itemStack2, false);
-            player2.setItemInHand(hand, itemStack3);
+            if (!player.getAbilities().instabuild) {
+                ItemStack itemStack2;
+                itemStack2 = new ItemStack(Items.GLASS_BOTTLE);
+                ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
+                player.setItemInHand(hand, itemStack3);
+            }
             this.setFlowersToGenerate(12);
             this.setPollinationTicks(0);
             this.playSound(BovineSoundEvents.MOOBLOOM_DRINK.get(), 1.0f, 1.0f);
@@ -288,19 +292,19 @@ public class FlowerCow extends Cow implements Shearable {
                 return InteractionResult.PASS;
             }
 
-            ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player2, itemStack2, false);
-            player2.setItemInHand(hand, itemStack3);
+            ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
+            player.setItemInHand(hand, itemStack3);
             this.playSound(BovineSoundEvents.MOOBLOOM_MILK.get(), 1.0f, 1.0f);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else if (itemStack.is(Items.SHEARS) && this.readyForShearing()) {
             this.shear(SoundSource.PLAYERS);
-            this.gameEvent(GameEvent.SHEAR, player2);
+            this.gameEvent(GameEvent.SHEAR, player);
             if (!this.level.isClientSide) {
-                itemStack.hurtAndBreak(1, player2, player -> player.broadcastBreakEvent(hand));
+                itemStack.hurtAndBreak(1, player, other -> other.broadcastBreakEvent(hand));
             }
             return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
-        return super.mobInteract(player2, hand);
+        return super.mobInteract(player, hand);
     }
 
     @Override
@@ -466,23 +470,27 @@ public class FlowerCow extends Cow implements Shearable {
 
             if (flowerCowConfiguration.getNaturalSpawnWeight() > 0) {
                 moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
+                totalWeight += flowerCowConfiguration.getNaturalSpawnWeight();
             }
         }
 
-        int index = 0;
-        for (double r = random.nextDouble() * totalWeight; index < moobloomList.size() - 1; ++index) {
-            r -= moobloomList.get(index).getConfiguration().getNaturalSpawnWeight();
-            if (r <= 0.0) break;
+        if (moobloomList.size() == 1) {
+            return moobloomList.get(0);
+        } else if (!moobloomList.isEmpty()) {
+            int r = Mth.nextInt(random, 0, totalWeight - 1);
+            for (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> cfc : moobloomList) {
+                r -= cfc.getConfiguration().getNaturalSpawnWeight();
+                if (r < 0.0) {
+                    return cfc;
+                }
+            }
         }
-        if (!moobloomList.isEmpty()) {
-            return moobloomList.get(index);
-        } else {
-            return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
-        }
+        return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
     }
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getMoobloomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> moobloomList = new ArrayList<>();
+        int totalWeight = 0;
 
         Registry<Biome> registry = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
 
@@ -499,20 +507,23 @@ public class FlowerCow extends Cow implements Shearable {
                 }
                 if (entryList != null && entryList.contains(level.getBiome(pos))) {
                     moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
+                    totalWeight += flowerCowConfiguration.getNaturalSpawnWeight();
                 }
             }
         }
 
-        int index = 0;
-        for (double r = random.nextDouble() * getTotalSpawnWeight(level, pos); index < moobloomList.size() - 1; ++index) {
-            r -= moobloomList.get(index).getConfiguration().getNaturalSpawnWeight();
-            if (r <= 0.0) break;
+        if (moobloomList.size() == 1) {
+            return moobloomList.get(0);
+        } else if (!moobloomList.isEmpty()) {
+            int r = Mth.nextInt(random, 0, totalWeight - 1);
+            for (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> cfc : moobloomList) {
+                r -= cfc.getConfiguration().getNaturalSpawnWeight();
+                if (r < 0.0) {
+                    return cfc;
+                }
+            }
         }
-        if (!moobloomList.isEmpty()) {
-            return moobloomList.get(index);
-        } else {
-            return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
-        }
+        return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
     }
 
     public class LookAtBeeGoal extends Goal {

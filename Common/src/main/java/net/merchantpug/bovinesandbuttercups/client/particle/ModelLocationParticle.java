@@ -1,5 +1,6 @@
-package net.merchantpug.bovinesandbuttercups.particle;
+package net.merchantpug.bovinesandbuttercups.client.particle;
 
+import net.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -57,8 +58,8 @@ public class ModelLocationParticle extends TextureSheetParticle {
 
     public static class Provider implements ParticleProvider<ModelLocationParticleOption> {
         public Particle createParticle(ModelLocationParticleOption type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ResourceLocation modelKey = type.getModelKey();
-            String variant = type.getModelVariant();
+            ResourceLocation modelKey = type.modelKey();
+            String variant = type.modelVariant();
             return new ModelLocationParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, modelKey, variant);
         }
     }

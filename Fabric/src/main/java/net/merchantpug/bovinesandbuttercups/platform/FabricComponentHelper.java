@@ -8,10 +8,13 @@ import net.merchantpug.bovinesandbuttercups.platform.services.IComponentHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @AutoService(IComponentHelper.class)
 public class FabricComponentHelper implements IComponentHelper {
@@ -63,5 +66,15 @@ public class FabricComponentHelper implements IComponentHelper {
     @Override
     public void syncLockdownMobEffects(LivingEntity entity) {
         BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(entity);
+    }
+
+    @Override
+    public Optional<UUID> getMoobloomTarget(Bee bee) {
+        return Optional.ofNullable(BovineEntityComponents.FLOWER_COW_TARGET_COMPONENT.get(bee).getMoobloom());
+    }
+
+    @Override
+    public void setMoobloomTarget(Bee bee, @Nullable UUID uUID) {
+        BovineEntityComponents.FLOWER_COW_TARGET_COMPONENT.get(bee).setMoobloom(uUID);
     }
 }

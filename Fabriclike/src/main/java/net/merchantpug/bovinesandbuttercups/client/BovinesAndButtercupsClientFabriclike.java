@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.client;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomFlowerItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomMushroomItemRenderer;
-import net.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;

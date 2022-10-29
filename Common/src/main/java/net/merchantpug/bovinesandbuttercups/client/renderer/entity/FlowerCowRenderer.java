@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClient;
+import net.merchantpug.bovinesandbuttercups.client.model.FlowerCowModel;
 import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
@@ -12,11 +13,11 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Locale;
 
-public class FlowerCowRenderer extends MobRenderer<FlowerCow, CowModel<FlowerCow>> {
+public class FlowerCowRenderer extends MobRenderer<FlowerCow, FlowerCowModel<FlowerCow>> {
 
     public FlowerCowRenderer(EntityRendererProvider.Context context) {
-        super(context, new CowModel<>(context.bakeLayer(BovineModelLayers.MOOBLOOM_MODEL_LAYER)), 0.7f);
-        this.addLayer(new FlowerCowGrassLayer(this));
+        super(context, new FlowerCowModel<>(context.bakeLayer(BovineModelLayers.MOOBLOOM_MODEL_LAYER)), 0.7f);
+        this.addLayer(new FlowerCowGrassLayer<>(this));
         this.addLayer(new FlowerCowFlowerLayer<>(this, context.getBlockRenderDispatcher()));
     }
 

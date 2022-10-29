@@ -11,8 +11,8 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
-public class ModelLocationParticleOption implements ParticleOptions {
-    public static final ParticleOptions.Deserializer<ModelLocationParticleOption> DESERIALIZER = new ParticleOptions.Deserializer<>() {
+public record ModelLocationParticleOption(ResourceLocation modelKey, String modelVariant) implements ParticleOptions {
+    public static final Deserializer<ModelLocationParticleOption> DESERIALIZER = new Deserializer<>() {
         public ModelLocationParticleOption fromCommand(ParticleType<ModelLocationParticleOption> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
             return new ModelLocationParticleOption(ResourceLocation.tryParse(reader.getString()), reader.getString());
@@ -23,18 +23,10 @@ public class ModelLocationParticleOption implements ParticleOptions {
         }
     };
 
-    private final ResourceLocation modelKey;
-    private final String modelVariant;
-
     public static final Codec<ModelLocationParticleOption> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
             ResourceLocation.CODEC.fieldOf("key").forGetter((resourceLocation) -> resourceLocation.modelKey),
             Codec.STRING.fieldOf("variant").forGetter((string) -> string.modelVariant)
     ).apply(instance, ModelLocationParticleOption::new));
-
-    public ModelLocationParticleOption(ResourceLocation modelKey, String modelVariant) {
-        this.modelKey = modelKey;
-        this.modelVariant = modelVariant;
-    }
 
     public void writeToNetwork(FriendlyByteBuf $$0) {
         $$0.writeResourceLocation(this.modelKey);
@@ -48,13 +40,5 @@ public class ModelLocationParticleOption implements ParticleOptions {
 
     public ParticleType<ModelLocationParticleOption> getType() {
         return BovineParticleTypes.MODEL_LOCATION.get();
-    }
-
-    public ResourceLocation getModelKey() {
-        return this.modelKey;
-    }
-
-    public String getModelVariant() {
-        return this.modelVariant;
     }
 }

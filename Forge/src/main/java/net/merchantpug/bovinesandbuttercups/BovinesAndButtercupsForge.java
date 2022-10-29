@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups;
 
+import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.capabilities.*;
 import net.merchantpug.bovinesandbuttercups.command.EffectLockdownCommand;
@@ -16,12 +17,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -46,10 +49,11 @@ public class BovinesAndButtercupsForge {
         BovineRegistriesForge.init(eventBus);
         BiomeModifierSerializerRegistry.init(eventBus);
 
-        this.addEventListeners();
+        this.addModBusEventListeners();
+        this.addForgeBusEventListeners();
     }
 
-    private void addEventListeners() {
+    private void addModBusEventListeners() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         eventBus.addListener((EntityAttributeCreationEvent event) -> {
@@ -59,7 +63,9 @@ public class BovinesAndButtercupsForge {
             BovinePacketHandler.register();
             event.enqueueWork(() -> SpawnPlacements.register(Services.PLATFORM.getMoobloomEntity(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn));
         });
+    }
 
+    public void addForgeBusEventListeners() {
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.StartTracking event) -> {
             if (event.getTarget() instanceof MushroomCow cow) {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
@@ -80,12 +86,24 @@ public class BovinesAndButtercupsForge {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(MushroomCowTypeCapabilityImpl::sync);
             }
         });
+
         MinecraftForge.EVENT_BUS.addListener((LivingEvent.LivingTickEvent event) -> {
-            if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-            BovineCriteriaTriggers.NEARBY_ENTITY.trigger(serverPlayer);
+            if (!event.getEntity().getLevel().isClientSide() && ((BeeAccess)(Object)event.getEntity()).getPollinateFlowerCowGoal() != null && event.getEntity() instanceof Bee bee) {
+                ((BeeAccess)(Object)bee).getPollinateFlowerCowGoal().tickCooldown();
+            }
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+                BovineCriteriaTriggers.NEARBY_ENTITY.trigger(serverPlayer);
+            }
         });
+        MinecraftForge.EVENT_BUS.addListener((LivingHurtEvent event) -> {
+            if (!(event.getEntity() instanceof Bee bee)) return;
+            ((BeeAccess)bee).getPollinateFlowerCowGoal().stopPollinating();
+        });
+
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MushroomCowTypeCapabilityAttacher::attach);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, LockdownEffectCapabilityAttacher::attach);
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, FlowerCowTargetCapabilityAttacher::attach);
+
         MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> EffectLockdownCommand.register(event.getDispatcher()));
 
         MinecraftForge.EVENT_BUS.addListener((MobEffectEvent.Added event) -> {

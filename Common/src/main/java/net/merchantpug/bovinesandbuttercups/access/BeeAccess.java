@@ -1,10 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.access;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
+import net.merchantpug.bovinesandbuttercups.entity.goal.PollinateFlowerCowGoal;
 
 public interface BeeAccess {
-    @Nullable UUID bovinesandbuttercups$getTargetMoobloom();
-    void bovinesandbuttercups$setTargetMoobloom(@Nullable UUID value);
+    PollinateFlowerCowGoal getPollinateFlowerCowGoal();
 }

@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Bovines and Buttercups",
-  "description": "Placeholder",
+  "description": "A mod that implements a new take on the Moobloom.",
   "authors": [
     "MerchantPug"
   ],
@@ -33,6 +33,7 @@
   "custom": {
     "cardinal-components": [
       "bovinesandbuttercups:lockdown",
+      "bovinesandbuttercups:moobloom_target",
       "bovinesandbuttercups:mooshroom_type"
     ]
   },

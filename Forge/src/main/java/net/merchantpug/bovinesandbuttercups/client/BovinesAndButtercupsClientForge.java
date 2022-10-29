@@ -27,9 +27,8 @@ package net.merchantpug.bovinesandbuttercups.client;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
-import net.merchantpug.bovinesandbuttercups.particle.ModelLocationParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
-import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
@@ -43,7 +42,6 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -53,7 +51,6 @@ import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
 
 import java.util.Map;
-import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class BovinesAndButtercupsClientForge {

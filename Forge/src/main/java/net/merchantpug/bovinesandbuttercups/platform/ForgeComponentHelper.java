@@ -5,22 +5,20 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
-import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapabilityImpl;
-import net.merchantpug.bovinesandbuttercups.capabilities.MushroomCowTypeCapability;
-import net.merchantpug.bovinesandbuttercups.capabilities.MushroomCowTypeCapabilityImpl;
+import net.merchantpug.bovinesandbuttercups.capabilities.*;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.services.IComponentHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @AutoService(IComponentHelper.class)
 public class ForgeComponentHelper implements IComponentHelper {
@@ -76,5 +74,15 @@ public class ForgeComponentHelper implements IComponentHelper {
     @Override
     public void syncLockdownMobEffects(LivingEntity entity) {
         entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(LockdownEffectCapabilityImpl::sync);
+    }
+
+    @Override
+    public @Nullable Optional<UUID> getMoobloomTarget(Bee bee) {
+        return bee.getCapability(FlowerCowTargetCapability.INSTANCE).map(x -> Optional.ofNullable(x.getMoobloom())).orElseGet(Optional::empty);
+    }
+
+    @Override
+    public void setMoobloomTarget(Bee bee, @org.jetbrains.annotations.Nullable UUID uUID) {
+        bee.getCapability(FlowerCowTargetCapability.INSTANCE).ifPresent(cap -> cap.setMoobloom(uUID));
     }
 }

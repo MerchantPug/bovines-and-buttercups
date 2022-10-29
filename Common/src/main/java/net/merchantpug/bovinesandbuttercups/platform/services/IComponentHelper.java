@@ -5,10 +5,13 @@ import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface IComponentHelper {
 
@@ -31,4 +34,8 @@ public interface IComponentHelper {
     void setLockdownMobEffects(LivingEntity entity, Map<MobEffect, Integer> hashMap);
 
     void syncLockdownMobEffects(LivingEntity entity);
+
+    Optional<UUID> getMoobloomTarget(Bee bee);
+
+    void setMoobloomTarget(Bee bee, @Nullable UUID uUID);
 }

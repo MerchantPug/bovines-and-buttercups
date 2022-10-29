@@ -11,7 +11,7 @@ logoFile="bovinesandbuttercups.png"
 authors="MerchantPug"
 credits="SpiderKolo"
 description='''
-Placeholder
+A mod that implements a new take on the Moobloom.
 '''
 [[dependencies.bovinesandbuttercups]]
     modId="forge"

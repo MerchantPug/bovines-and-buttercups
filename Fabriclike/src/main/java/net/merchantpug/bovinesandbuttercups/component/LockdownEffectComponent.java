@@ -6,12 +6,8 @@ import net.minecraft.world.effect.MobEffect;
 import java.util.Map;
 
 public interface LockdownEffectComponent extends Component {
-
     Map<MobEffect, Integer> getLockdownMobEffects();
-
     void addLockdownMobEffect(MobEffect effect, int duration);
-
     void removeLockdownMobEffect(MobEffect effect);
-
     void setLockdownMobEffects(Map<MobEffect, Integer> map);
 }

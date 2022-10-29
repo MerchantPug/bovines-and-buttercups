@@ -15,11 +15,8 @@ public interface LockdownEffectCapability extends INBTSerializable<CompoundTag> 
     ImmutableMap<MobEffect, Integer> NO_EFFECTS = ImmutableMap.of();
 
     Map<MobEffect, Integer> getLockdownMobEffects();
-
     void addLockdownMobEffect(MobEffect effect, int duration);
-
     void removeLockdownMobEffect(MobEffect effect);
-
     void setLockdownMobEffects(Map<MobEffect, Integer> map);
 
     void sync();

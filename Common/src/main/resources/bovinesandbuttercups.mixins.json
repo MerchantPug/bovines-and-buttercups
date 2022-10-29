@@ -28,8 +28,7 @@
     "client.ModelBlockRendererAccessor",
     "client.ModelBlockRendererAmbientOcclusionFaceAccessor",
     "client.MushroomCowMushroomLayerMixin",
-    "client.MushroomCowRendererMixin",
-    "client.QuadrupedModelMixin"
+    "client.MushroomCowRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

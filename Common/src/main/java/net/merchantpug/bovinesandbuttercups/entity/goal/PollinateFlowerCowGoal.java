@@ -51,23 +51,36 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
             return false;
         } else if (bee.level.isRaining()) {
             return false;
+        } else if (Services.COMPONENT.getMoobloomTarget(bee).isPresent()) {
+            Optional<Entity> entity = Optional.ofNullable(((ServerLevel)bee.getLevel()).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()));
+            if (entity.isPresent() && entity.get() instanceof FlowerCow flowerCow) {
+                this.moobloom = flowerCow;
+                setFlowerCow();
+                return true;
+            }
+            return false;
         } else if (this.moobloom == null && this.bee.hasSavedFlowerPos()) {
             return false;
         } else {
             Optional<FlowerCow> flowerCow = findMoobloom();
             if (flowerCow.isPresent()) {
                 this.moobloom = flowerCow.get();
-                Services.COMPONENT.setMoobloomTarget(bee, flowerCow.get().getUUID());
-                flowerCow.get().setStandingStillForBeeTicks(MAX_POLLINATING_TICKS);
-                flowerCow.get().setBee(bee);
-                bee.setSavedFlowerPos(moobloom.blockPosition());
-                ((MobAccessor)this.bee).bovinesandbuttercups$getNavigation().moveTo(moobloom.position().x(), moobloom.getBoundingBox().getYsize() * 1.3, moobloom.position().z(), 1.2000000476837158);
+                setFlowerCow();
                 return true;
             } else {
                 this.remainingCooldownBeforeLocatingNewCow = Mth.nextInt(bee.getRandom(), 20, 60);
                 return false;
             }
         }
+    }
+
+    private void setFlowerCow() {
+        Services.COMPONENT.setMoobloomTarget(bee, moobloom.getUUID());
+        moobloom.setStandingStillForBeeTicks(MAX_POLLINATING_TICKS);
+        moobloom.setBee(bee);
+        bee.setSavedFlowerPos(moobloom.blockPosition());
+        ((MobAccessor)this.bee).bovinesandbuttercups$getNavigation().moveTo(moobloom.position().x(), moobloom.position().y() + moobloom.getBoundingBox().getYsize() * 1.5, moobloom.position().z(), 1.0);
+
     }
 
     @Override
@@ -126,10 +139,12 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
 
         this.pollinating = false;
         bee.getNavigation().stop();
-        moobloom.setStandingStillForBeeTicks(0);
-        moobloom.setBee(null);
-        Services.COMPONENT.setMoobloomTarget(bee, null);
-        this.moobloom = null;
+        if (this.moobloom != null) {
+            moobloom.setStandingStillForBeeTicks(0);
+            moobloom.setBee(null);
+            Services.COMPONENT.setMoobloomTarget(bee, null);
+            this.moobloom = null;
+        }
         this.remainingCooldownBeforeLocatingNewCow = 200;
     }
 

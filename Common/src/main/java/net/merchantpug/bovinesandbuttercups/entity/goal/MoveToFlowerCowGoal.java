@@ -67,7 +67,7 @@ public class MoveToFlowerCowGoal extends Bee.BaseBeeGoal {
             Services.COMPONENT.setMoobloomTarget(bee, null);
             return;
         }
-        this.startMovingTo(bee, moobloom.position().add(0.0f, moobloom.getBoundingBox().getYsize() * 1.3, 0.0f));
+        this.startMovingTo(bee, moobloom.position().add(0.0f, moobloom.getBoundingBox().getYsize() * 1.5, 0.0f));
     }
 
     void startMovingTo(Bee bee, Vec3 pos) {

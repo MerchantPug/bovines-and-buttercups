@@ -8,8 +8,6 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,8 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Bee.class)
-@Implements(@Interface(iface = BeeAccess.class, prefix = "bovinesandbuttercups$"))
-public abstract class BeeMixin extends Animal {
+public abstract class BeeMixin extends Animal implements BeeAccess {
     @Nullable @Unique private PollinateFlowerCowGoal bovinesandbuttercups$pollinateFlowerCowGoal;
 
     protected BeeMixin(EntityType<? extends Animal> entityType, Level level) {

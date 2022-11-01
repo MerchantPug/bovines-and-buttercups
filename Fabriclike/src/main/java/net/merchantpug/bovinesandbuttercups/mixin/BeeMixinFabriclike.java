@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BeeMixinFabriclike {
     @Inject(method = "aiStep", at = @At("TAIL"))
     private void bovinesandbuttercupsmethod$handleAiStep(CallbackInfo ci) {
-        if (((Entity)(Object)this).getLevel().isClientSide() || ((BeeAccess)(Object)this).getPollinateFlowerCowGoal() == null) return;
-        ((BeeAccess)(Object)this).getPollinateFlowerCowGoal().tickCooldown();
+        if (((Entity)(Object)this).getLevel().isClientSide() || ((BeeAccess)(Object)this).bovinesandbuttercups$getPollinateFlowerCowGoal() == null) return;
+        ((BeeAccess)(Object)this).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
     }
 }

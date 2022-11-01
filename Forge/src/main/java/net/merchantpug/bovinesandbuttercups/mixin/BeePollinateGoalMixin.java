@@ -23,6 +23,6 @@ public abstract class BeePollinateGoalMixin {
 
     @ModifyReturnValue(method = "isPollinating", at = @At(value = "RETURN"))
     private boolean bovinesandbuttercups$isPollinatingMoobloomOrFlower(boolean value) {
-        return value || ((BeeAccess)(Object)this$0).getPollinateFlowerCowGoal().isPollinating();
+        return value || ((BeeAccess)(Object)this$0).bovinesandbuttercups$getPollinateFlowerCowGoal().isPollinating();
     }
 }

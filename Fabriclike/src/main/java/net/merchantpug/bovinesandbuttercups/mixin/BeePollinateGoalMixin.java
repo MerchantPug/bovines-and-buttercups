@@ -27,11 +27,11 @@ public abstract class BeePollinateGoalMixin {
 
     @ModifyReturnValue(method = "isPollinating", at = @At(value = "RETURN"))
     private boolean bovinesandbuttercups$isPollinatingMoobloomOrFlower(boolean value) {
-        return value || ((BeeAccess)field_20377).getPollinateFlowerCowGoal().isPollinating();
+        return value || ((BeeAccess)field_20377).bovinesandbuttercups$getPollinateFlowerCowGoal().isPollinating();
     }
 
     @Inject(method = "stopPollinating", at = @At(value = "TAIL"))
     private void bovinesandbuttercups$stopMoobloomPollination(CallbackInfo ci) {
-        ((BeeAccess)field_20377).getPollinateFlowerCowGoal().stopPollinating();
+        ((BeeAccess)field_20377).bovinesandbuttercups$getPollinateFlowerCowGoal().stopPollinating();
     }
 }

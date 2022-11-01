@@ -67,16 +67,12 @@ public class LockdownEffectTooltipComponent extends StatusEffectTooltipComponent
         Minecraft client = Minecraft.getInstance();
         MobEffectTextureManager mobEffectTextureManager = client.getMobEffectTextures();
 
-        if (((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getHidden()) {
+        List<MobEffectInstance> statusEffectList = ((StatusEffectTooltipComponentAccessor) this).bovinesandbuttercups$getList();
+
+        if (((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getHidden() || statusEffectList.isEmpty()) {
             RenderSystem.setShaderTexture(0, MYSTERY_TEXTURE);
             GuiComponent.blit(matrices, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
-
-            RenderSystem.setShaderTexture(0, LOCKDOWN_TEXTURE);
-            GuiComponent.blit(matrices, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
         } else {
-            List<MobEffectInstance> statusEffectList = ((StatusEffectTooltipComponentAccessor) this).bovinesandbuttercups$getList();
-
-            if (statusEffectList.isEmpty()) return;
             int lockdownEffectIndex = Minecraft.getInstance().player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();
 
             MobEffect statusEffect = statusEffectList.get(lockdownEffectIndex).getEffect();
@@ -85,10 +81,9 @@ public class LockdownEffectTooltipComponent extends StatusEffectTooltipComponent
 
             RenderSystem.setShaderTexture(0, sprite.atlas().location());
             GuiComponent.blit(matrices, x, y, z, 18, 18, sprite);
-
-            RenderSystem.setShaderTexture(0, LOCKDOWN_TEXTURE);
-            GuiComponent.blit(matrices, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
         }
+        RenderSystem.setShaderTexture(0, LOCKDOWN_TEXTURE);
+        GuiComponent.blit(matrices, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
     }
 
     public void renderText(Font textRenderer, int x, int y, Matrix4f model, MultiBufferSource.BufferSource immediate) {

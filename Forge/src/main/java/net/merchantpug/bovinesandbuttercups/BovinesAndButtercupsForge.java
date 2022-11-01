@@ -88,8 +88,8 @@ public class BovinesAndButtercupsForge {
         });
 
         MinecraftForge.EVENT_BUS.addListener((LivingEvent.LivingTickEvent event) -> {
-            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)(Object)event.getEntity()).getPollinateFlowerCowGoal() != null) {
-                ((BeeAccess)(Object)bee).getPollinateFlowerCowGoal().tickCooldown();
+            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)(Object)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
+                ((BeeAccess)(Object)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
             }
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 BovineCriteriaTriggers.NEARBY_ENTITY.trigger(serverPlayer);
@@ -97,7 +97,7 @@ public class BovinesAndButtercupsForge {
         });
         MinecraftForge.EVENT_BUS.addListener((LivingHurtEvent event) -> {
             if (!(event.getEntity() instanceof Bee bee)) return;
-            ((BeeAccess)bee).getPollinateFlowerCowGoal().stopPollinating();
+            ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().stopPollinating();
         });
 
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MushroomCowTypeCapabilityAttacher::attach);

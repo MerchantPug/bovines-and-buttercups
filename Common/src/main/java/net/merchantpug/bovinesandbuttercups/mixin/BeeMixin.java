@@ -23,7 +23,7 @@ public abstract class BeeMixin extends Animal implements BeeAccess {
     }
 
     @Inject(method = "registerGoals", at = @At("TAIL"))
-    private void bovinesandbuttercupsmethod$addMoobloomRelatedGoals(CallbackInfo ci) {
+    private void bovinesandbuttercups$addMoobloomRelatedGoals(CallbackInfo ci) {
         PollinateFlowerCowGoal pollinateGoal = new PollinateFlowerCowGoal((Bee)(Object)this);
         this.goalSelector.addGoal(4, pollinateGoal);
         this.goalSelector.addGoal(6, new MoveToFlowerCowGoal((Bee)(Object)this));

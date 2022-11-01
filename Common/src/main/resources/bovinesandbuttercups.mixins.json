@@ -21,14 +21,14 @@
     "SuspiciousStewRecipeMixin"
   ],
   "client": [
-    "client.ClientLevelMixin",
-    "client.EffectRenderingInventoryScreenMixin",
-    "client.ItemRendererAccessor",
-    "client.ModelBakeryMixin",
-    "client.ModelBlockRendererAccessor",
-    "client.ModelBlockRendererAmbientOcclusionFaceAccessor",
-    "client.MushroomCowMushroomLayerMixin",
-    "client.MushroomCowRendererMixin"
+    "fabriclike.client.ClientLevelMixin",
+    "fabriclike.client.EffectRenderingInventoryScreenMixin",
+    "fabriclike.client.ItemRendererAccessor",
+    "fabriclike.client.ModelBakeryMixin",
+    "fabriclike.client.ModelBlockRendererAccessor",
+    "fabriclike.client.ModelBlockRendererAmbientOcclusionFaceAccessor",
+    "fabriclike.client.MushroomCowMushroomLayerMixin",
+    "fabriclike.client.MushroomCowRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

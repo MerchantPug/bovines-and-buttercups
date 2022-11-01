@@ -4,7 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.mixin.MushroomCowAccessor;
+import net.merchantpug.bovinesandbuttercups.mixin.fabriclike.MushroomCowAccessor;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;

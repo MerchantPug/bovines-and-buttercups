@@ -5,7 +5,7 @@ import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.mixin.MushroomCowAccessor;
+import net.merchantpug.bovinesandbuttercups.mixin.forge.MushroomCowAccessor;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncMushroomCowTypePacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;

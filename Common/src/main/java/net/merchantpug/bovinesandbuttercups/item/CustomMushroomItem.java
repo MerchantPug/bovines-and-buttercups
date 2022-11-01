@@ -1,10 +1,9 @@
 package net.merchantpug.bovinesandbuttercups.item;
 
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
+import net.merchantpug.bovinesandbuttercups.mixin.fabriclike.client.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;

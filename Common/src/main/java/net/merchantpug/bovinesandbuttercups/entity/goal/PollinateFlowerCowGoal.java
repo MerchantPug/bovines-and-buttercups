@@ -24,7 +24,7 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
     private static final int MAX_FIND_FLOWER_COW_RETRY_COOLDOWN = 60;
     private static final double ARRIVAL_THRESHOLD = 0.1D;
     private static final int POSITION_CHANGE_CHANCE = 25;
-    private static final float SPEED_MODIFIER = 1.3F;
+    private static final float SPEED_MODIFIER = 0.35F;
     private static final float HOVER_POS_OFFSET = 0.33333334F;
     private int successfulPollinatingTicks;
     private int lastSoundPlayedTick;
@@ -65,6 +65,7 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
             Optional<FlowerCow> flowerCow = findMoobloom();
             if (flowerCow.isPresent()) {
                 this.moobloom = flowerCow.get();
+                Services.COMPONENT.setMoobloomTarget(bee, moobloom.getUUID());
                 setFlowerCow();
                 return true;
             } else {
@@ -75,25 +76,23 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
     }
 
     private void setFlowerCow() {
-        Services.COMPONENT.setMoobloomTarget(bee, moobloom.getUUID());
         moobloom.setStandingStillForBeeTicks(MAX_POLLINATING_TICKS);
         moobloom.setBee(bee);
         bee.setSavedFlowerPos(moobloom.blockPosition());
         ((MobAccessor)this.bee).bovinesandbuttercups$getNavigation().moveTo(moobloom.position().x(), moobloom.position().y() + moobloom.getBoundingBox().getYsize() * 1.5, moobloom.position().z(), 1.0);
-
     }
 
     @Override
     public boolean canBeeContinueToUse() {
         if (!this.pollinating) {
             return false;
-        } else if (!bee.hasSavedFlowerPos()) {
+        } else if (this.moobloom == null) {
             return false;
         } else if (bee.level.isRaining()) {
             return false;
         } else if (this.hasPollinatedLongEnough()) {
             return bee.getRandom().nextFloat() < 0.2F;
-        } if (bee.tickCount % 20 == 0 && moobloom != null && (!moobloom.isAlive() || moobloom.getLastHurtByMobTimestamp() > moobloom.tickCount - 100)) {
+        } if (bee.tickCount % 20 == 0 && (!moobloom.isAlive() || moobloom.getLastHurtByMobTimestamp() > moobloom.tickCount - 100)) {
             moobloom.setStandingStillForBeeTicks(0);
             moobloom.setBee(null);
             Services.COMPONENT.setMoobloomTarget(bee, null);
@@ -153,6 +152,7 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
     }
 
     public void tick() {
+        if (this.moobloom == null) return;
         ++this.pollinatingTicks;
         if (this.pollinatingTicks > MAX_POLLINATING_TICKS) {
             moobloom.setStandingStillForBeeTicks(0);
@@ -220,9 +220,6 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
 
     private Optional<FlowerCow> findMoobloom() {
         FlowerCow moobloom = this.bee.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level.getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((FlowerCow)entity).bee == null), null, bee.getX(), bee.getY(), bee.getZ(), bee.getBoundingBox().inflate(6.0F, 4.0, 6.0F));
-        if (moobloom != null) {
-            return Optional.of(moobloom);
-        }
-        return Optional.empty();
+        return Optional.ofNullable(moobloom);
     }
 }

@@ -1,16 +1,16 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.merchantpug.bovinesandbuttercups.mixin",
+  "package": "net.merchantpug.bovinesandbuttercups.mixin.forge",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BeePollinateGoalMixin",
     "MushroomCowAccessor",
-    "MushroomCowMixinForge"
+    "MushroomCowMixin"
   ],
   "client": [
-    "client.EffectRenderingInventoryScreenForgeMixin",
-    "client.GuiForgeMixin"
+    "client.EffectRenderingInventoryScreenMixin",
+    "client.GuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1

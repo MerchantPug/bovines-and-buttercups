@@ -22,7 +22,7 @@ public class BovinesAndButtercupsQuiltMixinPlugin implements IMixinConfigPlugin 
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.inspecio") && !QuiltLoader.isModLoaded("inspecio")) {
+        if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio") && !QuiltLoader.isModLoaded("inspecio")) {
             return false;
         }
         return true;

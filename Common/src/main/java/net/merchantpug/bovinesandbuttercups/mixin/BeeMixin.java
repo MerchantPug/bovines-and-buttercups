@@ -22,7 +22,7 @@ public abstract class BeeMixin extends Animal implements BeeAccess {
         super(entityType, level);
     }
 
-    @Inject(method = "registerGoals", at = @At("TAIL"))
+    @Inject(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeePollinateGoal;<init>(Lnet/minecraft/world/entity/animal/Bee;)V", shift = At.Shift.BEFORE))
     private void bovinesandbuttercups$addMoobloomRelatedGoals(CallbackInfo ci) {
         PollinateFlowerCowGoal pollinateGoal = new PollinateFlowerCowGoal((Bee)(Object)this);
         this.goalSelector.addGoal(4, pollinateGoal);

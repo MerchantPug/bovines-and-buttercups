@@ -5,6 +5,7 @@ import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
+import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
@@ -49,6 +50,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -343,6 +345,16 @@ public class FlowerCow extends Cow implements Shearable {
 
     // TODO Implement breeding mechanics
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow other) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+            ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> flowerCowType = (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType;
+            if (flowerCowType.getConfiguration().getBreedingRequirements().isEmpty()) continue;
+            if (new HashSet<>(level.getBlockStates(this.getBoundingBox().inflate(8.0D)).toList()).containsAll(flowerCowType.getConfiguration().getBreedingRequirements().get())) {
+                return flowerCowType;
+            }
+        }
+        if (other.getFlowerCowType().equals(this.getFlowerCowType()) && this.getRandom().nextBoolean()) {
+            return other.getFlowerCowType();
+        }
         return this.getFlowerCowType();
     }
 

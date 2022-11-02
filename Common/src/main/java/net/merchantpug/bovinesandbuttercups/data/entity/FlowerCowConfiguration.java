@@ -28,7 +28,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     private final ResourceLocation backTexture;
     private final boolean backGrassTinted;
     private final Optional<MobEffectInstance> nectarEffectInstance;
-    private final Optional<TagKey<Block>> breedingRequirements;
+    private final Optional<List<BlockState>> breedingRequirements;
 
     FlowerCowConfiguration(Optional<ResourceLocation> cowTexture,
                            Optional<TagKey<Biome>> biomeTagKey,
@@ -39,7 +39,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                            ResourceLocation backTexture,
                            boolean backGrassTinted,
                            Optional<MobEffectInstance> nectarEffectInstance,
-                           Optional<TagKey<Block>> breedingRequirements) {
+                           Optional<List<BlockState>> breedingRequirements) {
         super(cowTexture, biomeTagKey, naturalSpawnWeight, thunderConverts);
         this.flower = flower;
         this.bud = bud;
@@ -59,7 +59,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
             ResourceLocation.CODEC.optionalFieldOf("back_texture_location", BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png")).forGetter(FlowerCowConfiguration::getBackTexture),
             Codec.BOOL.optionalFieldOf("tint_back_texture", true).forGetter(FlowerCowConfiguration::isBackGrassTinted),
             MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
-            TagKey.codec(Registry.BLOCK_REGISTRY).optionalFieldOf("breeding_requirements").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingRequirements)
+            Codec.list(BlockState.CODEC).optionalFieldOf("breeding_requirements").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingRequirements)
     ).apply(builder, FlowerCowConfiguration::new));
 
     public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true, Optional.empty(), Optional.empty());
@@ -84,7 +84,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
         return this.nectarEffectInstance;
     }
 
-    public Optional<TagKey<Block>> getBreedingRequirements() {
+    public Optional<List<BlockState>> getBreedingRequirements() {
         return this.breedingRequirements;
     }
 

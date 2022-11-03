@@ -63,7 +63,7 @@ public class BovineRegistryUtil {
     public static boolean isFlowerTypeInRegistry(LevelAccessor level, ResourceLocation key) {
         Optional<? extends Registry<FlowerType>> registry = level.registryAccess().registry(BovineRegistryKeys.FLOWER_TYPE_KEY);
         if (registry.isEmpty()) {
-            BovinesAndButtercups.LOG.warn("Could not get ConfiguredCowType registry for entry check.");
+            BovinesAndButtercups.LOG.warn("Could not get FlowerType registry for entry check.");
             return false;
         }
         return registry.get().containsKey(key);
@@ -72,7 +72,7 @@ public class BovineRegistryUtil {
     public static ResourceLocation getFlowerTypeKey(LevelAccessor level, FlowerType type) {
         Optional<? extends Registry<FlowerType>> registry = level.registryAccess().registry(BovineRegistryKeys.FLOWER_TYPE_KEY);
         if (registry.isEmpty()) {
-            throw new NullPointerException("Could not get ConfiguredCowType registry for getting cow key from configuration.");
+            throw new NullPointerException("Could not get FlowerType registry for getting key from flower type.");
         }
         return registry.get().getKey(type);
     }
@@ -80,7 +80,7 @@ public class BovineRegistryUtil {
     public static FlowerType getFlowerTypeFromKey(LevelAccessor level, ResourceLocation key) {
         Optional<? extends Registry<FlowerType>> registry = level.registryAccess().registry(BovineRegistryKeys.FLOWER_TYPE_KEY);
         if (registry.isEmpty()) {
-            throw new NullPointerException("Could not get ConfiguredCowType registry for getting configuration from cow key.");
+            throw new NullPointerException("Could not get FlowerType registry for getting flower type from key.");
         }
         return registry.get().getOptional(key).orElse(FlowerType.MISSING);
     }
@@ -88,7 +88,7 @@ public class BovineRegistryUtil {
     public static Stream<FlowerType> flowerTypeStream(LevelAccessor level) {
         Optional<? extends Registry<FlowerType>> registry = level.registryAccess().registry(BovineRegistryKeys.FLOWER_TYPE_KEY);
         if (registry.isEmpty()) {
-            throw new NullPointerException("Could not get ConfiguredCowType registry for ConfiguredCowType stream.");
+            throw new NullPointerException("Could not get FlowerType registry for getting flower type stream.");
         }
         return registry.get().stream();
     }
@@ -96,7 +96,7 @@ public class BovineRegistryUtil {
     public static boolean isMushroomTypeInRegistry(LevelAccessor level, ResourceLocation key) {
         Optional<? extends Registry<MushroomType>> registry = level.registryAccess().registry(BovineRegistryKeys.MUSHROOM_TYPE_KEY);
         if (registry.isEmpty()) {
-            BovinesAndButtercups.LOG.warn("Could not get ConfiguredCowType registry for entry check.");
+            BovinesAndButtercups.LOG.warn("Could not get MushroomType registry for entry check.");
             return false;
         }
         return registry.get().containsKey(key);
@@ -105,7 +105,7 @@ public class BovineRegistryUtil {
     public static ResourceLocation getMushroomTypeKey(LevelAccessor level, MushroomType type) {
         Optional<? extends Registry<MushroomType>> registry = level.registryAccess().registry(BovineRegistryKeys.MUSHROOM_TYPE_KEY);
         if (registry.isEmpty()) {
-            throw new NullPointerException("Could not get ConfiguredCowType registry for getting cow key from configuration.");
+            throw new NullPointerException("Could not get MushroomType registry for getting key from mushroom type.");
         }
         return registry.get().getKey(type);
     }
@@ -113,7 +113,7 @@ public class BovineRegistryUtil {
     public static MushroomType getMushroomTypeFromKey(LevelAccessor level, ResourceLocation key) {
         Optional<? extends Registry<MushroomType>> registry = level.registryAccess().registry(BovineRegistryKeys.MUSHROOM_TYPE_KEY);
         if (registry.isEmpty()) {
-            throw new NullPointerException("Could not get ConfiguredCowType registry for getting configuration from cow key.");
+            throw new NullPointerException("Could not get MushroomType registry for getting mushroom type from key.");
         }
         return registry.get().getOptional(key).orElse(MushroomType.MISSING);
     }
@@ -121,7 +121,7 @@ public class BovineRegistryUtil {
     public static Stream<MushroomType> mushroomTypeStream(LevelAccessor level) {
         Optional<? extends Registry<MushroomType>> registry = level.registryAccess().registry(BovineRegistryKeys.MUSHROOM_TYPE_KEY);
         if (registry.isEmpty()) {
-            throw new NullPointerException("Could not get ConfiguredCowType registry for ConfiguredCowType stream.");
+            throw new NullPointerException("Could not get MushroomType registry for getting mushroom type stream.");
         }
         return registry.get().stream();
     }

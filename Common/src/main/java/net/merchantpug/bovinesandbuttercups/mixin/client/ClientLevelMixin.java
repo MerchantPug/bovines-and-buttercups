@@ -64,14 +64,14 @@ public abstract class ClientLevelMixin extends Level {
                             ResourceLocation resourceLocation = BovinesAndButtercups.asResource("missing_flower");
                             String variant = "bovines";
                             if (this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                                resourceLocation = customFlowerBlockEntity.getFlowerType().modelLocation();
-                                variant = customFlowerBlockEntity.getFlowerType().modelVariant();
+                                resourceLocation = customFlowerBlockEntity.getFlowerType().flowerModel().location();
+                                variant = customFlowerBlockEntity.getFlowerType().flowerModel().variant();
                             } else if (this.getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
-                                resourceLocation = customMushroomBlockEntity.getMushroomType().modelLocation();
-                                variant = customMushroomBlockEntity.getMushroomType().modelVariant();
+                                resourceLocation = customMushroomBlockEntity.getMushroomType().mushroomModel().location();
+                                variant = customMushroomBlockEntity.getMushroomType().mushroomModel().variant();
                             } else if (this.getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {
-                                resourceLocation = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelLocation();
-                                variant = customHugeMushroomBlockEntity.getMushroomType().hugeBlockModelVariant();
+                                resourceLocation = customHugeMushroomBlockEntity.getMushroomType().hugeModel().location();
+                                variant = customHugeMushroomBlockEntity.getMushroomType().hugeModel().variant();
                             }
                             this.addParticle(new ModelLocationParticleOption(resourceLocation, variant), blockPos.getX() + d7, blockPos.getY() + d8, blockPos.getZ() + d9, d4 - 0.5D, d5 - 0.5D, d6 - 0.5D);
                         }

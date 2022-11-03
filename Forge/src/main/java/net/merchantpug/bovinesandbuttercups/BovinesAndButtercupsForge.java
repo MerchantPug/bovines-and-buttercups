@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
+import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.capabilities.*;
 import net.merchantpug.bovinesandbuttercups.command.EffectLockdownCommand;
@@ -10,6 +11,7 @@ import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
+import net.merchantpug.bovinesandbuttercups.util.ItemLevelUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -19,6 +21,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -88,11 +92,23 @@ public class BovinesAndButtercupsForge {
         });
 
         MinecraftForge.EVENT_BUS.addListener((LivingEvent.LivingTickEvent event) -> {
-            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)(Object)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
-                ((BeeAccess)(Object)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
+            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess) event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
+                ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
             }
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 BovineCriteriaTriggers.NEARBY_ENTITY.trigger(serverPlayer);
+            }
+            if (event.getEntity() instanceof Player player) {
+                for (int i = 0; i < player.containerMenu.slots.size(); ++i) {
+                    ItemStack stack = player.containerMenu.slots.get(i).getItem();
+                    if (!ItemLevelUtil.isApplicableForStoringLevel(stack) || ((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel() != null) continue;
+                    ((ItemStackAccess)(Object)stack).bovinesandbuttercups$setLevel(player.getLevel());
+                }
+                for (int i = 0; i < player.inventoryMenu.slots.size(); ++i) {
+                    ItemStack stack = player.inventoryMenu.getSlot(i).getItem();
+                    if (!ItemLevelUtil.isApplicableForStoringLevel(stack) || ((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel() != null) continue;
+                    ((ItemStackAccess)(Object)stack).bovinesandbuttercups$setLevel(player.getLevel());
+                }
             }
         });
         MinecraftForge.EVENT_BUS.addListener((LivingHurtEvent event) -> {

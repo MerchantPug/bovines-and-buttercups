@@ -1,8 +1,14 @@
 {
   "name": "Fire Flower",
-  "model_location": "test:fire_flower",
+  "flower_model": {
+    "location": "test:fire_flower"
+  },
   "stew_effect": {
     "effect": "minecraft:fire_resistance",
     "duration": 80
+  },
+  "dye_craft_result": {
+    "id": "minecraft:red_dye",
+    "Count": 1
   }
 }

@@ -49,9 +49,9 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
             if (configuration.getBud().modelLocation().isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(configuration.getBud().modelLocation().get(), configuration.getBud().modelVariant());
             } else if (configuration.getBud().getFlowerType(entity.getLevel()).isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.getBud().getFlowerType(entity.getLevel()).get().modelLocation(), configuration.getBud().getFlowerType(entity.getLevel()).get().modelVariant());
+                modelResourceLocation = new ModelResourceLocation(configuration.getBud().getFlowerType(entity.getLevel()).get().flowerModel().location(), configuration.getBud().getFlowerType(entity.getLevel()).get().flowerModel().variant());
             } else {
-                modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.modelLocation(), FlowerType.MISSING.modelVariant());
+                modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.flowerModel().location(), FlowerType.MISSING.flowerModel().variant());
             }
             blockState = configuration.getBud().blockState();
             handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
@@ -59,9 +59,9 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
             if (configuration.getFlower().modelLocation().isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(configuration.getFlower().modelLocation().get(), configuration.getFlower().modelVariant());
             } else if (configuration.getFlower().getFlowerType(entity.getLevel()).isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(configuration.getFlower().getFlowerType(entity.getLevel()).get().modelLocation(), configuration.getFlower().getFlowerType(entity.getLevel()).get().modelVariant());
+                modelResourceLocation = new ModelResourceLocation(configuration.getFlower().getFlowerType(entity.getLevel()).get().flowerModel().location(), configuration.getFlower().getFlowerType(entity.getLevel()).get().flowerModel().variant());
             } else {
-                modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.modelLocation(), FlowerType.MISSING.modelVariant());
+                modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.flowerModel().location(), FlowerType.MISSING.flowerModel().variant());
             }
             blockState = configuration.getFlower().blockState();
             handleMoobloomRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);

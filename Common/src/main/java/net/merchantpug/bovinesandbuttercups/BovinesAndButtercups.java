@@ -19,6 +19,7 @@ public class BovinesAndButtercups {
         BovineEffects.init();
         BovineItems.init();
         BovineParticleTypes.init();
+        BovineRecipeSerializers.init();
         BovineSoundEvents.init();
     }
 

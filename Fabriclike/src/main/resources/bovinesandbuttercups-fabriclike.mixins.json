@@ -9,6 +9,7 @@
     "LivingEntityMixin",
     "MushroomCowAccessor",
     "MushroomCowMixin",
+    "PlayerMixin",
     "RegistryAccessMixin",
     "ServerPlayerMixin"
   ],

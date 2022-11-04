@@ -34,7 +34,7 @@ dependencies {
     implementation "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
     annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
 
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     implementation project(":Common")
 }
@@ -47,12 +47,6 @@ loom {
 processResources {
     from project(":Common").sourceSets.main.resources
     inputs.property "version", project.version
-    
-    def environment = System.getenv("ENVIRONMENT")
-    if (environment != "production") {
-        from(rootProject.rootDir.absolutePath + "/testdata") { into 'data' }
-        from(rootProject.rootDir.absolutePath + "/testassets") { into 'assets'}
-    }
 }
 
 tasks.withType(JavaCompile) {

@@ -41,7 +41,6 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    implementation(project(path: ":Common"))
     implementation(project(path: ":Fabriclike", configuration: "namedElements"))
 }
 
@@ -68,6 +67,7 @@ loom {
 processResources {
     from project(":Common").sourceSets.main.resources
     from project(":Fabriclike").sourceSets.main.resources
+
     inputs.property "version", project.version
 
     filesMatching("fabric.mod.json") {
@@ -82,7 +82,6 @@ processResources {
 }
 
 tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
     source(project(":Fabriclike").sourceSets.main.allSource)
 }
 

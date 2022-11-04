@@ -343,15 +343,22 @@ public class FlowerCow extends Cow implements Shearable {
         }
     }
 
-    // TODO Implement breeding mechanics
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow other) {
+        List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
+
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> flowerCowType = (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType;
             if (flowerCowType.getConfiguration().getBreedingRequirements().isEmpty()) continue;
             if (new HashSet<>(level.getBlockStates(this.getBoundingBox().inflate(8.0D)).toList()).containsAll(flowerCowType.getConfiguration().getBreedingRequirements().get())) {
-                return flowerCowType;
+                eligibleCowTypes.add(flowerCowType);
             }
         }
+
+        if (!eligibleCowTypes.isEmpty()) {
+            int random = this.getRandom().nextInt() % eligibleCowTypes.size();
+            return eligibleCowTypes.get(random);
+        }
+
         if (other.getFlowerCowType().equals(this.getFlowerCowType()) && this.getRandom().nextBoolean()) {
             return other.getFlowerCowType();
         }

@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class FarmBlockMixin {
     @Inject(method = "fallOn", at = @At("HEAD"), cancellable = true)
     private void bovinesandbuttercups$cancelFallingOnIfMoobloom(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci) {
-        if (entity instanceof FlowerCow) ci.cancel();
+        if (entity instanceof FlowerCow) {
+            ci.cancel();
+        }
     }
 }

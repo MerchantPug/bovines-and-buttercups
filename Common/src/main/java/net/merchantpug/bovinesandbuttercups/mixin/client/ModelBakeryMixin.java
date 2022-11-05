@@ -28,7 +28,7 @@ public abstract class ModelBakeryMixin {
 
     @Inject(method = "loadModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/model/ModelResourceLocation;getVariant()Ljava/lang/String;"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void bovinesandbuttercups$loadMoobloomModel(ResourceLocation resourceLocation, CallbackInfo ci, ModelResourceLocation modelResourceLocation) throws IOException {
-        if (Objects.equals(modelResourceLocation.getVariant(), "bovines")) {
+        if (modelResourceLocation.getVariant().equals("bovines")) {
             ResourceLocation resourceLocation2 = new ResourceLocation(resourceLocation.getNamespace(), "bovines/" + resourceLocation.getPath());
             BlockModel blockModel = this.loadBlockModel(resourceLocation2);
             this.cacheAndQueueDependencies(modelResourceLocation, blockModel);

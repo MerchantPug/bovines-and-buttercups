@@ -17,18 +17,18 @@ public class MushroomCowMyceliumLayer extends RenderLayer<MushroomCow, CowModel<
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int light, MushroomCow mushroomCow, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if (mushroomCow.isInvisible()) return;
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int light, MushroomCow entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+        if (entity.isInvisible()) return;
         float r = 1.0F;
         float g = 1.0F;
         float b = 1.0F;
 
-        if (Services.COMPONENT.getMushroomCowTypeFromCow(mushroomCow).getConfiguration().isBackGrassTinted()) {
-            int biomeColor = BiomeColors.getAverageGrassColor(mushroomCow.level, mushroomCow.blockPosition());
+        if (Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().isBackGrassTinted()) {
+            int biomeColor = BiomeColors.getAverageGrassColor(entity.level, entity.blockPosition());
             r = (biomeColor >> 16 & 0xFF) / 255.0F;
             g = (biomeColor >> 8 & 0xFF) / 255.0F;
             b = (biomeColor & 0xFF) / 255.0f;
         }
-        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(Services.COMPONENT.getMushroomCowTypeFromCow(mushroomCow).getConfiguration().getBackTexture())), light, LivingEntityRenderer.getOverlayCoords(mushroomCow, 0.0F), r, g, b, 1.0F);
+        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getBackTexture())), light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), r, g, b, 1.0F);
     }
 }

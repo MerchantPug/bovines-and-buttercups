@@ -21,18 +21,18 @@ public class FlowerCowGrassLayer<T extends FlowerCow, M extends CowModel<T>> ext
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int light, FlowerCow flowerCow, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if (flowerCow.isInvisible()) return;
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int light, FlowerCow entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+        if (entity.isInvisible()) return;
         float r = 1.0F;
         float g = 1.0F;
         float b = 1.0F;
 
-        if (flowerCow.getFlowerCowType().getConfiguration().isBackGrassTinted()) {
-            int biomeColor = BiomeColors.getAverageGrassColor(flowerCow.level, flowerCow.blockPosition());
+        if (entity.getFlowerCowType().getConfiguration().isBackGrassTinted()) {
+            int biomeColor = BiomeColors.getAverageGrassColor(entity.level, entity.blockPosition());
             r = (biomeColor >> 16 & 0xFF) / 255.0F;
             g = (biomeColor >> 8 & 0xFF) / 255.0F;
             b = (biomeColor & 0xFF) / 255.0f;
         }
-        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(FLOWER_COW_GRASS_LOCATION)), light, LivingEntityRenderer.getOverlayCoords(flowerCow, 0.0F), r, g, b, 1.0F);
+        this.getParentModel().renderToBuffer(poseStack, buffer.getBuffer(RenderType.entityTranslucent(FLOWER_COW_GRASS_LOCATION)), light, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), r, g, b, 1.0F);
     }
 }

@@ -60,9 +60,11 @@ public class MoveToFlowerCowGoal extends Bee.BaseBeeGoal {
             Services.COMPONENT.setMoobloomTarget(bee, null);
             return;
         }
+
         if (((MobAccessor)bee).bovinesandbuttercups$getNavigation().isInProgress()) {
-            return;
+           return;
         }
+
         if (!bee.position().closerThan(moobloom.position(), 32)) {
             Services.COMPONENT.setMoobloomTarget(bee, null);
             return;

@@ -36,7 +36,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         boolean bl;
         bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
-        if ((entity).isInvisible() && !bl) return;
+        if (entity.isInvisible() && !bl) return;
 
         FlowerCowConfiguration configuration = entity.getFlowerCowType().getConfiguration();
 
@@ -90,7 +90,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.5f, -0.5f, 0.5f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
-        poseStack.translate(1.0f, 0.075f, 0.3f);
+        poseStack.translate(1.0f, 0.075f, 0.6f);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
         poseStack.popPose();
@@ -124,27 +124,15 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
 
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);
-        poseStack.translate(0.1f, 0.0, -0.6f);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(0.5, -0.195, 0.1);
+        poseStack.translate(0.45, -0.195, 0.15);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);
-        poseStack.translate(0.1f, 0.0, -0.6f);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
-        poseStack.scale(-0.75f, -0.75f, 0.75f);
-        poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(0.6, -0.195, -0.4);
-        this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
-        poseStack.popPose();
-
-        poseStack.pushPose();
-        poseStack.translate(0.2f, -0.35f, 0.5);
-        poseStack.translate(-0.1f, 0.0, -0.7f);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);

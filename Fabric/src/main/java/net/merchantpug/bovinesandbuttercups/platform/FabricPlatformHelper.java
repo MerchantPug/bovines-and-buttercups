@@ -22,8 +22,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 @AutoService(IPlatformHelper.class)
@@ -52,6 +54,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public void setRenderLayer(Block block, RenderType renderType) {
         BlockRenderLayerMap.INSTANCE.putBlock(block, renderType);
+    }
+
+    @Override
+    public Map<Block, Block> getPottedBlockMap() {
+        return FlowerPotBlock.POTTED_BY_CONTENT;
     }
 
     @Override

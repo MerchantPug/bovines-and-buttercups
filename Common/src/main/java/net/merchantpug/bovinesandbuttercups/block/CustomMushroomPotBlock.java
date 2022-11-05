@@ -1,9 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.block;
 
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomPotBlockEntity;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
-import net.merchantpug.bovinesandbuttercups.mixin.FlowerPotBlockAccessor;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,10 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -51,7 +46,7 @@ public class CustomMushroomPotBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack handStack = player.getItemInHand(hand);
         Item item = handStack.getItem();
-        BlockState blockState = (item instanceof CustomFlowerItem || item instanceof CustomMushroomItem ? ((BlockItem) item).getBlock() : item instanceof BlockItem ? FlowerPotBlockAccessor.bovinesandbuttercups$getPottedByContent().getOrDefault(((BlockItem)item).getBlock(), Blocks.AIR) : Blocks.AIR).defaultBlockState();
+        BlockState blockState = (item instanceof CustomMushroomItem ? ((BlockItem) item).getBlock() : Blocks.AIR).defaultBlockState();
         boolean isAir = blockState.is(Blocks.AIR);
         if (isAir) {
             ItemStack flowerStack = this.getContent(level, pos);

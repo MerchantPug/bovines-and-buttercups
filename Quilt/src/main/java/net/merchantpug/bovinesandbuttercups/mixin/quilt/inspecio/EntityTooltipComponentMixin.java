@@ -10,14 +10,12 @@ import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import io.github.queerbric.inspecio.InspecioConfig;
 import io.github.queerbric.inspecio.tooltip.EntityTooltipComponent;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,9 +25,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
-@Mixin(EntityTooltipComponent.class)
+@Mixin(value = EntityTooltipComponent.class, remap = false)
 public class EntityTooltipComponentMixin {
-    @Inject(method = "adjustEntity", at = @At("HEAD"))
+    @Inject(method = "adjustEntity", at = @At("HEAD"), remap = false)
     private static void bovinesandbuttercups$adjustCowEntities(Entity entity, CompoundTag itemTag, InspecioConfig.EntitiesConfig config, CallbackInfo ci) {
         Level level = Minecraft.getInstance().level;
         if (entity instanceof FlowerCow flowerCow) {

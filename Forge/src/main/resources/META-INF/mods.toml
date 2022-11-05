@@ -16,7 +16,7 @@ A mod that implements a new take on the Moobloom.
 [[dependencies.bovinesandbuttercups]]
     modId="forge"
     mandatory=true
-    versionRange="[43.1.1,)"
+    versionRange="[43,)"
     ordering="NONE"
     side="BOTH"
 

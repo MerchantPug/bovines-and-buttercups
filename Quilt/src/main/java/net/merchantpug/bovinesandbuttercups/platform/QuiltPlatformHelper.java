@@ -18,15 +18,16 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.block.extensions.api.client.BlockRenderLayerMap;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 @AutoService(IPlatformHelper.class)
 public class QuiltPlatformHelper implements IPlatformHelper {
-
     @Override
     public String getPlatformName() {
         return "Quilt";
@@ -51,6 +52,11 @@ public class QuiltPlatformHelper implements IPlatformHelper {
     @Override
     public void setRenderLayer(Block block, RenderType renderType) {
         BlockRenderLayerMap.put(renderType, block);
+    }
+
+    @Override
+    public Map<Block, Block> getPottedBlockMap() {
+        return FlowerPotBlock.POTTED_BY_CONTENT;
     }
 
     @Override

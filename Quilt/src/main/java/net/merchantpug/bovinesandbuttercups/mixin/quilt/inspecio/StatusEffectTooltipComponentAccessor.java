@@ -9,20 +9,20 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
 
-@Mixin(StatusEffectTooltipComponent.class)
+@Mixin(value = StatusEffectTooltipComponent.class, remap = false)
 public interface StatusEffectTooltipComponentAccessor {
-    @Accessor("list")
+    @Accessor(value = "list", remap = false)
     List<MobEffectInstance> bovinesandbuttercups$getList();
 
-    @Accessor("hidden")
+    @Accessor(value = "hidden", remap = false)
     boolean bovinesandbuttercups$getHidden();
 
-    @Accessor("multiplier")
+    @Accessor(value = "multiplier", remap = false)
     float bovinesandbuttercups$getMultiplier();
 
-    @Invoker("getHiddenText")
+    @Invoker(value = "getHiddenText", remap = false)
     Component bovinesandbuttercups$invokeGetHiddenText();
 
-    @Invoker("getHiddenTime")
+    @Invoker(value = "getHiddenTime", remap = false)
     Component bovinesandbuttercups$invokeGetHiddenTime();
 }

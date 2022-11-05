@@ -14,7 +14,6 @@
     "EntityMixin",
     "EntitySuperMixin",
     "FarmBlockMixin",
-    "FlowerPotBlockAccessor",
     "FlowerPotBlockMixin",
     "InventoryMenuMixin",
     "ItemStackMixin",

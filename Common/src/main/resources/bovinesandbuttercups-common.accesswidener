@@ -1,4 +1,5 @@
 accessWidener   v1  named
-accessible      class   net/minecraft/world/entity/animal/Bee$BaseBeeGoal
-accessible      method  net/minecraft/world/entity/animal/Bee$BaseBeeGoal    <init> (Lnet/minecraft/world/entity/animal/Bee;)V
-accessible      class   net/minecraft/client/renderer/block/ModelBlockRenderer$AmbientOcclusionFace
+accessible class net/minecraft/client/renderer/block/ModelBlockRenderer$AmbientOcclusionFace
+accessible class net/minecraft/world/entity/animal/Bee$BaseBeeGoal
+accessible method net/minecraft/world/entity/animal/Bee$BaseBeeGoal <init> (Lnet/minecraft/world/entity/animal/Bee;)V
+accessible field net/minecraft/world/level/block/FlowerPotBlock POTTED_BY_CONTENT Ljava/util/Map;

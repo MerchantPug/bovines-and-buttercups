@@ -2,8 +2,6 @@ package net.merchantpug.bovinesandbuttercups.block;
 
 import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
-import net.merchantpug.bovinesandbuttercups.mixin.FlowerPotBlockAccessor;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -48,7 +46,7 @@ public class CustomFlowerPotBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack handStack = player.getItemInHand(hand);
         Item item = handStack.getItem();
-        BlockState blockState = (item instanceof CustomFlowerItem || item instanceof CustomMushroomItem ? ((BlockItem) item).getBlock() : item instanceof BlockItem ? FlowerPotBlockAccessor.bovinesandbuttercups$getPottedByContent().getOrDefault(((BlockItem)item).getBlock(), Blocks.AIR) : Blocks.AIR).defaultBlockState();
+        BlockState blockState = (item instanceof CustomFlowerItem ? ((BlockItem) item).getBlock() : item instanceof BlockItem ? Services.PLATFORM.getPottedBlockMap().getOrDefault(((BlockItem)item).getBlock(), Blocks.AIR) : Blocks.AIR).defaultBlockState();
         boolean isAir = blockState.is(Blocks.AIR);
         if (isAir) {
             ItemStack flowerStack = this.getContent(level, pos);

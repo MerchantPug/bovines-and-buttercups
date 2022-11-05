@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "quilt_loader": {
-    "group": "com.github.merchantpug",
+    "group": "net.merchantpug",
     "id": "bovinesandbuttercups",
     "version": "${version}",
     "metadata": {

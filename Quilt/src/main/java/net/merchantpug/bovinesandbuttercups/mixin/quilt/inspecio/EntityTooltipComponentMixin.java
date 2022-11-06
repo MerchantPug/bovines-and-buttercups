@@ -6,7 +6,7 @@ import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import io.github.queerbric.inspecio.InspecioConfig;
 import io.github.queerbric.inspecio.tooltip.EntityTooltipComponent;

@@ -1,11 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
 public class BovineItemsFabriclike {

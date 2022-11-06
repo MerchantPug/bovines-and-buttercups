@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

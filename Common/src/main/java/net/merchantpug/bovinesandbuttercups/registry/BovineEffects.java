@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffect;

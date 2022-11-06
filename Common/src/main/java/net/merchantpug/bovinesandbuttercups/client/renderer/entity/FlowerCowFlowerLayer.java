@@ -1,10 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
-import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;

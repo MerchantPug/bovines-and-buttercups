@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.client.model;
 
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;

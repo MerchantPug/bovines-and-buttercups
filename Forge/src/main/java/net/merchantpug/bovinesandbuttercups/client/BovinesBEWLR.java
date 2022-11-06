@@ -1,10 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItemForge;
-import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItemForge;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

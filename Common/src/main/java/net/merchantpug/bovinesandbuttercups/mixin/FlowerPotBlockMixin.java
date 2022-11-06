@@ -1,12 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerPotBlockEntity;
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomPotBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.stats.Stats;
@@ -27,8 +27,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.Objects;
 
 @Mixin(FlowerPotBlock.class)
 public abstract class FlowerPotBlockMixin {

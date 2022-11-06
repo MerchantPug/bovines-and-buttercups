@@ -1,13 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.platform.services;
 
-import net.merchantpug.bovinesandbuttercups.block.entity.*;
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;

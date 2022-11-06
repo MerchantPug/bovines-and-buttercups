@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.client.item;
 
-import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.minecraft.client.renderer.MultiBufferSource;

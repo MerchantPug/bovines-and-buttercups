@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.item.crafting.CustomFlowerDyeRecipe;
+import net.merchantpug.bovinesandbuttercups.content.item.crafting.CustomFlowerDyeRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;

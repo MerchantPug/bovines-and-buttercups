@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;

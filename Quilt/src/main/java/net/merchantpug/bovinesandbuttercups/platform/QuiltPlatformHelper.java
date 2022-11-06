@@ -1,11 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
-import net.merchantpug.bovinesandbuttercups.block.entity.*;
-import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomHugeMushroomItem;
-import net.merchantpug.bovinesandbuttercups.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
+import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import com.google.auto.service.AutoService;

@@ -1,8 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.client.model.FlowerCowModel;
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.BiomeColors;

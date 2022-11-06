@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

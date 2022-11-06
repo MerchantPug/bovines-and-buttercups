@@ -1,12 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
-import net.merchantpug.bovinesandbuttercups.block.CustomFlowerBlock;
-import net.merchantpug.bovinesandbuttercups.block.CustomHugeMushroomBlock;
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomFlowerBlockEntity;
-import net.merchantpug.bovinesandbuttercups.block.CustomMushroomBlock;
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomMushroomBlockEntity;
-import net.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.particle.ModelLocationParticleOption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;

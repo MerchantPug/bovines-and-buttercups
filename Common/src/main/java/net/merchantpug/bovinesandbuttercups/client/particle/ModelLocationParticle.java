@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.client.particle;
 
-import net.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
+import net.merchantpug.bovinesandbuttercups.content.particle.ModelLocationParticleOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;

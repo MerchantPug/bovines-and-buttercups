@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin.forge.client;
 
 import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
-import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio;
 
 import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.LockdownEffectTooltipComponent;
-import net.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
+import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import io.github.queerbric.inspecio.Inspecio;
 import io.github.queerbric.inspecio.InspecioConfig;

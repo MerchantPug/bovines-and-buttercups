@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
-import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.world.effect.MobEffect;

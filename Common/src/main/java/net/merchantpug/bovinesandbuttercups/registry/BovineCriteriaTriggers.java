@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
-import net.merchantpug.bovinesandbuttercups.advancements.criterion.NearbyEntitiesTrigger;
+import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.NearbyEntitiesTrigger;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 
 public class BovineCriteriaTriggers {

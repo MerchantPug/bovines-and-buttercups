@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;

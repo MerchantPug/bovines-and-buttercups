@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.command.EffectLockdownCommand;
+import net.merchantpug.bovinesandbuttercups.content.command.EffectLockdownCommand;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.component.MushroomCowTypeComponent;

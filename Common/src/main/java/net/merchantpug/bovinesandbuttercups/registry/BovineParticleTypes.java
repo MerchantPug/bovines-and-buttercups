@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.particle.ModelLocationParticleOption;
+import net.merchantpug.bovinesandbuttercups.content.particle.ModelLocationParticleOption;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;

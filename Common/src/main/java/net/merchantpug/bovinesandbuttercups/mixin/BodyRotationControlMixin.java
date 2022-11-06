@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
-import net.merchantpug.bovinesandbuttercups.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import org.spongepowered.asm.mixin.Final;

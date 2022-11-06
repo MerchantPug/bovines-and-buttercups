@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.item.NectarBowlItem;
+import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;

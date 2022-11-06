@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.merchantpug.bovinesandbuttercups.block.entity.*;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 

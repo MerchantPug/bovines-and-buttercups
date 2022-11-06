@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;

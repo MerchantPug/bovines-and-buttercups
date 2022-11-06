@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
 
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
-import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;

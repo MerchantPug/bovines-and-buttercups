@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabriclike.client;
 
-import net.merchantpug.bovinesandbuttercups.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.blaze3d.systems.RenderSystem;

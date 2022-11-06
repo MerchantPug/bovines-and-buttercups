@@ -1,8 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
-import net.merchantpug.bovinesandbuttercups.entity.goal.MoveToFlowerCowGoal;
-import net.merchantpug.bovinesandbuttercups.entity.goal.PollinateFlowerCowGoal;
+import net.merchantpug.bovinesandbuttercups.content.entity.goal.MoveToFlowerCowGoal;
+import net.merchantpug.bovinesandbuttercups.content.entity.goal.PollinateFlowerCowGoal;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;

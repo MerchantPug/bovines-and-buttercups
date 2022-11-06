@@ -14,10 +14,10 @@ public class BovinesAndButtercups {
     public static void init() {
         LOG.info("Bovines and Buttercups v" + VERSION + " is starting up. Moo!");
 
+        BovineItems.init();
         BovineBlocks.init();
         BovineCriteriaTriggers.init();
         BovineEffects.init();
-        BovineItems.init();
         BovineParticleTypes.init();
         BovineRecipeSerializers.init();
         BovineSoundEvents.init();

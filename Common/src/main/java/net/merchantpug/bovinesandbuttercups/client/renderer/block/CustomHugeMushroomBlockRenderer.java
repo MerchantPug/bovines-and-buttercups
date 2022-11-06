@@ -1,8 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.block.CustomHugeMushroomBlock;
-import net.merchantpug.bovinesandbuttercups.block.entity.CustomHugeMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.mixin.client.ModelBlockRendererAccessor;
 import net.merchantpug.bovinesandbuttercups.mixin.client.ModelBlockRendererAmbientOcclusionFaceAccessor;

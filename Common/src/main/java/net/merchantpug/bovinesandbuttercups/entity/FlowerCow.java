@@ -75,7 +75,15 @@ public class FlowerCow extends Cow implements Shearable {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(TYPE_ID, "bovinesandbuttercups:missing_moobloom");
+        ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> naturalSpawnType;
+
+        if (getTotalSpawnWeight(this.getLevel(), this.blockPosition()) > 0) {
+            naturalSpawnType = getMoobloomSpawnTypeDependingOnBiome(this.getLevel(), this.blockPosition(), this.getRandom());
+        } else {
+            naturalSpawnType = getMoobloomSpawnType(this.getLevel(), this.getRandom());
+        }
+
+        this.entityData.define(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(this.getLevel(), naturalSpawnType).toString());
         this.entityData.define(PREVIOUS_TYPE_ID, "");
         this.entityData.define(POLLINATION_TICKS, 0);
         this.entityData.define(FLOWERS_TO_GENERATE, 0);
@@ -92,9 +100,9 @@ public class FlowerCow extends Cow implements Shearable {
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putString("Type", this.entityData.get(TYPE_ID));
+        compound.putString("Type", this.getTypeId());
         if (!this.getPreviousTypeId().equals("")) {
-            compound.putString("PreviousType", this.entityData.get(PREVIOUS_TYPE_ID));
+            compound.putString("PreviousType", this.getPreviousTypeId());
         }
         compound.putInt("PollinationTicks", this.getPollinationTicks());
         compound.putInt("FlowersToGenerate", this.getFlowersToGenerate());

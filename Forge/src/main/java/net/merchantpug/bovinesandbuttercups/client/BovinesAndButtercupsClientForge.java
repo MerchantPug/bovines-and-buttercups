@@ -118,6 +118,7 @@ public class BovinesAndButtercupsClientForge {
             event.addRepositorySource((consumer, constructor) -> {
                 consumer.accept(Pack.create(BovinesAndButtercups.asResource("mojang").toString(), false, () -> new ModFilePackResources("Moobloom Mojang Textures", modFile, "resourcepacks/mojang"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
                 consumer.accept(Pack.create(BovinesAndButtercups.asResource("no_grass").toString(), false, () -> new ModFilePackResources("No Grass Back", modFile, "resourcepacks/no_grass"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
+                consumer.accept(Pack.create(BovinesAndButtercups.asResource("no_buds").toString(), false, () -> new ModFilePackResources("No Buds", modFile, "resourcepacks/no_buds"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
             });
         }
     }

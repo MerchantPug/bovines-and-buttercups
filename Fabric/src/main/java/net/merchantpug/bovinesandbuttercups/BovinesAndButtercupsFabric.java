@@ -20,14 +20,13 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
                 version = version.split("-")[0];
             }
             BovinesAndButtercups.VERSION = version;
+
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), modContainer, "Mojang Textures", ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), modContainer, "No Grass Back", ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_buds"), modContainer, "No Buds", ResourcePackActivationType.NORMAL);
         });
         BovinesAndButtercupsFabriclike.init();
 
         BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypesFabriclike.MOOBLOOM, 60, 2, 4);
-
-        FabricLoader.getInstance().getModContainer(BovinesAndButtercups.MOD_ID).ifPresent(modContainer -> {
-            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), modContainer, "Mojang Textures", ResourcePackActivationType.NORMAL);
-            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), modContainer, "No Grass Back", ResourcePackActivationType.NORMAL);
-        });
     }
 }

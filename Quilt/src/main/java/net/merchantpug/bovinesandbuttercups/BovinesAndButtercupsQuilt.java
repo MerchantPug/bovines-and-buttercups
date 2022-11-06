@@ -27,5 +27,6 @@ public class BovinesAndButtercupsQuilt implements ModInitializer {
 
         ResourceLoader.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), mod, ResourcePackActivationType.NORMAL, Component.literal("Mojang Textures"));
         ResourceLoader.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), mod, ResourcePackActivationType.NORMAL, Component.literal("No Grass Back"));
+        ResourceLoader.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_buds"), mod, ResourcePackActivationType.NORMAL, Component.literal("No Buds"));
     }
 }

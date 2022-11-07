@@ -61,7 +61,6 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource randomSource) {
         if (randomSource.nextInt(25) == 0) {
             int i = 5;
-            int j = 4;
 
             for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-4, -1, -4), pos.offset(4, 1, 4))) {
                 if (level.getBlockState(blockpos).is(this)) {
@@ -83,10 +82,10 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
             }
 
             if (level.isEmptyBlock(blockpos1) && state.canSurvive(level, blockpos1)) {
-                level.setBlock(blockpos1, state, 2);
+                level.setBlock(blockpos1, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get().defaultBlockState(), 2);
                 ((CustomMushroomBlockEntity)level.getBlockEntity(blockpos1)).setMushroomTypeName(((CustomMushroomBlockEntity)level.getBlockEntity(pos)).getMushroomTypeName());
-                level.getBlockEntity(pos).setChanged();
-                level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
+                level.getBlockEntity(blockpos1).setChanged();
+                level.sendBlockUpdated(blockpos1, level.getBlockState(blockpos1), level.getBlockState(pos), Block.UPDATE_ALL);
             }
         }
 

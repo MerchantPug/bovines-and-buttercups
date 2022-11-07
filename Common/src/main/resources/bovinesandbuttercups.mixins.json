@@ -23,7 +23,7 @@
     "SuspiciousStewRecipeMixin"
   ],
   "client": [
-    "AnvilScreenMixin",
+    "client.AnvilScreenMixin",
     "client.ClientLevelMixin",
     "client.EffectRenderingInventoryScreenMixin",
     "client.ItemRendererAccessor",

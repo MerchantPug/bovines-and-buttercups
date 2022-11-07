@@ -27,7 +27,7 @@ public class CustomMushroomBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        mushroomTypeName = tag.getString("Type");
+        this.setMushroomTypeName(tag.getString("Type"));
     }
 
     @Override
@@ -42,6 +42,7 @@ public class CustomMushroomBlockEntity extends BlockEntity {
 
     public void setMushroomTypeName(@Nullable String value) {
         mushroomTypeName = value;
+        this.getMushroomType();
     }
 
     public MushroomType getMushroomType() {

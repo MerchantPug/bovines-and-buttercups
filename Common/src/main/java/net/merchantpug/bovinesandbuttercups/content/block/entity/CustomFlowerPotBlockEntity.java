@@ -27,7 +27,7 @@ public class CustomFlowerPotBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        flowerTypeName = tag.getString("Type");
+        setFlowerTypeName(tag.getString("Type"));
     }
 
     @Override
@@ -42,6 +42,7 @@ public class CustomFlowerPotBlockEntity extends BlockEntity {
 
     public void setFlowerTypeName(@Nullable String value) {
         flowerTypeName = value;
+        this.getFlowerType();
     }
 
     public FlowerType getFlowerType() {

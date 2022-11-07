@@ -1,7 +1,6 @@
-package net.merchantpug.bovinesandbuttercups.mixin;
+package net.merchantpug.bovinesandbuttercups.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
@@ -24,12 +23,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(AnvilScreen.class)
 public class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
     @Shadow @Final private Player player;
-    @Unique
-    private String bovinesandbuttercups$capturedNameChange;
+
     @Unique
     private ItemStack bovinesandbuttercups$capturedStack;
 
@@ -37,15 +36,9 @@ public class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
         super(menu, inventory, component, location);
     }
 
-    @Inject(method = "onNameChanged", at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
-    private void bovinesandbuttercups$useNewNameChanged(String string, CallbackInfo ci) {
-        bovinesandbuttercups$capturedNameChange = string;
-    }
-
-    @ModifyExpressionValue(method = "onNameChanged", at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
-    private boolean bovinesandbuttercups$useNewNameChanged(boolean original) {
-        Slot slot = this.menu.getSlot(0);
-        return original || slot.hasItem() && !slot.getItem().hasCustomHoverName() && bovinesandbuttercups$capturedNameChange.equals(slot.getItem().getHoverName().getString());
+    @Inject(method = "onNameChanged", at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void bovinesandbuttercups$useNewNameChanged(String string, CallbackInfo ci, String string2, Slot slot) {
+        ((ItemStackAccess)(Object)slot.getItem()).bovinesandbuttercups$setLevel(this.player.level);
     }
 
     @Inject(method = "slotChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;setValue(Ljava/lang/String;)V"))

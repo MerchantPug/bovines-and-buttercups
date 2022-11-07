@@ -42,6 +42,7 @@ public class CustomMushroomPotBlockEntity extends BlockEntity {
 
     public void setMushroomTypeName(@Nullable String value) {
         mushroomTypeName = value;
+        this.getMushroomType();
     }
 
     public MushroomType getMushroomType() {

@@ -49,7 +49,7 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowType() {
         try {
-            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(provider.getLevel(), typeId) && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE).getConfiguration()) {
+            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(provider.getLevel(), typeId) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE).getConfiguration()) {
                 return BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE);
             } else if (this.type != null) {
                 return this.type;
@@ -57,9 +57,11 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
                 return BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE);
             }
             this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE);
+            BovinesAndButtercups.LOG.warn("Could not find type '{}' from mooshroom at position {}. Setting type to 'bovinesandbuttercups:missing_mooshroom'.", this.typeId, provider.position());
             return this.type;
         } catch (Exception e) {
             this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE);
+            BovinesAndButtercups.LOG.warn("Could not get type '{}' from mooshroom at position {}. Setting type to 'bovinesandbuttercups:missing_mooshroom'. {}", this.typeId, provider.position(), e.getMessage());
             return this.type;
         }
     }

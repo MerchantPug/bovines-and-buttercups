@@ -36,7 +36,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.Cow;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -53,7 +52,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class FlowerCow extends Cow implements Shearable {
+public class FlowerCow extends Cow {
     private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> PREVIOUS_TYPE_ID = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> POLLINATION_TICKS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
@@ -114,6 +113,7 @@ public class FlowerCow extends Cow implements Shearable {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Type")) {
             this.setFlowerType(compound.getString("Type"), this.getLevel());
+            this.getFlowerCowType();
         }
         if (compound.contains("PreviousType")) {
             this.setPreviousTypeId(compound.getString("PreviousType"));
@@ -133,7 +133,7 @@ public class FlowerCow extends Cow implements Shearable {
         this.bee = value;
     }
 
-    public static boolean canMoobloomSpawn(EntityType<FlowerCow> type, LevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+    public static boolean canMoobloomSpawn(EntityType<? extends FlowerCow> type, LevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return level.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && Animal.isBrightEnoughToSpawn(level, pos) && getTotalSpawnWeight(level, pos) > 0;
     }
 
@@ -304,49 +304,8 @@ public class FlowerCow extends Cow implements Shearable {
             player.setItemInHand(hand, itemStack3);
             this.playSound(BovineSoundEvents.MOOBLOOM_MILK.get(), 1.0f, 1.0f);
             return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else if (itemStack.is(Items.SHEARS) && this.readyForShearing()) {
-            this.shear(SoundSource.PLAYERS);
-            this.gameEvent(GameEvent.SHEAR, player);
-            if (!this.level.isClientSide) {
-                itemStack.hurtAndBreak(1, player, other -> other.broadcastBreakEvent(hand));
-            }
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         return super.mobInteract(player, hand);
-    }
-
-    @Override
-    public void shear(SoundSource category) {
-        this.level.playSound(null, this, BovineSoundEvents.MOOBLOOM_SHEAR.get(), category, 1.0f, 1.0f);
-        if (!this.level.isClientSide) {
-            ((ServerLevel)this.level).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
-            this.discard();
-            Cow cowEntity = EntityType.COW.create(this.level);
-            if (cowEntity == null) return;
-            cowEntity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
-            cowEntity.setHealth(this.getHealth());
-            cowEntity.yBodyRot = this.yBodyRot;
-            if (this.hasCustomName()) {
-                cowEntity.setCustomName(this.getCustomName());
-                cowEntity.setCustomNameVisible(this.isCustomNameVisible());
-            }
-            if (this.isPersistenceRequired()) {
-                cowEntity.setPersistenceRequired();
-            }
-            cowEntity.setInvulnerable(this.isInvulnerable());
-            this.level.addFreshEntity(cowEntity);
-            for (int i = 0; i < 5; ++i) {
-                if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent()) {
-                    this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), new ItemStack(this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock())));
-                } else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent()) {
-                    ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomFlowerItem());
-                    CompoundTag compound = new CompoundTag();
-                    compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).get()).toString());
-                    itemStack.getOrCreateTag().put("BlockEntityTag", compound);
-                    this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), itemStack));
-                }
-            }
-        }
     }
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow other) {
@@ -378,24 +337,25 @@ public class FlowerCow extends Cow implements Shearable {
         return flowerCow;
     }
 
-    @Override
-    public boolean readyForShearing() {
+    public boolean xplatformReadyForShearing() {
         return this.isAlive() && !this.isBaby();
     }
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getFlowerCowType() {
         try {
-            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID))) && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE).getConfiguration()) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE);
+            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(getTypeId())) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE).getConfiguration()) {
+                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE);
             } else if (this.type != null) {
                 return this.type;
-            } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)))) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE);
+            } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(getTypeId()))) {
+                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE);
             }
             this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            BovinesAndButtercups.LOG.warn("Could not find type '{}' from moobloom at {}. Setting type to 'bovinesandbuttercups:missing_moobloom'.", ResourceLocation.tryParse(getTypeId()), position());
             return this.type;
         } catch (Exception e) {
             this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            BovinesAndButtercups.LOG.warn("Could not get type '{}' from moobloom at {}. Setting type to 'bovinesandbuttercups:missing_moobloom'. {}", ResourceLocation.tryParse(getTypeId()), position(), e.getMessage());
             return this.type;
         }
     }
@@ -549,6 +509,43 @@ public class FlowerCow extends Cow implements Shearable {
             }
         }
         return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+    }
+
+    public List<ItemStack> xplatformShear(SoundSource category) {
+        // Implemented in FlowerCowFabriclike and FlowerCowForge
+        List<ItemStack> stacks = new ArrayList<>();
+        this.level.playSound(null, this, BovineSoundEvents.MOOBLOOM_SHEAR.get(), category, 1.0f, 1.0f);
+        if (!this.level.isClientSide) {
+            ((ServerLevel)this.level).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+            this.discard();
+            Cow cowEntity = EntityType.COW.create(this.level);
+            if (cowEntity != null) {
+                cowEntity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+                cowEntity.setHealth(this.getHealth());
+                cowEntity.yBodyRot = this.yBodyRot;
+                if (this.hasCustomName()) {
+                    cowEntity.setCustomName(this.getCustomName());
+                    cowEntity.setCustomNameVisible(this.isCustomNameVisible());
+                }
+                if (this.isPersistenceRequired()) {
+                    cowEntity.setPersistenceRequired();
+                }
+                cowEntity.setInvulnerable(this.isInvulnerable());
+                this.level.addFreshEntity(cowEntity);
+                for (int i = 0; i < 5; ++i) {
+                    if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent()) {
+                        stacks.add(new ItemStack(this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock()));
+                    } else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent()) {
+                        ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomFlowerItem());
+                        CompoundTag compound = new CompoundTag();
+                        compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).get()).toString());
+                        itemStack.getOrCreateTag().put("BlockEntityTag", compound);
+                        stacks.add(itemStack);
+                    }
+                }
+            }
+        }
+        return stacks;
     }
 
     public class LookAtBeeGoal extends Goal {

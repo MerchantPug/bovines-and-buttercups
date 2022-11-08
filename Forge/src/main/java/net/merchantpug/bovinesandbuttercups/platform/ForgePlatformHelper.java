@@ -91,7 +91,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public EntityType<FlowerCow> getMoobloomEntity() {
+    public EntityType<? extends FlowerCow> getMoobloomEntity() {
         return BovineEntityTypesForge.MOOBLOOM.get();
     }
 

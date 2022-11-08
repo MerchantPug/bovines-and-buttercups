@@ -44,7 +44,7 @@ public interface IPlatformHelper {
 
     BlockEntityType<CustomMushroomPotBlockEntity> getCustomMushroomPotBlockEntity();
 
-    EntityType<FlowerCow> getMoobloomEntity();
+    EntityType<? extends FlowerCow> getMoobloomEntity();
 
     CustomFlowerItem getCustomFlowerItem();
 

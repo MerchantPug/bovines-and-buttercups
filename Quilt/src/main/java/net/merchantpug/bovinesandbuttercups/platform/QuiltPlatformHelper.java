@@ -90,7 +90,7 @@ public class QuiltPlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public EntityType<FlowerCow> getMoobloomEntity() {
+    public EntityType<? extends FlowerCow> getMoobloomEntity() {
         return BovineEntityTypesFabriclike.MOOBLOOM;
     }
 

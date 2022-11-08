@@ -79,20 +79,19 @@ public class CowTypeConfiguration {
         return Objects.hash(this.cowTexture, this.biomeTagKey, this.naturalSpawnWeight);
     }
 
-    public record WeightedConfiguredCowType(ResourceLocation configuredCowType,
+    public record WeightedConfiguredCowType(ResourceLocation configuredCowTypeResource,
                                             int weight) {
 
         public static final Codec<WeightedConfiguredCowType> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                ResourceLocation.CODEC.fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowType),
+                ResourceLocation.CODEC.fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowTypeResource),
                 Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
         ).apply(builder, WeightedConfiguredCowType::new));
 
-
         public Optional<ConfiguredCowType<?, ?>> getConfiguredCowType(LevelAccessor level) {
-            if (!BovineRegistryUtil.isConfiguredCowTypeInRegistry(level, configuredCowType)) {
+            if (!BovineRegistryUtil.isConfiguredCowTypeInRegistry(level, configuredCowTypeResource())) {
                 return Optional.empty();
             }
-            return Optional.ofNullable(BovineRegistryUtil.getConfiguredCowTypeFromKey(level, configuredCowType));
+            return Optional.ofNullable(BovineRegistryUtil.getConfiguredCowTypeFromKey(level, configuredCowTypeResource()));
         }
     }
 }

@@ -112,8 +112,7 @@ public class FlowerCow extends Cow {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Type")) {
-            this.setFlowerType(compound.getString("Type"), this.getLevel());
-            this.getFlowerCowType();
+            this.setFlowerType(compound.getString("Type"));
         }
         if (compound.contains("PreviousType")) {
             this.setPreviousTypeId(compound.getString("PreviousType"));
@@ -152,8 +151,13 @@ public class FlowerCow extends Cow {
                 int totalWeight = 0;
 
                 for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : this.getFlowerCowType().getConfiguration().getThunderConversionTypes().get()) {
-                    if (weightedCowType.getConfiguredCowType(this.getLevel()).isEmpty() || !(weightedCowType.getConfiguredCowType(this.getLevel()).get().getConfiguration() instanceof FlowerCowConfiguration))
+                    if (weightedCowType.getConfiguredCowType(level).isEmpty()) {
+                        BovinesAndButtercups.LOG.warn("Lightning struck moobloom at {} tried to get thunder conversion type '{}' that does not exist. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                         continue;
+                    } else if (!(weightedCowType.getConfiguredCowType(level).get().getConfiguration() instanceof FlowerCowConfiguration)) {
+                        BovinesAndButtercups.LOG.warn("Lightning struck moobloom at {} tried to get thunder conversion type '{}' that is not a moobloom type. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
+                        continue;
+                    }
 
                     if (weightedCowType.weight() > 0) {
                         compatibleList.add(weightedCowType);
@@ -164,18 +168,18 @@ public class FlowerCow extends Cow {
                     super.thunderHit(level, bolt);
                     return;
                 } else if (compatibleList.size() == 1) {
-                    this.setFlowerType((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) compatibleList.get(0).getConfiguredCowType(this.getLevel()).get(), this.getLevel());
+                    this.setFlowerType(compatibleList.get(0).configuredCowTypeResource().toString());
                 } else {
                     for (CowTypeConfiguration.WeightedConfiguredCowType cct : compatibleList) {
                         totalWeight -= cct.weight();
                         if (totalWeight <= 0) {
-                            this.setFlowerType((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cct.getConfiguredCowType(this.getLevel()).get(), this.getLevel());
+                            this.setFlowerType(cct.configuredCowTypeResource().toString());
                             break;
                         }
                     }
                 }
             } else {
-                this.setFlowerType(this.getPreviousTypeId(), this.getLevel());
+                this.setFlowerType(this.getPreviousTypeId());
                 this.setPreviousTypeId("");
             }
             this.lastLightningBoltUUID = uuid;
@@ -372,18 +376,14 @@ public class FlowerCow extends Cow {
         this.entityData.set(PREVIOUS_TYPE_ID, value);
     }
 
-    public void setFlowerType(String value, LevelAccessor level) {
+    public void setFlowerType(String value) {
         this.entityData.set(TYPE_ID, value);
-        try {
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(level, ResourceLocation.tryParse(value), BovineCowTypes.FLOWER_COW_TYPE);
-        } catch (Exception e) {
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
-        }
+        this.getFlowerCowType();
     }
 
     public void setFlowerType(ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> value, LevelAccessor level) {
         this.entityData.set(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(level, value).toString());
-        this.type = value;
+        this.getFlowerCowType();
     }
 
     public int getPollinationTicks() {

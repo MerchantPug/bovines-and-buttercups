@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
@@ -56,8 +57,13 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
             int totalWeight = 0;
 
             for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().get()) {
-                if (weightedCowType.getConfiguredCowType(((Entity)(Object)this).getLevel()).isEmpty() || !(weightedCowType.getConfiguredCowType(((Entity)(Object)this).getLevel()).get().getConfiguration() instanceof MushroomCowConfiguration))
+                if (weightedCowType.getConfiguredCowType(level).isEmpty()) {
+                    BovinesAndButtercups.LOG.warn("Lightning struck mooshroom at {} tried to get thunder conversion type '{}' that does not exist. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                     continue;
+                } else if (!(weightedCowType.getConfiguredCowType(level).get().getConfiguration() instanceof MushroomCowConfiguration)) {
+                    BovinesAndButtercups.LOG.warn("Lightning struck mooshroom at {} tried to get thunder conversion type '{}' that is not a mooshroom type. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
+                    continue;
+                }
 
                 if (weightedCowType.weight() > 0) {
                     compatibleList.add(weightedCowType);
@@ -68,12 +74,12 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
                 this.bovinesandbuttercups$thunderHit(level, bolt);
                 ci.cancel();
             } else if (compatibleList.size() == 1) {
-                Services.COMPONENT.setMushroomCowType(cow, compatibleList.get(0).configuredCowType());
+                Services.COMPONENT.setMushroomCowType(cow, compatibleList.get(0).configuredCowTypeResource());
             } else {
                 for (CowTypeConfiguration.WeightedConfiguredCowType cct : compatibleList) {
                     totalWeight -= cct.weight();
                     if (totalWeight <= 0) {
-                        Services.COMPONENT.setMushroomCowType(cow, compatibleList.get(0).configuredCowType());
+                        Services.COMPONENT.setMushroomCowType(cow, compatibleList.get(0).configuredCowTypeResource());
                         break;
                     }
                 }

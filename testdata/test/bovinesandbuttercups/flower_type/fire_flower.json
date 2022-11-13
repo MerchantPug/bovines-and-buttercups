@@ -1,8 +1,6 @@
 {
   "name": "Fire Flower",
-  "flower_model": {
-    "location": "test:fire_flower"
-  },
+  "flower_model": "test:fire_flower",
   "stew_effect": {
     "effect": "minecraft:fire_resistance",
     "duration": 80

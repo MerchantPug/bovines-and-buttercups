@@ -41,7 +41,6 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    implementation(project(":Common"))
     implementation(project(path: ":Fabriclike", configuration: "namedElements"))
 }
 
@@ -68,6 +67,8 @@ loom {
 processResources {
     from project(":Common").sourceSets.main.resources
     from project(":Fabriclike").sourceSets.main.resources
+
+    exclude("bovinesandbuttercups-common.accesswidener", "bovinesandbuttercups-fabriclike.accesswidener")
 
     inputs.property "version", project.version
 

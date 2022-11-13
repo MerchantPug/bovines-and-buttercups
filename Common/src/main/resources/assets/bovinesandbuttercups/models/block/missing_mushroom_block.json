@@ -1,5 +1,5 @@
 {
-  "parent": "block/template_single_face",
+  "parent": "minecraft:block/template_single_face",
   "textures": {
     "texture": "bovinesandbuttercups:block/missing_mushroom_block"
   }

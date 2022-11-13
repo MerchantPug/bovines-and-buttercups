@@ -49,7 +49,7 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
             Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers)
     ).apply(builder, MushroomCowConfiguration::new));
 
-    public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png")),Optional.empty(), 0, Optional.empty(), new MushroomCowMushroom(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false, false);
+    public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png")),Optional.empty(), 0, Optional.empty(), new MushroomCowMushroom(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false, false);
 
     public MushroomCowConfiguration.MushroomCowMushroom getMushroom() {
         return this.mushroom;
@@ -85,13 +85,11 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
 
     public record MushroomCowMushroom(Optional<BlockState> blockState,
                                   Optional<ResourceLocation> modelLocation,
-                                  String modelVariant,
                                   Optional<ResourceLocation> mushroomType) {
 
         public static final Codec<MushroomCowMushroom> CODEC = RecordCodecBuilder.create(builder -> builder.group(
                 BlockState.CODEC.optionalFieldOf("block_state").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration.MushroomCowMushroom::blockState),
                 ResourceLocation.CODEC.optionalFieldOf("model_location").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration.MushroomCowMushroom::modelLocation),
-                Codec.STRING.optionalFieldOf("model_variant", "bovines").forGetter(MushroomCowConfiguration.MushroomCowMushroom::modelVariant),
                 ResourceLocation.CODEC.optionalFieldOf("mushroom_type").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration.MushroomCowMushroom::mushroomType)
         ).apply(builder, MushroomCowConfiguration.MushroomCowMushroom::new));
 
@@ -107,12 +105,12 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
             if (!(obj instanceof MushroomCowMushroom other))
                 return false;
 
-            return other.blockState.equals(this.blockState) && other.modelLocation.equals(this.modelLocation) && other.modelVariant.equals(this.modelVariant) && other.mushroomType.equals(this.mushroomType);
+            return other.blockState.equals(this.blockState) && other.modelLocation.equals(this.modelLocation) && other.mushroomType.equals(this.mushroomType);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.blockState, this.modelLocation, this.modelVariant, this.mushroomType);
+            return Objects.hash(this.blockState, this.modelLocation, this.mushroomType);
         }
     }
 }

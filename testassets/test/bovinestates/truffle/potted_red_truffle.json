@@ -1,0 +1,8 @@
+{
+  "type": "bovinesandbuttercups:generic",
+  "variants": {
+    "": {
+      "model": "test:block/truffle/potted_red_truffle"
+    }
+  }
+}

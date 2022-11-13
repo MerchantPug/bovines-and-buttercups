@@ -50,11 +50,11 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
 
         ModelResourceLocation modelResourceLocation;
         if (configuration.getMushroom().modelLocation().isPresent()) {
-            modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().modelLocation().get(), configuration.getMushroom().modelVariant());
+            modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().modelLocation().get(), "");
         } else if (configuration.getMushroom().getMushroomType(entity.getLevel()).isPresent()) {
-            modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().getMushroomType(entity.getLevel()).get().mushroomModel().location(), configuration.getMushroom().getMushroomType(entity.getLevel()).get().mushroomModel().variant());
+            modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().getMushroomType(entity.getLevel()).get().mushroomModel(), "");
         } else {
-            modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.mushroomModel().location(), MushroomType.MISSING.mushroomModel().variant());
+            modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.mushroomModel(), "");
         }
 
         handleMooshroomRender(poseStack, buffer, packedLight, bl, m, configuration.getMushroom().blockState(), modelResourceLocation);

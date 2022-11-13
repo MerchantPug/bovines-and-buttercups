@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin;
+package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
 
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;

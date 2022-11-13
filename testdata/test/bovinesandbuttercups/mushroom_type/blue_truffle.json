@@ -1,8 +1,6 @@
 {
   "name": "Blue Truffle",
-  "mushroom_model": {
-    "location": "test:truffle/blue_truffle"
-  },
+  "mushroom_model": "test:truffle/blue_truffle",
   "huge_name": "Blue Truffle Block",
   "huge_structures": [
     "test:blue_truffle_small",

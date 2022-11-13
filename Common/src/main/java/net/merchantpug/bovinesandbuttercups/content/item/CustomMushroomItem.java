@@ -85,10 +85,10 @@ public class CustomMushroomItem extends BlockItem {
     }
 
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemTransforms.TransformType transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.itemModel().location(), MushroomType.MISSING.itemModel().variant());
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.mushroomModel(), "inventory");
 
         if (CustomMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).isPresent()) {
-            modelResourceLocation = new ModelResourceLocation(CustomMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().itemModel().location(), CustomMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().itemModel().variant());
+            modelResourceLocation = new ModelResourceLocation(CustomMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().mushroomModel(), "inventory");
         }
 
         BakedModel mushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

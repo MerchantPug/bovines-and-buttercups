@@ -59,7 +59,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
             Codec.list(BlockState.CODEC).optionalFieldOf("breeding_requirements").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingRequirements)
     ).apply(builder, FlowerCowConfiguration::new));
 
-    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), "bovines", Optional.of(BovinesAndButtercups.asResource("missing"))), BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true, Optional.empty(), Optional.empty());
+    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true, Optional.empty(), Optional.empty());
 
     public FlowerCowFlower getFlower() {
         return this.flower;
@@ -103,13 +103,11 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
 
     public record FlowerCowFlower(Optional<BlockState> blockState,
                                   Optional<ResourceLocation> modelLocation,
-                                  String modelVariant,
                                   Optional<ResourceLocation> flowerType) {
 
         public static final Codec<FlowerCowFlower> CODEC = RecordCodecBuilder.create(builder -> builder.group(
                 BlockState.CODEC.optionalFieldOf("block_state").orElseGet(Optional::empty).forGetter(FlowerCowFlower::blockState),
                 ResourceLocation.CODEC.optionalFieldOf("model_location").orElseGet(Optional::empty).forGetter(FlowerCowFlower::modelLocation),
-                Codec.STRING.optionalFieldOf("model_variant", "bovines").forGetter(FlowerCowFlower::modelVariant),
                 ResourceLocation.CODEC.optionalFieldOf("flower_type").orElseGet(Optional::empty).forGetter(FlowerCowFlower::flowerType)
         ).apply(builder, FlowerCowFlower::new));
 
@@ -125,12 +123,12 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
             if (!(obj instanceof FlowerCowConfiguration.FlowerCowFlower other))
                 return false;
 
-            return other.blockState.equals(this.blockState) && other.modelLocation.equals(this.modelLocation) && other.modelVariant.equals(this.modelVariant) && other.flowerType.equals(this.flowerType);
+            return other.blockState.equals(this.blockState) && other.modelLocation.equals(this.modelLocation) && other.flowerType.equals(this.flowerType);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(this.blockState, this.modelLocation, this.modelVariant, this.flowerType);
+            return Objects.hash(this.blockState, this.modelLocation, this.flowerType);
         }
     }
 }

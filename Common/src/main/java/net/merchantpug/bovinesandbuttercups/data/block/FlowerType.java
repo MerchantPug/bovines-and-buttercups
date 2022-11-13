@@ -24,35 +24,33 @@ import java.util.Optional;
 
 public record FlowerType(
         Optional<String> name,
-        ModelInformation flowerModel,
-        ModelInformation itemModel,
-        ModelInformation pottedModel,
+        ResourceLocation flowerModel,
+        ResourceLocation pottedModel,
         Optional<MobEffectInstance> stewEffectInstance,
         Optional<ItemStack> dyeCraftResult) {
 
     public static final MapCodec<FlowerType> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Codec.STRING.optionalFieldOf("name").orElseGet(Optional::empty).forGetter(FlowerType::name),
-            ModelInformation.CODEC.fieldOf("flower_model").forGetter(FlowerType::flowerModel),
-            ModelInformation.CODEC.optionalFieldOf("item_model").forGetter(x -> Optional.of(x.itemModel)),
-            ModelInformation.CODEC.optionalFieldOf("potted_model").forGetter(x -> Optional.of(x.pottedModel)),
+            ResourceLocation.CODEC.fieldOf("flower_model").forGetter(FlowerType::flowerModel),
+            ResourceLocation.CODEC.optionalFieldOf("potted_model").forGetter(x -> Optional.of(x.pottedModel)),
             MobEffectUtil.CODEC.optionalFieldOf("stew_effect").orElseGet(Optional::empty).forGetter(FlowerType::stewEffectInstance),
             ItemStack.CODEC.optionalFieldOf("dye_craft_result").orElseGet(Optional::empty).forGetter(FlowerType::dyeCraftResult)
-    ).apply(builder, (t1, t2, t3, t4, t5, t6) -> {
-        String basePath = t2.location().getPath();
+    ).apply(builder, (t1, t2, t3, t4, t5) -> {
+        String basePath = t2.getPath();
         String pottedPath = "";
-        if (t4.isEmpty()) {
+        if (t3.isEmpty()) {
             if (basePath.contains("/")) {
                 String[] splitBasePath = basePath.split("/");
                 String endPath = splitBasePath[splitBasePath.length - 1];
-                pottedPath = t2.location().getPath().substring(0, t2.location().getPath().length() - endPath.length()) + "potted_" + endPath;
+                pottedPath = t2.getPath().substring(0, t2.getPath().length() - endPath.length()) + "potted_" + endPath;
             } else {
                 pottedPath = "potted_" + basePath;
             }
         }
-        return new FlowerType(t1, t2, t3.orElse(new ModelInformation(new ResourceLocation(t2.location().getNamespace(), t2.location().getPath() + "_item"), t2.variant())), t4.orElse(new ModelInformation(new ResourceLocation(t2.location().getNamespace(), pottedPath), t2.variant())), t5, t6);
+        return new FlowerType(t1, t2, t3.orElse(new ResourceLocation(t2.getNamespace(), pottedPath)), t4, t5);
     }));
 
-    public static final FlowerType MISSING = new FlowerType(Optional.of("block.bovinesandbuttercups.custom_flower"), new ModelInformation(BovinesAndButtercups.asResource("missing_flower"), "bovines"), new ModelInformation(BovinesAndButtercups.asResource("missing_flower_item"), "bovines"), new ModelInformation(BovinesAndButtercups.asResource("potted_missing_flower"), "bovines"), Optional.of(new MobEffectInstance(MobEffects.REGENERATION, 4)), Optional.empty());
+    public static final FlowerType MISSING = new FlowerType(Optional.of("block.bovinesandbuttercups.custom_flower"), BovinesAndButtercups.asResource("missing_flower"), BovinesAndButtercups.asResource("potted_missing_flower"), Optional.of(new MobEffectInstance(MobEffects.REGENERATION, 4)), Optional.empty());
 
     public MutableComponent getOrCreateNameTranslationKey(LevelAccessor level) {
         return name.map(Component::translatable).orElse(Component.translatable("block." + BovineRegistryUtil.getFlowerTypeKey(level, this).getNamespace() + "." + BovineRegistryUtil.getFlowerTypeKey(level, this).getPath()));
@@ -70,11 +68,11 @@ public record FlowerType(
         if (!(obj instanceof FlowerType other))
             return false;
 
-        return other.name.equals(this.name) && other.flowerModel.equals(this.flowerModel) && other.itemModel.equals(this.itemModel) && other.pottedModel.equals(this.pottedModel) && other.stewEffectInstance.equals(this.stewEffectInstance) && other.dyeCraftResult == this.dyeCraftResult;
+        return other.name.equals(this.name) && other.flowerModel.equals(this.flowerModel) && other.pottedModel.equals(this.pottedModel) && other.stewEffectInstance.equals(this.stewEffectInstance) && other.dyeCraftResult.equals(this.dyeCraftResult);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.flowerModel, this.itemModel, this.pottedModel, this.stewEffectInstance, this.dyeCraftResult);
+        return Objects.hash(this.name, this.flowerModel, this.pottedModel, this.stewEffectInstance, this.dyeCraftResult);
     }
 }

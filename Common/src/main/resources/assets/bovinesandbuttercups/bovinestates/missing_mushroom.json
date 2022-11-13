@@ -1,0 +1,9 @@
+{
+  "type": "bovinesandbuttercups:generic",
+  "variants": {
+    "": {
+      "model": "bovinesandbuttercups:block/missing_mushroom"
+    }
+  },
+  "inventory": "bovinesandbuttercups:missing_mushroom"
+}

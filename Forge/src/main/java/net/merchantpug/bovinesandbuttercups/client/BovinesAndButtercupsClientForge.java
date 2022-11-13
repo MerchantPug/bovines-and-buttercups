@@ -28,8 +28,10 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowDatapackMushroomLayer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMyceliumLayer;
+import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
+import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
@@ -93,17 +95,6 @@ public class BovinesAndButtercupsClientForge {
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
-    }
-
-    @SubscribeEvent
-    public static void registerDataDrivenModelsEvent(ModelEvent.RegisterAdditional event) {
-        Map<ResourceLocation, Resource> blocks = Minecraft.getInstance().getResourceManager().listResources("models/bovines", fileName -> fileName.getPath().endsWith(".json"));
-
-        for (ResourceLocation resourceLocation : blocks.keySet()) {
-            StringBuilder newId = new StringBuilder(resourceLocation.getPath().replaceFirst("models/bovines/", ""));
-            newId.replace(newId.length() - 5 , newId.length(), "");
-            event.register(new ModelResourceLocation(new ResourceLocation(resourceLocation.getNamespace(), newId.toString()), "bovines"));
-        }
     }
 
     @SubscribeEvent

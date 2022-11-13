@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
+import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.client.renderer.RenderType;
@@ -11,6 +12,8 @@ public class BovinesAndButtercupsClient {
     public static final HashSet<ResourceLocation> LOADED_COW_TEXTURES = new HashSet<>();
 
     public static void init() {
+        BovineBlockstateTypes.init();
+
         Services.PLATFORM.setRenderLayer(BovineBlocks.BUTTERCUP.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_BUTTERCUP.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.PINK_DAISY.get(), RenderType.cutout());

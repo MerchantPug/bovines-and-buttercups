@@ -1,0 +1,8 @@
+{
+  "type": "bovinesandbuttercups:generic",
+  "variants": {
+    "": {
+      "model": "bovinesandbuttercups:block/limelight_bud"
+    }
+  }
+}

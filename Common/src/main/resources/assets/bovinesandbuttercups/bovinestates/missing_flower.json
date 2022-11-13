@@ -1,0 +1,9 @@
+{
+  "type": "bovinesandbuttercups:generic",
+  "variants": {
+    "": {
+      "model": "bovinesandbuttercups:block/missing_flower"
+    }
+  },
+  "inventory": "bovinesandbuttercups:missing_flower"
+}

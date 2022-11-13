@@ -20,39 +20,35 @@ import java.util.Objects;
 import java.util.Optional;
 
 public record MushroomType(Optional<String> name,
-                           ModelInformation mushroomModel,
-                           ModelInformation itemModel,
-                           ModelInformation pottedModel,
+                           ResourceLocation mushroomModel,
+                           ResourceLocation pottedModel,
                            Optional<String> hugeBlockName,
-                           ModelInformation hugeModel,
-                           ModelInformation hugeItemModel,
+                           ResourceLocation hugeModel,
                            Optional<List<ResourceLocation>> hugeMushroomStructureList) {
 
     public static final MapCodec<MushroomType> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Codec.STRING.optionalFieldOf("name").orElseGet(Optional::empty).forGetter(MushroomType::name),
-            ModelInformation.CODEC.fieldOf("mushroom_model").forGetter(MushroomType::mushroomModel),
-            ModelInformation.CODEC.optionalFieldOf("item_model").orElseGet(Optional::empty).forGetter(x -> Optional.of(x.itemModel)),
-            ModelInformation.CODEC.optionalFieldOf("potted_model").orElseGet(Optional::empty).forGetter(x -> Optional.of(x.pottedModel)),
+            ResourceLocation.CODEC.fieldOf("mushroom_model").forGetter(MushroomType::mushroomModel),
+            ResourceLocation.CODEC.optionalFieldOf("potted_model").orElseGet(Optional::empty).forGetter(x -> Optional.of(x.pottedModel)),
             Codec.STRING.optionalFieldOf("huge_name").orElseGet(Optional::empty).forGetter(MushroomType::hugeBlockName),
-            ModelInformation.CODEC.optionalFieldOf("huge_model").orElseGet(Optional::empty).forGetter(x -> Optional.of(x.hugeModel)),
-            ModelInformation.CODEC.optionalFieldOf("huge_item_model").orElseGet(Optional::empty).forGetter(x -> Optional.of(x.hugeItemModel)),
+            ResourceLocation.CODEC.optionalFieldOf("huge_model").orElseGet(Optional::empty).forGetter(x -> Optional.of(x.hugeModel)),
             Codec.list(ResourceLocation.CODEC).optionalFieldOf("huge_structures").orElseGet(Optional::empty).forGetter(MushroomType::hugeMushroomStructureList)
-    ).apply(builder, (t1, t2, t3, t4, t5, t6, t7, t8) -> {
-        String basePath = t2.location().getPath();
+    ).apply(builder, (t1, t2, t3, t4, t5, t6) -> {
+        String basePath = t2.getPath();
         String pottedPath = "";
-        if (t4.isEmpty()) {
+        if (t3.isEmpty()) {
             if (basePath.contains("/")) {
                 String[] splitBasePath = basePath.split("/");
                 String endPath = splitBasePath[splitBasePath.length - 1];
-                pottedPath = t2.location().getPath().substring(0, t2.location().getPath().length() - endPath.length()) + "potted_" + endPath;
+                pottedPath = t2.getPath().substring(0, t2.getPath().length() - endPath.length()) + "potted_" + endPath;
             } else {
                 pottedPath = "potted_" + basePath;
             }
         }
-        return new MushroomType(t1, t2, t3.orElse(new ModelInformation(new ResourceLocation(t2.location().getNamespace(), t2.location().getPath() + "_item"), t2.variant())), t4.orElse(new ModelInformation(new ResourceLocation(t2.location().getNamespace(), pottedPath), t2.variant())), t5, t6.orElse(new ModelInformation(new ResourceLocation(t2.location().getNamespace(), t2.location().getPath() + "_block"), t2.variant())), t7.orElse(t6.map(model -> new ModelInformation(new ResourceLocation(model.location().getNamespace(), model.location().getPath() + "_item"), model.variant())).orElseGet(() -> new ModelInformation(new ResourceLocation(t2.location().getNamespace(), t2.location().getPath() + "_block_item"), t2.variant()))), t8);
+        return new MushroomType(t1, t2, t3.orElse(new ResourceLocation(t2.getNamespace(), pottedPath)), t4, t5.orElse(new ResourceLocation(t2.getNamespace(), t2.getPath() + "_block")), t6);
     }));
 
-    public static final MushroomType MISSING = new MushroomType(Optional.of("block.bovinesandbuttercups.custom_mushroom"), new ModelInformation(BovinesAndButtercups.asResource("missing_mushroom"), "bovines"), new ModelInformation(BovinesAndButtercups.asResource("missing_mushroom_item"), "bovines"), new ModelInformation(BovinesAndButtercups.asResource("potted_missing_mushroom"), "bovines"), Optional.of("block.bovinesandbuttercups.custom_mushroom_block"), new ModelInformation(BovinesAndButtercups.asResource("missing_mushroom_block"), "bovines"), new ModelInformation(BovinesAndButtercups.asResource("missing_mushroom_block_item"), "bovines"), Optional.empty());
+    public static final MushroomType MISSING = new MushroomType(Optional.of("block.bovinesandbuttercups.custom_mushroom"), BovinesAndButtercups.asResource("missing_mushroom"), BovinesAndButtercups.asResource("potted_missing_mushroom"), Optional.of("block.bovinesandbuttercups.custom_mushroom_block"), BovinesAndButtercups.asResource("missing_mushroom_block"), Optional.empty());
 
     public MutableComponent getOrCreateNameTranslationKey(LevelAccessor level) {
         return name.map(Component::translatable).orElse(Component.translatable("block." + BovineRegistryUtil.getMushroomTypeKey(level, this).getNamespace() + "." + BovineRegistryUtil.getMushroomTypeKey(level, this).getPath()));
@@ -74,11 +70,11 @@ public record MushroomType(Optional<String> name,
         if (!(obj instanceof MushroomType other))
             return false;
 
-        return other.name.equals(this.name) && other.mushroomModel.equals(this.mushroomModel) && other.itemModel.equals(this.itemModel) && other.pottedModel.equals(this.pottedModel) && other.hugeBlockName.equals(this.hugeBlockName) && other.hugeModel.equals(this.hugeModel) && other.hugeItemModel.equals(this.hugeItemModel) && other.hugeMushroomStructureList.equals(this.hugeMushroomStructureList);
+        return other.name.equals(this.name) && other.mushroomModel.equals(this.mushroomModel) && other.pottedModel.equals(this.pottedModel) && other.hugeBlockName.equals(this.hugeBlockName) && other.hugeModel.equals(this.hugeModel) && other.hugeMushroomStructureList.equals(this.hugeMushroomStructureList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.name, this.mushroomModel, this.itemModel, this.pottedModel, this.hugeBlockName, this.hugeModel, this.hugeItemModel, this.hugeMushroomStructureList);
+        return Objects.hash(this.name, this.mushroomModel, this.pottedModel, this.hugeBlockName, this.hugeModel, this.hugeMushroomStructureList);
     }
 }

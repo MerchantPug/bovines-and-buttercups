@@ -1,0 +1,8 @@
+{
+  "type": "bovinesandbuttercups:generic",
+  "variants": {
+    "": {
+      "model": "bovinesandbuttercups:block/bird_of_paradise_bud"
+    }
+  }
+}

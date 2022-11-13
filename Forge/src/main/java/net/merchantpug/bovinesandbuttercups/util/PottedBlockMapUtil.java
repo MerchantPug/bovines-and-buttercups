@@ -15,7 +15,7 @@ public class PottedBlockMapUtil {
 
     public static Map<Block, Block> getPottedContentMap() {
         for (Map.Entry<ResourceLocation, Supplier<? extends Block>> forgeEntry : ((FlowerPotBlock) Blocks.FLOWER_POT).getFullPotsView().entrySet()) {
-            POTTED_CONTENT_MAP.computeIfAbsent(ForgeRegistries.BLOCKS.getValue(forgeEntry.getKey()), key -> POTTED_CONTENT_MAP.put(key, forgeEntry.getValue().get()));
+            POTTED_CONTENT_MAP.computeIfAbsent(ForgeRegistries.BLOCKS.getValue(forgeEntry.getKey()), key -> forgeEntry.getValue().get());
         }
         return POTTED_CONTENT_MAP;
     }

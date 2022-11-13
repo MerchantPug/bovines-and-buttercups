@@ -119,7 +119,7 @@ dependencies {
     annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
 
     compileOnly project(":Common")
-    annotationProcessor 'org.spongepowered:mixin:0.8.4-SNAPSHOT:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5-SNAPSHOT:processor'
 }
 
 tasks.withType(JavaCompile) {
@@ -131,6 +131,7 @@ processResources {
     filesMatching('*.mixins.json') {
         expand "refmap_target": "${project.mod_id}."
     }
+    exclude("bovinesandbuttercups-common.accesswidener")
 
     def environment = System.getenv("ENVIRONMENT")
     if (environment != "production") {

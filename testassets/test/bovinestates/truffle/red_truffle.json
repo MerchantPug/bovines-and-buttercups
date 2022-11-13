@@ -1,0 +1,9 @@
+{
+  "type": "bovinesandbuttercups:generic",
+  "variants": {
+    "": {
+      "model": "test:block/truffle/red_truffle"
+    }
+  },
+  "inventory": "test:truffle/red_truffle"
+}

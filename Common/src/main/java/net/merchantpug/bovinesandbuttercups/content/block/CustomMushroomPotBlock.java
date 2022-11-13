@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
@@ -46,7 +47,7 @@ public class CustomMushroomPotBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack handStack = player.getItemInHand(hand);
         Item item = handStack.getItem();
-        BlockState blockState = (item instanceof CustomMushroomItem ? ((BlockItem) item).getBlock() : Blocks.AIR).defaultBlockState();
+        BlockState blockState = (item instanceof BlockItem blockItem && Services.PLATFORM.getPottedBlockMap().containsKey(blockItem.getBlock()) || item instanceof CustomFlowerItem || item instanceof CustomMushroomItem ? ((BlockItem) item).getBlock() : Blocks.AIR).defaultBlockState();
         boolean isAir = blockState.is(Blocks.AIR);
         if (isAir) {
             ItemStack flowerStack = this.getContent(level, pos);

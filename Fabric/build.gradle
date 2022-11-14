@@ -41,7 +41,10 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    implementation(project(path: ":Fabriclike", configuration: "namedElements"))
+    implementation(project(":Common"))
+    implementation(project(path: ":Fabriclike", configuration: "namedElements")) {
+        transitive = false
+    }
 }
 
 loom {

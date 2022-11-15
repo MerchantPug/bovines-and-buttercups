@@ -20,7 +20,7 @@ import java.util.function.Function;
 public class BiomeModifierSerializerRegistry {
     public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, BovinesAndButtercups.MOD_ID);
 
-    public static final RegistryObject<Codec<AddSpawnsExceptBiomeModifier>> ADD_SPAWNS_EXCEPT_BIOME_MODIFIER_TYPE = BIOME_MODIFIER_SERIALIZERS.register("add_spawns_except", () ->
+    public static final RegistryObject<Codec<AddSpawnsExceptBiomeModifier>> ADD_SPAWNS_EXCEPT = BIOME_MODIFIER_SERIALIZERS.register("add_spawns_except", () ->
             RecordCodecBuilder.create(builder -> builder.group(
                     Biome.LIST_CODEC.optionalFieldOf("biomes").forGetter(AddSpawnsExceptBiomeModifier::biomes),
                     new ExtraCodecs.EitherCodec<>(MobSpawnSettings.SpawnerData.CODEC.listOf(), MobSpawnSettings.SpawnerData.CODEC).xmap(

@@ -12,7 +12,7 @@
     "effect": "minecraft:speed",
     "duration": 800
   },
-  "spawn_biome_tag": "bovinesandbuttercups:flower_forests",
+  "spawn_biomes": "minecraft:flower_forest",
   "natural_spawn_weight": 1,
   "thunder_conversion_types": [
     {

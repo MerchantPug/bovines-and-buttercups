@@ -4,6 +4,7 @@ import com.mojang.datafixers.Products;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -20,13 +21,13 @@ import java.util.Optional;
  */
 public class CowTypeConfiguration {
     private final Optional<ResourceLocation> cowTexture;
-    private final Optional<TagKey<Biome>> biomeTagKey;
+    private final Optional<HolderSet<Biome>> biomes;
     private final int naturalSpawnWeight;
     private final Optional<List<WeightedConfiguredCowType>> thunderConversionTypes;
 
-    protected CowTypeConfiguration(Optional<ResourceLocation> cowTexture, Optional<TagKey<Biome>> biomeTagKey, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
+    protected CowTypeConfiguration(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
         this.cowTexture = cowTexture;
-        this.biomeTagKey = biomeTagKey;
+        this.biomes = biomes;
         this.naturalSpawnWeight = naturalSpawnWeight;
         this.thunderConversionTypes = thunderConverts;
     }
@@ -40,10 +41,10 @@ public class CowTypeConfiguration {
      * @return A RecordCodecBuilder with the fields in this class.
      * @param <T> The class of your codec that extends CowTypeConfiguration.
      */
-    protected static <T extends CowTypeConfiguration> Products.P3<RecordCodecBuilder.Mu<T>, Optional<ResourceLocation>, Optional<TagKey<Biome>>, Integer> codecStart(RecordCodecBuilder.Instance<T> instance) {
+    protected static <T extends CowTypeConfiguration> Products.P3<RecordCodecBuilder.Mu<T>, Optional<ResourceLocation>, Optional<HolderSet<Biome>>, Integer> codecStart(RecordCodecBuilder.Instance<T> instance) {
         return instance.group(
                 ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getCowTexture),
-                TagKey.codec(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biome_tag").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getBiomeTagKey),
+                Biome.LIST_CODEC.optionalFieldOf("spawn_biomes").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getBiomes),
                 Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(CowTypeConfiguration::getNaturalSpawnWeight));
     }
 
@@ -51,8 +52,8 @@ public class CowTypeConfiguration {
         return this.cowTexture;
     }
 
-    public Optional<TagKey<Biome>> getBiomeTagKey() {
-        return this.biomeTagKey;
+    public Optional<HolderSet<Biome>> getBiomes() {
+        return this.biomes;
     }
 
     public int getNaturalSpawnWeight() {
@@ -71,12 +72,12 @@ public class CowTypeConfiguration {
         if (!(obj instanceof FlowerCowConfiguration other))
             return false;
 
-        return this.getCowTexture() == other.getCowTexture() && this.getBiomeTagKey() == other.getBiomeTagKey() && this.getNaturalSpawnWeight() == other.getNaturalSpawnWeight();
+        return this.getCowTexture() == other.getCowTexture() && this.getBiomes() == other.getBiomes() && this.getNaturalSpawnWeight() == other.getNaturalSpawnWeight();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.cowTexture, this.biomeTagKey, this.naturalSpawnWeight);
+        return Objects.hash(this.cowTexture, this.biomes, this.naturalSpawnWeight);
     }
 
     public record WeightedConfiguredCowType(ResourceLocation configuredCowTypeResource,

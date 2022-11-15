@@ -1,8 +1,8 @@
 {
   "type": "bovinesandbuttercups:add_spawns_except",
-  "biomes": "#bovinesandbuttercups:higher_chance_mooblooms",
+  "biomes": "minecraft:mushroom_fields",
   "spawners": {
-    "type": "bovinesandbuttercups:moobloom",
+    "type": "minecraft:mooshroom",
     "weight": 8,
     "minCount": 2,
     "maxCount": 4

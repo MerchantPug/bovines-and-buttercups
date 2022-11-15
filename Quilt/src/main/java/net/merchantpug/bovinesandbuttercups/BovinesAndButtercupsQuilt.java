@@ -1,8 +1,11 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriclike;
+import net.merchantpug.bovinesandbuttercups.registry.BovineTags;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biomes;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
@@ -23,7 +26,9 @@ public class BovinesAndButtercupsQuilt implements ModInitializer {
         BovinesAndButtercups.VERSION = version;
         BovinesAndButtercupsFabriclike.init();
 
-        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypesFabriclike.MOOBLOOM, 60, 2, 4);
+        BiomeModifications.addSpawn(biome -> !biome.isIn(BovineTags.HIGHER_CHANCE_MOOBLOOMS), MobCategory.CREATURE, BovineEntityTypesFabriclike.MOOBLOOM, 8, 2, 4);
+        BiomeModifications.addSpawn(biome -> biome.isIn(BovineTags.HIGHER_CHANCE_MOOBLOOMS), MobCategory.CREATURE, BovineEntityTypesFabriclike.MOOBLOOM, 60, 2, 4);
+        BiomeModifications.addSpawn(biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS, MobCategory.CREATURE, EntityType.MOOSHROOM, 8, 2, 4);
 
         ResourceLoader.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), mod, ResourcePackActivationType.NORMAL, Component.literal("Mojang Textures"));
         ResourceLoader.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), mod, ResourcePackActivationType.NORMAL, Component.literal("No Grass Back"));

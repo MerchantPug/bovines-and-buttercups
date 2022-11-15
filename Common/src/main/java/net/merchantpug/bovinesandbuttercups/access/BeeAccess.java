@@ -4,4 +4,5 @@ import net.merchantpug.bovinesandbuttercups.content.entity.goal.PollinateFlowerC
 
 public interface BeeAccess {
     PollinateFlowerCowGoal bovinesandbuttercups$getPollinateFlowerCowGoal();
+    void bovinesandbuttercups$setPollinateFlowerCowGoal(PollinateFlowerCowGoal goal);
 }

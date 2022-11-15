@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
-import net.merchantpug.bovinesandbuttercups.content.entity.goal.MoveToFlowerCowGoal;
 import net.merchantpug.bovinesandbuttercups.content.entity.goal.PollinateFlowerCowGoal;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
@@ -10,9 +9,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Bee.class)
 public abstract class BeeMixin extends Animal implements BeeAccess {
@@ -22,15 +18,12 @@ public abstract class BeeMixin extends Animal implements BeeAccess {
         super(entityType, level);
     }
 
-    @Inject(method = "registerGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/Bee$BeePollinateGoal;<init>(Lnet/minecraft/world/entity/animal/Bee;)V", shift = At.Shift.BEFORE))
-    private void bovinesandbuttercups$addMoobloomRelatedGoals(CallbackInfo ci) {
-        PollinateFlowerCowGoal pollinateGoal = new PollinateFlowerCowGoal((Bee)(Object)this);
-        this.goalSelector.addGoal(4, pollinateGoal);
-        this.goalSelector.addGoal(6, new MoveToFlowerCowGoal((Bee)(Object)this));
-        this.bovinesandbuttercups$pollinateFlowerCowGoal = pollinateGoal;
-    }
-
     public PollinateFlowerCowGoal bovinesandbuttercups$getPollinateFlowerCowGoal() {
         return this.bovinesandbuttercups$pollinateFlowerCowGoal;
+    }
+
+    @Override
+    public void bovinesandbuttercups$setPollinateFlowerCowGoal(PollinateFlowerCowGoal goal) {
+        this.bovinesandbuttercups$pollinateFlowerCowGoal = goal;
     }
 }

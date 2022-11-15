@@ -9,6 +9,5 @@
   "nectar_effect": {
     "effect": "minecraft:fire_resistance",
     "duration": 400
-  },
-  "texture_location": "test:textures/entity/moobloom/fire_flower_moobloom.png"
+  }
 }

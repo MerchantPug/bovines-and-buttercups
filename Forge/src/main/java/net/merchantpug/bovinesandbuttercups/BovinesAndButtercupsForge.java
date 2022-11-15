@@ -7,6 +7,8 @@ import net.merchantpug.bovinesandbuttercups.capabilities.*;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.command.EffectLockdownCommand;
+import net.merchantpug.bovinesandbuttercups.content.entity.goal.MoveToFlowerCowGoal;
+import net.merchantpug.bovinesandbuttercups.content.entity.goal.PollinateFlowerCowGoal;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
@@ -24,27 +26,29 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -87,7 +91,9 @@ public class BovinesAndButtercupsForge {
     }
 
     public void addForgeBusEventListeners() {
-        MinecraftForge.EVENT_BUS.addListener((PlayerInteractEvent.RightClickBlock event) -> {
+        IEventBus eventBus = MinecraftForge.EVENT_BUS;
+
+        eventBus.addListener((PlayerInteractEvent.RightClickBlock event) -> {
             ItemStack stack = event.getItemStack();
             Player player = event.getEntity();
             Level level = event.getLevel();
@@ -138,7 +144,15 @@ public class BovinesAndButtercupsForge {
             }
         });
 
-        MinecraftForge.EVENT_BUS.addListener((PlayerEvent.StartTracking event) -> {
+        eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {
+            if (!(event.getEntity() instanceof MushroomCow)) return;
+
+            if (event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream(event.getLevel()).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0)) {
+                event.setResult(Event.Result.DENY);
+            }
+        });
+
+        eventBus.addListener((PlayerEvent.StartTracking event) -> {
             if (event.getTarget() instanceof MushroomCow cow) {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
                     if (cap.getMushroomCowTypeKey() == null) {
@@ -156,11 +170,16 @@ public class BovinesAndButtercupsForge {
                     }
                 });
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(MushroomCowTypeCapabilityImpl::sync);
+            } else if (event.getTarget() instanceof Bee bee && ((BeeAccess) bee).bovinesandbuttercups$getPollinateFlowerCowGoal() == null) {
+                PollinateFlowerCowGoal pollinateGoal = new PollinateFlowerCowGoal(bee);
+                bee.goalSelector.addGoal(4, pollinateGoal);
+                bee.goalSelector.addGoal(6, new MoveToFlowerCowGoal(bee));
+                ((BeeAccess) bee).bovinesandbuttercups$setPollinateFlowerCowGoal(pollinateGoal);
             }
         });
 
-        MinecraftForge.EVENT_BUS.addListener((LivingEvent.LivingTickEvent event) -> {
-            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess) event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
+        eventBus.addListener((LivingEvent.LivingTickEvent event) -> {
+            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
             }
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
@@ -179,18 +198,18 @@ public class BovinesAndButtercupsForge {
                 }
             }
         });
-        MinecraftForge.EVENT_BUS.addListener((LivingHurtEvent event) -> {
-            if (!(event.getEntity() instanceof Bee bee)) return;
+        eventBus.addListener((LivingHurtEvent event) -> {
+            if (!(event.getEntity() instanceof Bee bee) || ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() == null) return;
             ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().stopPollinating();
         });
 
-        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MushroomCowTypeCapabilityAttacher::attach);
-        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, LockdownEffectCapabilityAttacher::attach);
-        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, FlowerCowTargetCapabilityAttacher::attach);
+        eventBus.addGenericListener(Entity.class, MushroomCowTypeCapabilityAttacher::attach);
+        eventBus.addGenericListener(Entity.class, LockdownEffectCapabilityAttacher::attach);
+        eventBus.addGenericListener(Entity.class, FlowerCowTargetCapabilityAttacher::attach);
 
-        MinecraftForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> EffectLockdownCommand.register(event.getDispatcher()));
+        eventBus.addListener((RegisterCommandsEvent event) -> EffectLockdownCommand.register(event.getDispatcher()));
 
-        MinecraftForge.EVENT_BUS.addListener((MobEffectEvent.Added event) -> {
+        eventBus.addListener((MobEffectEvent.Added event) -> {
             if (event.getEffectInstance().getEffect() instanceof LockdownEffect && event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).isPresent() && (event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects).isEmpty() || event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects).get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration()))) {
                 Optional<Holder<MobEffect>> randomEffect = Registry.MOB_EFFECT.getRandom(event.getEntity().level.random);
                 randomEffect.ifPresent(entry -> {
@@ -201,13 +220,13 @@ public class BovinesAndButtercupsForge {
                 });
             }
         });
-        MinecraftForge.EVENT_BUS.addListener((MobEffectEvent.Expired event) -> {
+        eventBus.addListener((MobEffectEvent.Expired event) -> {
             if (!(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
             event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                 cap.getLockdownMobEffects().clear();
             });
         });
-        MinecraftForge.EVENT_BUS.addListener((MobEffectEvent.Applicable event) -> {
+        eventBus.addListener((MobEffectEvent.Applicable event) -> {
             event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                 if (cap.getLockdownMobEffects().containsKey(event.getEffectInstance().getEffect())) {
                     event.setResult(Event.Result.DENY);

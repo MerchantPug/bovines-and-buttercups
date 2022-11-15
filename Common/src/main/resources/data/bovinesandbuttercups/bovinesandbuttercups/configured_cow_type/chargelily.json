@@ -11,5 +11,10 @@
   "nectar_effect": {
     "effect": "minecraft:haste",
     "duration": 400
-  }
+  },
+  "thunder_conversion_types": [
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
+  ]
 }

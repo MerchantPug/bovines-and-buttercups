@@ -21,20 +21,11 @@ public class MushroomCowSpawnUtil {
     public static int getTotalSpawnWeight(LevelAccessor level, BlockPos pos) {
         int totalWeight = 0;
 
-        Registry<Biome> registry = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY);
-
-        HolderSet<Biome> entryList = null;
-
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
 
-            if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomeTagKey().isPresent()) {
-                TagKey<Biome> tag = configuration.getBiomeTagKey().get();
-                var optionalList = registry.getTag(tag);
-                if(optionalList.isPresent()) {
-                    entryList = optionalList.get();
-                }
-                if (entryList != null && entryList.contains(level.getBiome(pos))) {
+            if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent()) {
+                if (configuration.getBiomes().get().contains(level.getBiome(pos))) {
                     totalWeight += configuration.getNaturalSpawnWeight();
                 }
             }
@@ -70,20 +61,11 @@ public class MushroomCowSpawnUtil {
     public static ResourceLocation getMooshroomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
 
-        Registry<Biome> registry = level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
-
-        HolderSet<Biome> entryList = null;
-
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
-            if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration mushroomCowConfiguration)) continue;
+            if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
 
-            if (mushroomCowConfiguration.getNaturalSpawnWeight() > 0 && mushroomCowConfiguration.getBiomeTagKey().isPresent()) {
-                TagKey<Biome> tag = mushroomCowConfiguration.getBiomeTagKey().get();
-                var optionalList = registry.getTag(tag);
-                if(optionalList.isPresent()) {
-                    entryList = optionalList.get();
-                }
-                if (entryList != null && entryList.contains(level.getBiome(pos))) {
+            if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent()) {
+                if (configuration.getBiomes().get().contains(level.getBiome(pos))) {
                     mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
                 }
             }

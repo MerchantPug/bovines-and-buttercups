@@ -17,11 +17,9 @@ import java.util.Optional;
 public record AddSpawnsExceptBiomeModifier(Optional<HolderSet<Biome>> biomes, List<MobSpawnSettings.SpawnerData> spawners) implements BiomeModifier {
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        if (phase == Phase.ADD && (biomes.isEmpty() || !biomes.get().contains(biome)))
-        {
+        if (phase == Phase.ADD && (biomes.isEmpty() || !biomes.get().contains(biome))) {
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
-            for (MobSpawnSettings.SpawnerData spawner : this.spawners)
-            {
+            for (MobSpawnSettings.SpawnerData spawner : this.spawners) {
                 EntityType<?> type = spawner.type;
                 spawns.addSpawn(type.getCategory(), spawner);
             }
@@ -30,6 +28,6 @@ public record AddSpawnsExceptBiomeModifier(Optional<HolderSet<Biome>> biomes, Li
 
     @Override
     public Codec<? extends BiomeModifier> codec() {
-        return BiomeModifierSerializerRegistry.ADD_SPAWNS_EXCEPT_BIOME_MODIFIER_TYPE.get();
+        return BiomeModifierSerializerRegistry.ADD_SPAWNS_EXCEPT.get();
     }
 }

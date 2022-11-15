@@ -37,20 +37,9 @@ public class EntityTooltipComponentMixin {
             for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
                 if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
-                    Registry<Biome> registry = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY);
-
-                    HolderSet<Biome> entryList = null;
-
-                    if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomeTagKey().isPresent()) {
-                        TagKey<Biome> tag = configuration.getBiomeTagKey().get();
-                        var optionalList = registry.getTag(tag);
-                        if(optionalList.isPresent()) {
-                            entryList = optionalList.get();
-                        }
-                        if (entryList != null && entryList.contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
-                            moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
-                            totalWeight += configuration.getNaturalSpawnWeight();
-                        }
+                    if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
+                        moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
+                        totalWeight += configuration.getNaturalSpawnWeight();
                     }
                 } else {
                     if (configuration.getNaturalSpawnWeight() > 0) {
@@ -79,20 +68,9 @@ public class EntityTooltipComponentMixin {
             for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
                 if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
-                    Registry<Biome> registry = level.registryAccess().ownedRegistryOrThrow(Registry.BIOME_REGISTRY);
-
-                    HolderSet<Biome> entryList = null;
-
-                    if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomeTagKey().isPresent()) {
-                        TagKey<Biome> tag = configuration.getBiomeTagKey().get();
-                        var optionalList = registry.getTag(tag);
-                        if(optionalList.isPresent()) {
-                            entryList = optionalList.get();
-                        }
-                        if (entryList != null && entryList.contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
-                            mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
-                            totalWeight += configuration.getNaturalSpawnWeight();
-                        }
+                    if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
+                        mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
+                        totalWeight += configuration.getNaturalSpawnWeight();
                     }
                 } else {
                     if (configuration.getNaturalSpawnWeight() > 0) {

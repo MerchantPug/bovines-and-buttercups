@@ -144,6 +144,10 @@ public class BovinesAndButtercupsForge {
             }
         });
 
+        /*
+        I have had to put the allow implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
+        I should probably write an issue for this...
+        */
         eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {
             if (!(event.getEntity() instanceof MushroomCow)) return;
 

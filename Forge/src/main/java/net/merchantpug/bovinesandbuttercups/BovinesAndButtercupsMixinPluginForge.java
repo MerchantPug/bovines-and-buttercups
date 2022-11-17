@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-public class BovinesAndButtercupsMixinPlugin implements IMixinConfigPlugin {
+public class BovinesAndButtercupsMixinPluginForge implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         MixinExtrasBootstrap.init();

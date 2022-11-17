@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.merchantpug.bovinesandbuttercups.mixin.forge",
+  "plugin": "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsMixinPluginForge",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BeePollinateGoalMixin",

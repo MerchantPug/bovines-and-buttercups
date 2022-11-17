@@ -22,7 +22,8 @@
     "entrypoints": {
       "init": "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsQuilt",
       "client_init": "net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientQuilt",
-      "cardinal-components": "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
+      "cardinal-components": "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents",
+      "preLaunch": "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     },
     "depends": [
       {

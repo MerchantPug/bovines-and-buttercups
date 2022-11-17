@@ -28,6 +28,9 @@
     ],
     "cardinal-components": [
       "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
+    ],
+    "preLaunch": [
+      "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     ]
   },
   "custom": {

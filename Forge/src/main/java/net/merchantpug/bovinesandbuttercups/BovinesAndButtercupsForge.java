@@ -26,13 +26,10 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.player.Player;
@@ -145,7 +142,7 @@ public class BovinesAndButtercupsForge {
         });
 
         /*
-        I have had to put the allow implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
+        I have had to put the ALLOW implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
         I should probably write an issue for this...
         */
         eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {

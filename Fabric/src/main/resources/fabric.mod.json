@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Bovines and Buttercups",
-  "description": "A mod that implements a new take on the Moobloom.",
+  "description": "A new take on the Moobloom and other bovines.",
   "authors": [
     "MerchantPug"
   ],
@@ -47,8 +47,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.14",
-    "fabric-api": "*",
-    "minecraft": ">=1.19.2",
+    "fabric": "*",
+    "minecraft": ">=1.19",
     "java": ">=17"
   }
 }

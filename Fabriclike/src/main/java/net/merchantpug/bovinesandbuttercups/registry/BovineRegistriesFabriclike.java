@@ -26,7 +26,7 @@ public class BovineRegistriesFabriclike {
         Registry.register(BovineRegistriesFabriclike.CONFIGURED_COW_TYPE, BovinesAndButtercups.asResource("missing_moobloom"), new ConfiguredCowType<>(BovineCowTypes.FLOWER_COW_TYPE, FlowerCowConfiguration.MISSING));
         Registry.register(BovineRegistriesFabriclike.CONFIGURED_COW_TYPE, BovinesAndButtercups.asResource("missing_mooshroom"), new ConfiguredCowType<>(BovineCowTypes.MUSHROOM_COW_TYPE, MushroomCowConfiguration.MISSING));
 
-        Registry.register(BovineRegistriesFabriclike.FLOWER_TYPE, BovinesAndButtercups.asResource("missing"), FlowerType.MISSING);
-        Registry.register(BovineRegistriesFabriclike.MUSHROOM_TYPE, BovinesAndButtercups.asResource("missing"), MushroomType.MISSING);
+        Registry.register(BovineRegistriesFabriclike.FLOWER_TYPE, BovinesAndButtercups.asResource("missing_flower"), FlowerType.MISSING);
+        Registry.register(BovineRegistriesFabriclike.MUSHROOM_TYPE, BovinesAndButtercups.asResource("missing_mushroom"), MushroomType.MISSING);
     }
 }

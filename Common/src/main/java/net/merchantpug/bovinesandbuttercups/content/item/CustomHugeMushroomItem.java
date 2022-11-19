@@ -3,9 +3,11 @@ package net.merchantpug.bovinesandbuttercups.content.item;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,6 +19,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -58,21 +61,24 @@ public class CustomHugeMushroomItem extends BlockItem {
         Level level = ((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel();
         if (level != null) {
             CompoundTag compound = stack.getOrCreateTag().getCompound("BlockEntityTag");
-            ResourceLocation resource = ResourceLocation.tryParse(compound.getString("Type"));
             if (compound.contains("Type")) {
-                if (BovineRegistryUtil.isMushroomTypeInRegistry(level, resource)) {
-                    MushroomType mushroomType = BovineRegistryUtil.getMushroomTypeFromKey(level, resource);
-                    return mushroomType.getOrCreateNameTranslationKey(level);
+                ResourceLocation resource = ResourceLocation.tryParse(compound.getString("Type"));
+                if (resource != null && BovineRegistryUtil.isMushroomTypeInRegistry(level, resource)) {
+                    return getOrCreateNameTranslationKey(resource);
                 }
             }
         }
         return super.getName(stack);
     }
 
+    private static Component getOrCreateNameTranslationKey(ResourceLocation location) {
+        return Component.translatable("block." + location.getNamespace() + "." + location.getPath() + "_block");
+    }
+
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
         Level level = Minecraft.getInstance().level;
         if ((tab == CreativeModeTab.TAB_BUILDING_BLOCKS || tab == CreativeModeTab.TAB_SEARCH) && level != null) {
-            for (MushroomType type : BovineRegistryUtil.mushroomTypeStream(level).filter(type -> !BovineRegistryUtil.getMushroomTypeKey(level, type).equals(BovinesAndButtercups.asResource("missing"))).toList()) {
+            for (MushroomType type : BovineRegistryUtil.mushroomTypeStream(level).filter(type -> !BovineRegistryUtil.getMushroomTypeKey(level, type).equals(BovinesAndButtercups.asResource("missing_mushroom"))).toList()) {
                 ItemStack stack = new ItemStack(this);
                 CompoundTag compound = new CompoundTag();
                 compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(level, type).toString());
@@ -85,10 +91,14 @@ public class CustomHugeMushroomItem extends BlockItem {
     }
 
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemTransforms.TransformType transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.hugeModel(), "inventory");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"), "inventory");
 
-        if (CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).isPresent()) {
-            modelResourceLocation = new ModelResourceLocation(CustomHugeMushroomItem.getMushroomTypeFromTag(Minecraft.getInstance().level, stack).get().hugeModel(), "inventory");
+        Level level = Minecraft.getInstance().level;
+        if (level != null && CustomHugeMushroomItem.getMushroomTypeFromTag(level, stack).isPresent()) {
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(level, CustomHugeMushroomItem.getMushroomTypeFromTag(level, stack).get()), BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get());
+            if (modelLocationWithoutVariant.isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
+            }
         }
 
         BakedModel mushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

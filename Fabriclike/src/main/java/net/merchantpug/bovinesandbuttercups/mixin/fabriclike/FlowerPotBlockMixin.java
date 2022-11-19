@@ -9,6 +9,7 @@ import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,7 +38,10 @@ public abstract class FlowerPotBlockMixin {
         if (item instanceof CustomFlowerItem) {
             if (this.isEmpty()) {
                 level.setBlock(pos, BovineBlocks.POTTED_CUSTOM_FLOWER.get().defaultBlockState(), 3);
-                ((CustomFlowerPotBlockEntity)level.getBlockEntity(pos)).setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(level, CustomFlowerItem.getFlowerTypeFromTag(level, stack).orElse(FlowerType.MISSING)).toString());
+                ResourceLocation resourceLocation = BovineRegistryUtil.getFlowerTypeKey(level, CustomFlowerItem.getFlowerTypeFromTag(level, stack).orElse(FlowerType.MISSING));
+                if (resourceLocation != null) {
+                    ((CustomFlowerPotBlockEntity) level.getBlockEntity(pos)).setFlowerTypeName(resourceLocation.toString());
+                }
                 level.getBlockEntity(pos).setChanged();
                 level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
                 player.awardStat(Stats.POT_FLOWER);
@@ -52,7 +56,10 @@ public abstract class FlowerPotBlockMixin {
         } else if (item instanceof CustomMushroomItem) {
             if (this.isEmpty()) {
                 level.setBlock(pos, BovineBlocks.POTTED_CUSTOM_MUSHROOM.get().defaultBlockState(), 3);
-                ((CustomMushroomPotBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(BovineRegistryUtil.getMushroomTypeKey(level, CustomMushroomItem.getMushroomTypeFromTag(level, stack).orElse(MushroomType.MISSING)).toString());
+                ResourceLocation resourceLocation = BovineRegistryUtil.getMushroomTypeKey(level, CustomMushroomItem.getMushroomTypeFromTag(level, stack).orElse(MushroomType.MISSING));
+                if (resourceLocation != null) {
+                    ((CustomMushroomPotBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(resourceLocation.toString());
+                }
                 level.getBlockEntity(pos).setChanged();
                 level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL);
                 player.awardStat(Stats.POT_FLOWER);

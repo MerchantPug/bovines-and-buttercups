@@ -39,10 +39,10 @@ public class BovineRegistriesForge {
         CONFIGURED_COW_TYPE.register("missing_mooshroom", () -> new ConfiguredCowType<>(BovineCowTypes.MUSHROOM_COW_TYPE, MushroomCowConfiguration.MISSING));
 
         FLOWER_TYPE.register(eventBus);
-        FLOWER_TYPE.register("missing", () -> FlowerType.MISSING);
+        FLOWER_TYPE.register("missing_flower", () -> FlowerType.MISSING);
 
         MUSHROOM_TYPE.register(eventBus);
-        MUSHROOM_TYPE.register("missing", () -> MushroomType.MISSING);
+        MUSHROOM_TYPE.register("missing_mushroom", () -> MushroomType.MISSING);
     }
 
     public static <C> MapCodec<C> asMapCodec(Codec<C> codec) {

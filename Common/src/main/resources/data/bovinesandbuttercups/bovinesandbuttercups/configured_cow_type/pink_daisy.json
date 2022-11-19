@@ -6,7 +6,7 @@
     }
   },
   "bud": {
-    "model_location": "bovinesandbuttercups:pink_daisy_bud"
+    "model_location": "bovinesandbuttercups:bovinesandbuttercups/pink_daisy_bud"
   },
   "nectar_effect": {
     "effect": "minecraft:speed",

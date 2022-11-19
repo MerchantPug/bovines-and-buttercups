@@ -1,0 +1,9 @@
+{
+  "type": "bovinesandbuttercups:potted_flower",
+  "linked_block_type": "test:fire_flower",
+  "variants": {
+    "": {
+      "model": "test:block/potted_fire_flower"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 {
-  "type": "bovinesandbuttercups:generic",
+  "type": "bovinesandbuttercups:flower",
+  "linked_block_type": "bovinesandbuttercups:missing_flower",
   "variants": {
     "": {
       "model": "bovinesandbuttercups:block/potted_missing_flower"

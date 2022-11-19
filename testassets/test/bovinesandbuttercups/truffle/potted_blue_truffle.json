@@ -1,5 +1,6 @@
 {
-  "type": "bovinesandbuttercups:generic",
+  "type": "bovinesandbuttercups:potted_mushroom",
+  "linked_block_type": "test:blue_truffle",
   "variants": {
     "": {
       "model": "test:block/truffle/potted_blue_truffle"

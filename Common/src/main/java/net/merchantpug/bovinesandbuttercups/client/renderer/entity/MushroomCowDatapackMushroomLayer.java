@@ -4,9 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,12 +20,15 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends RenderLayer<T, CowModel<T>> {
@@ -52,9 +57,10 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
         if (configuration.getMushroom().modelLocation().isPresent()) {
             modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().modelLocation().get(), "");
         } else if (configuration.getMushroom().getMushroomType(entity.getLevel()).isPresent()) {
-            modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().getMushroomType(entity.getLevel()).get().mushroomModel(), "");
+            ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(entity.getLevel(), configuration.getMushroom().getMushroomType(entity.getLevel()).get()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
+            modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "");
         } else {
-            modelResourceLocation = new ModelResourceLocation(MushroomType.MISSING.mushroomModel(), "");
+            modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"), "");
         }
 
         handleMooshroomRender(poseStack, buffer, packedLight, bl, m, configuration.getMushroom().blockState(), modelResourceLocation);

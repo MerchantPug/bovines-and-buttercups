@@ -56,7 +56,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
             Codec.list(BlockState.CODEC).optionalFieldOf("breeding_requirements").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingRequirements)
     ).apply(builder, FlowerCowConfiguration::new));
 
-    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty());
+    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty());
 
     public FlowerCowFlower getFlower() {
         return this.flower;

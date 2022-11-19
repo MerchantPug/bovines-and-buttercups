@@ -49,12 +49,12 @@ public class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
     @ModifyArg(method = "slotChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;setValue(Ljava/lang/String;)V"))
     private String bovinesandbuttercups$setDataDrivenItemName(String string) {
         if (BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack) != null && BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).contains("Type", Tag.TAG_STRING)) {
-            if (bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomFlowerItem())) {
-                return BovineRegistryUtil.getFlowerTypeFromKey(player.level, ResourceLocation.tryParse(BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).getString("Type"))).getOrCreateNameTranslationKey(player.level).getString();
-            } else if (bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomMushroomItem())) {
-                return BovineRegistryUtil.getMushroomTypeFromKey(player.level, ResourceLocation.tryParse(BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).getString("Type"))).getOrCreateNameTranslationKey(player.level).getString();
+            if (bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomFlowerItem()) || bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomMushroomItem())) {
+                ResourceLocation resourceLocation = ResourceLocation.tryParse(BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).getString("Type"));
+                return Component.translatable("block." + resourceLocation.getNamespace() + "." + resourceLocation.getPath()).getString();
             } else if (bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomHugeMushroomItem())) {
-                return BovineRegistryUtil.getMushroomTypeFromKey(player.level, ResourceLocation.tryParse(BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).getString("Type"))).getOrCreateHugeNameTranslationKey(player.level).getString();
+                ResourceLocation resourceLocation = ResourceLocation.tryParse(BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).getString("Type"));
+                return Component.translatable("block." + resourceLocation.getNamespace() + "." + resourceLocation.getPath() + "_block").getString();
             }
         }
         return string;

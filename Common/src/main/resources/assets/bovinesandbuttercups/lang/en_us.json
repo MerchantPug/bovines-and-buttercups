@@ -20,8 +20,11 @@
   "block.bovinesandbuttercups.potted_tropical_blue": "Potted Tropical Blue",
 
   "block.bovinesandbuttercups.custom_flower": "Unknown Flower",
+  "block.bovinesandbuttercups.missing_flower": "Unknown Flower",
   "block.bovinesandbuttercups.custom_mushroom": "Unknown Mushroom",
+  "block.bovinesandbuttercups.missing_mushroom": "Unknown Mushroom",
   "block.bovinesandbuttercups.custom_mushroom_block": "Unknown Mushroom Block",
+  "block.bovinesandbuttercups.missing_mushroom_block": "Unknown Mushroom Block",
 
   "item.bovinesandbuttercups.nectar_bowl": "Bowl of Nectar",
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",

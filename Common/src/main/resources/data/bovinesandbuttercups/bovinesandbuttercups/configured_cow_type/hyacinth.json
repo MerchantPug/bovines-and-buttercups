@@ -6,7 +6,7 @@
     }
   },
   "bud": {
-    "model_location": "bovinesandbuttercups:hyacinth_bud"
+    "model_location": "bovinesandbuttercups:bovinesandbuttercups/hyacinth_bud"
   },
   "nectar_effect": {
     "effect": "minecraft:strength",

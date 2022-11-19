@@ -1,5 +1,6 @@
 {
   "type": "bovinesandbuttercups:mushroom_block",
+  "linked_block_type": "test:green_truffle",
   "multipart": [
     {
       "apply": {

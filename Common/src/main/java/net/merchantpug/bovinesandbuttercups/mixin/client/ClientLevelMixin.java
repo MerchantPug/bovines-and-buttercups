@@ -1,13 +1,17 @@
 package net.merchantpug.bovinesandbuttercups.mixin.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.particle.ModelLocationParticleOption;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -17,7 +21,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -61,19 +67,21 @@ public abstract class ClientLevelMixin extends Level {
                             double d7 = d4 * d1 + minX;
                             double d8 = d5 * d2 + minY;
                             double d9 = d6 * d3 + minZ;
-                            ResourceLocation resourceLocation = BovinesAndButtercups.asResource("missing_flower");
+                            ResourceLocation resourceLocation = null;
                             String variant = "bovines";
                             if (this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                                resourceLocation = customFlowerBlockEntity.getFlowerType().flowerModel();
+                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(customFlowerBlockEntity.getLevel(), customFlowerBlockEntity.getFlowerType()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
                                 variant = "";
                             } else if (this.getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
-                                resourceLocation = customMushroomBlockEntity.getMushroomType().mushroomModel();
+                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customMushroomBlockEntity.getLevel(), customMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
                                 variant = "";
                             } else if (this.getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {
-                                resourceLocation = customHugeMushroomBlockEntity.getMushroomType().hugeModel();
+                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customHugeMushroomBlockEntity.getLevel(), customHugeMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"));
                                 variant = "down=true,east=true,north=true,south=true,up=true,west=true";
                             }
-                            this.addParticle(new ModelLocationParticleOption(resourceLocation, variant), blockPos.getX() + d7, blockPos.getY() + d8, blockPos.getZ() + d9, d4 - 0.5D, d5 - 0.5D, d6 - 0.5D);
+                            if (resourceLocation != null) {
+                                this.addParticle(new ModelLocationParticleOption(resourceLocation, variant), blockPos.getX() + d7, blockPos.getY() + d8, blockPos.getZ() + d9, d4 - 0.5D, d5 - 0.5D, d6 - 0.5D);
+                            }
                         }
                     }
                 }

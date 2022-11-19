@@ -43,7 +43,7 @@ dependencies {
 
     implementation(project(":Common"))
     implementation(project(path: ":Fabriclike", configuration: "namedElements")) {
-        transitive = false
+        exclude group: "net.merchantpug.bovinesandbuttercups", module: "Common"
     }
 }
 

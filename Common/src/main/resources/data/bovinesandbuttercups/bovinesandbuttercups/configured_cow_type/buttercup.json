@@ -6,7 +6,7 @@
     }
   },
   "bud": {
-    "model_location": "bovinesandbuttercups:buttercup_bud"
+    "model_location": "bovinesandbuttercups:bovinesandbuttercups/buttercup_bud"
   },
   "nectar_effect": {
     "effect": "minecraft:poison",

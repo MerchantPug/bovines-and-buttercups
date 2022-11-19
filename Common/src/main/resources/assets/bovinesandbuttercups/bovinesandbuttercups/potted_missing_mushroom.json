@@ -1,0 +1,9 @@
+{
+  "type": "bovinesandbuttercups:mushroom",
+  "linked_block_type": "bovinesandbuttercups:missing_mushroom",
+  "variants": {
+    "": {
+      "model": "bovinesandbuttercups:block/potted_missing_mushroom"
+    }
+  }
+}

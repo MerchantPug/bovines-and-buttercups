@@ -6,12 +6,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.api.BovineBlockstateTypeRegistry;
+import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockModelDefinition;
 import net.minecraft.client.renderer.block.model.multipart.MultiPart;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -27,43 +30,49 @@ public class BovineStateModelUtil {
     private static final BlockModelDefinition.Context CONTEXT = new BlockModelDefinition.Context();
 
     public static void initModels(ModelBakery modelBakery, ResourceManager resourceManager, Map<ResourceLocation, UnbakedModel> unbakedCache, Map<ResourceLocation, UnbakedModel> topLevelModels) {
+        BovineStatesAssociationRegistry.clear();
         UnbakedModel missingModel = unbakedCache.get(ModelBakery.MISSING_MODEL_LOCATION);
-        Map<ResourceLocation, Resource> blocks = resourceManager.listResources("bovinestates", fileName -> fileName.getPath().endsWith(".json"));
+        Map<ResourceLocation, Resource> blocks = resourceManager.listResources("bovinesandbuttercups", fileName -> fileName.getPath().endsWith(".json"));
 
         for (Map.Entry<ResourceLocation, Resource> resourceEntry : blocks.entrySet()) {
             StringBuilder newIdBuilder = new StringBuilder(resourceEntry.getKey().getPath());
-            newIdBuilder.replace(0, 13, "");
             newIdBuilder.replace(newIdBuilder.length() - 5, newIdBuilder.length(), "");
             String newId = newIdBuilder.toString();
+            ResourceLocation resourceLocation = new ResourceLocation(resourceEntry.getKey().getNamespace(), newId);
 
             try {
                 Reader reader = resourceEntry.getValue().openAsReader();
                 JsonElement json = JsonParser.parseReader(reader);
                 reader.close();
                 if (json instanceof JsonObject jsonObject) {
-                    ResourceLocation resourceLocation = ResourceLocation.tryParse(jsonObject.get("type").getAsString());
+                    ResourceLocation typeLocation = ResourceLocation.tryParse(jsonObject.get("type").getAsString());
                     StateDefinition<Block, BlockState> tempStateDefinition = null;
                     try {
-                        tempStateDefinition = BovineBlockstateTypeRegistry.get(resourceLocation);
+                        tempStateDefinition = BovineBlockstateTypeRegistry.get(typeLocation);
                     } catch (NullPointerException e) {
                         BovinesAndButtercups.LOG.warn("Could not find 'type' field value in registry. (Skipping). {}", e.getMessage());
                     }
 
                     if (tempStateDefinition == null) continue;
 
+                    if (jsonObject.has("linked_block_type")) {
+                        BovineStatesAssociationRegistry.register(ResourceLocation.tryParse(jsonObject.get("linked_block_type").getAsString()), tempStateDefinition.getOwner(), resourceLocation);
+                    }
+
                     if (jsonObject.has("inventory")) {
                         ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(jsonObject.get("inventory").getAsString(), "inventory");
                         UnbakedModel model = modelBakery.getModel(inventoryModelLocation);
-                        unbakedCache.put(inventoryModelLocation, model);
-                        topLevelModels.put(inventoryModelLocation, model);
+                        ModelResourceLocation remappedModelLocation = new ModelResourceLocation(resourceLocation, "inventory");
+                        unbakedCache.put(remappedModelLocation, model);
+                        topLevelModels.put(remappedModelLocation, model);
                     }
 
                     StateDefinition<Block, BlockState> stateDefinition = tempStateDefinition;
                     CONTEXT.setDefinition(stateDefinition);
 
-                    Reader modelDefinitionReader = resourceEntry.getValue().openAsReader();
-                    BlockModelDefinition modelDefinition = BlockModelDefinition.fromStream(CONTEXT, modelDefinitionReader);
-                    modelDefinitionReader.close();
+                    Reader modelReader = resourceEntry.getValue().openAsReader();
+                    BlockModelDefinition modelDefinition = BlockModelDefinition.fromStream(CONTEXT, modelReader);
+                    modelReader.close();
 
                     ImmutableList<BlockState> possibleStates = stateDefinition.getPossibleStates();
 
@@ -93,7 +102,7 @@ public class BovineStateModelUtil {
                     });
 
                     map.forEach((state, unbakedModel) -> {
-                        ModelResourceLocation modelLocation = BlockModelShaper.stateToModelLocation(new ResourceLocation(resourceEntry.getKey().getNamespace(), newId), state);
+                        ModelResourceLocation modelLocation = BlockModelShaper.stateToModelLocation(resourceLocation, state);
                         unbakedCache.put(modelLocation, unbakedModel);
                         topLevelModels.put(modelLocation, unbakedModel);
                     });

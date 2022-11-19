@@ -6,7 +6,7 @@
     }
   },
   "bud": {
-    "model_location": "bovinesandbuttercups:chargelily_bud"
+    "model_location": "bovinesandbuttercups:bovinesandbuttercups/chargelily_bud"
   },
   "nectar_effect": {
     "effect": "minecraft:haste",

@@ -1,8 +1,0 @@
-{
-  "type": "bovinesandbuttercups:generic",
-  "variants": {
-    "": {
-      "model": "test:block/potted_fire_flower"
-    }
-  }
-}

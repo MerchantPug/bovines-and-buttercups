@@ -1,5 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -12,7 +15,11 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
+
+import java.util.Optional;
 
 public class CustomFlowerRenderer implements BlockEntityRenderer<CustomFlowerBlockEntity> {
     private final BlockRenderDispatcher blockRenderDispatcher;
@@ -24,10 +31,13 @@ public class CustomFlowerRenderer implements BlockEntityRenderer<CustomFlowerBlo
     @Override
     @SuppressWarnings("ConstantConditions")
     public void render(CustomFlowerBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(FlowerType.MISSING.flowerModel(), "");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");
 
         if (blockEntity.getFlowerType() != null) {
-            modelResourceLocation = new ModelResourceLocation(blockEntity.getFlowerType().flowerModel(), "");
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(blockEntity.getLevel(), blockEntity.getFlowerType()), blockEntity.getBlockState().getBlock());
+            if (modelLocationWithoutVariant.isPresent()) {
+                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "");
+            }
         }
 
         BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

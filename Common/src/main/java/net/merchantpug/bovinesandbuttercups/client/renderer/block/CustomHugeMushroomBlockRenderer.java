@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
@@ -27,6 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomHugeMushroomBlockRenderer implements BlockEntityRenderer<CustomHugeMushroomBlockEntity> {
     private final BlockRenderDispatcher blockRenderDispatcher;
@@ -45,11 +49,13 @@ public class CustomHugeMushroomBlockRenderer implements BlockEntityRenderer<Cust
     @Override
     @SuppressWarnings("ConstantConditions")
     public void render(CustomHugeMushroomBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-
-        ModelResourceLocation modelResourceLocation = BlockModelShaper.stateToModelLocation(MushroomType.MISSING.hugeModel(), blockEntity.getBlockState());
+        ModelResourceLocation modelResourceLocation = BlockModelShaper.stateToModelLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"), blockEntity.getBlockState());
 
         if (blockEntity.getMushroomType() != null) {
-            modelResourceLocation = BlockModelShaper.stateToModelLocation(blockEntity.getMushroomType().hugeModel(), blockEntity.getBlockState());
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(blockEntity.getLevel(), blockEntity.getMushroomType()), blockEntity.getBlockState().getBlock());
+            if (modelLocationWithoutVariant.isPresent()) {
+                modelResourceLocation = BlockModelShaper.stateToModelLocation(modelLocationWithoutVariant.get(), blockEntity.getBlockState());
+            }
         }
 
         BakedModel pottedMushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

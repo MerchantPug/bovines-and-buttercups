@@ -102,7 +102,7 @@ public class CustomMushroomItem extends BlockItem {
         }
 
         BakedModel mushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
-
-        ((ItemRendererAccessor)Minecraft.getInstance().getItemRenderer()).bovinesandbuttercups$invokeRenderModelLists(mushroomModel, stack, light, overlay, poseStack, ItemRenderer.getFoilBuffer(bufferSource, ItemBlockRenderTypes.getRenderType(stack, true), true, stack.hasFoil()));
+        ItemRenderer itemRenderer =  Minecraft.getInstance().getItemRenderer();
+        ((ItemRendererAccessor)itemRenderer).bovinesandbuttercups$invokeRenderModelLists(mushroomModel, stack, light, overlay, poseStack, ItemRenderer.getFoilBuffer(bufferSource, ItemBlockRenderTypes.getRenderType(stack, true), true, stack.hasFoil()));
     }
 }

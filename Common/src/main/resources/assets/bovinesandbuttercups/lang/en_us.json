@@ -25,6 +25,8 @@
   "block.bovinesandbuttercups.missing_mushroom": "Unknown Mushroom",
   "block.bovinesandbuttercups.custom_mushroom_block": "Unknown Mushroom Block",
   "block.bovinesandbuttercups.missing_mushroom_block": "Unknown Mushroom Block",
+  "block.bovinesandbuttercups.custom_potted_flower": "Unknown Potted Flower",
+  "block.bovinesandbuttercups.custom_potted_mushroom": "Unknown Potted Mushroom",
 
   "item.bovinesandbuttercups.nectar_bowl": "Bowl of Nectar",
   "item.bovinesandbuttercups.moobloom_spawn_egg": "Moobloom Spawn Egg",

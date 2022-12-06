@@ -56,6 +56,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Mod(BovinesAndButtercups.MOD_ID)
@@ -180,6 +181,15 @@ public class BovinesAndButtercupsForge {
         });
 
         eventBus.addListener((LivingEvent.LivingTickEvent event) -> {
+            if (event.getEntity().hasEffect(BovineEffects.LOCKDOWN.get())) {
+                HashMap<MobEffect, Integer> lockdownEffectsToUpdate = new HashMap<>();
+                Services.COMPONENT.getLockdownMobEffects(event.getEntity()).forEach(((statusEffect, integer) -> {
+                    if (integer > 0) {
+                        lockdownEffectsToUpdate.put(statusEffect, --integer);
+                    }
+                }));
+                Services.COMPONENT.setLockdownMobEffects(event.getEntity(), lockdownEffectsToUpdate);
+            }
             if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
             }

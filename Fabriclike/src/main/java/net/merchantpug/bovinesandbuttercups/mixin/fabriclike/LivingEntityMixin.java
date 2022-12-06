@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
 
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Mixin(LivingEntity.class)
@@ -27,6 +29,20 @@ public abstract class LivingEntityMixin extends Entity {
 
     public LivingEntityMixin(EntityType<?> type, Level level) {
         super(type, level);
+    }
+
+    @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;tickEffects()V", shift = At.Shift.AFTER))
+    private void bovinesandbuttercups$tickLockdown(CallbackInfo ci) {
+        LivingEntity entity = (LivingEntity)(Object)this;
+        if (entity.hasEffect(BovineEffects.LOCKDOWN.get())) {
+            HashMap<MobEffect, Integer> lockdownEffectsToUpdate = new HashMap<>();
+            Services.COMPONENT.getLockdownMobEffects(entity).forEach(((statusEffect, integer) -> {
+                if (integer > 0) {
+                    lockdownEffectsToUpdate.put(statusEffect, --integer);
+                }
+            }));
+            Services.COMPONENT.setLockdownMobEffects(entity, lockdownEffectsToUpdate);
+        }
     }
 
     @Inject(method = "onEffectAdded", at = @At("TAIL"))

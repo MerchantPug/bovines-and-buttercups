@@ -57,7 +57,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
                 ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(entity.getLevel(), configuration.getBud().getFlowerType(entity.getLevel()).get()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "");
             } else {
-                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing"), "");
+                modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");
             }
             blockState = configuration.getBud().blockState();
             handleMoobudRender(poseStack, buffer, entity, packedLight, bl, m, blockState, modelResourceLocation);
@@ -86,7 +86,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
-        poseStack.translate(0.25f, 0.38, -0.25f);
+        poseStack.translate(0.25f, 0.37, -0.25f);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
 
@@ -95,18 +95,19 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
-        poseStack.translate(0.25f, 0.38, 0.05f);
+        poseStack.translate(0.25f, 0.37, 0.05f);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
         poseStack.popPose();
 
         poseStack.pushPose();
+        poseStack.translate(0.0f, 0.625, 0.25f);
         this.getParentModel().getHead().translateAndRotate(poseStack);
         poseStack.translate(0.0, -0.7f, -0.2f);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.translate(0.18, -0.94, 0.3);
+        poseStack.translate(-0.05, -0.12, 0.15);
         this.renderFlowerOrBud(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
         poseStack.popPose();
     }

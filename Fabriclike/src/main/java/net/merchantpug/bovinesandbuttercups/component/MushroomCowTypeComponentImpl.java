@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.component;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
@@ -24,6 +25,11 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
 
     public MushroomCowTypeComponentImpl(MushroomCow provider) {
         this.provider = provider;
+    }
+
+    @Override
+    public boolean shouldSyncWith(ServerPlayer player) {
+        return PlayerLookup.tracking(provider).contains(player);
     }
 
     @Override

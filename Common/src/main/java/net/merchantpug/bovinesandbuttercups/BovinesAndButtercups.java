@@ -12,7 +12,7 @@ public class BovinesAndButtercups {
     public static String VERSION;
 
     public static void init() {
-        LOG.info("Bovines and Buttercups v" + VERSION + " is starting up. Moo!");
+        LOG.debug("Bovines and Buttercups v" + VERSION + " is starting up. Moo!");
 
         BovineItems.init();
         BovineBlocks.init();

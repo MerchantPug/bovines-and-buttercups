@@ -4,6 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.CowType;
 import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
+import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
@@ -12,8 +13,6 @@ import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,7 +22,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -47,7 +45,12 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -55,20 +58,18 @@ import java.util.*;
 public class FlowerCow extends Cow {
     private static final EntityDataAccessor<String> TYPE_ID = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> PREVIOUS_TYPE_ID = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Integer> POLLINATION_TICKS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> FLOWERS_TO_GENERATE = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> POLLINATED_RESET_TICKS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TICKS_UNTIL_FLOWERS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TIMES_POLLINATED = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
     private ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> type;
     @Nullable public Bee bee;
-    private int timeBetweenFlowerPlacement;
     private boolean hasRefreshedDimensionsForLaying;
-    @Nullable
-    private UUID lastLightningBoltUUID;
+    @Nullable private UUID lastLightningBoltUUID;
 
     public FlowerCow(EntityType<? extends FlowerCow> entityType, Level level) {
         super(entityType, level);
         this.bee = null;
-        this.timeBetweenFlowerPlacement = 0;
     }
 
     @Override
@@ -84,8 +85,9 @@ public class FlowerCow extends Cow {
 
         this.entityData.define(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(this.getLevel(), naturalSpawnType).toString());
         this.entityData.define(PREVIOUS_TYPE_ID, "");
-        this.entityData.define(POLLINATION_TICKS, 0);
-        this.entityData.define(FLOWERS_TO_GENERATE, 0);
+        this.entityData.define(POLLINATED_RESET_TICKS, 0);
+        this.entityData.define(TICKS_UNTIL_FLOWERS, 0);
+        this.entityData.define(TIMES_POLLINATED, 0);
         this.entityData.define(STANDING_STILL_FOR_BEE_TICKS, 0);
     }
 
@@ -103,9 +105,9 @@ public class FlowerCow extends Cow {
         if (!this.getPreviousTypeId().equals("")) {
             compound.putString("PreviousType", this.getPreviousTypeId());
         }
-        compound.putInt("PollinationTicks", this.getPollinationTicks());
-        compound.putInt("FlowersToGenerate", this.getFlowersToGenerate());
-        compound.putInt("TimeBetweenFlowerPlacement", this.timeBetweenFlowerPlacement);
+        compound.putInt("PollinatedResetTicks", this.getPollinatedResetTicks());
+        compound.putInt("TicksUntilFlowers", this.getTicksUntilFlowers());
+        compound.putInt("TimesPollinated", this.getTimesPollinated());
     }
 
     @Override
@@ -117,14 +119,14 @@ public class FlowerCow extends Cow {
         if (compound.contains("PreviousType")) {
             this.setPreviousTypeId(compound.getString("PreviousType"));
         }
-        if (compound.contains("PollinationTicks", 99)) {
-            this.setPollinationTicks(compound.getInt("PollinationTicks"));
+        if (compound.contains("PollinatedResetTicks", 99)) {
+            this.setPollinatedResetTicks(compound.getInt("PollinatedResetTicks"));
         }
-        if (compound.contains("FlowersToGenerate", 99)) {
-            this.setFlowersToGenerate(compound.getInt("FlowersToGenerate"));
+        if (compound.contains("TicksUntilFlowers", 99)) {
+            this.setTicksUntilFlowers(compound.getInt("TicksUntilFlowers"));
         }
-        if (compound.contains("TimeBetweenFlowerPlacement", 99)) {
-            this.setFlowersToGenerate(compound.getInt("TimeBetweenFlowerPlacement"));
+        if (compound.contains("TimesPollinated", 99)) {
+            this.setTimesPollinated(compound.getInt("TimesPollinated"));
         }
     }
 
@@ -205,31 +207,70 @@ public class FlowerCow extends Cow {
             this.setStandingStillForBeeTicks(0);
             bee = null;
         }
-        if (this.getStandingStillForBeeTicks() > 0 && !this.level.isClientSide()) {
+        if (this.getStandingStillForBeeTicks() > 0 && !this.level.isClientSide())
             this.setStandingStillForBeeTicks(this.getStandingStillForBeeTicks() - 1);
-        }
-        if (!this.level.isClientSide() && this.getPollinationTicks() > 0 && this.tickCount % 8 == 0) {
-            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY() + this.getBoundingBox().getYsize(), this.getZ(), 1, 0.3, 0.1, 0.3, 0.0);
-        }
-
-        if (!this.level.isClientSide() && this.getFlowersToGenerate() > 0 && this.tickCount % 12 == 0) {
-            ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.getX(), this.getY(), this.getZ(), 1, 0.3, 0.1, 0.3, 0.0);
-        }
 
         super.tick();
+        if (this.getPollinatedResetTicks() > 0)
+            this.setPollinatedResetTicks(this.getPollinatedResetTicks() - 1);
+        else if (this.getPollinatedResetTicks() <= 0 && this.getTimesPollinated() > 0)
+            this.setTimesPollinated(0);
+
+        if (this.getTicksUntilFlowers() > 0 && !this.level.isClientSide && this.age % 8 == 0)
+            ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + this.getBbHeight(), this.position().z(), 1, 0.3, 0.1, 0.2, 0.0);
+
         if (this.getStandingStillForBeeTicks() > 0) {
             if (!hasRefreshedDimensionsForLaying) {
                 this.refreshDimensions();
                 ((EntityAccessor)this).bovinesandbuttercups$setEyeHeight(this.getDimensions(this.getPose()).height * 0.85F);
                 hasRefreshedDimensionsForLaying = true;
             }
-            if (!this.level.isClientSide() && this.bee != null) {
+            if (!this.level.isClientSide() && this.bee != null)
                 this.getLookControl().setLookAt(bee);
-            }
         } else if (hasRefreshedDimensionsForLaying) {
             this.refreshDimensions();
             ((EntityAccessor)this).bovinesandbuttercups$setEyeHeight(this.getDimensions(this.getPose()).height * 0.85F);
             hasRefreshedDimensionsForLaying = false;
+        }
+    }
+
+    public void spreadFlowers(boolean boneMealed) {
+        if (this.level.isClientSide) return;
+
+        BlockState state = null;
+        if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent())
+            state = this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock().defaultBlockState().setValue(CustomFlowerBlock.PERSISTENT, boneMealed);
+        else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent())
+            state = BovineBlocks.CUSTOM_FLOWER.get().defaultBlockState().setValue(CustomFlowerBlock.PERSISTENT, boneMealed);
+
+        if (state == null) {
+            BovinesAndButtercups.LOG.warn("Moobloom with type '{}' tried to spread flowers without a valid flower type.", BovineRegistryUtil.getConfiguredCowTypeKey(level, getFlowerCowType()));
+            return;
+        }
+
+        int maxTries = boneMealed ? 16 : 32;
+        int xZScale = boneMealed ? 3 : 6;
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for(int i = 0; i < maxTries; ++i) {
+            pos.setWithOffset(this.blockPosition(), random.nextInt(xZScale) - random.nextInt(xZScale), random.nextInt(2) - random.nextInt(2), random.nextInt(xZScale) - random.nextInt(xZScale));
+            if (state.canSurvive(this.level, pos) && this.level.getBlockState(pos).isAir())
+                this.setBlockToFlower(state, pos);
+        }
+        this.gameEvent(GameEvent.BLOCK_PLACE, this);
+    }
+
+    public void setBlockToFlower(BlockState state, BlockPos pos) {
+        if (this.level.isClientSide) return;
+        ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D, pos.getY() + 0.3D, pos.getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
+        if (state.getBlock() == BovineBlocks.CUSTOM_FLOWER.get() && this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent()) {
+            this.level.setBlock(pos, state, 3);
+            BlockEntity blockEntity = this.level.getBlockEntity(pos);
+            if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
+                customFlowerBlockEntity.setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).get()).toString());
+                customFlowerBlockEntity.setChanged();
+            }
+        } else {
+            this.level.setBlock(pos, state, 3);
         }
     }
 
@@ -245,69 +286,45 @@ public class FlowerCow extends Cow {
     public void aiStep() {
         super.aiStep();
 
-        if (this.timeBetweenFlowerPlacement > 0) {
-            this.timeBetweenFlowerPlacement--;
-        }
-
-        if (this.getPollinationTicks() > 0 && !this.level.isClientSide()) {
-            this.setPollinationTicks(this.getPollinationTicks() - 1);
-        }
-
-        if (!this.level.isClientSide() && this.level.getBlockState(this.blockPosition()).isAir() && (this.level.getBlockState(this.blockPosition().below()).is(BlockTags.DIRT) || this.level.getBlockState(this.blockPosition().below()).is(Blocks.FARMLAND)) && this.getFlowersToGenerate() > 0 && this.timeBetweenFlowerPlacement == 0) {
-            if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent() && this.getFlowerCowType().getConfiguration().getFlower().blockState().get().canSurvive(this.level, this.blockPosition())) {
-                ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
-                this.level.setBlock(this.blockPosition(), this.getFlowerCowType().getConfiguration().getFlower().blockState().get(), 3);
-                this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
-                this.gameEvent(GameEvent.BLOCK_PLACE, this);
-                if (this.getFlowersToGenerate() > 0) {
-                    this.timeBetweenFlowerPlacement = this.random.nextInt(60, 80);
-                }
-            } else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent()) {
-                ((ServerLevel)this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.blockPosition().getX() + 0.5D, this.blockPosition().getY() + 0.3D, this.blockPosition().getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
-                this.level.setBlock(this.blockPosition(), BovineBlocks.CUSTOM_FLOWER.get().defaultBlockState(), 3);
-                BlockEntity blockEntity = this.level.getBlockEntity(this.blockPosition());
-                if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                    customFlowerBlockEntity.setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).get()).toString());
-                    customFlowerBlockEntity.setChanged();
-                }
-                this.setFlowersToGenerate(this.getFlowersToGenerate() - 1);
-                this.gameEvent(GameEvent.BLOCK_PLACE, this);
-                if (this.getFlowersToGenerate() > 0) {
-                    this.timeBetweenFlowerPlacement = this.random.nextInt(60, 80);
-                }
-            }
+        if (this.getTicksUntilFlowers() > 0)
+            this.setTicksUntilFlowers(this.getTicksUntilFlowers() - 1);
+        else if (this.getTimesPollinated() > 2 && this.getTicksUntilFlowers() == 0 && (this.level.getBlockState(this.blockPosition()).getMaterial().isReplaceable() || this.level.getBlockState(this.blockPosition()).getMaterial() == Material.PLANT)) {
+            this.spreadFlowers(false);
+            this.setPollinatedResetTicks(0);
+            this.setTimesPollinated(0);
         }
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.is(Items.HONEY_BOTTLE) && this.getPollinationTicks() > 0) {
-            if (!player.getAbilities().instabuild) {
+        if (!this.isBaby()) {
+            if (itemStack.is(Items.BONE_MEAL)) {
+                if (!player.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                }
+                if (!this.level.isClientSide) {
+                    ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + 1.6D, this.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
+                }
+                this.spreadFlowers(true);
+                this.playSound(BovineSoundEvents.MOOBLOOM_EAT.get(), 1.0f, (random.nextFloat() * 0.4F) + 0.8F);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            } else if (itemStack.is(Items.BOWL)) {
                 ItemStack itemStack2;
-                itemStack2 = new ItemStack(Items.GLASS_BOTTLE);
+                itemStack2 = new ItemStack(BovineItems.NECTAR_BOWL.get());
+                if (this.getFlowerCowType().getConfiguration().getNectarEffectInstance().isPresent()) {
+                    NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().getConfiguration().getNectarEffectInstance().get().getEffect(), this.getFlowerCowType().getConfiguration().getNectarEffectInstance().get().getDuration());
+                } else if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent() && this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock() instanceof FlowerBlock) {
+                    NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock()).getSuspiciousStewEffect(), 600);
+                } else {
+                    return InteractionResult.PASS;
+                }
+
                 ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
                 player.setItemInHand(hand, itemStack3);
+                this.playSound(BovineSoundEvents.MOOBLOOM_MILK.get(), 1.0f, 1.0f);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
-            this.setFlowersToGenerate(12);
-            this.setPollinationTicks(0);
-            this.playSound(BovineSoundEvents.MOOBLOOM_DRINK.get(), 1.0f, 1.0f);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
-        } else if (itemStack.is(Items.BOWL) && !this.isBaby()) {
-            ItemStack itemStack2;
-            itemStack2 = new ItemStack(BovineItems.NECTAR_BOWL.get());
-            if (this.getFlowerCowType().getConfiguration().getNectarEffectInstance().isPresent()) {
-                NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().getConfiguration().getNectarEffectInstance().get().getEffect(), this.getFlowerCowType().getConfiguration().getNectarEffectInstance().get().getDuration());
-            } else if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent() && this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock() instanceof FlowerBlock) {
-                NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock()).getSuspiciousStewEffect(), 600);
-            } else {
-                return InteractionResult.PASS;
-            }
-
-            ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
-            player.setItemInHand(hand, itemStack3);
-            this.playSound(BovineSoundEvents.MOOBLOOM_MILK.get(), 1.0f, 1.0f);
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
         }
         return super.mobInteract(player, hand);
     }
@@ -386,20 +403,28 @@ public class FlowerCow extends Cow {
         this.getFlowerCowType();
     }
 
-    public int getPollinationTicks() {
-        return this.entityData.get(POLLINATION_TICKS);
+    public int getTimesPollinated() {
+        return this.entityData.get(TIMES_POLLINATED);
     }
 
-    public void setPollinationTicks(int value) {
-        this.entityData.set(POLLINATION_TICKS, value);
+    public void setTimesPollinated(int value) {
+        this.entityData.set(TIMES_POLLINATED, value);
     }
 
-    public int getFlowersToGenerate() {
-        return this.entityData.get(FLOWERS_TO_GENERATE);
+    public int getPollinatedResetTicks() {
+        return this.entityData.get(POLLINATED_RESET_TICKS);
     }
 
-    public void setFlowersToGenerate(int value) {
-        this.entityData.set(FLOWERS_TO_GENERATE, value);
+    public void setPollinatedResetTicks(int value) {
+        this.entityData.set(POLLINATED_RESET_TICKS, value);
+    }
+
+    public int getTicksUntilFlowers() {
+        return this.entityData.get(TICKS_UNTIL_FLOWERS);
+    }
+
+    public void setTicksUntilFlowers(int value) {
+        this.entityData.set(TICKS_UNTIL_FLOWERS, value);
     }
 
     public int getStandingStillForBeeTicks() {

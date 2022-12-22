@@ -4,6 +4,7 @@ import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.mixin.BeeAccessor;
 import net.merchantpug.bovinesandbuttercups.mixin.MobAccessor;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -24,7 +25,7 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
     private static final int MAX_FIND_FLOWER_COW_RETRY_COOLDOWN = 60;
     private static final double ARRIVAL_THRESHOLD = 0.1D;
     private static final int POSITION_CHANGE_CHANCE = 25;
-    private static final float SPEED_MODIFIER = 0.35F;
+    private static final float SPEED_MODIFIER = 0.6F;
     private static final float HOVER_POS_OFFSET = 0.33333334F;
     private int successfulPollinatingTicks;
     private int lastSoundPlayedTick;
@@ -133,7 +134,14 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
     public void stop() {
         if (this.hasPollinatedLongEnough()) {
             ((BeeAccessor)bee).bovinesandbuttercups$invokeSetHasNectar(true);
-            moobloom.setPollinationTicks(2600);
+            moobloom.setTimesPollinated(moobloom.getTimesPollinated() + 1);
+            moobloom.setPollinatedResetTicks(1800);
+            if (moobloom.getTimesPollinated() == 3) {
+                moobloom.setTicksUntilFlowers(moobloom.getRandom().nextIntBetweenInclusive(80, 120));
+            }
+            if (!moobloom.level.isClientSide) {
+                ((ServerLevel) moobloom.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, moobloom.position().x(), moobloom.position().y() + 1.4D, moobloom.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
+            }
         }
 
         this.pollinating = false;
@@ -219,7 +227,7 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
     }
 
     private Optional<FlowerCow> findMoobloom() {
-        FlowerCow moobloom = this.bee.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level.getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((FlowerCow)entity).bee == null), null, bee.getX(), bee.getY(), bee.getZ(), bee.getBoundingBox().inflate(6.0F, 4.0, 6.0F));
+        FlowerCow moobloom = this.bee.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level.getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((FlowerCow)entity).getTicksUntilFlowers() == 0 && ((FlowerCow)entity).bee == null), null, bee.getX(), bee.getY(), bee.getZ(), bee.getBoundingBox().inflate(6.0F, 4.0, 6.0F));
         return Optional.ofNullable(moobloom);
     }
 }

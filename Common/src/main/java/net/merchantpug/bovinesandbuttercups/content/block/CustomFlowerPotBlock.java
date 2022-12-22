@@ -88,7 +88,6 @@ public class CustomFlowerPotBlock extends BaseEntityBlock {
         return false;
     }
 
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

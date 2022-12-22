@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +21,11 @@ public class LockdownEffectComponentImpl implements LockdownEffectComponent, Aut
 
     public LockdownEffectComponentImpl(LivingEntity provider) {
         this.provider = provider;
+    }
+
+    @Override
+    public boolean shouldSyncWith(ServerPlayer player) {
+        return provider == player || PlayerLookup.tracking(provider).contains(player);
     }
 
     @Override

@@ -12,13 +12,6 @@
     ],
     "subtitle": "subtitles.entity.moobloom.convert"
   },
-  "entity.moobloom.drink": {
-    "subtitle": "subtitles.entity.moobloom.drink",
-    "sounds": [
-      "bovinesandbuttercups:mob/moobloom/drink1",
-      "bovinesandbuttercups:mob/moobloom/drink2"
-    ]
-  },
   "entity.moobloom.eat": {
     "subtitle": "subtitles.entity.moobloom.eat",
     "sounds": [

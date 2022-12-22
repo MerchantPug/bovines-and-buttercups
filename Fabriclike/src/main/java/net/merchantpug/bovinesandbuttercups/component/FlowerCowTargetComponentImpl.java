@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.component;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +16,11 @@ public class FlowerCowTargetComponentImpl implements FlowerCowTargetComponent, A
 
     public FlowerCowTargetComponentImpl(Bee provider) {
         this.provider = provider;
+    }
+
+    @Override
+    public boolean shouldSyncWith(ServerPlayer player) {
+        return PlayerLookup.tracking(provider).contains(player);
     }
 
     @Override

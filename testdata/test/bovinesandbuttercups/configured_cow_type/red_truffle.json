@@ -13,5 +13,6 @@
       "type": "test:blue_truffle",
       "weight": 2
     }
-  ]
+  ],
+  "can_eat_flowers": true
 }

@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.platform.services;
 
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;

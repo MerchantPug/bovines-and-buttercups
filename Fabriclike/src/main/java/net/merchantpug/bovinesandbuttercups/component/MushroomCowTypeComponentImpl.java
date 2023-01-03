@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.component;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.mixin.fabriclike.MushroomCowAccessor;

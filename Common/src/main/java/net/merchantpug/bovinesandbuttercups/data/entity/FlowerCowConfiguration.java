@@ -2,15 +2,13 @@ package net.merchantpug.bovinesandbuttercups.data.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
+import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -25,7 +23,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     private final FlowerCowFlower bud;
     private final BackGrassConfiguration backGrassConfiguration;
     private final Optional<MobEffectInstance> nectarEffectInstance;
-    private final Optional<List<BlockState>> breedingRequirements;
+    private final Optional<BreedingConditionConfiguration> breedingRequirements;
 
     FlowerCowConfiguration(Optional<ResourceLocation> cowTexture,
                            Optional<HolderSet<Biome>> biomes,
@@ -35,7 +33,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                            FlowerCowFlower bud,
                            BackGrassConfiguration backGrassConfiguration,
                            Optional<MobEffectInstance> nectarEffectInstance,
-                           Optional<List<BlockState>> breedingRequirements) {
+                           Optional<BreedingConditionConfiguration> breedingRequirements) {
         super(cowTexture, biomes, naturalSpawnWeight, thunderConverts);
         this.flower = flower;
         this.bud = bud;
@@ -53,7 +51,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
             FlowerCowFlower.CODEC.fieldOf("bud").forGetter(FlowerCowConfiguration::getBud),
             BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true)).forGetter(FlowerCowConfiguration::getBackGrassConfiguration),
             MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
-            Codec.list(BlockState.CODEC).optionalFieldOf("breeding_requirements").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingRequirements)
+            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
     ).apply(builder, FlowerCowConfiguration::new));
 
     public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty());
@@ -74,7 +72,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
         return this.nectarEffectInstance;
     }
 
-    public Optional<List<BlockState>> getBreedingRequirements() {
+    public Optional<BreedingConditionConfiguration> getBreedingConditions() {
         return this.breedingRequirements;
     }
 

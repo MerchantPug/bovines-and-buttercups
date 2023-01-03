@@ -18,5 +18,33 @@
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "blocks": [
+          "minecraft:dandelion"
+        ],
+        "block_states": [
+          {
+            "Name": "minecraft:sunflower",
+            "Properties": {
+              "half": "upper"
+            }
+          }
+        ],
+        "operation": "and"
+      },
+      {
+        "blocks": [
+          "minecraft:birch_log",
+          "minecraft:birch_sapling"
+        ],
+        "operation": "or"
+      }
+    ],
+    "particle": {
+      "type": "minecraft:happy_villager"
+    }
+  }
 }

@@ -4,7 +4,7 @@
     "flower_type": "test:fire_flower"
   },
   "bud": {
-    "model_location": "test:fire_flower"
+    "model_location": "test:bovinesandbuttercups/fire_flower_bud"
   },
   "nectar_effect": {
     "effect": "minecraft:fire_resistance",

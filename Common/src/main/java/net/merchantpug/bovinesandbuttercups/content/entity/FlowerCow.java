@@ -1,11 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.content.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.CowType;
-import net.merchantpug.bovinesandbuttercups.api.CowTypeConfiguration;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.CowType;
+import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
+import net.merchantpug.bovinesandbuttercups.data.entity.BreedingConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
@@ -41,15 +42,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.placement.HeightmapPlacement;
-import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
@@ -329,32 +325,36 @@ public class FlowerCow extends Cow {
         return super.mobInteract(player, hand);
     }
 
-    public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow other) {
+    public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow otherParent) {
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
 
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> flowerCowType = (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType;
-            if (flowerCowType.getConfiguration().getBreedingRequirements().isEmpty()) continue;
-            if (new HashSet<>(level.getBlockStates(this.getBoundingBox().inflate(8.0D)).toList()).containsAll(flowerCowType.getConfiguration().getBreedingRequirements().get())) {
+            if (flowerCowType.getConfiguration().getBreedingConditions().isEmpty()) continue;
+            if (flowerCowType.getConfiguration().getBreedingConditions().get().test(this.blockPosition(), level))
                 eligibleCowTypes.add(flowerCowType);
-            }
         }
 
         if (!eligibleCowTypes.isEmpty()) {
             int random = this.getRandom().nextInt() % eligibleCowTypes.size();
-            return eligibleCowTypes.get(random);
+            var randomType = eligibleCowTypes.get(random);
+            Optional<BreedingConditionConfiguration> configuration = randomType.getConfiguration().getBreedingConditions();
+            if (configuration.isPresent() && configuration.get().getParticleOptions().isPresent()) {
+                configuration.get().spawnParticleTrail(this, level);
+            }
+            return randomType;
         }
 
-        if (other.getFlowerCowType().equals(this.getFlowerCowType()) && this.getRandom().nextBoolean()) {
-            return other.getFlowerCowType();
-        }
+        if (!otherParent.getFlowerCowType().equals(this.getFlowerCowType()) && this.getRandom().nextBoolean())
+            return otherParent.getFlowerCowType();
+
         return this.getFlowerCowType();
     }
 
     @Override
     public FlowerCow getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         FlowerCow flowerCow = Services.PLATFORM.getMoobloomEntity().create(serverLevel);
-        flowerCow.setFlowerType(this.chooseBabyType(serverLevel, (FlowerCow)ageableMob), this.getLevel());
+        flowerCow.setFlowerType(this.chooseBabyType(serverLevel, (FlowerCow)ageableMob), serverLevel);
         return flowerCow;
     }
 

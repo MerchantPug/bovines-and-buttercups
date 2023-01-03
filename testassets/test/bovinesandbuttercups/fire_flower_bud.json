@@ -1,0 +1,8 @@
+{
+  "type": "bovinesandbuttercups:generic",
+  "variants": {
+    "": {
+      "model": "test:block/fire_flower_bud"
+    }
+  }
+}

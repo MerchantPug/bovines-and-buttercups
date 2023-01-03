@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.api;
+package net.merchantpug.bovinesandbuttercups.api.type;
 
 import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;

@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.google.auto.service.AutoService;
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.services.IComponentHelper;

@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
 
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;

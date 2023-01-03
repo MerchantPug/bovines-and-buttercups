@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.capabilities;
 
-import net.merchantpug.bovinesandbuttercups.api.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

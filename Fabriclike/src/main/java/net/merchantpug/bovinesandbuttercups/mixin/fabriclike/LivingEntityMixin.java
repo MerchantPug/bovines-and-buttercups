@@ -76,7 +76,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "canBeAffected", at = @At(value = "RETURN"), cancellable = true)
     private void bovinesandbuttercups$cancelStatusEffectIfNullified(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
-        if (this.hasEffect(BovineEffects.LOCKDOWN.get()) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().containsKey(effect.getEffect())) {
+        if (this.hasEffect(BovineEffects.LOCKDOWN.get()) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().containsKey(effect.getEffect()) && effect.getAmplifier() < 2) {
             cir.setReturnValue(false);
         }
     }

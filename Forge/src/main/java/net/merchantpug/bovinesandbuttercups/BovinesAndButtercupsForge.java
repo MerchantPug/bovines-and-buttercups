@@ -239,7 +239,7 @@ public class BovinesAndButtercupsForge {
         });
         eventBus.addListener((MobEffectEvent.Applicable event) -> {
             event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
-                if (cap.getLockdownMobEffects().containsKey(event.getEffectInstance().getEffect())) {
+                if (cap.getLockdownMobEffects().containsKey(event.getEffectInstance().getEffect()) && event.getEffectInstance().getAmplifier() < 2) {
                     event.setResult(Event.Result.DENY);
                 }
             });

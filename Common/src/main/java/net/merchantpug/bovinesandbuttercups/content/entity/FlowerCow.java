@@ -51,6 +51,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -386,7 +387,9 @@ public class FlowerCow extends Cow {
         }
 
         stateMap.forEach((state, pos) -> {
-            AABB blockBox = state.getShape(level, pos).bounds();
+            VoxelShape shape = state.getShape(level, pos);
+            if (shape.isEmpty()) return;
+            AABB blockBox = shape.bounds();
             createParticleTail(blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), breedingCondition.get().getParticleOptions().get());
         });
     }

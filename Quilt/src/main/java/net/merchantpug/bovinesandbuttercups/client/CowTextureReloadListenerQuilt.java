@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.quiltmc.qsl.resource.loader.api.reloader.IdentifiableResourceReloader;

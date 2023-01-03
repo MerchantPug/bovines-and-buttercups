@@ -31,6 +31,7 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowDa
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMyceliumLayer;
 import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
+import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;

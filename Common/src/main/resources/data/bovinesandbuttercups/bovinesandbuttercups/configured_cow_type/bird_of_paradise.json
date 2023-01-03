@@ -10,11 +10,46 @@
   },
   "nectar_effect": {
     "effect": "minecraft:night_vision",
-    "duration": 800
+    "duration": 12000
   },
   "thunder_conversion_types": [
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "blocks": [
+          "minecraft:melon",
+          "minecraft:melon_stem"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
+          "minecraft:poppy",
+          "minecraft:potted_poppy"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
+          "minecraft:acacia_log",
+          "minecraft:acacia_wood",
+          "minecraft:acacia_sapling",
+          "minecraft:potted_acacia_sapling"
+        ],
+        "operation": "or"
+      }
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.8431372549,
+        0.43921568627,
+        0.17647058823
+      ]
+    }
+  }
 }

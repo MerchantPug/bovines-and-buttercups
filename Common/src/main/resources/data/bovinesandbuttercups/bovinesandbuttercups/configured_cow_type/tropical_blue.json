@@ -10,11 +10,44 @@
   },
   "nectar_effect": {
     "effect": "minecraft:slow_falling",
-    "duration": 800
+    "duration": 7200
   },
   "thunder_conversion_types": [
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "blocks": [
+          "minecraft:cocoa"
+        ]
+      },
+      {
+        "blocks": [
+          "minecraft:bamboo",
+          "minecraft:potted_bamboo"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
+          "minecraft:jungle_log",
+          "minecraft:jungle_wood",
+          "minecraft:jungle_sapling",
+          "minecraft:potted_jungle_sapling"
+        ],
+        "operation": "or"
+      }
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.23921568627,
+        0.19607843137,
+        0.87058823529
+      ]
+    }
+  }
 }

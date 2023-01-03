@@ -10,7 +10,7 @@
   },
   "nectar_effect": {
     "effect": "minecraft:speed",
-    "duration": 800
+    "duration": 3600
   },
   "spawn_biomes": "minecraft:flower_forest",
   "natural_spawn_weight": 1,
@@ -18,5 +18,45 @@
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "block_states": [
+          {
+            "Name": "minecraft:lilac",
+            "Properties": {
+              "half": "upper"
+            }
+          }
+        ]
+      },
+      {
+        "blocks": [
+          "minecraft:allium",
+          "minecraft:potted_allium",
+          "minecraft:pink_tulip",
+          "minecraft:potted_pink_tulip"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
+          "minecraft:oak_log",
+          "minecraft:oak_wood",
+          "minecraft:oak_sapling",
+          "minecraft:potted_oak_sapling"
+        ],
+        "operation": "or"
+      }
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.98823529411,
+        0.68235294117,
+        0.80784313725
+      ]
+    }
+  }
 }

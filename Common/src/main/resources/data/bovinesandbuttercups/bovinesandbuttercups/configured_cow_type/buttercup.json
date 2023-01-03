@@ -10,7 +10,7 @@
   },
   "nectar_effect": {
     "effect": "minecraft:poison",
-    "duration": 800
+    "duration": 3600
   },
   "spawn_biomes": "minecraft:flower_forest",
   "natural_spawn_weight": 7,
@@ -29,8 +29,7 @@
               "half": "upper"
             }
           }
-        ],
-        "operation": "and"
+        ]
       },
       {
         "blocks": [

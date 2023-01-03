@@ -10,11 +10,24 @@
   },
   "nectar_effect": {
     "effect": "minecraft:haste",
-    "duration": 400
+    "duration": 900
   },
   "thunder_conversion_types": [
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+    "predicates": [
+
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.45098039215,
+        0.7294117647,
+        0.93333333333
+      ]
+    }
+  }
 }

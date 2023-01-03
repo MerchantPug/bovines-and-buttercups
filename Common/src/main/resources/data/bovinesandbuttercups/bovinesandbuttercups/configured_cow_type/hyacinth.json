@@ -10,11 +10,49 @@
   },
   "nectar_effect": {
     "effect": "minecraft:strength",
-    "duration": 400
+    "duration": 3600
   },
   "thunder_conversion_types": [
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "block_states": [
+          {
+            "Name": "minecraft:rose_bush",
+            "Properties": {
+              "half": "upper"
+            }
+          }
+        ]
+      },
+      {
+        "blocks": [
+          "minecraft:cornflower",
+          "minecraft:potted_cornflower"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
+          "minecraft:dark_oak_log",
+          "minecraft:dark_oak_wood",
+          "minecraft:dark_oak_sapling",
+          "minecraft:potted_dark_oak_sapling"
+        ],
+        "operation": "or"
+      }
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.41960784313,
+        0.22745098039,
+        0.71372549019
+      ]
+    }
+  }
 }

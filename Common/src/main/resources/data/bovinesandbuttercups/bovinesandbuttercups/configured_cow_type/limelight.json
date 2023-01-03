@@ -10,11 +10,46 @@
   },
   "nectar_effect": {
     "effect": "minecraft:mining_fatigue",
-    "duration": 1200
+    "duration": 12000
   },
   "thunder_conversion_types": [
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+  "predicates": [
+    {
+      "blocks": [
+        "minecraft:moss_block",
+        "minecraft:moss_carpet"
+      ],
+      "operation": "or"
+    },
+    {
+      "blocks": [
+        "minecraft:flowering_azalea",
+        "minecraft:potted_flowering_azalea_bush"
+      ],
+      "operation": "or"
+    },
+    {
+      "blocks": [
+        "minecraft:oak_log",
+        "minecraft:oak_wood",
+        "minecraft:azalea",
+        "minecraft:potted_azalea_bush"
+      ],
+      "operation": "or"
+    }
+  ],
+  "particle": {
+    "type": "bovinesandbuttercups:sparkle",
+    "color": [
+      0.52549019607,
+      0.87058823529,
+      0.51764705882
+    ]
+  }
+}
 }

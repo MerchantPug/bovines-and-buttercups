@@ -10,11 +10,44 @@
   },
   "nectar_effect": {
     "effect": "minecraft:slowness",
-    "duration": 800
+    "duration": 3600
   },
   "thunder_conversion_types": [
     {
       "type": "bovinesandbuttercups:chargelily"
     }
-  ]
+  ],
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "blocks": [
+          "minecraft:snow"
+        ]
+      },
+      {
+        "blocks": [
+          "minecraft:fern",
+          "minecraft:potted_fern"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
+          "minecraft:spruce_log",
+          "minecraft:spruce_wood",
+          "minecraft:spruce_sapling",
+          "minecraft:potted_spruce_sapling"
+        ],
+        "operation": "or"
+      }
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.75294117647,
+        0.80784313725,
+        0.92156862745
+      ]
+    }
+  }
 }

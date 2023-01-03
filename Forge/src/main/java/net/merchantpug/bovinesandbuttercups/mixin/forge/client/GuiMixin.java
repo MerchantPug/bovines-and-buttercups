@@ -36,7 +36,7 @@ public class GuiMixin extends GuiComponent {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovineEffects.LOCKDOWN.get())) return;
 
         minecraft.player.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
-           if (cap.getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
+           if (cap.getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect()) && mobEffectInstance.getAmplifier() < 2) {
                 RenderSystem.setShaderTexture(0, BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"));
                 blit(poseStack, k, l, this.getBlitOffset(), 36, 4, 24, 24, 64, 32);
                 RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);

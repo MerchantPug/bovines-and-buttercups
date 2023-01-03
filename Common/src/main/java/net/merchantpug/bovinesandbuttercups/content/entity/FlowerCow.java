@@ -405,7 +405,7 @@ public class FlowerCow extends Cow {
     public boolean testBreedingBlocks(FlowerCowConfiguration configuration, LevelAccessor level) {
         Optional<BreedingConditionConfiguration> breedingCondition = configuration.getBreedingConditions();
 
-        if (breedingCondition.isEmpty() || breedingCondition.get().getBlockPredicates().isEmpty())
+        if (breedingCondition.isEmpty() || breedingCondition.get().getBlockPredicates().isEmpty() && !breedingCondition.get().shouldIncludeAssociatedBlock())
             return false;
 
         HashMap<BreedingConditionConfiguration.BlockPredicate, Set<BlockState>> predicateValues = new HashMap<>();

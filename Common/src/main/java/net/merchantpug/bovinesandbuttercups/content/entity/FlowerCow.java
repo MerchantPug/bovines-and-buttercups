@@ -340,7 +340,7 @@ public class FlowerCow extends Cow {
         }
 
         if (!eligibleCowTypes.isEmpty()) {
-            int random = this.getRandom().nextInt() % eligibleCowTypes.size();
+            int random = this.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
             this.spawnParticleToBreedPosition(randomType.getConfiguration(), level);
             return randomType;

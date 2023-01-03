@@ -14,6 +14,7 @@ import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -44,9 +45,12 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -331,17 +335,14 @@ public class FlowerCow extends Cow {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> flowerCowType = (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType;
             if (flowerCowType.getConfiguration().getBreedingConditions().isEmpty()) continue;
-            if (flowerCowType.getConfiguration().getBreedingConditions().get().test(this.blockPosition(), level))
+            if (this.testBreedingBlocks(flowerCowType.getConfiguration(), level))
                 eligibleCowTypes.add(flowerCowType);
         }
 
         if (!eligibleCowTypes.isEmpty()) {
             int random = this.getRandom().nextInt() % eligibleCowTypes.size();
             var randomType = eligibleCowTypes.get(random);
-            Optional<BreedingConditionConfiguration> configuration = randomType.getConfiguration().getBreedingConditions();
-            if (configuration.isPresent() && configuration.get().getParticleOptions().isPresent()) {
-                configuration.get().spawnParticleTrail(this, level);
-            }
+            this.spawnParticleToBreedPosition(randomType.getConfiguration(), level);
             return randomType;
         }
 
@@ -349,6 +350,102 @@ public class FlowerCow extends Cow {
             return otherParent.getFlowerCowType();
 
         return this.getFlowerCowType();
+    }
+
+
+    public void spawnParticleToBreedPosition(FlowerCowConfiguration configuration, LevelAccessor level) {
+        Optional<BreedingConditionConfiguration> breedingCondition = configuration.getBreedingConditions();
+        if (breedingCondition.isEmpty() || breedingCondition.get().getParticleOptions().isEmpty()) return;
+        double radius = breedingCondition.get().getRadius();
+        Map<BlockState, BlockPos> stateMap = new HashMap<>();
+
+        AABB box = new AABB(this.blockPosition()).move(0, radius - 1, 0).inflate(radius);
+        for (BlockPos pos : BlockPos.betweenClosed((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ)) {
+            BlockState state = level.getBlockState(pos);
+
+            breedingCondition.get().getBlockPredicates().forEach(blockPredicate -> {
+                if (blockPredicate.operation() != BreedingConditionConfiguration.PredicateOperation.NOT && (blockPredicate.blocks().isPresent() && blockPredicate.blocks().get().contains(state.getBlock()) || blockPredicate.states().isPresent() && blockPredicate.states().get().contains(state)) && (!stateMap.containsKey(state) || pos.distSqr(this.blockPosition()) < stateMap.get(state).distSqr(this.blockPosition()))) {
+                    stateMap.put(state, pos.immutable());
+                }
+            });
+
+            if (breedingCondition.get().shouldIncludeAssociatedBlock()) {
+                if (configuration.getFlower().blockState().isPresent() && state == configuration.getFlower().blockState().get()) {
+                    stateMap.clear();
+                    stateMap.put(state, pos.immutable());
+                    break;
+                } else if (configuration.getFlower().getFlowerType(level).isPresent() &&
+                        state.is(BovineBlocks.CUSTOM_FLOWER.get()) &&
+                        level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity &&
+                        ((CustomFlowerBlockEntity)level.getBlockEntity(pos)).getFlowerType() == configuration.getFlower().getFlowerType(level).get()) {
+                    stateMap.clear();
+                    stateMap.put(state, pos.immutable());
+                    break;
+                }
+            }
+        }
+
+        stateMap.forEach((state, pos) -> {
+            AABB blockBox = state.getShape(level, pos).bounds();
+            createParticleTail(blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), breedingCondition.get().getParticleOptions().get());
+        });
+    }
+
+    public void createParticleTail(Vec3 pos, ParticleOptions options) {
+        double value = (1 - (1 / (pos.distanceTo(this.position()) + 1))) / 4;
+
+        for (double d = 0.0; d < 1.0; d += value) {
+            ((ServerLevel)this.level).sendParticles(options, Mth.lerp(d, pos.x(), this.position().x()), Mth.lerp(d, pos.y(), this.position().y()), Mth.lerp(d, pos.z(), this.position().z()), 1, 0, 0, 0, 0);
+        }
+    }
+
+    public boolean testBreedingBlocks(FlowerCowConfiguration configuration, LevelAccessor level) {
+        Optional<BreedingConditionConfiguration> breedingCondition = configuration.getBreedingConditions();
+
+        if (breedingCondition.isEmpty())
+            return false;
+
+        HashMap<BreedingConditionConfiguration.BlockPredicate, Set<BlockState>> predicateValues = new HashMap<>();
+        breedingCondition.get().getBlockPredicates().forEach(blockPredicate -> predicateValues.put(blockPredicate, new HashSet<>()));
+
+        double radius = breedingCondition.get().getRadius();
+        boolean associatedBlockFound = false;
+
+        AABB box = new AABB(this.blockPosition()).move(0, radius - 2, 0).inflate(radius - 1);
+        for (BlockPos pos : BlockPos.betweenClosed((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ)) {
+            BlockState state = level.getBlockState(pos.immutable());
+
+            for (Map.Entry<BreedingConditionConfiguration.BlockPredicate, Set<BlockState>> entry : predicateValues.entrySet()) {
+                if (!entry.getValue().contains(state) && (entry.getKey().blocks().isPresent() && entry.getKey().blocks().get().contains(state.getBlock()) || entry.getKey().states().isPresent() && entry.getKey().states().get().contains(state))) {
+                    entry.getValue().add(state);
+                    predicateValues.put(entry.getKey(), entry.getValue());
+                }
+            }
+            if (breedingCondition.get().shouldIncludeAssociatedBlock()) {
+                if (configuration.getFlower().blockState().isPresent() && state == configuration.getFlower().blockState().get()) {
+                    associatedBlockFound = true;
+                    break;
+                } else if (configuration.getFlower().getFlowerType(level).isPresent() &&
+                        state.is(BovineBlocks.CUSTOM_FLOWER.get()) &&
+                        level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity &&
+                        ((CustomFlowerBlockEntity)level.getBlockEntity(pos)).getFlowerType() == configuration.getFlower().getFlowerType(level).get()) {
+                    associatedBlockFound = true;
+                    break;
+                }
+            }
+        }
+
+        if (associatedBlockFound)
+            return true;
+
+        return predicateValues.entrySet().stream().allMatch(entry -> {
+            if (entry.getKey().operation() == BreedingConditionConfiguration.PredicateOperation.AND && (entry.getKey().blocks().isEmpty() || new HashSet<>(entry.getValue().stream().map(BlockBehaviour.BlockStateBase::getBlock).toList()).containsAll(entry.getKey().blocks().get())) && (entry.getKey().states().isEmpty() || entry.getValue().containsAll(entry.getKey().states().get())))
+                return true;
+            else if (entry.getKey().operation() == BreedingConditionConfiguration.PredicateOperation.OR && entry.getValue().stream().anyMatch(state -> entry.getKey().blocks().isPresent() && entry.getKey().blocks().get().contains(state.getBlock())) || entry.getValue().stream().anyMatch(state -> entry.getKey().states().isPresent() && entry.getKey().states().get().contains(state)))
+                return true;
+            else
+                return entry.getKey().operation() == BreedingConditionConfiguration.PredicateOperation.NOT && entry.getValue().stream().noneMatch(state -> entry.getKey().blocks().isPresent() && entry.getKey().blocks().get().contains(state.getBlock())) && entry.getValue().stream().noneMatch(state -> entry.getKey().states().isPresent() && entry.getKey().states().get().contains(state));
+        });
     }
 
     @Override

@@ -15,7 +15,13 @@ public record ModelLocationParticleOption(ResourceLocation modelKey, String mode
     public static final Deserializer<ModelLocationParticleOption> DESERIALIZER = new Deserializer<>() {
         public ModelLocationParticleOption fromCommand(ParticleType<ModelLocationParticleOption> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new ModelLocationParticleOption(ResourceLocation.tryParse(reader.getString()), reader.getString());
+            String namespace = reader.readString();
+            reader.expect(' ');
+            String location = reader.readString();
+            reader.expect(' ');
+            String variant = reader.readString();
+            ResourceLocation resourceLocation = new ResourceLocation(namespace, location);
+            return new ModelLocationParticleOption(resourceLocation, variant);
         }
 
         public ModelLocationParticleOption fromNetwork(ParticleType<ModelLocationParticleOption> particleType, FriendlyByteBuf buf) {

@@ -23,7 +23,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     private final FlowerCowFlower bud;
     private final BackGrassConfiguration backGrassConfiguration;
     private final Optional<MobEffectInstance> nectarEffectInstance;
-    private final Optional<BreedingConditionConfiguration> breedingRequirements;
+    private final Optional<BreedingConditionConfiguration> breedingConditions;
 
     FlowerCowConfiguration(Optional<ResourceLocation> cowTexture,
                            Optional<HolderSet<Biome>> biomes,
@@ -33,13 +33,13 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                            FlowerCowFlower bud,
                            BackGrassConfiguration backGrassConfiguration,
                            Optional<MobEffectInstance> nectarEffectInstance,
-                           Optional<BreedingConditionConfiguration> breedingRequirements) {
+                           Optional<BreedingConditionConfiguration> breedingConditions) {
         super(cowTexture, biomes, naturalSpawnWeight, thunderConverts);
         this.flower = flower;
         this.bud = bud;
         this.backGrassConfiguration = backGrassConfiguration;
         this.nectarEffectInstance = nectarEffectInstance;
-        this.breedingRequirements = breedingRequirements;
+        this.breedingConditions = breedingConditions;
     }
 
     public static final Codec<FlowerCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
@@ -73,7 +73,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     }
 
     public Optional<BreedingConditionConfiguration> getBreedingConditions() {
-        return this.breedingRequirements;
+        return this.breedingConditions;
     }
 
     @Override
@@ -84,12 +84,12 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
         if (!(obj instanceof FlowerCowConfiguration other))
             return false;
 
-        return super.equals(obj) && other.flower.equals(this.flower) && other.bud.equals(this.bud) && other.backGrassConfiguration.equals(this.backGrassConfiguration) && other.nectarEffectInstance.equals(this.nectarEffectInstance) && other.breedingRequirements.equals(this.breedingRequirements);
+        return super.equals(obj) && other.flower.equals(this.flower) && other.bud.equals(this.bud) && other.backGrassConfiguration.equals(this.backGrassConfiguration) && other.nectarEffectInstance.equals(this.nectarEffectInstance) && other.breedingConditions.equals(this.breedingConditions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getCowTexture(), super.getBiomes(), super.getNaturalSpawnWeight(), this.flower, this.bud, this.backGrassConfiguration, this.nectarEffectInstance, this.breedingRequirements);
+        return Objects.hash(super.getCowTexture(), super.getBiomes(), super.getNaturalSpawnWeight(), this.flower, this.bud, this.backGrassConfiguration, this.nectarEffectInstance, this.breedingConditions);
     }
 
     public record FlowerCowFlower(Optional<BlockState> blockState,

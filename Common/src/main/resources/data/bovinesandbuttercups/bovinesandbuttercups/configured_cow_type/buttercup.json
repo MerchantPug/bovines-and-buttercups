@@ -22,9 +22,6 @@
   "breeding_conditions": {
     "predicates": [
       {
-        "blocks": [
-          "minecraft:dandelion"
-        ],
         "block_states": [
           {
             "Name": "minecraft:sunflower",
@@ -37,14 +34,28 @@
       },
       {
         "blocks": [
+          "minecraft:dandelion",
+          "minecraft:potted_dandelion"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
           "minecraft:birch_log",
-          "minecraft:birch_sapling"
+          "minecraft:birch_wood",
+          "minecraft:birch_sapling",
+          "minecraft:potted_birch_sapling"
         ],
         "operation": "or"
       }
     ],
     "particle": {
-      "type": "minecraft:happy_villager"
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.98039215686,
+        0.79215686274,
+        0.0
+      ]
     }
   }
 }

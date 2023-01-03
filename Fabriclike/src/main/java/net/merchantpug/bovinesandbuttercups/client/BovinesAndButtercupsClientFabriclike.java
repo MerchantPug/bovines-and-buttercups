@@ -4,6 +4,7 @@ import net.merchantpug.bovinesandbuttercups.client.item.CustomFlowerItemRenderer
 import net.merchantpug.bovinesandbuttercups.client.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.SparkleParticle;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
@@ -34,5 +35,6 @@ public class BovinesAndButtercupsClientFabriclike {
         BuiltinItemRendererRegistry.INSTANCE.register(Services.PLATFORM.getCustomHugeMushroomItem(), new CustomHugeMushroomItemRenderer());
 
         ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
+        ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.SPARKLE.get(), SparkleParticle.Provider::new);
     }
 }

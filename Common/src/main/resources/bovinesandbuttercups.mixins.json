@@ -16,6 +16,7 @@
     "InventoryMenuMixin",
     "ItemStackMixin",
     "MobAccessor",
+    "MobEffectInstanceMixin",
     "MushroomCowMixin",
     "SuspiciousStewRecipeMixin"
   ],

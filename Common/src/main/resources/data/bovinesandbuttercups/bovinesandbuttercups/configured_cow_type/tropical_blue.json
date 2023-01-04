@@ -27,6 +27,7 @@
       {
         "blocks": [
           "minecraft:bamboo",
+          "minecraft:bamboo_sapling",
           "minecraft:potted_bamboo"
         ],
         "operation": "or"

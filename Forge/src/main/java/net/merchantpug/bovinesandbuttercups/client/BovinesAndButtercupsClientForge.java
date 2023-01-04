@@ -62,6 +62,7 @@ public class BovinesAndButtercupsClientForge {
 
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        BovinesAndButtercupsClient.registerCowTexturePaths();
         event.registerReloadListener(new CowTextureReloadListener());
     }
 

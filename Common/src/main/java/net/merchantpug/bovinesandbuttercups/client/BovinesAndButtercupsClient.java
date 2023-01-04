@@ -16,9 +16,10 @@ public class BovinesAndButtercupsClient {
 
     public static void init() {
         BovineBlockstateTypes.init();
-        registerCowTexturePath("textures/entity/cow");
-        registerCowTexturePath("textures/entity/mooshroom");
-        registerCowTexturePath("textures/entity/moobloom");
+
+        if (Services.PLATFORM.getPlatformName().equals("Fabric") || Services.PLATFORM.getPlatformName().equals("Quilt")) {
+            registerCowTexturePaths();
+        }
 
         Services.PLATFORM.setRenderLayer(BovineBlocks.BUTTERCUP.get(), RenderType.cutout());
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_BUTTERCUP.get(), RenderType.cutout());
@@ -42,15 +43,20 @@ public class BovinesAndButtercupsClient {
         Services.PLATFORM.setRenderLayer(BovineBlocks.POTTED_CUSTOM_MUSHROOM.get(), RenderType.cutout());
     }
 
-    public static boolean registerCowTexturePath(String path) {
-        if (!COW_TEXTURE_PATHS.contains(path)) {
-            return COW_TEXTURE_PATHS.add(path);
-        }
-        BovinesAndButtercups.LOG.warn("Tried registering cow texture path '{}' more than once. (Skipping).", path);
-        return false;
+    public static void registerCowTexturePath(String path) {
+        if (!COW_TEXTURE_PATHS.contains(path))
+            COW_TEXTURE_PATHS.add(path);
+        else
+            BovinesAndButtercups.LOG.warn("Tried registering cow texture path '{}' more than once. (Skipping).", path);
     }
 
     public static Stream<String> cowTexturePathsAsStream() {
         return COW_TEXTURE_PATHS.stream();
+    }
+
+    public static void registerCowTexturePaths() {
+        registerCowTexturePath("textures/entity/cow");
+        registerCowTexturePath("textures/entity/mooshroom");
+        registerCowTexturePath("textures/entity/moobloom");
     }
 }

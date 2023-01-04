@@ -33,7 +33,7 @@ public class GuiMixin extends GuiComponent {
     private void bovinesandbuttercups$overlayLockdownBorder(PoseStack poseStack, CallbackInfo ci, Collection<MobEffectInstance> collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l) {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovineEffects.LOCKDOWN.get())) return;
 
-        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect()) && mobEffectInstance.getAmplifier() < 2) {
+        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
             RenderSystem.setShaderTexture(0, BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"));
             blit(poseStack, k, l, this.getBlitOffset(), 36, 4, 24, 24, 64, 32);
             RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);

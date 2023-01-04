@@ -15,11 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class MobEffectInstanceMixin {
     @Shadow public abstract MobEffect getEffect();
 
-    @Shadow public abstract int getAmplifier();
-
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;tickDownDuration()I"), cancellable = true)
     private void bovinesandbuttercups$lockDuration(LivingEntity living, Runnable runnable, CallbackInfoReturnable<Boolean> cir) {
-        if (living.hasEffect(BovineEffects.LOCKDOWN.get()) && this.getAmplifier() < 2 && Services.COMPONENT.getLockdownMobEffects(living).containsKey(this.getEffect()))
+        if (living.hasEffect(BovineEffects.LOCKDOWN.get()) && Services.COMPONENT.getLockdownMobEffects(living).containsKey(this.getEffect()))
             cir.setReturnValue(true);
     }
 }

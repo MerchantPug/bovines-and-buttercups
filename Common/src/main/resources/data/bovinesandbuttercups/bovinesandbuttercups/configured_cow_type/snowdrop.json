@@ -21,7 +21,7 @@
     "predicates": [
       {
         "blocks": [
-          "minecraft:snow"
+          "minecraft:snow_block"
         ]
       },
       {

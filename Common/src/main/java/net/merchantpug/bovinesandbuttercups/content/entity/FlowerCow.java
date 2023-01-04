@@ -441,6 +441,9 @@ public class FlowerCow extends Cow {
         if (associatedBlockFound)
             return true;
 
+        if (predicateValues.isEmpty())
+            return false;
+
         return predicateValues.entrySet().stream().allMatch(entry -> {
             if (entry.getKey().operation() == BreedingConditionConfiguration.PredicateOperation.AND && (entry.getKey().blocks().isEmpty() || new HashSet<>(entry.getValue().stream().map(BlockBehaviour.BlockStateBase::getBlock).toList()).containsAll(entry.getKey().blocks().get())) && (entry.getKey().states().isEmpty() || entry.getValue().containsAll(entry.getKey().states().get())))
                 return true;

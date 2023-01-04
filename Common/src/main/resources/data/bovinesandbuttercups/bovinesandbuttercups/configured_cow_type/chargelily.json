@@ -18,9 +18,6 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-
-    ],
     "particle": {
       "type": "bovinesandbuttercups:sparkle",
       "color": [

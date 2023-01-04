@@ -22,7 +22,7 @@ public class BreedingConditionConfiguration {
 
     public static final Codec<BreedingConditionConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.DOUBLE.optionalFieldOf("radius", 6.0).forGetter(BreedingConditionConfiguration::getRadius),
-            Codec.list(BlockPredicate.CODEC).optionalFieldOf("predicates", new ArrayList<>()).forGetter(BreedingConditionConfiguration::getBlockPredicates),
+            Codec.list(BlockPredicate.CODEC).optionalFieldOf("predicates", List.of()).forGetter(BreedingConditionConfiguration::getBlockPredicates),
             ParticleTypes.CODEC.optionalFieldOf("particle").orElseGet(Optional::empty).forGetter(BreedingConditionConfiguration::getParticleOptions),
             Codec.BOOL.optionalFieldOf("includes_associated_block", true).forGetter(BreedingConditionConfiguration::shouldIncludeAssociatedBlock)
     ).apply(builder, BreedingConditionConfiguration::new));

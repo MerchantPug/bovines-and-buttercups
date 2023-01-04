@@ -6,6 +6,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.entity.BreedingConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
@@ -44,6 +45,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -371,14 +373,13 @@ public class FlowerCow extends Cow {
             });
 
             if (breedingCondition.get().shouldIncludeAssociatedBlock()) {
-                if (configuration.getFlower().blockState().isPresent() && state == configuration.getFlower().blockState().get()) {
+                if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getFlower().blockState().get().getBlock())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;
                 } else if (configuration.getFlower().getFlowerType(level).isPresent() &&
-                        state.is(BovineBlocks.CUSTOM_FLOWER.get()) &&
-                        level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity &&
-                        ((CustomFlowerBlockEntity)level.getBlockEntity(pos)).getFlowerType() == configuration.getFlower().getFlowerType(level).get()) {
+                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get() ||
+                                state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;
@@ -416,7 +417,7 @@ public class FlowerCow extends Cow {
 
         AABB box = new AABB(this.blockPosition()).move(0, radius - 2, 0).inflate(radius - 1);
         for (BlockPos pos : BlockPos.betweenClosed((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ)) {
-            BlockState state = level.getBlockState(pos.immutable());
+            BlockState state = level.getBlockState(pos);
 
             for (Map.Entry<BreedingConditionConfiguration.BlockPredicate, Set<BlockState>> entry : predicateValues.entrySet()) {
                 if (!entry.getValue().contains(state) && (entry.getKey().blocks().isPresent() && entry.getKey().blocks().get().contains(state.getBlock()) || entry.getKey().states().isPresent() && entry.getKey().states().get().contains(state))) {
@@ -425,13 +426,12 @@ public class FlowerCow extends Cow {
                 }
             }
             if (breedingCondition.get().shouldIncludeAssociatedBlock()) {
-                if (configuration.getFlower().blockState().isPresent() && state == configuration.getFlower().blockState().get()) {
+                if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getFlower().blockState().get().getBlock())) {
                     associatedBlockFound = true;
                     break;
                 } else if (configuration.getFlower().getFlowerType(level).isPresent() &&
-                        state.is(BovineBlocks.CUSTOM_FLOWER.get()) &&
-                        level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity &&
-                        ((CustomFlowerBlockEntity)level.getBlockEntity(pos)).getFlowerType() == configuration.getFlower().getFlowerType(level).get()) {
+                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get() ||
+                        state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get())) {
                     associatedBlockFound = true;
                     break;
                 }

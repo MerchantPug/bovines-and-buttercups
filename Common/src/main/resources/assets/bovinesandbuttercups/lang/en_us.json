@@ -1,6 +1,6 @@
 {
-  "advancements.husbandry.family_gathering.title": "Family Gathering",
-  "advancements.husbandry.family_gathering.description": "Gather all three cow types in one area, and then moo-ve away.",
+  "advancements.husbandry.bovinesandbuttercups.experimentation.title": "Experimentation!",
+  "advancements.husbandry.bovinesandbuttercups.experimentation.description": "Successfully mutate a Moobloom offspring",
 
   "block.bovinesandbuttercups.buttercup": "Buttercup",
   "block.bovinesandbuttercups.pink_daisy": "Pink Daisy",
@@ -10,6 +10,7 @@
   "block.bovinesandbuttercups.hyacinth": "Hyacinth",
   "block.bovinesandbuttercups.snowdrop": "Snowdrop",
   "block.bovinesandbuttercups.tropical_blue": "Tropical Blue",
+  "block.bovinesandbuttercups.freesia": "Freesia",
   "block.bovinesandbuttercups.potted_buttercup": "Potted Buttercup",
   "block.bovinesandbuttercups.potted_pink_daisy": "Potted Pink Daisy",
   "block.bovinesandbuttercups.potted_limelight": "Potted Limelight",
@@ -18,6 +19,7 @@
   "block.bovinesandbuttercups.potted_hyacinth": "Potted Hyacinth",
   "block.bovinesandbuttercups.potted_snowdrop": "Potted Snowdrop",
   "block.bovinesandbuttercups.potted_tropical_blue": "Potted Tropical Blue",
+  "block.bovinesandbuttercups.potted_fresia": "Potted Freesia",
 
   "block.bovinesandbuttercups.custom_flower": "Unknown Flower",
   "block.bovinesandbuttercups.missing_flower": "Unknown Flower",

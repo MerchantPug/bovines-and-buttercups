@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "bovinesandbuttercups:block/freesia"
+  },
+  "render_type": "cutout"
+}

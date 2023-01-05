@@ -346,6 +346,7 @@ public class FlowerCow extends Cow {
             int random = this.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
             this.spawnParticleToBreedPosition(randomType.getConfiguration(), level);
+            BovineCriteriaTriggers.MOOBLOOM_MUTATION.trigger(this.getLoveCause(), BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType));
             return randomType;
         }
 

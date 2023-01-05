@@ -11,8 +11,7 @@
     "MushroomCowAccessor",
     "MushroomCowMixin",
     "PlayerMixin",
-    "RegistryAccessMixin",
-    "ServerPlayerMixin"
+    "RegistryAccessMixin"
   ],
   "client": [
     "client.EffectRenderingInventoryScreenMixin",

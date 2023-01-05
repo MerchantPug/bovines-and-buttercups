@@ -1,0 +1,53 @@
+{
+  "type": "bovinesandbuttercups:moobloom",
+  "flower": {
+    "block_state": {
+      "Name": "bovinesandbuttercups:freesia"
+    }
+  },
+  "bud": {
+    "model_location": "bovinesandbuttercups:bovinesandbuttercups/freesia_bud"
+  },
+  "nectar_effect": {
+    "effect": "minecraft:water_breathing",
+    "duration": 12000
+  },
+  "thunder_conversion_types": [
+    {
+      "type": "bovinesandbuttercups:chargelily"
+    }
+  ],
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "blocks": [
+          "minecraft:lily_pad"
+        ]
+      },
+      {
+        "blocks": [
+          "minecraft:blue_orchid",
+          "minecraft:potted_blue_orchid"
+        ],
+        "operation": "or"
+      },
+      {
+        "blocks": [
+          "minecraft:mangrove_log",
+          "minecraft:mangrove_wood",
+          "minecraft:mangrove_propagule",
+          "minecraft:potted_mangrove_propagule"
+        ],
+        "operation": "or"
+      }
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        0.85098039215,
+        0.15294117647,
+        0.15294117647
+      ]
+    }
+  }
+}

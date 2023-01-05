@@ -193,9 +193,6 @@ public class BovinesAndButtercupsForge {
             if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
             }
-            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-                BovineCriteriaTriggers.NEARBY_ENTITY.trigger(serverPlayer);
-            }
             if (event.getEntity() instanceof Player player) {
                 for (int i = 0; i < player.containerMenu.slots.size(); ++i) {
                     ItemStack stack = player.containerMenu.slots.get(i).getItem();

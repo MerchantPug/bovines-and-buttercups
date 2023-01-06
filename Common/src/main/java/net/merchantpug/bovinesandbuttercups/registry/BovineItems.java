@@ -24,6 +24,7 @@ public class BovineItems {
     public static final RegistryObject<BlockItem> HYACINTH = register("hyacinth", () -> new BlockItem(BovineBlocks.HYACINTH.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
     public static final RegistryObject<BlockItem> SNOWDROP = register("snowdrop", () -> new BlockItem(BovineBlocks.SNOWDROP.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
     public static final RegistryObject<BlockItem> TROPICAL_BLUE = register("tropical_blue", () -> new BlockItem(BovineBlocks.TROPICAL_BLUE.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
+    public static final RegistryObject<BlockItem> FREESIA = register("freesia", () -> new BlockItem(BovineBlocks.FREESIA.get(), new Item.Properties().tab(CreativeModeTab.TAB_DECORATIONS)));
 
     public static void init() {
 

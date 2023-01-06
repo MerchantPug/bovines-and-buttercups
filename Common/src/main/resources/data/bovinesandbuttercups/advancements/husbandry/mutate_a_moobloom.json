@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "display": {
+    "icon": {
+      "item": "bovinesandbuttercups:limelight"
+    },
+    "title": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.experimentation.title"
+    },
+    "description": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.experimentation.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "mutate_moobloom": {
+      "trigger": "bovinesandbuttercups:moobloom_mutation"
+    }
+  },
+  "requirements": [
+    [
+      "mutate_moobloom"
+    ]
+  ]
+}

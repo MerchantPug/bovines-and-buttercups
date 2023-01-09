@@ -1,0 +1,15 @@
+{
+  "name": "bovinesandbuttercups:ranch/plants/pink_daisy_tall_flower",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "bovinesandbuttercups:ranch/plant/lilac",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

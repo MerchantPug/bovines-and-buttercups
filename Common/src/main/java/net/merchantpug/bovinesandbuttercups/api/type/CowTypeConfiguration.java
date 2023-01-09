@@ -42,8 +42,8 @@ public class CowTypeConfiguration {
      */
     protected static <T extends CowTypeConfiguration> Products.P3<RecordCodecBuilder.Mu<T>, Optional<ResourceLocation>, Optional<HolderSet<Biome>>, Integer> codecStart(RecordCodecBuilder.Instance<T> instance) {
         return instance.group(
-                ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getCowTexture),
-                Biome.LIST_CODEC.optionalFieldOf("spawn_biomes").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getBiomes),
+                ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(CowTypeConfiguration::getCowTexture),
+                Biome.LIST_CODEC.optionalFieldOf("spawn_biomes").forGetter(CowTypeConfiguration::getBiomes),
                 Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(CowTypeConfiguration::getNaturalSpawnWeight));
     }
 

@@ -1,0 +1,14 @@
+{
+  "name": "bovinesandbuttercups:ranch/plants/oak",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:feature_pool_element",
+        "feature": "bovinesandbuttercups:oak_unchecked",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

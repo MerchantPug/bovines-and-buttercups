@@ -542,10 +542,12 @@ public class FlowerCow extends Cow {
     @Override
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData entityData, @Nullable CompoundTag entityTag) {
-        if (getTotalSpawnWeight(level, this.blockPosition()) > 0) {
-            this.setFlowerType(getMoobloomSpawnTypeDependingOnBiome(level, this.blockPosition(), this.getRandom()), level);
-        } else {
-            this.setFlowerType(getMoobloomSpawnType(level, this.getRandom()), level);
+        if (entityTag == null || !entityTag.contains("Type")) {
+            if (getTotalSpawnWeight(level, this.blockPosition()) > 0) {
+                this.setFlowerType(getMoobloomSpawnTypeDependingOnBiome(level, this.blockPosition(), this.getRandom()), level);
+            } else {
+                this.setFlowerType(getMoobloomSpawnType(level, this.getRandom()), level);
+            }
         }
         return super.finalizeSpawn(level, difficulty, spawnType, entityData, entityTag);
     }

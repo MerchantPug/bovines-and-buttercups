@@ -43,7 +43,6 @@ public class QuiltPlatformHelper implements IPlatformHelper {
         return QuiltLoader.isDevelopmentEnvironment();
     }
 
-
     @Override
     public <T extends Mob> SpawnEggItem createSpawnEggItem(Supplier<EntityType<T>> entityType, int backgroundColor, int highlightColor, Item.Properties properties) {
         return new SpawnEggItem(entityType.get(), backgroundColor, highlightColor, properties);

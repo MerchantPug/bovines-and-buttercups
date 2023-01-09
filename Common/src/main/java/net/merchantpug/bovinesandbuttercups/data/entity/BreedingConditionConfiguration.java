@@ -23,7 +23,7 @@ public class BreedingConditionConfiguration {
     public static final Codec<BreedingConditionConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.DOUBLE.optionalFieldOf("radius", 6.0).forGetter(BreedingConditionConfiguration::getRadius),
             Codec.list(BlockPredicate.CODEC).optionalFieldOf("predicates", List.of()).forGetter(BreedingConditionConfiguration::getBlockPredicates),
-            ParticleTypes.CODEC.optionalFieldOf("particle").orElseGet(Optional::empty).forGetter(BreedingConditionConfiguration::getParticleOptions),
+            ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(BreedingConditionConfiguration::getParticleOptions),
             Codec.BOOL.optionalFieldOf("includes_associated_block", true).forGetter(BreedingConditionConfiguration::shouldIncludeAssociatedBlock)
     ).apply(builder, BreedingConditionConfiguration::new));
 
@@ -52,8 +52,8 @@ public class BreedingConditionConfiguration {
 
     public record BlockPredicate(Optional<List<Block>> blocks, Optional<List<BlockState>> states, PredicateOperation operation) {
         public static final Codec<BlockPredicate> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                Codec.list(Registry.BLOCK.byNameCodec()).optionalFieldOf("blocks").orElseGet(Optional::empty).forGetter(BlockPredicate::blocks),
-                Codec.list(BlockState.CODEC).optionalFieldOf("block_states").orElseGet(Optional::empty).forGetter(BlockPredicate::states),
+                Codec.list(Registry.BLOCK.byNameCodec()).optionalFieldOf("blocks").forGetter(BlockPredicate::blocks),
+                Codec.list(BlockState.CODEC).optionalFieldOf("block_states").forGetter(BlockPredicate::states),
                 PredicateOperation.CODEC.optionalFieldOf("operation", PredicateOperation.AND).forGetter(BlockPredicate::operation)
         ).apply(builder, BlockPredicate::new));
     }

@@ -1,0 +1,15 @@
+{
+  "name": "bovinesandbuttercups:ranch/plants/buttercup_small_flower",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "bovinesandbuttercups:ranch/plant/dandelion",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

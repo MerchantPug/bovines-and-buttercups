@@ -27,8 +27,8 @@ public record FlowerType(
         Optional<ItemStack> dyeCraftResult) {
 
     public static final MapCodec<FlowerType> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            MobEffectUtil.CODEC.optionalFieldOf("stew_effect").orElseGet(Optional::empty).forGetter(FlowerType::stewEffectInstance),
-            ItemStack.CODEC.optionalFieldOf("dye_craft_result").orElseGet(Optional::empty).forGetter(FlowerType::dyeCraftResult)
+            MobEffectUtil.CODEC.optionalFieldOf("stew_effect").forGetter(FlowerType::stewEffectInstance),
+            ItemStack.CODEC.optionalFieldOf("dye_craft_result").forGetter(FlowerType::dyeCraftResult)
     ).apply(builder, FlowerType::new));
 
     public static final FlowerType MISSING = new FlowerType(Optional.empty(), Optional.empty());

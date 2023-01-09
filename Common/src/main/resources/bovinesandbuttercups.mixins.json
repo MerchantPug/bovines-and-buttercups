@@ -7,6 +7,7 @@
     "BeeAccessor",
     "BeeMixin",
     "BodyRotationControlMixin",
+    "ChunkGeneratorMixin",
     "CraftingContainerMixin",
     "CraftingMenuMixin",
     "EntityAccessor",
@@ -18,7 +19,9 @@
     "MobAccessor",
     "MobEffectInstanceMixin",
     "MushroomCowMixin",
-    "SuspiciousStewRecipeMixin"
+    "PlacedFeatureMixin",
+    "SuspiciousStewRecipeMixin",
+    "WorldGenRegionAccessor"
   ],
   "client": [
     "client.AnvilScreenMixin",

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "bovinesandbuttercups:ranch",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 14,
+    "separation": 4,
+    "salt": 185912631
+  }
+}

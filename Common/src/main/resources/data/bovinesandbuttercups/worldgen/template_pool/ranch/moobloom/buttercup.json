@@ -1,0 +1,17 @@
+{
+  "name": "bovinesandbuttercups:ranch/moobloom/buttercup",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "bovinesandbuttercups:ranch/moobloom/buttercup",
+        "processors": {
+          "processors": []
+        },
+        "projection": "rigid"
+      }
+    }
+  ]
+}

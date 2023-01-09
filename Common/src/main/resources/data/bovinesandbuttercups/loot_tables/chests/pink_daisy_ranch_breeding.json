@@ -1,0 +1,59 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "bovinesandbuttercups:chests/breeding_items/buttercup"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "bovinesandbuttercups:chests/breeding_items/limelight"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "bovinesandbuttercups:chests/breeding_items/bird_of_paradise"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "bovinesandbuttercups:chests/breeding_items/hyacinth"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "bovinesandbuttercups:chests/breeding_items/snowdrop"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "bovinesandbuttercups:chests/breeding_items/tropical_blue"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "bovinesandbuttercups:chests/breeding_items/freesia"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:wheat",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 5
+              },
+              "add": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

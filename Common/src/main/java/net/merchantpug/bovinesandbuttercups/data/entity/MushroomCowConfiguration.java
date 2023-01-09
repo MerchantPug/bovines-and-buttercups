@@ -7,6 +7,8 @@ import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -35,10 +37,10 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
     }
 
     public static final Codec<MushroomCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getCowTexture),
-            Biome.LIST_CODEC.optionalFieldOf("spawn_biomes").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getBiomes),
+            ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(MushroomCowConfiguration::getCowTexture),
+            RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biomes").forGetter(MushroomCowConfiguration::getBiomes),
             Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(MushroomCowConfiguration::getNaturalSpawnWeight),
-            Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getThunderConversionTypes),
+            Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").forGetter(CowTypeConfiguration::getThunderConversionTypes),
             MushroomCowMushroom.CODEC.fieldOf("mushroom").forGetter(MushroomCowConfiguration::getMushroom),
             BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false)).forGetter(MushroomCowConfiguration::getBackGrassConfiguration),
             Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers)
@@ -79,9 +81,9 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
                                   Optional<ResourceLocation> mushroomType) {
 
         public static final Codec<MushroomCowMushroom> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                BlockState.CODEC.optionalFieldOf("block_state").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration.MushroomCowMushroom::blockState),
-                ResourceLocation.CODEC.optionalFieldOf("model_location").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration.MushroomCowMushroom::modelLocation),
-                ResourceLocation.CODEC.optionalFieldOf("mushroom_type").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration.MushroomCowMushroom::mushroomType)
+                BlockState.CODEC.optionalFieldOf("block_state").forGetter(MushroomCowConfiguration.MushroomCowMushroom::blockState),
+                ResourceLocation.CODEC.optionalFieldOf("model_location").forGetter(MushroomCowConfiguration.MushroomCowMushroom::modelLocation),
+                ResourceLocation.CODEC.optionalFieldOf("mushroom_type").forGetter(MushroomCowConfiguration.MushroomCowMushroom::mushroomType)
         ).apply(builder, MushroomCowConfiguration.MushroomCowMushroom::new));
 
         public Optional<MushroomType> getMushroomType(LevelAccessor level) {

@@ -8,6 +8,8 @@ import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.LevelAccessor;
@@ -43,15 +45,15 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     }
 
     public static final Codec<FlowerCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getCowTexture),
-            Biome.LIST_CODEC.optionalFieldOf("spawn_biomes").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getBiomes),
+            ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(CowTypeConfiguration::getCowTexture),
+            RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biomes").forGetter(CowTypeConfiguration::getBiomes),
             Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(CowTypeConfiguration::getNaturalSpawnWeight),
-            Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").orElseGet(Optional::empty).forGetter(CowTypeConfiguration::getThunderConversionTypes),
+            Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").forGetter(CowTypeConfiguration::getThunderConversionTypes),
             FlowerCowFlower.CODEC.fieldOf("flower").forGetter(FlowerCowConfiguration::getFlower),
             FlowerCowFlower.CODEC.fieldOf("bud").forGetter(FlowerCowConfiguration::getBud),
             BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true)).forGetter(FlowerCowConfiguration::getBackGrassConfiguration),
-            MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
-            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
+            MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").forGetter(FlowerCowConfiguration::getNectarEffectInstance),
+            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").forGetter(FlowerCowConfiguration::getBreedingConditions)
     ).apply(builder, FlowerCowConfiguration::new));
 
     public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty());
@@ -97,9 +99,9 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                                   Optional<ResourceLocation> flowerType) {
 
         public static final Codec<FlowerCowFlower> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                BlockState.CODEC.optionalFieldOf("block_state").orElseGet(Optional::empty).forGetter(FlowerCowFlower::blockState),
-                ResourceLocation.CODEC.optionalFieldOf("model_location").orElseGet(Optional::empty).forGetter(FlowerCowFlower::modelLocation),
-                ResourceLocation.CODEC.optionalFieldOf("flower_type").orElseGet(Optional::empty).forGetter(FlowerCowFlower::flowerType)
+                BlockState.CODEC.optionalFieldOf("block_state").forGetter(FlowerCowFlower::blockState),
+                ResourceLocation.CODEC.optionalFieldOf("model_location").forGetter(FlowerCowFlower::modelLocation),
+                ResourceLocation.CODEC.optionalFieldOf("flower_type").forGetter(FlowerCowFlower::flowerType)
         ).apply(builder, FlowerCowFlower::new));
 
         public Optional<FlowerType> getFlowerType(LevelAccessor level) {

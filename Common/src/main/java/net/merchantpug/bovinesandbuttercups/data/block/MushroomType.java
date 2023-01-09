@@ -22,7 +22,7 @@ import java.util.Optional;
 public record MushroomType(Optional<List<ResourceLocation>> hugeMushroomStructureList) {
 
     public static final MapCodec<MushroomType> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Codec.list(ResourceLocation.CODEC).optionalFieldOf("huge_structures").orElseGet(Optional::empty).forGetter(MushroomType::hugeMushroomStructureList)
+            Codec.list(ResourceLocation.CODEC).optionalFieldOf("huge_structures").forGetter(MushroomType::hugeMushroomStructureList)
     ).apply(builder, MushroomType::new));
 
     public static final MushroomType MISSING = new MushroomType(Optional.empty());

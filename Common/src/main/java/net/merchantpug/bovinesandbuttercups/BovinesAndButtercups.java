@@ -21,6 +21,7 @@ public class BovinesAndButtercups {
         BovineParticleTypes.init();
         BovineRecipeSerializers.init();
         BovineSoundEvents.init();
+        BovineStructureTypes.init();
     }
 
     public static ResourceLocation asResource(String path) {

@@ -13,7 +13,6 @@ import net.merchantpug.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;

@@ -1,0 +1,14 @@
+{
+  "name": "bovinesandbuttercups:ranch/plants/birch",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:feature_pool_element",
+        "feature": "bovinesandbuttercups:birch_unchecked",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

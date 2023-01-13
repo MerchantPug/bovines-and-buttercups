@@ -6,7 +6,6 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "inspecio.EntityTooltipComponentMixin",
-    "inspecio.ItemStackMixin",
     "inspecio.StatusEffectTooltipComponentAccessor"
   ],
   "injectors": {

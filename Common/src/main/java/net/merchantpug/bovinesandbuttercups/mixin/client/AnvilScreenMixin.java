@@ -3,6 +3,7 @@ package net.merchantpug.bovinesandbuttercups.mixin.client;
 import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
 import net.minecraft.nbt.Tag;
@@ -49,10 +50,10 @@ public class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
     @ModifyArg(method = "slotChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/EditBox;setValue(Ljava/lang/String;)V"))
     private String bovinesandbuttercups$setDataDrivenItemName(String string) {
         if (BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack) != null && BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).contains("Type", Tag.TAG_STRING)) {
-            if (bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomFlowerItem()) || bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomMushroomItem())) {
+            if (bovinesandbuttercups$capturedStack.is(BovineItems.CUSTOM_FLOWER.get()) || bovinesandbuttercups$capturedStack.is(BovineItems.CUSTOM_MUSHROOM.get())) {
                 ResourceLocation resourceLocation = ResourceLocation.tryParse(BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).getString("Type"));
                 return Component.translatable("block." + resourceLocation.getNamespace() + "." + resourceLocation.getPath()).getString();
-            } else if (bovinesandbuttercups$capturedStack.is(Services.PLATFORM.getCustomHugeMushroomItem())) {
+            } else if (bovinesandbuttercups$capturedStack.is(BovineItems.CUSTOM_MUSHROOM_BLOCK.get())) {
                 ResourceLocation resourceLocation = ResourceLocation.tryParse(BlockItem.getBlockEntityData(bovinesandbuttercups$capturedStack).getString("Type"));
                 return Component.translatable("block." + resourceLocation.getNamespace() + "." + resourceLocation.getPath() + "_block").getString();
             }

@@ -4,6 +4,8 @@ import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPot
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -74,7 +76,7 @@ public class CustomFlowerPotBlock extends BaseEntityBlock {
     }
 
     public ItemStack getContent(BlockGetter level, BlockPos pos) {
-        ItemStack stack = new ItemStack(Services.PLATFORM.getCustomFlowerItem());
+        ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof CustomFlowerPotBlockEntity cfpbe) {
             CompoundTag compound = new CompoundTag();
@@ -91,6 +93,6 @@ public class CustomFlowerPotBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return Services.PLATFORM.getCustomFlowerPotBlockEntity().create(pos, state);
+        return BovineBlockEntityTypes.POTTED_CUSTOM_FLOWER.get().create(pos, state);
     }
 }

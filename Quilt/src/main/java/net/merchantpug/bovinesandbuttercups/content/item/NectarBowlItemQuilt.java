@@ -1,11 +1,9 @@
-package net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio;
+package net.merchantpug.bovinesandbuttercups.content.item;
 
-import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.LockdownEffectTooltipComponent;
-import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
-import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import io.github.queerbric.inspecio.Inspecio;
 import io.github.queerbric.inspecio.InspecioConfig;
 import io.github.queerbric.inspecio.tooltip.CompoundTooltipComponent;
+import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.LockdownEffectTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -13,31 +11,26 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.tooltip.api.client.TooltipComponentCallback;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Mixin(ItemStack.class)
-public abstract class ItemStackMixin {
-    @Shadow public abstract boolean is(Item $$0);
+public class NectarBowlItemQuilt extends NectarBowlItem {
+    public NectarBowlItemQuilt(Properties properties) {
+        super(properties);
+    }
 
-    @Inject(method = "getTooltipImage", at = @At("RETURN"), cancellable = true)
-    private void bovinesandbuttercups$modifyNectarTooltip(CallbackInfoReturnable<Optional<TooltipComponent>> cir) {
-        if (this.is(BovineItems.NECTAR_BOWL.get())) {
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (QuiltLoader.isModLoaded("inspecio")) {
             List<TooltipComponent> components = new ArrayList<>();
-            cir.getReturnValue().ifPresent(components::add);
+            super.getTooltipImage(stack).ifPresent(components::add);
 
             InspecioConfig config = Inspecio.getConfig();
-            ItemStack stack = (ItemStack)(Object)this;
 
             if (config.getEffectsConfig().hasPotions()) {
                 if (stack.is(Inspecio.HIDDEN_EFFECTS_TAG)) {
@@ -66,7 +59,7 @@ public abstract class ItemStackMixin {
             }
 
             if (components.size() == 1) {
-                cir.setReturnValue(Optional.of(components.get(0)));
+                return Optional.of(components.get(0));
             } else if (components.size() > 1) {
                 var comp = new CompoundTooltipComponent();
                 for (var component : components) {
@@ -75,8 +68,9 @@ public abstract class ItemStackMixin {
                         comp.addComponent(clientComponent);
                     }
                 }
-                cir.setReturnValue(Optional.of(comp));
+                return Optional.of(comp);
             }
         }
+        return super.getTooltipImage(stack);
     }
 }

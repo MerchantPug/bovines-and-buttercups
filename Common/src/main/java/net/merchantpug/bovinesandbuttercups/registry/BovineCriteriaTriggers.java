@@ -4,9 +4,9 @@ import net.merchantpug.bovinesandbuttercups.content.advancements.criterion.Moobl
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 
 public class BovineCriteriaTriggers {
-    public static final MoobloomMutationTrigger MOOBLOOM_MUTATION = (MoobloomMutationTrigger)Services.PLATFORM.registerCriteria(new MoobloomMutationTrigger());
+    public static final MoobloomMutationTrigger MOOBLOOM_MUTATION = (MoobloomMutationTrigger)Services.REGISTRY.registerCriteria(new MoobloomMutationTrigger());
 
-    public static void init() {
+    public static void register() {
 
     }
 }

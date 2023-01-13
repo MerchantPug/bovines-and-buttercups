@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.content.block.entity;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,7 +21,7 @@ public class CustomMushroomPotBlockEntity extends BlockEntity {
     @Nullable private String mushroomTypeName;
 
     public CustomMushroomPotBlockEntity(BlockPos worldPosition, BlockState blockState) {
-        super(Services.PLATFORM.getCustomMushroomPotBlockEntity(), worldPosition, blockState);
+        super(BovineBlockEntityTypes.POTTED_CUSTOM_MUSHROOM.get(), worldPosition, blockState);
     }
 
     @Override

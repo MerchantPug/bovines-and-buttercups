@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.mixin.forge;
 
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -36,7 +37,7 @@ public abstract class MushroomCowMixin {
             }
             cir.setReturnValue(list);
         } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).isPresent()) {
-            ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomMushroomItem());
+            ItemStack itemStack = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
             CompoundTag compound = new CompoundTag();
             compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(((Entity)(Object)this).getLevel(), Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).get()).toString());
             itemStack.getOrCreateTag().put("BlockEntityTag", compound);

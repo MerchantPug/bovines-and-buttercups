@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.content.block.entity;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,7 +21,7 @@ public class CustomFlowerBlockEntity extends BlockEntity {
     @Nullable private String flowerTypeName;
 
     public CustomFlowerBlockEntity(BlockPos worldPosition, BlockState blockState) {
-        super(Services.PLATFORM.getCustomFlowerBlockEntity(), worldPosition, blockState);
+        super(BovineBlockEntityTypes.CUSTOM_FLOWER.get(), worldPosition, blockState);
     }
 
     @Override

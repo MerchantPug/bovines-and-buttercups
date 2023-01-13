@@ -66,9 +66,6 @@ public class BovinesAndButtercupsForge {
         BovinesAndButtercups.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
         BovinesAndButtercups.init();
-        BovineBlockEntityTypesForge.init();
-        BovineEntityTypesForge.init();
-        BovineItemsForge.init();
         BovineRegistriesForge.init(eventBus);
         BiomeModifierSerializerRegistry.init(eventBus);
 
@@ -80,13 +77,13 @@ public class BovinesAndButtercupsForge {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         eventBus.addListener((EntityAttributeCreationEvent event) -> {
-            event.put(Services.PLATFORM.getMoobloomEntity(), FlowerCow.createAttributes().build());
+            event.put(BovineEntityTypes.MOOBLOOM.get(), FlowerCow.createAttributes().build());
         });
         eventBus.addListener((FMLCommonSetupEvent event) -> {
             BovinePacketHandler.register();
             event.enqueueWork(() -> {
                 registerCompostables();
-                SpawnPlacements.register(Services.PLATFORM.getMoobloomEntity(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn);
+                SpawnPlacements.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn);
             });
         });
     }
@@ -101,9 +98,9 @@ public class BovinesAndButtercupsForge {
         ComposterBlock.COMPOSTABLES.put(BovineItems.SNOWDROP.get(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(BovineItems.TROPICAL_BLUE.get(), 0.65F);
         ComposterBlock.COMPOSTABLES.put(BovineItems.FREESIA.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(BovineItemsForge.CUSTOM_FLOWER.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(BovineItemsForge.CUSTOM_MUSHROOM.get(), 0.65F);
-        ComposterBlock.COMPOSTABLES.put(BovineItemsForge.CUSTOM_MUSHROOM_BLOCK.get(), 0.85F);
+        ComposterBlock.COMPOSTABLES.put(BovineItems.CUSTOM_FLOWER.get(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(BovineItems.CUSTOM_MUSHROOM.get(), 0.65F);
+        ComposterBlock.COMPOSTABLES.put(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), 0.85F);
     }
 
     public void addForgeBusEventListeners() {

@@ -14,7 +14,7 @@ import net.minecraft.world.level.material.Material;
 import java.util.function.Supplier;
 
 public class BovineBlocks {
-    public static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registry.BLOCK, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registry.BLOCK, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<MoobloomFlowerBlock> BUTTERCUP = register("buttercup", () -> new MoobloomFlowerBlock(MobEffects.POISON, 12, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
     public static final RegistryObject<MoobloomFlowerBlock> PINK_DAISY = register("pink_daisy", () -> new MoobloomFlowerBlock(MobEffects.MOVEMENT_SPEED, 4, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
@@ -43,11 +43,11 @@ public class BovineBlocks {
     public static final RegistryObject<CustomHugeMushroomBlock> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", () -> new CustomHugeMushroomBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(0.2F).sound(SoundType.WOOD)));
     public static final RegistryObject<CustomMushroomPotBlock> POTTED_CUSTOM_MUSHROOM = register("potted_custom_mushroom", () -> new CustomMushroomPotBlock(BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()));
 
-    public static void init() {
+    public static void register() {
 
     }
 
-    public static <T extends Block> RegistryObject<T> register(String blockName, Supplier<T> block) {
-        return BLOCKS.register(blockName, block);
+    private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> block) {
+        return BLOCKS.register(name, block);
     }
 }

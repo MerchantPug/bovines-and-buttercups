@@ -11,7 +11,6 @@ import net.merchantpug.bovinesandbuttercups.data.entity.BreedingConditionConfigu
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.mixin.EntityAccessor;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.minecraft.core.BlockPos;
@@ -457,7 +456,7 @@ public class FlowerCow extends Cow {
 
     @Override
     public FlowerCow getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        FlowerCow flowerCow = Services.PLATFORM.getMoobloomEntity().create(serverLevel);
+        FlowerCow flowerCow = BovineEntityTypes.MOOBLOOM.get().create(serverLevel);
         flowerCow.setFlowerType(this.chooseBabyType(serverLevel, (FlowerCow)ageableMob), serverLevel);
         return flowerCow;
     }
@@ -645,7 +644,7 @@ public class FlowerCow extends Cow {
                     if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent()) {
                         stacks.add(new ItemStack(this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock()));
                     } else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent()) {
-                        ItemStack itemStack = new ItemStack(Services.PLATFORM.getCustomFlowerItem());
+                        ItemStack itemStack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
                         CompoundTag compound = new CompoundTag();
                         compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).get()).toString());
                         itemStack.getOrCreateTag().put("BlockEntityTag", compound);

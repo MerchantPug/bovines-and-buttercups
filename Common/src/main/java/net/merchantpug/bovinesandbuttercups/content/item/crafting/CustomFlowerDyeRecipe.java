@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.content.item.crafting;
 import net.merchantpug.bovinesandbuttercups.access.CraftingContainerAccess;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRecipeSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -28,7 +28,7 @@ public class CustomFlowerDyeRecipe extends CustomRecipe {
         for(int i = 0; i < container.getContainerSize(); ++i) {
             ItemStack stack2 = container.getItem(i);
             if (stack2.isEmpty()) continue;
-            if (stack2.is(Services.PLATFORM.getCustomFlowerItem())) {
+            if (stack2.is(BovineItems.CUSTOM_FLOWER.get())) {
                 stack = stack2;
             }
         }
@@ -44,7 +44,7 @@ public class CustomFlowerDyeRecipe extends CustomRecipe {
         for(int i = 0; i < container.getContainerSize(); ++i) {
             ItemStack stack2 = container.getItem(i);
             if (stack2.isEmpty()) continue;
-            if (stack2.is(Services.PLATFORM.getCustomFlowerItem())) {
+            if (stack2.is(BovineItems.CUSTOM_FLOWER.get())) {
                 stack = stack2;
             }
         }

@@ -14,14 +14,16 @@ public class BovinesAndButtercups {
     public static void init() {
         LOG.debug("Bovines and Buttercups v" + VERSION + " is starting up. Moo!");
 
-        BovineItems.init();
-        BovineBlocks.init();
-        BovineCriteriaTriggers.init();
-        BovineEffects.init();
-        BovineParticleTypes.init();
-        BovineRecipeSerializers.init();
-        BovineSoundEvents.init();
-        BovineStructureTypes.init();
+        BovineItems.register();
+        BovineBlocks.register();
+        BovineBlockEntityTypes.register();
+        BovineCriteriaTriggers.register();
+        BovineEffects.register();
+        BovineEntityTypes.register();
+        BovineParticleTypes.register();
+        BovineRecipeSerializers.register();
+        BovineSoundEvents.register();
+        BovineStructureTypes.register();
     }
 
     public static ResourceLocation asResource(String path) {

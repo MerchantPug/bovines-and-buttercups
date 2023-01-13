@@ -7,18 +7,18 @@ import net.minecraft.sounds.SoundEvent;
 import java.util.function.Supplier;
 
 public class BovineSoundEvents {
-    public static final RegistrationProvider<SoundEvent> SOUND_EVENTS = RegistrationProvider.get(Registry.SOUND_EVENT, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<SoundEvent> SOUND_EVENTS = RegistrationProvider.get(Registry.SOUND_EVENT, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<SoundEvent> MOOBLOOM_EAT = register("entity.moobloom.eat", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.eat")));
     public static final RegistryObject<SoundEvent> MOOBLOOM_MILK = register("entity.moobloom.milk", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.milk")));
     public static final RegistryObject<SoundEvent> MOOBLOOM_SHEAR = register("entity.moobloom.shear", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.shear")));
     public static final RegistryObject<SoundEvent> MOOBLOOM_CONVERT = register("entity.moobloom.convert", () -> new SoundEvent(BovinesAndButtercups.asResource("entity.moobloom.convert")));
 
-    public static void init() {
+    public static void register() {
 
     }
 
-    public static RegistryObject<SoundEvent> register(String soundName, Supplier<SoundEvent> sound) {
-        return SOUND_EVENTS.register(soundName, sound);
+    private static RegistryObject<SoundEvent> register(String name, Supplier<SoundEvent> sound) {
+        return SOUND_EVENTS.register(name, sound);
     }
 }

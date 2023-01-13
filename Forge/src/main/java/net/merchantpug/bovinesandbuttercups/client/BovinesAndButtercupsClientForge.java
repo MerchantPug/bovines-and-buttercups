@@ -32,7 +32,8 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMy
 import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
 import net.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
@@ -73,12 +74,12 @@ public class BovinesAndButtercupsClientForge {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(Services.PLATFORM.getMoobloomEntity(), FlowerCowRenderer::new);
-        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomFlowerBlockEntity(), CustomFlowerRenderer::new);
-        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomMushroomBlockEntity(), CustomMushroomRenderer::new);
-        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomFlowerPotBlockEntity(), CustomFlowerPotBlockRenderer::new);
-        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomMushroomPotBlockEntity(), CustomMushroomPotBlockRenderer::new);
-        event.registerBlockEntityRenderer(Services.PLATFORM.getCustomHugeMushroomBlockEntity(), CustomHugeMushroomBlockRenderer::new);
+        event.registerEntityRenderer(BovineEntityTypes.MOOBLOOM.get(), FlowerCowRenderer::new);
+        event.registerBlockEntityRenderer(BovineBlockEntityTypes.CUSTOM_FLOWER.get(), CustomFlowerRenderer::new);
+        event.registerBlockEntityRenderer(BovineBlockEntityTypes.CUSTOM_MUSHROOM.get(), CustomMushroomRenderer::new);
+        event.registerBlockEntityRenderer(BovineBlockEntityTypes.POTTED_CUSTOM_FLOWER.get(), CustomFlowerPotBlockRenderer::new);
+        event.registerBlockEntityRenderer(BovineBlockEntityTypes.POTTED_CUSTOM_MUSHROOM.get(), CustomMushroomPotBlockRenderer::new);
+        event.registerBlockEntityRenderer(BovineBlockEntityTypes.CUSTOM_MUSHROOM_BLOCK.get(), CustomHugeMushroomBlockRenderer::new);
     }
 
     @SubscribeEvent

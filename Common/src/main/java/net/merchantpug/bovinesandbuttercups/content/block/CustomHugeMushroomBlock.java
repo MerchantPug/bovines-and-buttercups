@@ -3,7 +3,7 @@ package net.merchantpug.bovinesandbuttercups.content.block;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -65,6 +65,6 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return Services.PLATFORM.getCustomHugeMushroomBlockEntity().create(pos, state);
+        return BovineBlockEntityTypes.CUSTOM_MUSHROOM_BLOCK.get().create(pos, state);
     }
 }

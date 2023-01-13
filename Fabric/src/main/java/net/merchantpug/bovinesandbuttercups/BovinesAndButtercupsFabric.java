@@ -1,14 +1,13 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
-import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypesFabriclike;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
-import net.merchantpug.bovinesandbuttercups.registry.BovineItemsFabriclike;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biomes;
@@ -33,7 +32,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesAndButtercupsFabriclike.init();
         registerCompostables();
 
-        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypesFabriclike.MOOBLOOM, 60, 2, 4);
+        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 60, 2, 4);
         BiomeModifications.addSpawn(biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS, MobCategory.CREATURE, EntityType.MOOSHROOM, 60, 2, 4);
     }
 
@@ -47,8 +46,8 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         CompostingChanceRegistry.INSTANCE.add(BovineItems.SNOWDROP.get(), 0.65F);
         CompostingChanceRegistry.INSTANCE.add(BovineItems.TROPICAL_BLUE.get(), 0.65F);
         CompostingChanceRegistry.INSTANCE.add(BovineItems.FREESIA.get(), 0.65F);
-        CompostingChanceRegistry.INSTANCE.add(BovineItemsFabriclike.CUSTOM_FLOWER, 0.65F);
-        CompostingChanceRegistry.INSTANCE.add(BovineItemsFabriclike.CUSTOM_MUSHROOM, 0.65F);
-        CompostingChanceRegistry.INSTANCE.add(BovineItemsFabriclike.CUSTOM_MUSHROOM_BLOCK, 0.85F);
+        CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_FLOWER.get(), 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM.get(), 0.65F);
+        CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), 0.85F);
     }
 }

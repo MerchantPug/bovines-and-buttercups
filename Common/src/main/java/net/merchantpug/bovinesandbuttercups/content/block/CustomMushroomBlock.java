@@ -4,7 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.ResourceLocationException;
 import net.minecraft.core.BlockPos;
@@ -162,7 +162,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return Services.PLATFORM.getCustomMushroomBlockEntity().create(pos, state);
+        return BovineBlockEntityTypes.CUSTOM_MUSHROOM.get().create(pos, state);
     }
 
     @Override

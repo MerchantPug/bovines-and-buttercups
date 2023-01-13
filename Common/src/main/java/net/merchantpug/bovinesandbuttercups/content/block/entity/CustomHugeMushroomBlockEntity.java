@@ -4,7 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +24,7 @@ public class CustomHugeMushroomBlockEntity extends BlockEntity {
     @Nullable private String mushroomTypeName;
 
     public CustomHugeMushroomBlockEntity(BlockPos worldPosition, BlockState blockState) {
-        super(Services.PLATFORM.getCustomHugeMushroomBlockEntity(), worldPosition, blockState);
+        super(BovineBlockEntityTypes.CUSTOM_MUSHROOM_BLOCK.get(), worldPosition, blockState);
     }
 
     @Override

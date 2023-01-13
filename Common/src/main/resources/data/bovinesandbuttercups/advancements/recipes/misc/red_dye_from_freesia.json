@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "bovinesandbuttercups:red_dye_from_freesia"
+    ]
+  },
+  "criteria": {
+    "has_freesia": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bovinesandbuttercups:freesia"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bovinesandbuttercups:red_dye_from_freesia"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_freesia",
+      "has_the_recipe"
+    ]
+  ]
+}

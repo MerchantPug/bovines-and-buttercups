@@ -1,6 +1,10 @@
 {
-  "advancements.husbandry.bovinesandbuttercups.experimentation.title": "Experimentation!",
-  "advancements.husbandry.bovinesandbuttercups.experimentation.description": "Successfully mutate a Moobloom offspring",
+  "advancements.husbandry.bovinesandbuttercups.prevent_an_effect.title": "Locked Out",
+  "advancements.husbandry.bovinesandbuttercups.prevent_an_effect.description": "Prevent a status effect from being applied using nectar",
+  "advancements.husbandry.bovinesandbuttercups.lock_an_effect.title": "Locked In",
+  "advancements.husbandry.bovinesandbuttercups.lock_an_effect.description": "Lock a status effect's duration using nectar",
+  "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.title": "Milky Way",
+  "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.description": "Mutate a Moobloom offspring",
 
   "block.bovinesandbuttercups.buttercup": "Buttercup",
   "block.bovinesandbuttercups.pink_daisy": "Pink Daisy",

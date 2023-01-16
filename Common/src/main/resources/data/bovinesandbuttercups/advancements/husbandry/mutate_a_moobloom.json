@@ -1,14 +1,14 @@
 {
-  "parent": "minecraft:husbandry/root",
+  "parent": "minecraft:husbandry/breed_an_animal",
   "display": {
     "icon": {
-      "item": "bovinesandbuttercups:limelight"
+      "item": "bovinesandbuttercups:pink_daisy"
     },
     "title": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.experimentation.title"
+      "translate": "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.title"
     },
     "description": {
-      "translate": "advancements.husbandry.bovinesandbuttercups.experimentation.description"
+      "translate": "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.description"
     },
     "frame": "task",
     "show_toast": true,

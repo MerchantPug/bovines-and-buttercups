@@ -3,9 +3,11 @@ package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -54,6 +56,12 @@ public abstract class LivingEntityMixin extends Entity {
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
             });
         }
+        if (!this.level.isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && !BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty()) {
+            BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().forEach((effect1, duration) -> {
+                if (!this.hasEffect(effect1)) return;
+                BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
+            });
+        }
     }
 
     @Inject(method = "onEffectUpdated", at = @At("TAIL"))
@@ -75,8 +83,11 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "canBeAffected", at = @At(value = "RETURN"), cancellable = true)
-    private void bovinesandbuttercups$cancelStatusEffectIfNullified(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
+    private void bovinesandbuttercups$cancelStatusEffectIfLocked(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
         if (this.hasEffect(BovineEffects.LOCKDOWN.get()) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().containsKey(effect.getEffect())) {
+            if (!this.level.isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer) {
+                BovineCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, effect.getEffect());
+            }
             cir.setReturnValue(false);
         }
     }

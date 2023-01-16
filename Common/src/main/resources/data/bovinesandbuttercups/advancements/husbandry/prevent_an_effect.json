@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:bowl"
+    },
+    "title": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.prevent_an_effect.title"
+    },
+    "description": {
+      "translate": "advancements.husbandry.bovinesandbuttercups.prevent_an_effect.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "lock_effect": {
+      "trigger": "bovinesandbuttercups:prevent_effect"
+    }
+  },
+  "requirements": [
+    [
+      "lock_effect"
+    ]
+  ]
+}

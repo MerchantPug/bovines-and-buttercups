@@ -24,10 +24,12 @@ import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
@@ -57,6 +59,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Mod(BovinesAndButtercups.MOD_ID)
@@ -157,10 +160,7 @@ public class BovinesAndButtercupsForge {
             }
         });
 
-        /*
-        I have had to put the ALLOW implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
-        I should probably write an issue for this...
-        */
+        // I have had to put the ALLOW implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
         eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {
             if (!(event.getEntity() instanceof MushroomCow)) return;
 
@@ -233,25 +233,46 @@ public class BovinesAndButtercupsForge {
         eventBus.addListener((RegisterCommandsEvent event) -> EffectLockdownCommand.register(event.getDispatcher()));
 
         eventBus.addListener((MobEffectEvent.Added event) -> {
-            if (event.getEffectInstance().getEffect() instanceof LockdownEffect && event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).isPresent() && (event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects).isEmpty() || event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects).get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration()))) {
-                Optional<Holder<MobEffect>> randomEffect = Registry.MOB_EFFECT.getRandom(event.getEntity().level.random);
-                randomEffect.ifPresent(entry -> {
-                    event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
+            LivingEntity entity = event.getEntity();
+
+            if (event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent()) {
+                Optional<Map<MobEffect, Integer>> optional = entity.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects);
+                if (optional.isEmpty() || optional.get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration())) {
+                    Optional<Holder<MobEffect>> randomEffect = Registry.MOB_EFFECT.getRandom(entity.level.random);
+                    randomEffect.ifPresent(entry -> event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                         cap.addLockdownMobEffect(entry.value(), event.getEffectInstance().getDuration());
                         cap.sync();
+                    }));
+                }
+                if (!entity.level.isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && !optional.get().isEmpty()) {
+                    optional.get().forEach((effect1, duration) -> {
+                        if (!serverPlayer.hasEffect(effect1)) return;
+                        BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
                     });
-                });
+                }
             }
+        });
+        eventBus.addListener((MobEffectEvent.Remove event) -> {
+            if (!(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
+            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
+                cap.getLockdownMobEffects().clear();
+                cap.sync();
+            });
         });
         eventBus.addListener((MobEffectEvent.Expired event) -> {
             if (!(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
             event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                 cap.getLockdownMobEffects().clear();
+                cap.sync();
             });
         });
         eventBus.addListener((MobEffectEvent.Applicable event) -> {
-            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
+            Entity entity = event.getEntity();
+            entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                 if (cap.getLockdownMobEffects().containsKey(event.getEffectInstance().getEffect())) {
+                    if (!entity.level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
+                        BovineCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, event.getEffectInstance().getEffect());
+                    }
                     event.setResult(Event.Result.DENY);
                 }
             });

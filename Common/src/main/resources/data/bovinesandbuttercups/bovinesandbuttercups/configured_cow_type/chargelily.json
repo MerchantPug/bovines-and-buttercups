@@ -10,7 +10,7 @@
   },
   "nectar_effect": {
     "effect": "minecraft:haste",
-    "duration": 900
+    "duration": 1200
   },
   "thunder_conversion_types": [
     {

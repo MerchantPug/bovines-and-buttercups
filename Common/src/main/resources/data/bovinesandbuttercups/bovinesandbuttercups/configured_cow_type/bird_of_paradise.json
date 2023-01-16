@@ -9,8 +9,8 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/bird_of_paradise_bud"
   },
   "nectar_effect": {
-    "effect": "minecraft:night_vision",
-    "duration": 12000
+    "effect": "minecraft:slow_falling",
+    "duration": 7200
   },
   "thunder_conversion_types": [
     {

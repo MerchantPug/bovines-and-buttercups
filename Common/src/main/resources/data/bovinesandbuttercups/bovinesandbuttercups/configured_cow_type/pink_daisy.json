@@ -9,7 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/pink_daisy_bud"
   },
   "nectar_effect": {
-    "effect": "minecraft:speed",
+    "effect": "minecraft:strength",
     "duration": 3600
   },
   "spawn_biomes": "minecraft:flower_forest",

@@ -9,8 +9,8 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/limelight_bud"
   },
   "nectar_effect": {
-    "effect": "minecraft:mining_fatigue",
-    "duration": 12000
+    "effect": "minecraft:regeneration",
+    "duration": 2400
   },
   "thunder_conversion_types": [
     {

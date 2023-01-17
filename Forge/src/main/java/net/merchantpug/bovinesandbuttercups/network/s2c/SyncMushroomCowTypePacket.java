@@ -10,8 +10,8 @@ import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public record SyncMushroomCowTypePacket(int entityId, ResourceLocation typeKey, @Nullable ResourceLocation previousTypeKey) {

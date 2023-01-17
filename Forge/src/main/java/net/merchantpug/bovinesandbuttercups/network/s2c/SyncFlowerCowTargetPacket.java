@@ -2,7 +2,6 @@ package net.merchantpug.bovinesandbuttercups.network.s2c;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.capabilities.FlowerCowTargetCapability;
-import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -10,8 +9,8 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 import java.util.function.Supplier;
 

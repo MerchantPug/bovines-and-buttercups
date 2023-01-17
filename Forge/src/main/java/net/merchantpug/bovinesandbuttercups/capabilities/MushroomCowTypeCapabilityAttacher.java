@@ -12,8 +12,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class MushroomCowTypeCapabilityAttacher {
     private static class MushroomCowTypeCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {

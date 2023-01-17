@@ -4,8 +4,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.resources.ResourceLocation;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface MushroomCowTypeComponent extends Component {
     ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowType();

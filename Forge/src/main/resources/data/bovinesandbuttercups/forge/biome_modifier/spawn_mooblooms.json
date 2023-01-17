@@ -1,10 +1,9 @@
 {
   "type": "bovinesandbuttercups:add_spawns_except",
-  "biomes": "#bovinesandbuttercups:higher_chance_mooblooms",
   "spawners": {
     "type": "bovinesandbuttercups:moobloom",
     "weight": 8,
-    "minCount": 2,
+    "minCount": 4,
     "maxCount": 4
   }
 }

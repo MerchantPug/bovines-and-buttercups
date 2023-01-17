@@ -4,7 +4,7 @@
   "spawners": {
     "type": "minecraft:mooshroom",
     "weight": 8,
-    "minCount": 2,
+    "minCount": 4,
     "maxCount": 4
   }
 }

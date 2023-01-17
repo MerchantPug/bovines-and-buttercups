@@ -32,8 +32,8 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BovinesAndButtercupsFabriclike.init();
         registerCompostables();
 
-        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 60, 2, 4);
-        BiomeModifications.addSpawn(biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS, MobCategory.CREATURE, EntityType.MOOSHROOM, 60, 2, 4);
+        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 8, 4, 4);
+        BiomeModifications.addSpawn(biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS, MobCategory.CREATURE, EntityType.MOOSHROOM, 8, 4, 4);
     }
 
     private static void registerCompostables() {

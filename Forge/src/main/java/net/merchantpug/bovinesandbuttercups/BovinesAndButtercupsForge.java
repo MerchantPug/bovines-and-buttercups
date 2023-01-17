@@ -31,6 +31,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -158,9 +159,7 @@ public class BovinesAndButtercupsForge {
 
         // I have had to put the ALLOW implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
         eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {
-            if (!(event.getEntity() instanceof MushroomCow)) return;
-
-            if (event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream(event.getLevel()).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0)) {
+            if (event.getEntity() instanceof MushroomCow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream(event.getLevel()).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0) || event.getEntity() instanceof Cow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(BovineTags.PREVENT_COW_SPAWNS)) {
                 event.setResult(Event.Result.DENY);
             }
         });

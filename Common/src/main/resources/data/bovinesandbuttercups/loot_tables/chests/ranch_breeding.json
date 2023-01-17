@@ -7,10 +7,6 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "bovinesandbuttercups:chests/breeding_items/buttercup"
-        },
-        {
-          "type": "minecraft:loot_table",
           "name": "bovinesandbuttercups:chests/breeding_items/limelight"
         },
         {

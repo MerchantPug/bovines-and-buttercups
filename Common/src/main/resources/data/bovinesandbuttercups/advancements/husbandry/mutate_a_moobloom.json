@@ -17,7 +17,18 @@
   },
   "criteria": {
     "mutate_moobloom": {
-      "trigger": "bovinesandbuttercups:moobloom_mutation"
+      "conditions": {
+        "child": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "bovinesandbuttercups:moobloom"
+            }
+          }
+        ]
+      },
+      "trigger": "bovinesandbuttercups:mutation"
     }
   },
   "requirements": [

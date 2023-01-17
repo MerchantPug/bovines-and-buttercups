@@ -14,5 +14,24 @@
       "weight": 2
     }
   ],
-  "can_eat_flowers": true
+  "can_eat_flowers": true,
+  "breeding_conditions": {
+    "predicates": [
+      {
+        "blocks": [
+          "minecraft:red_glazed_terracotta",
+          "minecraft:orange_glazed_terracotta"
+        ],
+        "operation": "and"
+      }
+    ],
+    "particle": {
+      "type": "bovinesandbuttercups:sparkle",
+      "color": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
 }

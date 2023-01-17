@@ -331,7 +331,7 @@ public class FlowerCow extends Cow {
         return super.mobInteract(player, hand);
     }
 
-    public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow otherParent) {
+    public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow otherParent, FlowerCow child) {
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
 
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
@@ -345,7 +345,9 @@ public class FlowerCow extends Cow {
             int random = this.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
             this.spawnParticleToBreedPosition(randomType.getConfiguration(), level);
-            BovineCriteriaTriggers.MOOBLOOM_MUTATION.trigger(this.getLoveCause(), BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType));
+            if (this.getLoveCause() != null && !BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, this.getFlowerCowType())) && !BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, otherParent.getFlowerCowType()))) {
+                BovineCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType));
+            }
             return randomType;
         }
 
@@ -372,7 +374,7 @@ public class FlowerCow extends Cow {
                 }
             });
 
-            if (breedingCondition.get().shouldIncludeAssociatedBlock()) {
+            if (breedingCondition.get().shouldIncludeAssociatedBlocks()) {
                 if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getFlower().blockState().get().getBlock())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
@@ -391,11 +393,11 @@ public class FlowerCow extends Cow {
             VoxelShape shape = state.getShape(level, pos);
             if (shape.isEmpty()) return;
             AABB blockBox = shape.bounds();
-            createParticleTail(blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), breedingCondition.get().getParticleOptions().get());
+            createParticleTrail(blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), breedingCondition.get().getParticleOptions().get());
         });
     }
 
-    public void createParticleTail(Vec3 pos, ParticleOptions options) {
+    public void createParticleTrail(Vec3 pos, ParticleOptions options) {
         double value = (1 - (1 / (pos.distanceTo(this.position()) + 1))) / 4;
 
         for (double d = 0.0; d < 1.0; d += value) {
@@ -406,7 +408,7 @@ public class FlowerCow extends Cow {
     public boolean testBreedingBlocks(FlowerCowConfiguration configuration, LevelAccessor level) {
         Optional<BreedingConditionConfiguration> breedingCondition = configuration.getBreedingConditions();
 
-        if (breedingCondition.isEmpty() || breedingCondition.get().getBlockPredicates().isEmpty() && !breedingCondition.get().shouldIncludeAssociatedBlock())
+        if (breedingCondition.isEmpty() || breedingCondition.get().getBlockPredicates().isEmpty() && !breedingCondition.get().shouldIncludeAssociatedBlocks())
             return false;
 
         HashMap<BreedingConditionConfiguration.BlockPredicate, Set<BlockState>> predicateValues = new HashMap<>();
@@ -425,7 +427,7 @@ public class FlowerCow extends Cow {
                     predicateValues.put(entry.getKey(), entry.getValue());
                 }
             }
-            if (breedingCondition.get().shouldIncludeAssociatedBlock()) {
+            if (breedingCondition.get().shouldIncludeAssociatedBlocks()) {
                 if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getFlower().blockState().get().getBlock())) {
                     associatedBlockFound = true;
                     break;
@@ -457,7 +459,7 @@ public class FlowerCow extends Cow {
     @Override
     public FlowerCow getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         FlowerCow flowerCow = BovineEntityTypes.MOOBLOOM.get().create(serverLevel);
-        flowerCow.setFlowerType(this.chooseBabyType(serverLevel, (FlowerCow)ageableMob), serverLevel);
+        flowerCow.setFlowerType(this.chooseBabyType(serverLevel, (FlowerCow)ageableMob, flowerCow), serverLevel);
         return flowerCow;
     }
 

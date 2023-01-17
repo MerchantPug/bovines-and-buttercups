@@ -49,9 +49,8 @@ public class MushroomCowSpawnUtil {
         }
         if (!mooshroomList.isEmpty()) {
             return BovineRegistryUtil.getConfiguredCowTypeKey(level, mooshroomList.get(index));
-        } else {
-            return BovinesAndButtercups.asResource("missing_mooshroom");
         }
+        return BovinesAndButtercups.asResource("missing_mooshroom");
     }
 
     public static ResourceLocation getMooshroomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {
@@ -74,8 +73,8 @@ public class MushroomCowSpawnUtil {
         }
         if (!mooshroomList.isEmpty()) {
             return BovineRegistryUtil.getConfiguredCowTypeKey(level, mooshroomList.get(index));
-        } else {
-            return BovinesAndButtercups.asResource("missing_mooshroom");
         }
+        return BovinesAndButtercups.asResource("missing_mooshroom");
     }
+
 }

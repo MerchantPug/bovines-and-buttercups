@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[41,)"
 issueTrackerURL = "https://github.com/MerchantPug/bovines-and-buttercups/issues"
-license="MIT"
+license="LGPL-3"
 
 [[mods]]
 modId="bovinesandbuttercups"

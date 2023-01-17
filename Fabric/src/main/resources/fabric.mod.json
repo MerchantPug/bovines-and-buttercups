@@ -14,10 +14,8 @@
   "contact": {
     "homepage": ""
   },
-
-  "license": "MIT",
+  "license": "LGPL-3",
   "icon": "assets/bovinesandbuttercups/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [

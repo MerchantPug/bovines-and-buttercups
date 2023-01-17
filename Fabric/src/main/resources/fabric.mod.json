@@ -27,6 +27,9 @@
     "cardinal-components": [
       "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
     ],
+    "jei_mod_plugin": [
+      "net.merchantpug.bovinesandbuttercups.integration.jei.BovinesJeiPlugin"
+    ],
     "preLaunch": [
       "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     ]

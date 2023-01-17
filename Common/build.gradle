@@ -26,6 +26,16 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 dependencies {
@@ -36,6 +46,7 @@ dependencies {
     annotationProcessor("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 }
 
 processResources {

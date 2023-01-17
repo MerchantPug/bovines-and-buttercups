@@ -1,5 +1,5 @@
 plugins {
-    id 'org.quiltmc.loom' version '0.12-SNAPSHOT'
+    id "org.quiltmc.loom" version "1.0.+"
     id 'maven-publish'
 }
 
@@ -10,7 +10,6 @@ repositories {
         name 'Quilt (Release)'
         url 'https://maven.quiltmc.org/repository/release'
     }
-
     maven {
         name 'Quilt (Snapshot)'
         url 'https://maven.quiltmc.org/repository/snapshot'
@@ -35,6 +34,16 @@ repositories {
     maven {
         name = 'Ladysnake Mods'
         url = 'https://ladysnake.jfrog.io/artifactory/mods'
+    }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
     }
 }
 
@@ -67,6 +76,10 @@ dependencies {
     implementation(project(path: ":Fabriclike", configuration: "namedElements")) {
         exclude group: "net.merchantpug.bovinesandbuttercups", module: "Common"
     }
+
+    modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 }
 
 loom {

@@ -106,6 +106,16 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 dependencies {
@@ -120,6 +130,10 @@ dependencies {
 
     compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.5-SNAPSHOT:processor'
+
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 }
 
 tasks.withType(JavaCompile) {

@@ -3,7 +3,6 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
-import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,12 +20,10 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.Objects;
 import java.util.Optional;
 
 public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> extends RenderLayer<T, M> {

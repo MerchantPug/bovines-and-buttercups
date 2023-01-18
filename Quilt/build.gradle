@@ -85,10 +85,12 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}"
 
-    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
+    /*
+    &modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
         exclude module: 'dev.architectury'
     }
     modRuntimeOnly "dev.architectury:architectury-fabric:${architectury_version}"
+    */
 
     modCompileOnly "dev.emi:emi:${emi_version}"
     // modRuntimeOnly "dev.emi:emi:${emi_version}"

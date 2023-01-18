@@ -53,5 +53,6 @@
     "bovinesandbuttercups.mixins.json",
     "bovinesandbuttercups.fabriclike.mixins.json",
     "bovinesandbuttercups.quilt.mixins.json"
-  ]
+  ],
+  "access_widener": "bovinesandbuttercups.accesswidener"
 }

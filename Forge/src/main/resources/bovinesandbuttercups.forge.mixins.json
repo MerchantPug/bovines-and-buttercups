@@ -16,5 +16,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "bovinesandbuttercups.forge.refmap.json"
+  "refmap": "bovinesandbuttercups.refmap.json"
 }

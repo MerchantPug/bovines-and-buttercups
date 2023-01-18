@@ -30,6 +30,9 @@
     "jei_mod_plugin": [
       "net.merchantpug.bovinesandbuttercups.integration.jei.BovineJeiPlugin"
     ],
+    "rei_client": [
+      "net.merchantpug.bovinesandbuttercups.integration.rei.BovineReiPlugin"
+    ],
     "emi": [
       "net.merchantpug.bovinesandbuttercups.integration.emi.BovineEmiPlugin"
     ],

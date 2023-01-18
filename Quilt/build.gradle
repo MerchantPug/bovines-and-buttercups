@@ -45,6 +45,7 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+    maven { url "https://maven.shedaniel.me/" }
 }
 
 dependencies {
@@ -80,6 +81,14 @@ dependencies {
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
     // modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}"
+
+    modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
+        exclude module: 'dev.architectury'
+    }
+    modRuntimeOnly "dev.architectury:architectury-fabric:${architectury_version}"
 
     modCompileOnly "dev.emi:emi:${emi_version}"
     // modRuntimeOnly "dev.emi:emi:${emi_version}"

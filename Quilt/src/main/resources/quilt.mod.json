@@ -25,6 +25,7 @@
       "client_init": "net.merchantpug.bovinesandbuttercups.client.BovinesAndButtercupsClientQuilt",
       "cardinal-components": "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents",
       "jei_mod_plugin": "net.merchantpug.bovinesandbuttercups.integration.jei.BovinesJeiPlugin",
+      "rei_client": "net.merchantpug.bovinesandbuttercups.integration.rei.BovineReiPlugin",
       "emi": "net.merchantpug.bovinesandbuttercups.integration.emi.BovineEmiPlugin",
       "preLaunch": "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     },

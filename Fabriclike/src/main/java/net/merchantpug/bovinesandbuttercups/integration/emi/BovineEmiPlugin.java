@@ -45,7 +45,7 @@ public class BovineEmiPlugin implements EmiPlugin {
         });
 
         if (!BovineRegistryUtil.flowerTypeStream(level).filter(flowerType -> flowerType.stewEffectInstance().isPresent()).toList().isEmpty()) {
-            registry.addRecipe(new EmiCustomFlowerSuspiciousStewRecipe(BovinesAndButtercups.asResource("suspicious_stew_from_custom_flower")));
+            registry.addRecipe(new EmiCustomFlowerSuspiciousStewRecipe());
         }
     }
 }

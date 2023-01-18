@@ -5,6 +5,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
@@ -23,7 +24,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecipe {
-    public EmiCustomFlowerSuspiciousStewRecipe(ResourceLocation id) {
+    public EmiCustomFlowerSuspiciousStewRecipe() {
         super(List.of(
                         EmiStack.of(Items.BOWL),
                         EmiStack.of(Items.RED_MUSHROOM),
@@ -39,7 +40,7 @@ public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecip
                             return (EmiIngredient) EmiStack.of(stack);
 
                         }).collect(Collectors.toList()))),
-                EmiStack.of(Items.SUSPICIOUS_STEW), id);
+                EmiStack.of(Items.SUSPICIOUS_STEW), BovinesAndButtercups.asResource("suspicious_stew_from_custom_flowers"));
     }
 
     @Override

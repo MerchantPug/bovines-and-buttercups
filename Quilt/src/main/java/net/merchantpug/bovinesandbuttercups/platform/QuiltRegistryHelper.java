@@ -6,10 +6,7 @@ import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCowFabriclike;
-import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
-import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
-import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
+import net.merchantpug.bovinesandbuttercups.content.item.*;
 import net.merchantpug.bovinesandbuttercups.platform.services.IRegistryHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.advancements.CriterionTrigger;
@@ -34,7 +31,7 @@ public class QuiltRegistryHelper implements IRegistryHelper {
 
     @Override
     public NectarBowlItem createNectarBowlItem(Item.Properties properties) {
-        return new NectarBowlItem(new Item.Properties().stacksTo(1));
+        return new NectarBowlItemQuilt(new Item.Properties().stacksTo(1));
     }
 
     @Override

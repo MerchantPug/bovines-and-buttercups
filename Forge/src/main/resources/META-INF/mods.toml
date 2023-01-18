@@ -23,6 +23,6 @@ A new take on the Moobloom and other bovines.
 [[dependencies.bovinesandbuttercups]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19,1.19.3)"
+    versionRange="[1.19.2,1.19.3)"
     ordering="NONE"
     side="BOTH"

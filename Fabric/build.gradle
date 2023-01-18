@@ -77,7 +77,9 @@ dependencies {
 
 loom {
     accessWidenerPath = file("src/main/resources/bovinesandbuttercups.accesswidener")
-    mixin.defaultRefmapName = "bovinesandbuttercups.refmap.json"
+    mixin {
+        defaultRefmapName = "bovinesandbuttercups.refmap.json"
+    }
 
     runs {
         client {

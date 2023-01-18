@@ -47,6 +47,6 @@ public class CustomFlowerDyeRecipeMaker {
         }
 
         ResourceLocation id = BovinesAndButtercups.asResource("bovinesandbuttercups.custom.flower.dye." + flowerTypeLocation.toLanguageKey());
-        return Optional.of(new ShapelessRecipe(id, "bovinesandbuttercups.custom.flower.dye", output.get(), inputs));
+        return Optional.of(new ShapelessRecipe(id, "bovinesandbuttercups.custom.flower.dye", output.get().copy(), inputs));
     }
 }

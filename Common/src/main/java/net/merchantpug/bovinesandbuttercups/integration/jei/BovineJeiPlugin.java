@@ -18,14 +18,14 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public class BovinesJeiPlugin implements IModPlugin {
+public class BovineJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         Optional<RecipeType<?>> recipeType = registration.getJeiHelpers().getRecipeType(new ResourceLocation(ModIds.MINECRAFT_ID, "crafting"));
-        recipeType.ifPresent(craftingRecipeRecipeType -> {
+        recipeType.ifPresent(craftingRecipeType -> {
             Level level = Minecraft.getInstance().level;
-            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeRecipeType, CustomFlowerDyeRecipeMaker.createRecipes(level));
-            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeRecipeType, CustomFlowerSuspiciousStewRecipeMaker.createRecipes(level));
+            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeType, CustomFlowerDyeRecipeMaker.createRecipes(level));
+            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeType, CustomFlowerSuspiciousStewRecipeMaker.createRecipes(level));
         });
     }
 

@@ -28,7 +28,10 @@
       "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
     ],
     "jei_mod_plugin": [
-      "net.merchantpug.bovinesandbuttercups.integration.jei.BovinesJeiPlugin"
+      "net.merchantpug.bovinesandbuttercups.integration.jei.BovineJeiPlugin"
+    ],
+    "emi": [
+      "net.merchantpug.bovinesandbuttercups.integration.emi.BovineEmiPlugin"
     ],
     "preLaunch": [
       "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"

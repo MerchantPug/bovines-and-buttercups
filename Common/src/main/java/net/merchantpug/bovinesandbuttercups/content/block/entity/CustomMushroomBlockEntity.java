@@ -50,8 +50,8 @@ public class CustomMushroomBlockEntity extends BlockEntity {
             if (this.getLevel() != null) {
                 if (mushroomTypeName == null) {
                     return MushroomType.MISSING;
-                } else if (cachedMushroomType != BovineRegistryUtil.getMushroomTypeFromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName))) {
-                    cachedMushroomType = BovineRegistryUtil.getMushroomTypeFromKey(this.getLevel(), ResourceLocation.tryParse(mushroomTypeName));
+                } else if (cachedMushroomType != BovineRegistryUtil.getMushroomTypeFromKey(ResourceLocation.tryParse(mushroomTypeName))) {
+                    cachedMushroomType = BovineRegistryUtil.getMushroomTypeFromKey(ResourceLocation.tryParse(mushroomTypeName));
                     return cachedMushroomType;
                 } else if (cachedMushroomType != null) {
                     return cachedMushroomType;

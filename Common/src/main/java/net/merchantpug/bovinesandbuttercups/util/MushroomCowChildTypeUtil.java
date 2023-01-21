@@ -36,7 +36,7 @@ public class MushroomCowChildTypeUtil {
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
         Level level = parent.level;
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(type -> type.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(type -> type.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> mushroomCowType = (ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType;
             if (mushroomCowType.getConfiguration().getBreedingConditions().isEmpty()) continue;
             if (testBreedingBlocks(parent, mushroomCowType.getConfiguration(), level))
@@ -44,14 +44,14 @@ public class MushroomCowChildTypeUtil {
         }
 
 
-        ResourceLocation parentTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(level, Services.COMPONENT.getMushroomCowTypeFromCow(parent));
-        ResourceLocation otherTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(level, Services.COMPONENT.getMushroomCowTypeFromCow(other));
+        ResourceLocation parentTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(parent));
+        ResourceLocation otherTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(other));
 
         if (!eligibleCowTypes.isEmpty()) {
             int random = parent.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
             spawnParticleToBreedPosition(parent, randomType.getConfiguration(), level);
-            ResourceLocation randomTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType);
+            ResourceLocation randomTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(randomType);
 
             if (player instanceof ServerPlayer serverPlayer && !randomTypeKey.equals(parentTypeKey) && !randomTypeKey.equals(otherTypeKey)) {
                 BovineCriteriaTriggers.MUTATION.trigger(serverPlayer, parent, other, child, randomTypeKey);
@@ -91,8 +91,8 @@ public class MushroomCowChildTypeUtil {
                 if (configuration.getMushroom().blockState().isPresent() && (state.is(configuration.getMushroom().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getMushroom().blockState().get().getBlock())) {
                     associatedBlockFound = true;
                     break;
-                } else if (configuration.getMushroom().getMushroomType(level).isPresent() &&
-                        (state.is(BovineBlocks.CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity && mushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType(level).get() || state.is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos) instanceof CustomHugeMushroomBlockEntity hugeMushroomBlockEntity && hugeMushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType(level).get() || state.is(BovineBlocks.POTTED_CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomPotBlockEntity mushroomPotBlockEntity && mushroomPotBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType(level).get())) {
+                } else if (configuration.getMushroom().getMushroomType().isPresent() &&
+                        (state.is(BovineBlocks.CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity && mushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType().get() || state.is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos) instanceof CustomHugeMushroomBlockEntity hugeMushroomBlockEntity && hugeMushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType().get() || state.is(BovineBlocks.POTTED_CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomPotBlockEntity mushroomPotBlockEntity && mushroomPotBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType().get())) {
                     associatedBlockFound = true;
                     break;
                 }
@@ -136,8 +136,8 @@ public class MushroomCowChildTypeUtil {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;
-                } else if (configuration.getMushroom().getMushroomType(level).isPresent() &&
-                        (state.is(BovineBlocks.CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity && mushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType(level).get() || state.is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos) instanceof CustomHugeMushroomBlockEntity hugeMushroomBlockEntity && hugeMushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType(level).get() || state.is(BovineBlocks.POTTED_CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomPotBlockEntity mushroomPotBlockEntity && mushroomPotBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType(level).get())) {
+                } else if (configuration.getMushroom().getMushroomType().isPresent() &&
+                        (state.is(BovineBlocks.CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity && mushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType().get() || state.is(BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()) && level.getBlockEntity(pos) instanceof CustomHugeMushroomBlockEntity hugeMushroomBlockEntity && hugeMushroomBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType().get() || state.is(BovineBlocks.POTTED_CUSTOM_MUSHROOM.get()) && level.getBlockEntity(pos) instanceof CustomMushroomPotBlockEntity mushroomPotBlockEntity && mushroomPotBlockEntity.getMushroomType() == configuration.getMushroom().getMushroomType().get())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;

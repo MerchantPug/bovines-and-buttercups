@@ -11,10 +11,8 @@ import net.merchantpug.bovinesandbuttercups.integration.jei.recipe.CustomFlowerS
 import net.merchantpug.bovinesandbuttercups.integration.jei.subtype.CustomFlowerSubtypeInterpreter;
 import net.merchantpug.bovinesandbuttercups.integration.jei.subtype.CustomMushroomSubtypeInterpreter;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
@@ -23,9 +21,8 @@ public class BovineJeiPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         Optional<RecipeType<?>> recipeType = registration.getJeiHelpers().getRecipeType(new ResourceLocation(ModIds.MINECRAFT_ID, "crafting"));
         recipeType.ifPresent(craftingRecipeType -> {
-            Level level = Minecraft.getInstance().level;
-            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeType, CustomFlowerDyeRecipeMaker.createRecipes(level));
-            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeType, CustomFlowerSuspiciousStewRecipeMaker.createRecipes(level));
+            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeType, CustomFlowerDyeRecipeMaker.createRecipes());
+            registration.addRecipes((RecipeType<CraftingRecipe>) craftingRecipeType, CustomFlowerSuspiciousStewRecipeMaker.createRecipes());
         });
     }
 

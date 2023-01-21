@@ -1,8 +1,8 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
-import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.capabilities.*;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
@@ -11,20 +11,29 @@ import net.merchantpug.bovinesandbuttercups.content.entity.goal.MoveToFlowerCowG
 import net.merchantpug.bovinesandbuttercups.content.entity.goal.PollinateFlowerCowGoal;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
+import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
+import net.merchantpug.bovinesandbuttercups.data.MushroomTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
+import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
+import net.merchantpug.bovinesandbuttercups.data.loader.ConfiguredCowTypeReloadListener;
+import net.merchantpug.bovinesandbuttercups.data.loader.FlowerTypeReloadListener;
+import net.merchantpug.bovinesandbuttercups.data.loader.MushroomTypeReloadListener;
+import net.merchantpug.bovinesandbuttercups.network.BovinePacket;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
+import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
-import net.merchantpug.bovinesandbuttercups.util.ItemLevelUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowChildTypeUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -43,6 +52,8 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -54,6 +65,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,8 +77,8 @@ public class BovinesAndButtercupsForge {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BovinesAndButtercups.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
-        BovinesAndButtercups.init();
         BovineRegistriesForge.init(eventBus);
+        BovinesAndButtercups.init();
         BiomeModifierSerializerRegistry.init(eventBus);
 
         this.addModBusEventListeners();
@@ -85,6 +97,7 @@ public class BovinesAndButtercupsForge {
                 registerCompostables();
                 SpawnPlacements.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn);
             });
+            BovineCowTypes.registerDefaultConfigureds();
         });
     }
 
@@ -106,6 +119,35 @@ public class BovinesAndButtercupsForge {
     public void addForgeBusEventListeners() {
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
 
+        eventBus.addListener((AddReloadListenerEvent event) -> {
+            event.addListener(new ConfiguredCowTypeReloadListener());
+            event.addListener(new FlowerTypeReloadListener());
+            event.addListener(new MushroomTypeReloadListener());
+        });
+
+        eventBus.addListener((OnDatapackSyncEvent event) -> {
+            HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();
+            ConfiguredCowTypeRegistry.asStream().forEach(entry -> {
+                if (entry.getValue().equals(entry.getValue().getCowType().getDefaultCowType().getSecond())) return;
+                configuredCowTypeMap.put(entry.getKey(), entry.getValue());
+            });
+
+            HashMap<ResourceLocation, FlowerType> flowerTypeMap = new HashMap<>();
+            FlowerTypeRegistry.asStream().forEach(entry -> {
+                if (entry.getValue() == FlowerType.MISSING) return;
+                flowerTypeMap.put(entry.getKey(), entry.getValue());
+            });
+
+            HashMap<ResourceLocation, MushroomType> mushroomTypeMap = new HashMap<>();
+            MushroomTypeRegistry.asStream().forEach(entry -> {
+                if (entry.getValue() == MushroomType.MISSING) return;
+                mushroomTypeMap.put(entry.getKey(), entry.getValue());
+            });
+
+            var packet = new SyncDatapackContentsPacket(configuredCowTypeMap, flowerTypeMap, mushroomTypeMap);
+            BovinePacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(event::getPlayer), packet);
+        });
+
         eventBus.addListener((PlayerInteractEvent.RightClickBlock event) -> {
             ItemStack stack = event.getItemStack();
             Player player = event.getEntity();
@@ -122,7 +164,7 @@ public class BovinesAndButtercupsForge {
                 FlowerPotBlock block = ((FlowerPotBlock)level.getBlockState(pos).getBlock());
                 if (block.getEmptyPot() == block && event.getHand() == InteractionHand.MAIN_HAND) {
                     level.setBlock(pos, BovineBlocks.POTTED_CUSTOM_FLOWER.get().defaultBlockState(), 3);
-                    ((CustomFlowerPotBlockEntity)level.getBlockEntity(pos)).setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(level, CustomFlowerItem.getFlowerTypeFromTag(level, stack).orElse(FlowerType.MISSING)).toString());
+                    ((CustomFlowerPotBlockEntity)level.getBlockEntity(pos)).setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(CustomFlowerItem.getFlowerTypeFromTag(stack).orElse(FlowerType.MISSING)).toString());
                     level.getBlockEntity(pos).setChanged();
                     level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), Block.UPDATE_ALL);
                     player.awardStat(Stats.POT_FLOWER);
@@ -140,7 +182,7 @@ public class BovinesAndButtercupsForge {
                 FlowerPotBlock block = ((FlowerPotBlock)level.getBlockState(pos).getBlock());
                 if (block.getEmptyPot() == block) {
                     level.setBlock(pos, BovineBlocks.POTTED_CUSTOM_MUSHROOM.get().defaultBlockState(), 3);
-                    ((CustomMushroomPotBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(BovineRegistryUtil.getMushroomTypeKey(level, CustomMushroomItem.getMushroomTypeFromTag(level, stack).orElse(MushroomType.MISSING)).toString());
+                    ((CustomMushroomPotBlockEntity)level.getBlockEntity(pos)).setMushroomTypeName(BovineRegistryUtil.getMushroomTypeKey(CustomMushroomItem.getMushroomTypeFromTag(stack).orElse(MushroomType.MISSING)).toString());
                     level.getBlockEntity(pos).setChanged();
                     level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos), Block.UPDATE_ALL);
                     player.awardStat(Stats.POT_FLOWER);
@@ -159,7 +201,7 @@ public class BovinesAndButtercupsForge {
 
         // I have had to put the ALLOW implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
         eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {
-            if (event.getEntity() instanceof MushroomCow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream(event.getLevel()).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0) || event.getEntity() instanceof Cow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(BovineTags.PREVENT_COW_SPAWNS)) {
+            if (event.getEntity() instanceof MushroomCow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0) || event.getEntity() instanceof Cow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(BovineTags.PREVENT_COW_SPAWNS)) {
                 event.setResult(Event.Result.DENY);
             }
         });
@@ -168,7 +210,7 @@ public class BovinesAndButtercupsForge {
             if (event.getTarget() instanceof MushroomCow cow) {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
                     if (cap.getMushroomCowTypeKey() == null) {
-                        if (BovineRegistryUtil.configuredCowTypeStream(event.getTarget().getLevel()).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).allMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() == 0)) {
+                        if (BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).allMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() == 0)) {
                             if (cow.getMushroomType() == MushroomCow.MushroomType.BROWN) {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("brown_mushroom"));
                             } else {
@@ -177,7 +219,7 @@ public class BovinesAndButtercupsForge {
                         } else if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().getLevel(), cow.blockPosition()) > 0) {
                             cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().getLevel(), cow.blockPosition(), cow.getRandom()));
                         } else {
-                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnType(event.getTarget().getLevel(), cow.getRandom()));
+                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnType(cow.getRandom()));
                         }
                     }
                 });
@@ -202,18 +244,6 @@ public class BovinesAndButtercupsForge {
             }
             if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
-            }
-            if (event.getEntity() instanceof Player player) {
-                for (int i = 0; i < player.containerMenu.slots.size(); ++i) {
-                    ItemStack stack = player.containerMenu.slots.get(i).getItem();
-                    if (!ItemLevelUtil.isApplicableForStoringLevel(stack) || ((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel() != null) continue;
-                    ((ItemStackAccess)(Object)stack).bovinesandbuttercups$setLevel(player.getLevel());
-                }
-                for (int i = 0; i < player.inventoryMenu.slots.size(); ++i) {
-                    ItemStack stack = player.inventoryMenu.getSlot(i).getItem();
-                    if (!ItemLevelUtil.isApplicableForStoringLevel(stack) || ((ItemStackAccess)(Object)stack).bovinesandbuttercups$getLevel() != null) continue;
-                    ((ItemStackAccess)(Object)stack).bovinesandbuttercups$setLevel(player.getLevel());
-                }
             }
         });
         eventBus.addListener((LivingHurtEvent event) -> {

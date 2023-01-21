@@ -17,6 +17,7 @@ public class BovinesAndButtercups {
         BovineItems.register();
         BovineBlocks.register();
         BovineBlockEntityTypes.register();
+        BovineCowTypes.register();
         BovineCriteriaTriggers.register();
         BovineEffects.register();
         BovineEntityTypes.register();

@@ -16,10 +16,12 @@ public class ConfiguredCowType<CTC extends CowTypeConfiguration, CT extends CowT
 
     private final CT cowType;
     private final CTC configuration;
+    private final int loadingPriority;
 
-    public ConfiguredCowType(CT cowType, CTC configuration) {
+    public ConfiguredCowType(CT cowType, CTC configuration, int loadingPriority) {
         this.cowType = cowType;
         this.configuration = configuration;
+        this.loadingPriority = loadingPriority;
     }
 
     public CT getCowType() {
@@ -30,8 +32,7 @@ public class ConfiguredCowType<CTC extends CowTypeConfiguration, CT extends CowT
         return configuration;
     }
 
-    public static Holder<ConfiguredCowType<?, ?>> bootstrap(Registry<ConfiguredCowType<?, ?>> registry) {
-        BuiltinRegistries.register(registry, ResourceKey.create(BovineRegistryKeys.CONFIGURED_COW_TYPE_KEY, BovinesAndButtercups.asResource("missing_mooshroom")), new ConfiguredCowType<>(BovineCowTypes.MUSHROOM_COW_TYPE, MushroomCowConfiguration.MISSING));
-        return BuiltinRegistries.register(registry, ResourceKey.create(BovineRegistryKeys.CONFIGURED_COW_TYPE_KEY, BovinesAndButtercups.asResource("missing_moobloom")), new ConfiguredCowType<>(BovineCowTypes.FLOWER_COW_TYPE, FlowerCowConfiguration.MISSING));
+    public int getLoadingPriority() {
+        return loadingPriority;
     }
 }

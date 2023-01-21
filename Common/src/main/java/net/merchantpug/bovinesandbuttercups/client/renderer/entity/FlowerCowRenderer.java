@@ -22,7 +22,7 @@ public class FlowerCowRenderer extends MobRenderer<FlowerCow, FlowerCowModel<Flo
 
     @Override
     public ResourceLocation getTextureLocation(FlowerCow entity) {
-        ResourceLocation location = entity.getFlowerCowType().getConfiguration().getCowTexture().orElseGet(() -> new ResourceLocation(BovineRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), entity.getFlowerCowType()).getNamespace(), "textures/entity/moobloom/" + BovineRegistryUtil.getConfiguredCowTypeKey(entity.getLevel(), entity.getFlowerCowType()).getPath().toLowerCase(Locale.ROOT) + "_moobloom.png"));
+        ResourceLocation location = entity.getFlowerCowType().getConfiguration().getCowTexture().orElseGet(() -> new ResourceLocation(BovineRegistryUtil.getConfiguredCowTypeKey(entity.getFlowerCowType()).getNamespace(), "textures/entity/moobloom/" + BovineRegistryUtil.getConfiguredCowTypeKey(entity.getFlowerCowType()).getPath().toLowerCase(Locale.ROOT) + "_moobloom.png"));
         if (BovinesAndButtercupsClient.LOADED_COW_TEXTURES.contains(location)) {
             return location;
         }

@@ -55,21 +55,21 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
     public ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowType() {
         try {
             if (this.typeId != null) {
-                if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(provider.getLevel(), typeId) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE).getConfiguration()) {
-                    this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE);
+                if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(typeId) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get()).getConfiguration()) {
+                    this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get());
                     return this.type;
                 } else if (this.type != null) {
                     return this.type;
-                } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(provider.getLevel(), typeId)) {
-                    this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), typeId, BovineCowTypes.MUSHROOM_COW_TYPE);
+                } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(typeId)) {
+                    this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get());
                     return this.type;
                 }
                 BovinesAndButtercups.LOG.warn("Could not find type '{}' from mooshroom at position {}. Setting type to 'bovinesandbuttercups:missing_mooshroom'.", this.typeId, provider.position());
             }
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get());
             return this.type;
         } catch (Exception e) {
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(provider.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get());
             BovinesAndButtercups.LOG.warn("Could not get type '{}' from mooshroom at position {}. Setting type to 'bovinesandbuttercups:missing_mooshroom'. {}", this.typeId, provider.position(), e.getMessage());
             return this.type;
         }

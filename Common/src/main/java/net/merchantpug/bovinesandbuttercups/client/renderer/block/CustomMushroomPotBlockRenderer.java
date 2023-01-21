@@ -34,7 +34,7 @@ public class CustomMushroomPotBlockRenderer implements BlockEntityRenderer<Custo
     public void render(CustomMushroomPotBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/potted_missing_mushroom"), "");
         if (blockEntity.getMushroomType() != null) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(blockEntity.getLevel(), blockEntity.getMushroomType()), blockEntity.getBlockState().getBlock());
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(blockEntity.getMushroomType()), blockEntity.getBlockState().getBlock());
             if (modelLocationWithoutVariant.isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "");
             }

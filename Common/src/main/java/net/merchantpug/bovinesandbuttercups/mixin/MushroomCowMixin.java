@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.MobSpawnType;
@@ -43,7 +42,7 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
 
     @ModifyReturnValue(method = "checkMushroomSpawnRules", at = @At("RETURN"))
     private static boolean bovinesandbuttercups$allowSpawning(boolean original, EntityType<MushroomCow> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
-        return (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || BovineRegistryUtil.configuredCowTypeStream(levelAccessor).filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).noneMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0) && original);
+        return (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).noneMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0) && original);
     }
 
     @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getMushroomType()Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;"))
@@ -73,10 +72,10 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
             int totalWeight = 0;
 
             for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().get()) {
-                if (weightedCowType.getConfiguredCowType(level).isEmpty()) {
+                if (weightedCowType.getConfiguredCowType().isEmpty()) {
                     BovinesAndButtercups.LOG.warn("Lightning struck mooshroom at {} tried to get thunder conversion type '{}' that does not exist. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                     continue;
-                } else if (!(weightedCowType.getConfiguredCowType(level).get().getConfiguration() instanceof MushroomCowConfiguration)) {
+                } else if (!(weightedCowType.getConfiguredCowType().get().getConfiguration() instanceof MushroomCowConfiguration)) {
                     BovinesAndButtercups.LOG.warn("Lightning struck mooshroom at {} tried to get thunder conversion type '{}' that is not a mooshroom type. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                     continue;
                 }
@@ -106,7 +105,7 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
     @Inject(method = "getEffectFromItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/BlockItem;getBlock()Lnet/minecraft/world/level/block/Block;", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void bovinesandbuttercups$getEffectFromCustomFlowerStack(ItemStack itemStack, CallbackInfoReturnable<Optional<Pair<MobEffect, Integer>>> cir, Item item) {
         if (item instanceof CustomFlowerItem) {
-            cir.setReturnValue(Optional.of(Pair.of(CustomFlowerItem.getSuspiciousStewEffect(((Entity)(Object)this).getLevel(), itemStack), CustomFlowerItem.getSuspiciousStewDuration(((Entity)(Object)this).getLevel(), itemStack))));
+            cir.setReturnValue(Optional.of(Pair.of(CustomFlowerItem.getSuspiciousStewEffect(itemStack), CustomFlowerItem.getSuspiciousStewDuration(itemStack))));
         }
     }
 }

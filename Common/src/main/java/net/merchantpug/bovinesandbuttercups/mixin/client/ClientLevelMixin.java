@@ -68,13 +68,13 @@ public abstract class ClientLevelMixin extends Level {
                             ResourceLocation resourceLocation = null;
                             String variant = "bovines";
                             if (this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(customFlowerBlockEntity.getLevel(), customFlowerBlockEntity.getFlowerType()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
+                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(customFlowerBlockEntity.getFlowerType()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
                                 variant = BlockModelShaper.statePropertiesToString(blockState.getValues());
                             } else if (this.getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
-                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customMushroomBlockEntity.getLevel(), customMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
+                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
                                 variant = "";
                             } else if (this.getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {
-                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customHugeMushroomBlockEntity.getLevel(), customHugeMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"));
+                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customHugeMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"));
                                 variant = "down=true,east=true,north=true,south=true,up=true,west=true";
                             }
                             if (resourceLocation != null) {

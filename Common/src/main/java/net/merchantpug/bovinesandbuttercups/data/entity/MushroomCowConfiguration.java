@@ -2,15 +2,17 @@ package net.merchantpug.bovinesandbuttercups.data.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -94,8 +96,8 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
                 ResourceLocation.CODEC.optionalFieldOf("mushroom_type").forGetter(MushroomCowConfiguration.MushroomCowMushroom::mushroomType)
         ).apply(builder, MushroomCowConfiguration.MushroomCowMushroom::new));
 
-        public Optional<MushroomType> getMushroomType(LevelAccessor level) {
-            return mushroomType.map(resourceLocation -> BovineRegistryUtil.getMushroomTypeFromKey(level, resourceLocation));
+        public Optional<MushroomType> getMushroomType() {
+            return mushroomType.map(BovineRegistryUtil::getMushroomTypeFromKey);
         }
 
         @Override

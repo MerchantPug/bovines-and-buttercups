@@ -2,8 +2,11 @@ package net.merchantpug.bovinesandbuttercups.data.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,7 +15,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -104,8 +106,8 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                 ResourceLocation.CODEC.optionalFieldOf("flower_type").forGetter(FlowerCowFlower::flowerType)
         ).apply(builder, FlowerCowFlower::new));
 
-        public Optional<FlowerType> getFlowerType(LevelAccessor level) {
-            return flowerType.map(resourceLocation -> BovineRegistryUtil.getFlowerTypeFromKey(level, resourceLocation));
+        public Optional<FlowerType> getFlowerType() {
+            return flowerType.map(BovineRegistryUtil::getFlowerTypeFromKey);
         }
 
         @Override

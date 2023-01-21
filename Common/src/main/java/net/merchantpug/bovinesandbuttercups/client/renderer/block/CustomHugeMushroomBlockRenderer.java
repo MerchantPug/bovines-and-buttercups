@@ -33,7 +33,7 @@ public class CustomHugeMushroomBlockRenderer implements BlockEntityRenderer<Cust
         ModelResourceLocation modelResourceLocation = BlockModelShaper.stateToModelLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"), blockEntity.getBlockState());
 
         if (blockEntity.getMushroomType() != null) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(blockEntity.getLevel(), blockEntity.getMushroomType()), blockEntity.getBlockState().getBlock());
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(blockEntity.getMushroomType()), blockEntity.getBlockState().getBlock());
             if (modelLocationWithoutVariant.isPresent()) {
                 modelResourceLocation = BlockModelShaper.stateToModelLocation(modelLocationWithoutVariant.get(), blockEntity.getBlockState());
             }

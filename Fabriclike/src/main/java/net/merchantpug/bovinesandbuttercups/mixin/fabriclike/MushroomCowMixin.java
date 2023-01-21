@@ -9,8 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.ItemStack;
@@ -43,10 +41,10 @@ public class MushroomCowMixin {
         MushroomCow cow = (MushroomCow)(Object)this;
         if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().isPresent()) {
             return new ItemStack(Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().get().getBlock());
-        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).isPresent()) {
+        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType().isPresent()) {
             ItemStack itemStack = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
             CompoundTag compound = new CompoundTag();
-            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(((Entity)(Object)this).getLevel(), Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).get()).toString());
+            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType().get()).toString());
             itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             return itemStack;
         }

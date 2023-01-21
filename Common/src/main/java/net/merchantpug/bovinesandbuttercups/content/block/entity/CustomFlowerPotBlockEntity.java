@@ -50,8 +50,8 @@ public class CustomFlowerPotBlockEntity extends BlockEntity {
             if (this.getLevel() != null) {
                 if (flowerTypeName == null) {
                     return FlowerType.MISSING;
-                } else if (cachedFlowerType != BovineRegistryUtil.getFlowerTypeFromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName))) {
-                    cachedFlowerType = BovineRegistryUtil.getFlowerTypeFromKey(this.getLevel(), ResourceLocation.tryParse(flowerTypeName));
+                } else if (cachedFlowerType != BovineRegistryUtil.getFlowerTypeFromKey(ResourceLocation.tryParse(flowerTypeName))) {
+                    cachedFlowerType = BovineRegistryUtil.getFlowerTypeFromKey(ResourceLocation.tryParse(flowerTypeName));
                     return cachedFlowerType;
                 } else if (cachedFlowerType != null) {
                     return cachedFlowerType;

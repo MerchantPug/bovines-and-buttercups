@@ -1,6 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.platform.services;
 
+import com.mojang.serialization.Codec;
+import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
@@ -12,6 +16,12 @@ public interface IPlatformHelper {
     boolean isModLoaded(String modId);
 
     boolean isDevelopmentEnvironment();
+
+    void registerDefaultConfiguredCowTypes();
+
+    Codec<CowType<?>> getCowTypeCodec();
+
+    ResourceLocation getCowTypeKey(CowType<?> cowType);
 
     void setRenderLayer(Block block, RenderType renderType);
 

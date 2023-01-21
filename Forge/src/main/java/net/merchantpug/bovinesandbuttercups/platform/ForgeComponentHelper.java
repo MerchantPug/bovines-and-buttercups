@@ -25,7 +25,7 @@ public class ForgeComponentHelper implements IComponentHelper {
 
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowTypeFromCow(MushroomCow cow) {
-        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(cow.getLevel(), BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE));
+        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get()));
     }
 
     @Override

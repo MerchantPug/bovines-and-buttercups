@@ -6,15 +6,12 @@ import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
 import dev.emi.emi.api.stack.EmiStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.integration.emi.recipe.EmiCustomFlowerSuspiciousStewRecipe;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -29,11 +26,9 @@ public class BovineEmiPlugin implements EmiPlugin {
         registry.addEmiStack(customMushroom);
         registry.addEmiStack(customMushroomBlock);
 
-        Level level = Minecraft.getInstance().level;
-        BovineRegistryUtil.flowerTypeStream(level).forEach(flowerType -> {
+        BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
-            ((ItemStackAccess)(Object)stack).bovinesandbuttercups$setLevel(level);
-            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(level, flowerType);
+            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(flowerType);
 
             CompoundTag compoundTag = new CompoundTag();
             compoundTag.putString("Type", flowerTypeLocation.toString());
@@ -44,7 +39,7 @@ public class BovineEmiPlugin implements EmiPlugin {
             }
         });
 
-        if (!BovineRegistryUtil.flowerTypeStream(level).filter(flowerType -> flowerType.stewEffectInstance().isPresent()).toList().isEmpty()) {
+        if (!BovineRegistryUtil.flowerTypeStream().filter(flowerType -> flowerType.stewEffectInstance().isPresent()).toList().isEmpty()) {
             registry.addRecipe(new EmiCustomFlowerSuspiciousStewRecipe());
         }
     }

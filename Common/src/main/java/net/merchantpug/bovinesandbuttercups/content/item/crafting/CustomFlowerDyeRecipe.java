@@ -1,6 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.content.item.crafting;
 
-import net.merchantpug.bovinesandbuttercups.access.CraftingContainerAccess;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
@@ -52,7 +51,7 @@ public class CustomFlowerDyeRecipe extends CustomRecipe {
         if (stack.isEmpty()) {
             return stack;
         }
-        Optional<FlowerType> flowerType = CustomFlowerItem.getFlowerTypeFromTag(((CraftingContainerAccess)container).bovinesandbuttercups$getLevel(), stack);
+        Optional<FlowerType> flowerType = CustomFlowerItem.getFlowerTypeFromTag(stack);
         if (flowerType.isPresent() && flowerType.get().dyeCraftResult().isPresent()) {
             dyeStack = flowerType.get().dyeCraftResult().get().copy();
         }

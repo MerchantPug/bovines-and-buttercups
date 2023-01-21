@@ -93,7 +93,7 @@ dependencies {
     */
 
     modCompileOnly "dev.emi:emi:${emi_version}"
-    // modRuntimeOnly "dev.emi:emi:${emi_version}"
+    modRuntimeOnly "dev.emi:emi:${emi_version}"
 }
 
 loom {

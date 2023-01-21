@@ -17,7 +17,7 @@ public class MushroomCowSpawnUtil {
     public static int getTotalSpawnWeight(LevelAccessor level, BlockPos pos) {
         int totalWeight = 0;
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
 
             if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent()) {
@@ -29,12 +29,12 @@ public class MushroomCowSpawnUtil {
         return totalWeight;
     }
 
-    public static ResourceLocation getMooshroomSpawnType(LevelAccessor level, RandomSource random) {
+    public static ResourceLocation getMooshroomSpawnType(RandomSource random) {
         int totalWeight = 0;
 
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration mushroomCowConfiguration)) continue;
 
             if (mushroomCowConfiguration.getNaturalSpawnWeight() > 0) {
@@ -48,7 +48,7 @@ public class MushroomCowSpawnUtil {
             if (r <= 0.0) break;
         }
         if (!mooshroomList.isEmpty()) {
-            return BovineRegistryUtil.getConfiguredCowTypeKey(level, mooshroomList.get(index));
+            return BovineRegistryUtil.getConfiguredCowTypeKey(mooshroomList.get(index));
         }
         return BovinesAndButtercups.asResource("missing_mooshroom");
     }
@@ -56,7 +56,7 @@ public class MushroomCowSpawnUtil {
     public static ResourceLocation getMooshroomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
 
             if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent()) {
@@ -72,7 +72,7 @@ public class MushroomCowSpawnUtil {
             if (r <= 0.0) break;
         }
         if (!mooshroomList.isEmpty()) {
-            return BovineRegistryUtil.getConfiguredCowTypeKey(level, mooshroomList.get(index));
+            return BovineRegistryUtil.getConfiguredCowTypeKey(mooshroomList.get(index));
         }
         return BovinesAndButtercups.asResource("missing_mooshroom");
     }

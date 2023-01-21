@@ -6,8 +6,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class CowTypeConfiguration {
     protected static <T extends CowTypeConfiguration> Products.P3<RecordCodecBuilder.Mu<T>, Optional<ResourceLocation>, Optional<HolderSet<Biome>>, Integer> codecStart(RecordCodecBuilder.Instance<T> instance) {
         return instance.group(
                 ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(CowTypeConfiguration::getCowTexture),
-                Biome.LIST_CODEC.optionalFieldOf("spawn_biomes").forGetter(CowTypeConfiguration::getBiomes),
+                RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biomes").forGetter(CowTypeConfiguration::getBiomes),
                 Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(CowTypeConfiguration::getNaturalSpawnWeight));
     }
 
@@ -87,11 +88,11 @@ public class CowTypeConfiguration {
                 Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
         ).apply(builder, WeightedConfiguredCowType::new));
 
-        public Optional<ConfiguredCowType<?, ?>> getConfiguredCowType(LevelAccessor level) {
-            if (!BovineRegistryUtil.isConfiguredCowTypeInRegistry(level, configuredCowTypeResource())) {
+        public Optional<ConfiguredCowType<?, ?>> getConfiguredCowType() {
+            if (!BovineRegistryUtil.isConfiguredCowTypeInRegistry(configuredCowTypeResource())) {
                 return Optional.empty();
             }
-            return Optional.ofNullable(BovineRegistryUtil.getConfiguredCowTypeFromKey(level, configuredCowTypeResource()));
+            return Optional.ofNullable(BovineRegistryUtil.getConfiguredCowTypeFromKey(configuredCowTypeResource()));
         }
     }
 }

@@ -6,17 +6,14 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +26,9 @@ public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecip
                         EmiStack.of(Items.BOWL),
                         EmiStack.of(Items.RED_MUSHROOM),
                         EmiStack.of(Items.BROWN_MUSHROOM),
-                        EmiIngredient.of(BovineRegistryUtil.flowerTypeStream(Minecraft.getInstance().level).filter(flowerType -> flowerType.stewEffectInstance().isPresent()).map(flowerType -> {
+                        EmiIngredient.of(BovineRegistryUtil.flowerTypeStream().filter(flowerType -> flowerType.stewEffectInstance().isPresent()).map(flowerType -> {
                             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
-                            ((ItemStackAccess)(Object)stack).bovinesandbuttercups$setLevel(Minecraft.getInstance().level);
-                            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(Minecraft.getInstance().level, flowerType);
+                            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(flowerType);
 
                             CompoundTag compoundTag = new CompoundTag();
                             compoundTag.putString("Type", flowerTypeLocation.toString());
@@ -60,7 +56,7 @@ public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecip
     @Override
     public SlotWidget getOutputWidget(int x, int y) {
         return new GeneratedSlotWidget(r -> {
-            Optional<MobEffectInstance> effectInstance = CustomFlowerItem.getFlowerTypeFromTag(Minecraft.getInstance().level, getFlower(r)).get().stewEffectInstance();
+            Optional<MobEffectInstance> effectInstance = CustomFlowerItem.getFlowerTypeFromTag(getFlower(r)).get().stewEffectInstance();
             if (effectInstance.isPresent()) {
                 ItemStack stack = new ItemStack(Items.SUSPICIOUS_STEW);
                 SuspiciousStewItem.saveMobEffect(stack, effectInstance.get().getEffect(), effectInstance.get().getDuration());
@@ -69,14 +65,13 @@ public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecip
             return EmiStack.of(ItemStack.EMPTY);
         }, unique, x, y);
     }
+
     private ItemStack getFlower(Random random) {
-        Level level = Minecraft.getInstance().level;
-        List<FlowerType> types = BovineRegistryUtil.flowerTypeStream(level).filter(flowerType -> flowerType.stewEffectInstance().isPresent()).toList();
+        List<FlowerType> types = BovineRegistryUtil.flowerTypeStream().filter(flowerType -> flowerType.stewEffectInstance().isPresent()).toList();
         FlowerType flowerType = types.get(random.nextInt(types.size()));
 
         ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
-        ((ItemStackAccess)(Object)stack).bovinesandbuttercups$setLevel(level);
-        ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(level, flowerType);
+        ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(flowerType);
 
         CompoundTag compoundTag = new CompoundTag();
         compoundTag.putString("Type", flowerTypeLocation.toString());

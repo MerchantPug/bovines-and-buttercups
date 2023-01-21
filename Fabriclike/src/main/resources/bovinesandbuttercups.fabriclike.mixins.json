@@ -10,9 +10,7 @@
     "FlowerPotBlockMixin",
     "LivingEntityMixin",
     "MushroomCowAccessor",
-    "MushroomCowMixin",
-    "PlayerMixin",
-    "RegistryAccessMixin"
+    "MushroomCowMixin"
   ],
   "client": [
     "client.EffectRenderingInventoryScreenMixin",

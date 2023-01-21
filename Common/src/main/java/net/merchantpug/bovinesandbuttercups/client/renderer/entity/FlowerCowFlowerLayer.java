@@ -50,8 +50,8 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         if (entity.isBaby()) {
             if (configuration.getBud().modelLocation().isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(configuration.getBud().modelLocation().get(), "");
-            } else if (configuration.getBud().getFlowerType(entity.getLevel()).isPresent()) {
-                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(entity.getLevel(), configuration.getBud().getFlowerType(entity.getLevel()).get()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
+            } else if (configuration.getBud().getFlowerType().isPresent()) {
+                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(configuration.getBud().getFlowerType().get()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "persistent=true");
             } else {
                 modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");
@@ -61,8 +61,8 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         } else {
             if (configuration.getFlower().modelLocation().isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(configuration.getFlower().modelLocation().get(), "");
-            } else if (configuration.getFlower().getFlowerType(entity.getLevel()).isPresent()) {
-                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(entity.getLevel(), configuration.getFlower().getFlowerType(entity.getLevel()).get()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
+            } else if (configuration.getFlower().getFlowerType().isPresent()) {
+                ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(configuration.getFlower().getFlowerType().get()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "persistent=true");
             } else {
                 modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "");

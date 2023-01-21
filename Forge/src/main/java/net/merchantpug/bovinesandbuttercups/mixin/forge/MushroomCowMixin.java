@@ -36,10 +36,10 @@ public abstract class MushroomCowMixin {
                 list.add(new ItemStack(Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().blockState().get().getBlock()));
             }
             cir.setReturnValue(list);
-        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).isPresent()) {
+        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType().isPresent()) {
             ItemStack itemStack = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
             CompoundTag compound = new CompoundTag();
-            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(((Entity)(Object)this).getLevel(), Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType(((Entity)(Object)this).getLevel()).get()).toString());
+            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getMushroom().getMushroomType().get()).toString());
             itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             for(int i = 0; i < 5; ++i) {
                 list.add(itemStack);

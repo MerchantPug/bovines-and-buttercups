@@ -4,7 +4,6 @@ import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +18,7 @@ public class CustomFlowerSubtypeInterpreter implements IIngredientSubtypeInterpr
         }
         CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
         if (compound.contains("Type")) {
-            FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(Minecraft.getInstance().level, ResourceLocation.tryParse(compound.getString("Type")));
+            FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(ResourceLocation.tryParse(compound.getString("Type")));
             if (!flowerType.equals(FlowerType.MISSING)) {
                 return compound.getString("Type");
             }

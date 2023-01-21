@@ -45,7 +45,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
         if (blockEntity instanceof CustomMushroomBlockEntity cmbe && cmbe.getLevel() != null) {
             CompoundTag compound = new CompoundTag();
             if (cmbe.getMushroomType() != null && !cmbe.getMushroomType().equals(MushroomType.MISSING)) {
-                compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(cmbe.getLevel(), cmbe.getMushroomType()).toString());
+                compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(cmbe.getMushroomType()).toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }

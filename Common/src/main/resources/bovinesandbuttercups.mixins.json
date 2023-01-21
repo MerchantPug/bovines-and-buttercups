@@ -15,7 +15,6 @@
     "EntitySuperMixin",
     "FarmBlockMixin",
     "InventoryMenuMixin",
-    "ItemStackMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
     "MushroomCowMixin",

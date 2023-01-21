@@ -7,14 +7,11 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomShapelessDisplay;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.access.ItemStackAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +19,9 @@ import java.util.Optional;
 public class BovineReiPlugin implements REIClientPlugin {
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        Level level = Minecraft.getInstance().level;
-        BovineRegistryUtil.flowerTypeStream(level).forEach(flowerType -> {
+        BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
-            ((ItemStackAccess) (Object) stack).bovinesandbuttercups$setLevel(level);
-            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(level, flowerType);
+            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(flowerType);
 
             CompoundTag compoundTag = new CompoundTag();
             compoundTag.putString("Type", flowerTypeLocation.toString());
@@ -40,13 +35,11 @@ public class BovineReiPlugin implements REIClientPlugin {
 
     @Override
     public void registerBasicEntryFiltering(BasicFilteringRule<?> rule) {
-        Level level = Minecraft.getInstance().level;
         ItemStack defaultMissingFlower = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
         rule.hide(() -> List.of(EntryStacks.of(defaultMissingFlower)));
-        BovineRegistryUtil.flowerTypeStream(level).forEach(flowerType -> {
+        BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
-            ((ItemStackAccess) (Object) stack).bovinesandbuttercups$setLevel(level);
-            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(level, flowerType);
+            ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(flowerType);
 
             CompoundTag compoundTag = new CompoundTag();
             compoundTag.putString("Type", flowerTypeLocation.toString());
@@ -54,11 +47,10 @@ public class BovineReiPlugin implements REIClientPlugin {
 
             rule.show(() -> List.of(EntryStacks.of(stack)));
         });
-        BovineRegistryUtil.mushroomTypeStream(level).forEach(mushroomType -> {
+        BovineRegistryUtil.mushroomTypeStream().forEach(mushroomType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
             ItemStack blockStack = new ItemStack(BovineItems.CUSTOM_MUSHROOM_BLOCK.get());
-            ((ItemStackAccess) (Object) stack).bovinesandbuttercups$setLevel(level);
-            ResourceLocation mushroomTypeLocation = BovineRegistryUtil.getMushroomTypeKey(level, mushroomType);
+            ResourceLocation mushroomTypeLocation = BovineRegistryUtil.getMushroomTypeKey(mushroomType);
 
             CompoundTag compoundTag = new CompoundTag();
             compoundTag.putString("Type", mushroomTypeLocation.toString());

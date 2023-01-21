@@ -85,7 +85,7 @@ public class FlowerCow extends Cow {
             naturalSpawnType = getMoobloomSpawnType(this.getLevel(), this.getRandom());
         }
 
-        this.entityData.define(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(this.getLevel(), naturalSpawnType).toString());
+        this.entityData.define(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(naturalSpawnType).toString());
         this.entityData.define(PREVIOUS_TYPE_ID, "");
         this.entityData.define(POLLINATED_RESET_TICKS, 0);
         this.entityData.define(TICKS_UNTIL_FLOWERS, 0);
@@ -155,10 +155,10 @@ public class FlowerCow extends Cow {
                 int totalWeight = 0;
 
                 for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : this.getFlowerCowType().getConfiguration().getThunderConversionTypes().get()) {
-                    if (weightedCowType.getConfiguredCowType(level).isEmpty()) {
+                    if (weightedCowType.getConfiguredCowType().isEmpty()) {
                         BovinesAndButtercups.LOG.warn("Lightning struck moobloom at {} tried to get thunder conversion type '{}' that does not exist. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                         continue;
-                    } else if (!(weightedCowType.getConfiguredCowType(level).get().getConfiguration() instanceof FlowerCowConfiguration)) {
+                    } else if (!(weightedCowType.getConfiguredCowType().get().getConfiguration() instanceof FlowerCowConfiguration)) {
                         BovinesAndButtercups.LOG.warn("Lightning struck moobloom at {} tried to get thunder conversion type '{}' that is not a moobloom type. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                         continue;
                     }
@@ -242,11 +242,11 @@ public class FlowerCow extends Cow {
         BlockState state = null;
         if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent())
             state = this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock().defaultBlockState().setValue(CustomFlowerBlock.PERSISTENT, boneMealed);
-        else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent())
+        else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType().isPresent())
             state = BovineBlocks.CUSTOM_FLOWER.get().defaultBlockState().setValue(CustomFlowerBlock.PERSISTENT, boneMealed);
 
         if (state == null) {
-            BovinesAndButtercups.LOG.warn("Moobloom with type '{}' tried to spread flowers without a valid flower type.", BovineRegistryUtil.getConfiguredCowTypeKey(level, getFlowerCowType()));
+            BovinesAndButtercups.LOG.warn("Moobloom with type '{}' tried to spread flowers without a valid flower type.", BovineRegistryUtil.getConfiguredCowTypeKey(getFlowerCowType()));
             return;
         }
 
@@ -264,11 +264,11 @@ public class FlowerCow extends Cow {
     public void setBlockToFlower(BlockState state, BlockPos pos) {
         if (this.level.isClientSide) return;
         ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D, pos.getY() + 0.3D, pos.getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
-        if (state.getBlock() == BovineBlocks.CUSTOM_FLOWER.get() && this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent()) {
+        if (state.getBlock() == BovineBlocks.CUSTOM_FLOWER.get() && this.getFlowerCowType().getConfiguration().getFlower().getFlowerType().isPresent()) {
             this.level.setBlock(pos, state, 3);
             BlockEntity blockEntity = this.level.getBlockEntity(pos);
             if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                customFlowerBlockEntity.setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).get()).toString());
+                customFlowerBlockEntity.setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(this.getFlowerCowType().getConfiguration().getFlower().getFlowerType().get()).toString());
                 customFlowerBlockEntity.setChanged();
             }
         } else {
@@ -334,7 +334,7 @@ public class FlowerCow extends Cow {
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow otherParent, FlowerCow child) {
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> flowerCowType = (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType;
             if (flowerCowType.getConfiguration().getBreedingConditions().isEmpty()) continue;
             if (this.testBreedingBlocks(flowerCowType.getConfiguration(), level))
@@ -345,8 +345,8 @@ public class FlowerCow extends Cow {
             int random = this.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
             this.spawnParticleToBreedPosition(randomType.getConfiguration(), level);
-            if (this.getLoveCause() != null && !BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, this.getFlowerCowType())) && !BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(level, otherParent.getFlowerCowType()))) {
-                BovineCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, BovineRegistryUtil.getConfiguredCowTypeKey(level, randomType));
+            if (this.getLoveCause() != null && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(this.getFlowerCowType())) && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(otherParent.getFlowerCowType()))) {
+                BovineCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, BovineRegistryUtil.getConfiguredCowTypeKey(randomType));
             }
             return randomType;
         }
@@ -379,9 +379,9 @@ public class FlowerCow extends Cow {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;
-                } else if (configuration.getFlower().getFlowerType(level).isPresent() &&
-                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get() ||
-                                state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get())) {
+                } else if (configuration.getFlower().getFlowerType().isPresent() &&
+                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get() ||
+                                state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;
@@ -431,9 +431,9 @@ public class FlowerCow extends Cow {
                 if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getFlower().blockState().get().getBlock())) {
                     associatedBlockFound = true;
                     break;
-                } else if (configuration.getFlower().getFlowerType(level).isPresent() &&
-                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get() ||
-                        state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType(level).get())) {
+                } else if (configuration.getFlower().getFlowerType().isPresent() &&
+                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get() ||
+                        state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get())) {
                     associatedBlockFound = true;
                     break;
                 }
@@ -469,18 +469,18 @@ public class FlowerCow extends Cow {
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getFlowerCowType() {
         try {
-            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(getTypeId())) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE).getConfiguration()) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE);
+            if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(ResourceLocation.tryParse(getTypeId())) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE.get()).getConfiguration()) {
+                return BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE.get());
             } else if (this.type != null) {
                 return this.type;
-            } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(this.getLevel(), ResourceLocation.tryParse(getTypeId()))) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE);
+            } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(ResourceLocation.tryParse(getTypeId()))) {
+                return BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE.get());
             }
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
             BovinesAndButtercups.LOG.warn("Could not find type '{}' from moobloom at {}. Setting type to 'bovinesandbuttercups:missing_moobloom'.", ResourceLocation.tryParse(getTypeId()), position());
             return this.type;
         } catch (Exception e) {
-            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(this.getLevel(), BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+            this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
             BovinesAndButtercups.LOG.warn("Could not get type '{}' from moobloom at {}. Setting type to 'bovinesandbuttercups:missing_moobloom'. {}", ResourceLocation.tryParse(getTypeId()), position(), e.getMessage());
             return this.type;
         }
@@ -504,7 +504,7 @@ public class FlowerCow extends Cow {
     }
 
     public void setFlowerType(ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> value, LevelAccessor level) {
-        this.entityData.set(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(level, value).toString());
+        this.entityData.set(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(value).toString());
         this.getFlowerCowType();
     }
 
@@ -556,7 +556,7 @@ public class FlowerCow extends Cow {
     public static int getTotalSpawnWeight(LevelAccessor level, BlockPos pos) {
         int totalWeight = 0;
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
 
             if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(pos))) {
@@ -571,7 +571,7 @@ public class FlowerCow extends Cow {
 
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> moobloomList = new ArrayList<>();
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
 
             if (configuration.getNaturalSpawnWeight() > 0) {
@@ -591,14 +591,14 @@ public class FlowerCow extends Cow {
                 }
             }
         }
-        return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+        return BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
     }
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getMoobloomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> moobloomList = new ArrayList<>();
         int totalWeight = 0;
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
 
             if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(pos))) {
@@ -618,7 +618,7 @@ public class FlowerCow extends Cow {
                 }
             }
         }
-        return BovineRegistryUtil.getConfiguredCowTypeFromKey(level, BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE);
+        return BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
     }
 
     public List<ItemStack> xplatformShear(SoundSource category) {
@@ -645,10 +645,10 @@ public class FlowerCow extends Cow {
                 for (int i = 0; i < 5; ++i) {
                     if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent()) {
                         stacks.add(new ItemStack(this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock()));
-                    } else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).isPresent()) {
+                    } else if (this.getFlowerCowType().getConfiguration().getFlower().getFlowerType().isPresent()) {
                         ItemStack itemStack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
                         CompoundTag compound = new CompoundTag();
-                        compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(this.getLevel(), this.getFlowerCowType().getConfiguration().getFlower().getFlowerType(this.getLevel()).get()).toString());
+                        compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(this.getFlowerCowType().getConfiguration().getFlower().getFlowerType().get()).toString());
                         itemStack.getOrCreateTag().put("BlockEntityTag", compound);
                         stacks.add(itemStack);
                     }

@@ -27,10 +27,6 @@ public record MushroomType(Optional<List<ResourceLocation>> hugeMushroomStructur
 
     public static final MushroomType MISSING = new MushroomType(Optional.empty());
 
-    public static Holder<MushroomType> bootstrap(Registry<MushroomType> registry) {
-        return BuiltinRegistries.register(registry, ResourceKey.create(BovineRegistryKeys.MUSHROOM_TYPE_KEY, BovinesAndButtercups.asResource("missing_mushroom")), MushroomType.MISSING);
-    }
-
     @Override
     public boolean equals(final Object obj) {
         if (obj == this)

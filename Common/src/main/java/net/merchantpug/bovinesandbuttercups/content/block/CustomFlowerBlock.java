@@ -54,7 +54,7 @@ public class CustomFlowerBlock extends BaseEntityBlock {
         if (blockEntity instanceof CustomFlowerBlockEntity cfbe) {
             CompoundTag compound = new CompoundTag();
             if (cfbe.getFlowerType() != null && !cfbe.getFlowerType().equals(FlowerType.MISSING)) {
-                compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(cfbe.getLevel(), cfbe.getFlowerType()).toString());
+                compound.putString("Type", BovineRegistryUtil.getFlowerTypeKey(cfbe.getFlowerType()).toString());
                 itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             }
         }

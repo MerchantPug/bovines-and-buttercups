@@ -41,9 +41,9 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
         boolean bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
         if (entity.isInvisible() && !bl
                 || entity.isBaby()
-                || (BovineRegistryUtil.getConfiguredCowTypeKey(entity.level, Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("red_mushroom"))
+                || (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("red_mushroom"))
                 && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().get().is(Blocks.RED_MUSHROOM))
-                || (BovineRegistryUtil.getConfiguredCowTypeKey(entity.level, Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("brown_mushroom"))
+                || (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("brown_mushroom"))
                 && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().get().is(Blocks.BROWN_MUSHROOM))) return;
 
         MushroomCowConfiguration configuration = Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration();
@@ -53,8 +53,8 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
         ModelResourceLocation modelResourceLocation;
         if (configuration.getMushroom().modelLocation().isPresent()) {
             modelResourceLocation = new ModelResourceLocation(configuration.getMushroom().modelLocation().get(), "");
-        } else if (configuration.getMushroom().getMushroomType(entity.getLevel()).isPresent()) {
-            ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(entity.getLevel(), configuration.getMushroom().getMushroomType(entity.getLevel()).get()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
+        } else if (configuration.getMushroom().getMushroomType().isPresent()) {
+            ResourceLocation modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(configuration.getMushroom().getMushroomType().get()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
             modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant, "");
         } else {
             modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"), "");

@@ -30,7 +30,7 @@ public class EntityTooltipComponentMixin {
             List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> moobloomList = new ArrayList<>();
             int totalWeight = 0;
 
-            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
+            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
                 if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
                     if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
@@ -61,7 +61,7 @@ public class EntityTooltipComponentMixin {
             List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
             int totalWeight = 0;
 
-            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream(level).filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
+            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
                 if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
                     if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
@@ -79,13 +79,13 @@ public class EntityTooltipComponentMixin {
             if (mooshroomList.size() == 0) {
                 BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity).setMushroomCowType(BovinesAndButtercups.asResource("red_mushroom"));
             } else if (mooshroomList.size() == 1) {
-                BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity).setMushroomCowType(BovineRegistryUtil.getConfiguredCowTypeKey(level, mooshroomList.get(0)));
+                BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity).setMushroomCowType(BovineRegistryUtil.getConfiguredCowTypeKey(mooshroomList.get(0)));
             } else {
                 int i = (Minecraft.getInstance().player.tickCount / (160 / totalWeight) % totalWeight);
                 for (ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> cfc : mooshroomList) {
                     i -= cfc.getConfiguration().getNaturalSpawnWeight();
                     if (i < 0) {
-                        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity).setMushroomCowType(BovineRegistryUtil.getConfiguredCowTypeKey(level, mooshroomList.get(0)));
+                        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity).setMushroomCowType(BovineRegistryUtil.getConfiguredCowTypeKey(mooshroomList.get(0)));
                         break;
                     }
                 }

@@ -38,9 +38,11 @@ public class CowType<CTC extends CowTypeConfiguration> {
      * <p>
      * This value is automatically registered to the {@link net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry registry},
      * whenever it is cleared and is not synced to the client upon data pack load.
+     * <p>
+     * This must be run after the CowType instance has been initialized in the registry.
      *
      * @param location The ResourceLocation at which to register this object.
-     * @param configuredCowType The ConfiguredCowType to register.
+     * @param configuredCowType The ConfiguredCowType to register to the registered cowType.
      */
     public void setDefaultConfiguredCowType(ResourceLocation location, ConfiguredCowType<CTC, CowType<CTC>> configuredCowType) {
         if (defaultConfiguredCowType != null)

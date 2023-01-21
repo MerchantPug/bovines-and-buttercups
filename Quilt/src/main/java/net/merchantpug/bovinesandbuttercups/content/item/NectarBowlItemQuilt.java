@@ -4,10 +4,14 @@ import io.github.queerbric.inspecio.Inspecio;
 import io.github.queerbric.inspecio.InspecioConfig;
 import io.github.queerbric.inspecio.tooltip.CompoundTooltipComponent;
 import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.LockdownEffectTooltipComponent;
+import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.SourceMoobloomTooltipComponent;
+import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -32,11 +36,19 @@ public class NectarBowlItemQuilt extends NectarBowlItem {
 
             InspecioConfig config = Inspecio.getConfig();
 
+            // TODO: Allow config to disable this.
+            CompoundTag tag = stack.getTag();
+            if (tag != null && tag.contains(SOURCE_KEY, Tag.TAG_STRING)) {
+                ResourceLocation location = ResourceLocation.tryParse(tag.getString(SOURCE_KEY));
+                if (ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get()) {
+                    components.add(new SourceMoobloomTooltipComponent(location));
+                }
+            }
+
             if (config.getEffectsConfig().hasPotions()) {
                 if (stack.is(Inspecio.HIDDEN_EFFECTS_TAG)) {
                     components.add(new LockdownEffectTooltipComponent());
                 } else {
-                    CompoundTag tag = stack.getTag();
                     if (tag != null && tag.contains(NectarBowlItem.EFFECTS_KEY, Tag.TAG_LIST)) {
                         List<MobEffectInstance> effects = new ArrayList<>();
                         ListTag effectsTag = tag.getList(NectarBowlItem.EFFECTS_KEY, Tag.TAG_COMPOUND);

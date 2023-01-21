@@ -322,6 +322,7 @@ public class FlowerCow extends Cow {
                     return InteractionResult.PASS;
                 }
 
+                NectarBowlItem.saveMoobloomTypeKey(itemStack2, BovineRegistryUtil.getConfiguredCowTypeKey(this.getFlowerCowType()));
                 ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
                 player.setItemInHand(hand, itemStack3);
                 this.playSound(BovineSoundEvents.MOOBLOOM_MILK.get(), 1.0f, 1.0f);

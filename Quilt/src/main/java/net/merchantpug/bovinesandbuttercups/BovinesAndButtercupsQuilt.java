@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
@@ -54,7 +55,7 @@ public class BovinesAndButtercupsQuilt implements ModInitializer {
         ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) -> {
             HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();
             ConfiguredCowTypeRegistry.asStream().forEach(entry -> {
-                if (entry.getValue().equals(entry.getValue().getCowType().getDefaultCowType().getSecond())) return;
+                if (entry.getValue().equals(BovineRegistryUtil.getDefaultMoobloom(entry.getValue().getCowType()))) return;
                 configuredCowTypeMap.put(entry.getKey(), entry.getValue());
             });
 

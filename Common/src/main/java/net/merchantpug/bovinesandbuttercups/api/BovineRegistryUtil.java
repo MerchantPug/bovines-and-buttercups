@@ -28,6 +28,10 @@ public class BovineRegistryUtil {
         return getConfiguredCowTypeFromKey(key, Optional.empty());
     }
 
+    public static <C extends CowTypeConfiguration> ConfiguredCowType<C, CowType<C>> getDefaultMoobloom(CowType<C> cowType) {
+        return cowType.getDefaultCowType().getSecond();
+    }
+
     public static <C extends CowTypeConfiguration> ConfiguredCowType<C, CowType<C>> getConfiguredCowTypeFromKey(ResourceLocation key, CowType<C> cowTypeFilter) {
         return getConfiguredCowTypeFromKey(key, Optional.of(cowTypeFilter));
     }

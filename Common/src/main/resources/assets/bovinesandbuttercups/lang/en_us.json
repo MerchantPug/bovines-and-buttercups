@@ -48,5 +48,7 @@
   "commands.effect.lockdown.success.multiple": "Applied Lockdown effect for %s to %s targets",
   "commands.effect.lockdown.failed": "Unable to apply Lockdown for Lockdown",
 
-  "tag.bovinesandbuttercups.moobloom_flowers": "Moobloom Flowers"
+  "tag.bovinesandbuttercups.moobloom_flowers": "Moobloom Flowers",
+  "bovinesandbuttercups.moobloom.source": "Moobloom: %s",
+  "moobloom.bovinesandbuttercups.unknown.name": "Unknown"
 }

@@ -1,11 +1,16 @@
 package net.merchantpug.bovinesandbuttercups.content.item;
 
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.api.type.CowType;
+import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 public class NectarBowlItem extends Item {
+    public static final String SOURCE_KEY = "Source";
     public static final String EFFECTS_KEY = "Effects";
     public static final String EFFECT_ID_KEY = "EffectId";
     public static final String EFFECT_DURATION_KEY = "EffectDuration";
@@ -33,10 +39,18 @@ public class NectarBowlItem extends Item {
         CompoundTag compoundTag = nectar.getOrCreateTag();
         ListTag listTag = compoundTag.getList(EFFECTS_KEY, 9);
         CompoundTag compoundTag2 = new CompoundTag();
-        compoundTag2.putByte(EFFECT_ID_KEY, (byte)MobEffect.getId(effect));
-        compoundTag2.putInt(EFFECT_DURATION_KEY, duration);
+        ResourceLocation effectLocation = Registry.MOB_EFFECT.getKey(effect);
+        if (effectLocation != null) {
+            compoundTag2.putString(EFFECT_ID_KEY, effectLocation.toString());
+            compoundTag2.putInt(EFFECT_DURATION_KEY, duration);
+        }
         listTag.add(compoundTag2);
         compoundTag.put(EFFECTS_KEY, listTag);
+    }
+
+    public static void saveMoobloomTypeKey(ItemStack nectar, ResourceLocation location) {
+        CompoundTag tag = nectar.getOrCreateTag();
+        tag.putString(SOURCE_KEY, location.toString());
     }
 
     @Override
@@ -57,7 +71,7 @@ public class NectarBowlItem extends Item {
             for (int i = 0; i < nbtList.size(); ++i) {
                 MobEffect statusEffect;
                 CompoundTag compoundTag2 = nbtList.getCompound(i);
-                if ((statusEffect = MobEffect.byId(compoundTag2.getByte(EFFECT_ID_KEY))) == null) continue;
+                if ((statusEffect = Registry.MOB_EFFECT.get(ResourceLocation.tryParse(compoundTag2.getString(EFFECT_ID_KEY)))) == null) continue;
                 if (compoundTag2.contains(EFFECT_DURATION_KEY, Tag.TAG_INT)) {
                     int compoundDuration = compoundTag2.getInt(EFFECT_DURATION_KEY);
                     if (compoundDuration > duration) {

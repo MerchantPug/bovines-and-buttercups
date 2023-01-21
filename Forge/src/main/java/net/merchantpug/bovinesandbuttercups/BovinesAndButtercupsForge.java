@@ -128,7 +128,7 @@ public class BovinesAndButtercupsForge {
         eventBus.addListener((OnDatapackSyncEvent event) -> {
             HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();
             ConfiguredCowTypeRegistry.asStream().forEach(entry -> {
-                if (entry.getValue().equals(entry.getValue().getCowType().getDefaultCowType().getSecond())) return;
+                if (entry.getValue().equals(BovineRegistryUtil.getDefaultMoobloom(entry.getValue().getCowType()))) return;
                 configuredCowTypeMap.put(entry.getKey(), entry.getValue());
             });
 

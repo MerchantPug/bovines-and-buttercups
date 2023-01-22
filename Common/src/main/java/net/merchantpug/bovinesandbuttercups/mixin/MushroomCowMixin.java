@@ -42,7 +42,7 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
 
     @ModifyReturnValue(method = "checkMushroomSpawnRules", at = @At("RETURN"))
     private static boolean bovinesandbuttercups$allowSpawning(boolean original, EntityType<MushroomCow> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
-        return (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).noneMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0) && original);
+        return (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).noneMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() > 0) && original);
     }
 
     @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getMushroomType()Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;"))
@@ -62,7 +62,7 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
         if (Services.COMPONENT.getPreviousMushroomCowTypeKeyFromCow(cow).isPresent()) {
             Services.COMPONENT.setMushroomCowType(cow, Services.COMPONENT.getPreviousMushroomCowTypeKeyFromCow(cow).get());
             Services.COMPONENT.setPreviousMushroomCowType(cow, null);
-        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().isEmpty()) {
+        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getSettings().thunderConverts().isEmpty()) {
             this.bovinesandbuttercups$thunderHit(level, bolt);
             ci.cancel();
         } else {
@@ -71,7 +71,7 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
             List<CowTypeConfiguration.WeightedConfiguredCowType> compatibleList = new ArrayList<>();
             int totalWeight = 0;
 
-            for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getThunderConversionTypes().get()) {
+            for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getSettings().thunderConverts().get()) {
                 if (weightedCowType.getConfiguredCowType().isEmpty()) {
                     BovinesAndButtercups.LOG.warn("Lightning struck mooshroom at {} tried to get thunder conversion type '{}' that does not exist. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                     continue;

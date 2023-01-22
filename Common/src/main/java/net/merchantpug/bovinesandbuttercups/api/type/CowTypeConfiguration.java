@@ -2,9 +2,9 @@ package net.merchantpug.bovinesandbuttercups.api.type;
 
 import com.mojang.datafixers.Products;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
@@ -20,48 +20,14 @@ import java.util.Optional;
  * to use for your own cow type configurations.
  */
 public class CowTypeConfiguration {
-    private final Optional<ResourceLocation> cowTexture;
-    private final Optional<HolderSet<Biome>> biomes;
-    private final int naturalSpawnWeight;
-    private final Optional<List<WeightedConfiguredCowType>> thunderConversionTypes;
+    protected final Settings settings;
 
-    protected CowTypeConfiguration(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
-        this.cowTexture = cowTexture;
-        this.biomes = biomes;
-        this.naturalSpawnWeight = naturalSpawnWeight;
-        this.thunderConversionTypes = thunderConverts;
+    protected CowTypeConfiguration(Settings settings) {
+        this.settings = settings;
     }
 
-    /**
-     * A starting codec for your own custom cow types. This initialises the important fields in this class.
-     * Unfortunately due to codec limitations, this method with a Codec.and() only supports 8 individual fields.
-     * If you wish to have more fields, use RecordCodecBuilder's creation methods.
-     *
-     * @param instance The RecordCodecBuilder for your cow type instance.
-     * @return A RecordCodecBuilder with the fields in this class.
-     * @param <T> The class of your codec that extends CowTypeConfiguration.
-     */
-    protected static <T extends CowTypeConfiguration> Products.P3<RecordCodecBuilder.Mu<T>, Optional<ResourceLocation>, Optional<HolderSet<Biome>>, Integer> codecStart(RecordCodecBuilder.Instance<T> instance) {
-        return instance.group(
-                ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(CowTypeConfiguration::getCowTexture),
-                RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biomes").forGetter(CowTypeConfiguration::getBiomes),
-                Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(CowTypeConfiguration::getNaturalSpawnWeight));
-    }
-
-    public Optional<ResourceLocation> getCowTexture() {
-        return this.cowTexture;
-    }
-
-    public Optional<HolderSet<Biome>> getBiomes() {
-        return this.biomes;
-    }
-
-    public int getNaturalSpawnWeight() {
-        return this.naturalSpawnWeight;
-    }
-
-    public Optional<List<WeightedConfiguredCowType>> getThunderConversionTypes() {
-        return this.thunderConversionTypes;
+    public Settings getSettings() {
+        return settings;
     }
 
     @Override
@@ -69,15 +35,30 @@ public class CowTypeConfiguration {
         if (obj == this)
             return true;
 
-        if (!(obj instanceof FlowerCowConfiguration other))
+        if (!(obj instanceof CowTypeConfiguration other))
             return false;
 
-        return this.getCowTexture() == other.getCowTexture() && this.getBiomes() == other.getBiomes() && this.getNaturalSpawnWeight() == other.getNaturalSpawnWeight();
+        return this.getSettings().equals(other.getSettings());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.cowTexture, this.biomes, this.naturalSpawnWeight);
+        return Objects.hash(this.getSettings());
+    }
+
+    /**
+     * @param cowTexture A {@link ResourceLocation} for where in the assets the cow's texture is located, if not set, it'll default to a hardcoded value depending on the cow.
+     * @param biomes Either a biome or a biome tag where the cow can spawn.
+     * @param naturalSpawnWeight The natural spawn weight for this cow in relation to other cows of its type. Any value below 1 should be ignored.
+     * @param thunderConverts A list of weighted cow types that this cow will/have a chance to convert into upon being struck by lightning.
+     */
+    public record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
+        public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(Settings::cowTexture),
+                RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biomes").orElseGet(Optional::empty).forGetter(Settings::biomes),
+                Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(Settings::naturalSpawnWeight),
+                Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").orElseGet(Optional::empty).forGetter(Settings::thunderConverts)
+        ).apply(instance, Settings::new));
     }
 
     public record WeightedConfiguredCowType(ResourceLocation configuredCowTypeResource,

@@ -2,21 +2,13 @@ package net.merchantpug.bovinesandbuttercups.data.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,15 +18,12 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
     private final boolean canEatFlowers;
     private final Optional<BreedingConditionConfiguration> breedingConditions;
 
-    public MushroomCowConfiguration(Optional<ResourceLocation> cowTexture,
-                                    Optional<HolderSet<Biome>> biomeTagKey,
-                                    int naturalSpawnWeight,
-                                    Optional<List<WeightedConfiguredCowType>> thunderConverts,
+    public MushroomCowConfiguration(Settings settings,
                                     MushroomCowMushroom mushroom,
                                     BackGrassConfiguration backGrassConfiguration,
                                     boolean canEatFlowers,
                                     Optional<BreedingConditionConfiguration> breedingConditions) {
-        super(cowTexture, biomeTagKey, naturalSpawnWeight, thunderConverts);
+        super(settings);
         this.mushroom = mushroom;
         this.backGrassConfiguration = backGrassConfiguration;
         this.canEatFlowers = canEatFlowers;
@@ -42,17 +31,14 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
     }
 
     public static final Codec<MushroomCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(MushroomCowConfiguration::getCowTexture),
-            RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biomes").forGetter(MushroomCowConfiguration::getBiomes),
-            Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(MushroomCowConfiguration::getNaturalSpawnWeight),
-            Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").forGetter(CowTypeConfiguration::getThunderConversionTypes),
+            Settings.CODEC.forGetter(MushroomCowConfiguration::getSettings),
             MushroomCowMushroom.CODEC.fieldOf("mushroom").forGetter(MushroomCowConfiguration::getMushroom),
             BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false)).forGetter(MushroomCowConfiguration::getBackGrassConfiguration),
             Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers),
-            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").forGetter(MushroomCowConfiguration::getBreedingConditions)
+            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getBreedingConditions)
     ).apply(builder, MushroomCowConfiguration::new));
 
-    public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png")),Optional.empty(), 0, Optional.empty(), new MushroomCowMushroom(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_mushroom"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false), false, Optional.empty());
+    public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png")),Optional.empty(), 0, Optional.empty()), new MushroomCowMushroom(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_mushroom"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false), false, Optional.empty());
 
     public MushroomCowConfiguration.MushroomCowMushroom getMushroom() {
         return this.mushroom;
@@ -83,7 +69,7 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getCowTexture(), super.getBiomes(), super.getNaturalSpawnWeight(), this.mushroom, this.backGrassConfiguration, this.canEatFlowers);
+        return Objects.hash(super.getSettings(), this.mushroom, this.backGrassConfiguration, this.canEatFlowers);
     }
 
     public record MushroomCowMushroom(Optional<BlockState> blockState,

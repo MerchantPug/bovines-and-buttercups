@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups;
 
-import io.netty.buffer.Unpooled;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
@@ -19,18 +20,20 @@ import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.loader.fabric.ConfiguredCowTypeReloadListenerFabric;
 import net.merchantpug.bovinesandbuttercups.data.loader.fabric.FlowerTypeReloadListenerFabric;
 import net.merchantpug.bovinesandbuttercups.data.loader.fabric.MushroomTypeReloadListenerFabric;
-import net.merchantpug.bovinesandbuttercups.network.BovinePacketsS2C;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
-import net.minecraft.network.FriendlyByteBuf;
+import net.merchantpug.bovinesandbuttercups.registry.BovineTags;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 
 import java.util.HashMap;
+import java.util.function.Predicate;
 
 public class BovinesAndButtercupsFabric implements ModInitializer {
     @Override
@@ -79,8 +82,17 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             ServerPlayNetworking.send(player, packet.getId(), packet.toBuf());
         });
 
-        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 15, 4, 4);
-        BiomeModifications.addSpawn(biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS, MobCategory.CREATURE, EntityType.MOOSHROOM, 15, 4, 4);
+        createBiomeModifications(BovinesAndButtercups.asResource("moobloom"),
+                biome -> BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome.getBiomeRegistryEntry())),
+                BovineEntityTypes.MOOBLOOM.get(), 15, 4, 4);
+        createBiomeModifications(BovinesAndButtercups.asResource("mooshroom"),
+                biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome.getBiomeRegistryEntry())),
+                EntityType.MOOSHROOM, 15, 4, 4);
+        BiomeModifications.create(BovinesAndButtercups.asResource("remove_cows")).add(ModificationPhase.REMOVALS, biome -> biome.hasTag(BovineTags.PREVENT_COW_SPAWNS), context -> context.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW));
+    }
+
+    public static void createBiomeModifications(ResourceLocation location, Predicate<BiomeSelectionContext> predicate, EntityType<?> entityType, int weight, int min, int max) {
+        BiomeModifications.create(location).add(ModificationPhase.POST_PROCESSING, predicate, context -> context.getSpawnSettings().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(entityType, weight, min, max)));
     }
 
     private static void registerCompostables() {

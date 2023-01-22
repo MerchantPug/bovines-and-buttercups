@@ -2,23 +2,15 @@ package net.merchantpug.bovinesandbuttercups.data.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
-import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,16 +21,13 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     private final Optional<MobEffectInstance> nectarEffectInstance;
     private final Optional<BreedingConditionConfiguration> breedingConditions;
 
-    FlowerCowConfiguration(Optional<ResourceLocation> cowTexture,
-                           Optional<HolderSet<Biome>> biomes,
-                           int naturalSpawnWeight,
-                           Optional<List<WeightedConfiguredCowType>> thunderConverts,
+    FlowerCowConfiguration(Settings settings,
                            FlowerCowFlower flower,
                            FlowerCowFlower bud,
                            BackGrassConfiguration backGrassConfiguration,
                            Optional<MobEffectInstance> nectarEffectInstance,
                            Optional<BreedingConditionConfiguration> breedingConditions) {
-        super(cowTexture, biomes, naturalSpawnWeight, thunderConverts);
+        super(settings);
         this.flower = flower;
         this.bud = bud;
         this.backGrassConfiguration = backGrassConfiguration;
@@ -47,18 +36,15 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     }
 
     public static final Codec<FlowerCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(CowTypeConfiguration::getCowTexture),
-            RegistryCodecs.homogeneousList(Registry.BIOME_REGISTRY).optionalFieldOf("spawn_biomes").forGetter(CowTypeConfiguration::getBiomes),
-            Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(CowTypeConfiguration::getNaturalSpawnWeight),
-            Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").forGetter(CowTypeConfiguration::getThunderConversionTypes),
+            Settings.CODEC.forGetter(FlowerCowConfiguration::getSettings),
             FlowerCowFlower.CODEC.fieldOf("flower").forGetter(FlowerCowConfiguration::getFlower),
             FlowerCowFlower.CODEC.fieldOf("bud").forGetter(FlowerCowConfiguration::getBud),
             BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true)).forGetter(FlowerCowConfiguration::getBackGrassConfiguration),
-            MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").forGetter(FlowerCowConfiguration::getNectarEffectInstance),
-            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").forGetter(FlowerCowConfiguration::getBreedingConditions)
+            MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
+            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
     ).apply(builder, FlowerCowConfiguration::new));
 
-    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty(), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty());
+    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty()), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty());
 
     public FlowerCowFlower getFlower() {
         return this.flower;
@@ -93,7 +79,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getCowTexture(), super.getBiomes(), super.getNaturalSpawnWeight(), this.flower, this.bud, this.backGrassConfiguration, this.nectarEffectInstance, this.breedingConditions);
+        return Objects.hash(super.getSettings(), this.flower, this.bud, this.backGrassConfiguration, this.nectarEffectInstance, this.breedingConditions);
     }
 
     public record FlowerCowFlower(Optional<BlockState> blockState,

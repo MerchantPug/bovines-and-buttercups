@@ -145,7 +145,7 @@ public class FlowerCow extends Cow {
         UUID uuid = bolt.getUUID();
         if (!uuid.equals(this.lastLightningBoltUUID)) {
             if (this.getPreviousTypeId().equals("")) {
-                if (this.getFlowerCowType().getConfiguration().getThunderConversionTypes().isEmpty()) {
+                if (this.getFlowerCowType().getConfiguration().getSettings().thunderConverts().isEmpty()) {
                     super.thunderHit(level, bolt);
                     return;
                 }
@@ -154,7 +154,7 @@ public class FlowerCow extends Cow {
                 List<CowTypeConfiguration.WeightedConfiguredCowType> compatibleList = new ArrayList<>();
                 int totalWeight = 0;
 
-                for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : this.getFlowerCowType().getConfiguration().getThunderConversionTypes().get()) {
+                for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : this.getFlowerCowType().getConfiguration().getSettings().thunderConverts().get()) {
                     if (weightedCowType.getConfiguredCowType().isEmpty()) {
                         BovinesAndButtercups.LOG.warn("Lightning struck moobloom at {} tried to get thunder conversion type '{}' that does not exist. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                         continue;
@@ -560,8 +560,8 @@ public class FlowerCow extends Cow {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
 
-            if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(pos))) {
-                totalWeight += configuration.getNaturalSpawnWeight();
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.getBiome(pos))) {
+                totalWeight += configuration.getSettings().naturalSpawnWeight();
             }
         }
         return totalWeight;
@@ -575,9 +575,9 @@ public class FlowerCow extends Cow {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
 
-            if (configuration.getNaturalSpawnWeight() > 0) {
+            if (configuration.getSettings().naturalSpawnWeight() > 0) {
                 moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
-                totalWeight += configuration.getNaturalSpawnWeight();
+                totalWeight += configuration.getSettings().naturalSpawnWeight();
             }
         }
 
@@ -586,7 +586,7 @@ public class FlowerCow extends Cow {
         } else if (!moobloomList.isEmpty()) {
             int r = Mth.nextInt(random, 0, totalWeight - 1);
             for (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> cfc : moobloomList) {
-                r -= cfc.getConfiguration().getNaturalSpawnWeight();
+                r -= cfc.getConfiguration().getSettings().naturalSpawnWeight();
                 if (r < 0.0) {
                     return cfc;
                 }
@@ -602,9 +602,9 @@ public class FlowerCow extends Cow {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
 
-            if (configuration.getNaturalSpawnWeight() > 0 && configuration.getBiomes().isPresent() && configuration.getBiomes().get().contains(level.getBiome(pos))) {
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.getBiome(pos))) {
                 moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
-                totalWeight += configuration.getNaturalSpawnWeight();
+                totalWeight += configuration.getSettings().naturalSpawnWeight();
             }
         }
 
@@ -613,7 +613,7 @@ public class FlowerCow extends Cow {
         } else if (!moobloomList.isEmpty()) {
             int r = Mth.nextInt(random, 0, totalWeight - 1);
             for (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> cfc : moobloomList) {
-                r -= cfc.getConfiguration().getNaturalSpawnWeight();
+                r -= cfc.getConfiguration().getSettings().naturalSpawnWeight();
                 if (r < 0.0) {
                     return cfc;
                 }

@@ -35,7 +35,7 @@ public class ConfiguredCowTypeReloadListener extends SimpleJsonResourceReloadLis
         jsonElements.forEach((location, jsonElement) -> {
             try {
                 Optional<ConfiguredCowType<?, ?>> configuredCowType = ConfiguredCowType.CODEC.parse(JsonOps.INSTANCE, jsonElement).result();
-                if (configuredCowType.isEmpty()) return;
+                if (configuredCowType.isEmpty() || ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getLoadingPriority() > configuredCowType.get().getLoadingPriority()) return;
                 if (ConfiguredCowTypeRegistry.containsKey(location))
                     ConfiguredCowTypeRegistry.update(location, configuredCowType.get());
                 else

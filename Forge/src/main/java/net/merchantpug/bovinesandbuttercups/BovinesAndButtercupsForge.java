@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups;
 
+import com.google.common.collect.ImmutableMap;
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
@@ -16,14 +17,13 @@ import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.MushroomTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.data.loader.ConfiguredCowTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.data.loader.FlowerTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.data.loader.MushroomTypeReloadListener;
-import net.merchantpug.bovinesandbuttercups.network.BovinePacket;
+import net.merchantpug.bovinesandbuttercups.mixin.forge.MobSpawnSettingsAccessor;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
@@ -36,6 +36,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.*;
@@ -46,6 +47,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -59,6 +61,8 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -79,7 +83,6 @@ public class BovinesAndButtercupsForge {
 
         BovineRegistriesForge.init(eventBus);
         BovinesAndButtercups.init();
-        BiomeModifierSerializerRegistry.init(eventBus);
 
         this.addModBusEventListeners();
         this.addForgeBusEventListeners();
@@ -123,6 +126,32 @@ public class BovinesAndButtercupsForge {
             event.addListener(new ConfiguredCowTypeReloadListener());
             event.addListener(new FlowerTypeReloadListener());
             event.addListener(new MushroomTypeReloadListener());
+        });
+
+        /*
+           The below is slightly cursed due to not utilising Forge's biome modifier system, but there's not much that I
+           can do to avoid this whilst it can't modify after reload listeners.
+        */
+        eventBus.addListener((ServerStartingEvent event) -> {
+            var biomes = event.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
+
+            biomes.holders().forEach(biome -> {
+                boolean hasModified = false;
+                var unfrozenList = new HashMap<>(((MobSpawnSettingsAccessor)biome.value().getMobSettings()).bovinesandbuttercups$getSpawners());
+                var creatureCategory = unfrozenList.get(MobCategory.CREATURE).unwrap();
+                if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome))) {
+                    creatureCategory.add(new MobSpawnSettings.SpawnerData(BovineEntityTypes.MOOBLOOM.get(), 15, 4, 4));
+                    hasModified = true;
+                }
+                if (biomes.getResourceKey(biome.value()).isPresent() && biomes.getResourceKey(biome.value()).get() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome))) {
+                    creatureCategory.add(new MobSpawnSettings.SpawnerData(EntityType.MOOSHROOM, 15, 4, 4));
+                    hasModified = true;
+                }
+                if (hasModified) {
+                    unfrozenList.put(MobCategory.CREATURE, WeightedRandomList.create(creatureCategory));
+                    ((MobSpawnSettingsAccessor)biome.value().getMobSettings()).bovinesandbuttercups$setSpawners(ImmutableMap.copyOf(unfrozenList));
+                }
+            });
         });
 
         eventBus.addListener((OnDatapackSyncEvent event) -> {
@@ -201,7 +230,7 @@ public class BovinesAndButtercupsForge {
 
         // I have had to put the ALLOW implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
         eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {
-            if (event.getEntity() instanceof MushroomCow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() > 0) || event.getEntity() instanceof Cow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(BovineTags.PREVENT_COW_SPAWNS)) {
+            if (event.getEntity() instanceof MushroomCow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() > 0) || event.getEntity() instanceof Cow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(BovineTags.PREVENT_COW_SPAWNS)) {
                 event.setResult(Event.Result.DENY);
             }
         });
@@ -210,7 +239,7 @@ public class BovinesAndButtercupsForge {
             if (event.getTarget() instanceof MushroomCow cow) {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
                     if (cap.getMushroomCowTypeKey() == null) {
-                        if (BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).allMatch(cct -> cct.getConfiguration().getNaturalSpawnWeight() == 0)) {
+                        if (BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).allMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() == 0)) {
                             if (cow.getMushroomType() == MushroomCow.MushroomType.BROWN) {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("brown_mushroom"));
                             } else {

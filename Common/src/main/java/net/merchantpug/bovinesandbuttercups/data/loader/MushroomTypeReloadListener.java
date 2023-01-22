@@ -29,12 +29,12 @@ public class MushroomTypeReloadListener extends SimpleJsonResourceReloadListener
         MushroomTypeRegistry.clear();
         jsonElements.forEach((location, jsonElement) -> {
             try {
-                Optional<MushroomType> mushroomType = MushroomType.CODEC.codec().parse(new Dynamic<>(JsonOps.INSTANCE, jsonElement)).result();
-                if (mushroomType.isEmpty()) return;
-                if (ConfiguredCowTypeRegistry.containsKey(location))
-                    MushroomTypeRegistry.update(location, mushroomType.get());
-                else
-                    MushroomTypeRegistry.register(location, mushroomType.get());
+                MushroomType.CODEC.codec().decode(new Dynamic<>(JsonOps.INSTANCE, jsonElement)).result().ifPresent(pair -> {
+                    if (ConfiguredCowTypeRegistry.containsKey(location))
+                        MushroomTypeRegistry.update(location, pair.getFirst());
+                    else
+                        MushroomTypeRegistry.register(location, pair.getFirst());
+                });
             } catch (Exception ex) {
                 BovinesAndButtercups.LOG.error("Could not load mushroom type at location '{}'. (Skipping). {}", location, ex);
             }

@@ -45,8 +45,8 @@ public class BovinesAndButtercupsQuilt implements ModInitializer {
         BovinesAndButtercups.VERSION = version;
         BovinesAndButtercupsFabriclike.init();
 
-        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 8, 4, 4);
-        BiomeModifications.addSpawn(biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS, MobCategory.CREATURE, EntityType.MOOSHROOM, 8, 4, 4);
+        BiomeModifications.addSpawn(biome -> true, MobCategory.CREATURE, BovineEntityTypes.MOOBLOOM.get(), 15, 4, 4);
+        BiomeModifications.addSpawn(biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS, MobCategory.CREATURE, EntityType.MOOSHROOM, 15, 4, 4);
 
         ResourceLoader.get(PackType.SERVER_DATA).registerReloader(new ConfiguredCowTypeReloadListenerQuilt());
         ResourceLoader.get(PackType.SERVER_DATA).registerReloader(new FlowerTypeReloadListenerQuilt());

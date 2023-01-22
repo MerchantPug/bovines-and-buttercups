@@ -7,8 +7,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import org.quiltmc.qsl.tooltip.api.ConvertibleTooltipData;
 
@@ -38,7 +36,7 @@ public class SourceMoobloomTooltipComponent implements ConvertibleTooltipData, C
     public int getWidth(Font textRenderer) {
         String moobloomName = I18n.get("bovinesandbuttercups.moobloom.source", getTextString());
         int max = 64;
-        max = Math.max(max, textRenderer.width(moobloomName));
+        max = Math.max(max, 26 + textRenderer.width(moobloomName));
         return max;
     }
 

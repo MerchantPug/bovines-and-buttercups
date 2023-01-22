@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;

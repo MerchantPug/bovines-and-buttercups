@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.client.api;
+package net.merchantpug.bovinesandbuttercups.api.bovinestate;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.resources.ResourceLocation;

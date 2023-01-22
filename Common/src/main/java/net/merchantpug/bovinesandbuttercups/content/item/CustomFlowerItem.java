@@ -2,18 +2,7 @@ package net.merchantpug.bovinesandbuttercups.content.item;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
-import net.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -23,7 +12,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Optional;
@@ -98,8 +86,7 @@ public class CustomFlowerItem extends BlockItem {
     }
 
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-        Level level = Minecraft.getInstance().level;
-        if ((tab == CreativeModeTab.TAB_DECORATIONS || tab == CreativeModeTab.TAB_SEARCH) && level != null) {
+        if ((tab == CreativeModeTab.TAB_DECORATIONS || tab == CreativeModeTab.TAB_SEARCH)) {
             for (FlowerType type : BovineRegistryUtil.flowerTypeStream().filter(type -> !BovineRegistryUtil.getFlowerTypeKey(type).equals(BovinesAndButtercups.asResource("missing_flower"))).toList()) {
                 ItemStack stack = new ItemStack(this);
                 CompoundTag compound = new CompoundTag();
@@ -108,20 +95,5 @@ public class CustomFlowerItem extends BlockItem {
                 list.add(stack);
             }
         }
-    }
-
-    public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemTransforms.TransformType transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "inventory");
-
-        if (CustomFlowerItem.getFlowerTypeFromTag(stack).isPresent()) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(CustomFlowerItem.getFlowerTypeFromTag(stack).get()), BovineBlocks.CUSTOM_FLOWER.get());
-            if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
-            }
-        }
-
-        BakedModel flowerModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
-        ItemRenderer itemRenderer =  Minecraft.getInstance().getItemRenderer();
-        ((ItemRendererAccessor)itemRenderer).bovinesandbuttercups$invokeRenderModelLists(flowerModel, stack, light, overlay, poseStack, ItemRenderer.getFoilBuffer(bufferSource, ItemBlockRenderTypes.getRenderType(stack, true), true, stack.hasFoil()));
     }
 }

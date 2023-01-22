@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

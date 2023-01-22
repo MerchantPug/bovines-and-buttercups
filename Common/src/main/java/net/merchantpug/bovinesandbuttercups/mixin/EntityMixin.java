@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
@@ -11,7 +11,7 @@ import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushr
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.particle.ModelLocationParticleOption;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
-import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.merchantpug.bovinesandbuttercups.util.StatePropertiesUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -50,7 +50,7 @@ public abstract class EntityMixin {
         if ((blockState.getBlock() instanceof CustomFlowerBlock || blockState.getBlock() instanceof CustomMushroomBlock || blockState.getBlock() instanceof CustomHugeMushroomBlock) && blockState.hasBlockEntity()) {
             Vec3 vec3 = this.getDeltaMovement();
             if (this.getLevel().getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                this.level.addParticle(new ModelLocationParticleOption(BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(customFlowerBlockEntity.getFlowerType()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower")), BlockModelShaper.statePropertiesToString(blockState.getValues())), this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, this.getY() + 0.1D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
+                this.level.addParticle(new ModelLocationParticleOption(BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(customFlowerBlockEntity.getFlowerType()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower")), StatePropertiesUtil.statePropertiesToString(blockState.getValues())), this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, this.getY() + 0.1D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
             } else if (this.getLevel().getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
                 this.level.addParticle(new ModelLocationParticleOption(BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom")), ""), this.getX() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, this.getY() + 0.1D, this.getZ() + (this.random.nextDouble() - 0.5D) * (double)this.dimensions.width, vec3.x * -4.0D, 1.5D, vec3.z * -4.0D);
             } else if (this.getLevel().getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {

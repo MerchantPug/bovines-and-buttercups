@@ -50,7 +50,6 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_buds"), modContainer, "No Buds", ResourcePackActivationType.NORMAL);
         });
         BovinesAndButtercupsFabriclike.init();
-        BovinePacketsS2C.registerS2C();
         registerCompostables();
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ConfiguredCowTypeReloadListenerFabric());

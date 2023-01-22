@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.client.api;
+package net.merchantpug.bovinesandbuttercups.api.bovinestate;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;

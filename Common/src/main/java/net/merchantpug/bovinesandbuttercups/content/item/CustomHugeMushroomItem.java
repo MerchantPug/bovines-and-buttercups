@@ -2,18 +2,7 @@ package net.merchantpug.bovinesandbuttercups.content.item;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.client.api.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Optional;
@@ -70,8 +58,7 @@ public class CustomHugeMushroomItem extends BlockItem {
     }
 
     public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-        Level level = Minecraft.getInstance().level;
-        if ((tab == CreativeModeTab.TAB_BUILDING_BLOCKS || tab == CreativeModeTab.TAB_SEARCH) && level != null) {
+        if ((tab == CreativeModeTab.TAB_BUILDING_BLOCKS || tab == CreativeModeTab.TAB_SEARCH)) {
             for (MushroomType type : BovineRegistryUtil.mushroomTypeStream().filter(type -> !BovineRegistryUtil.getMushroomTypeKey(type).equals(BovinesAndButtercups.asResource("missing_mushroom"))).toList()) {
                 ItemStack stack = new ItemStack(this);
                 CompoundTag compound = new CompoundTag();
@@ -80,21 +67,5 @@ public class CustomHugeMushroomItem extends BlockItem {
                 list.add(stack);
             }
         }
-    }
-
-    public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemTransforms.TransformType transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"), "inventory");
-
-        Level level = Minecraft.getInstance().level;
-        if (level != null && CustomHugeMushroomItem.getMushroomTypeFromTag(stack).isPresent()) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(CustomHugeMushroomItem.getMushroomTypeFromTag(stack).get()), BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get());
-            if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
-            }
-        }
-
-        BakedModel mushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
-        ItemRenderer itemRenderer =  Minecraft.getInstance().getItemRenderer();
-        ((ItemRendererAccessor)itemRenderer).bovinesandbuttercups$invokeRenderModelLists(mushroomModel, stack, light, overlay, poseStack, ItemRenderer.getFoilBuffer(bufferSource, ItemBlockRenderTypes.getRenderType(stack, true), true, stack.hasFoil()));
     }
 }

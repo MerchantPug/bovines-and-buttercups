@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +28,8 @@ public class FlowerTypeReloadListener extends SimpleJsonResourceReloadListener {
             try {
                 var flowerType = FlowerType.CODEC.codec().parse(JsonOps.INSTANCE, jsonElement)
                         .getOrThrow(false, s -> BovinesAndButtercups.LOG.error("Could not load flower type at location '{}'. (Skipping). {}", location, s));
-                if (ConfiguredCowTypeRegistry.containsKey(location))
+                if (FlowerTypeRegistry.containsKey(location) && FlowerTypeRegistry.get(location).loadingPriority() > flowerType.loadingPriority()) return;
+                if (FlowerTypeRegistry.containsKey(location))
                     FlowerTypeRegistry.update(location, flowerType);
                 else
                     FlowerTypeRegistry.register(location, flowerType);

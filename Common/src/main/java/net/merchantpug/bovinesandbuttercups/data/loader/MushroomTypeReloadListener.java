@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.MushroomTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +28,8 @@ public class MushroomTypeReloadListener extends SimpleJsonResourceReloadListener
             try {
                 var mushroomType = MushroomType.CODEC.codec().parse(JsonOps.INSTANCE, jsonElement)
                         .getOrThrow(false, s -> BovinesAndButtercups.LOG.error("Could not load mushroom type at location '{}'. (Skipping). {}", location, s));
-                if (ConfiguredCowTypeRegistry.containsKey(location))
+                if (MushroomTypeRegistry.containsKey(location) && FlowerTypeRegistry.get(location).loadingPriority() > mushroomType.loadingPriority()) return;
+                if (MushroomTypeRegistry.containsKey(location))
                     MushroomTypeRegistry.update(location, mushroomType);
                 else
                     MushroomTypeRegistry.register(location, mushroomType);

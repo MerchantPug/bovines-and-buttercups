@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.data.block;
 
+import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -10,15 +11,17 @@ import java.util.Objects;
 import java.util.Optional;
 
 public record FlowerType(
+        int loadingPriority,
         Optional<MobEffectInstance> stewEffectInstance,
         Optional<ItemStack> dyeCraftResult) {
 
     public static final MapCodec<FlowerType> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+            Codec.INT.optionalFieldOf("loading_priority", 0).forGetter(FlowerType::loadingPriority),
             MobEffectUtil.CODEC.optionalFieldOf("stew_effect").forGetter(FlowerType::stewEffectInstance),
             ItemStack.CODEC.optionalFieldOf("dye_craft_result").forGetter(FlowerType::dyeCraftResult)
     ).apply(builder, FlowerType::new));
 
-    public static final FlowerType MISSING = new FlowerType(Optional.empty(), Optional.empty());
+    public static final FlowerType MISSING = new FlowerType(Integer.MAX_VALUE, Optional.empty(), Optional.empty());
 
     @Override
     public boolean equals(final Object obj) {

@@ -33,7 +33,7 @@ public class CustomHugeMushroomItem extends BlockItem {
             CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
                 MushroomType mushroomType = BovineRegistryUtil.getMushroomTypeFromKey(ResourceLocation.tryParse(compound.getString("Type")));
-                if (mushroomType != MushroomType.MISSING) {
+                if (mushroomType != null && mushroomType != MushroomType.MISSING) {
                     return Optional.of(mushroomType);
                 }
             }

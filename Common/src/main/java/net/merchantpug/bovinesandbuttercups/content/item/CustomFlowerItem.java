@@ -35,7 +35,7 @@ public class CustomFlowerItem extends BlockItem {
             CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
             if (compound.contains("Type")) {
                 FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(ResourceLocation.tryParse(compound.getString("Type")));
-                if (!flowerType.equals(FlowerType.MISSING)) {
+                if (flowerType != null && flowerType != FlowerType.MISSING) {
                     return Optional.of(flowerType);
                 }
             }

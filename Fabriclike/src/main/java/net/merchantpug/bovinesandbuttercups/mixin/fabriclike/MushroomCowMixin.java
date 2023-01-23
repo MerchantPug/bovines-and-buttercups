@@ -1,17 +1,27 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
+import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowChildTypeUtil;
+import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biomes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,6 +32,10 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(MushroomCow.class)
 public class MushroomCowMixin {
+    @ModifyReturnValue(method = "checkMushroomSpawnRules", at = @At("RETURN"))
+    private static boolean bovinesandbuttercups$allowSpawning(boolean original, EntityType<MushroomCow> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource) {
+        return (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).noneMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() > 0) && original);
+    }
 
     @Inject(method = "getBreedOffspring(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/AgeableMob;)Lnet/minecraft/world/entity/animal/MushroomCow;", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void bovinesandbuttercups$setDataDrivenMooshroomOffspringType(ServerLevel serverLevel, AgeableMob ageableMob, CallbackInfoReturnable<MushroomCow> cir, MushroomCow mushroomCow) {

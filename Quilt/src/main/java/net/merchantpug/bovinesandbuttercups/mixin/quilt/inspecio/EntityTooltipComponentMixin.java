@@ -33,7 +33,7 @@ public class EntityTooltipComponentMixin {
             for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
                 if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
-                    if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
+                    if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && level.getBiome(Minecraft.getInstance().player.blockPosition()).is(configuration.getSettings().biomes().get())) {
                         moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
                         totalWeight += configuration.getSettings().naturalSpawnWeight();
                     }
@@ -64,7 +64,7 @@ public class EntityTooltipComponentMixin {
             for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
                 if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
-                    if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.getBiome(Minecraft.getInstance().player.blockPosition()))) {
+                    if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && level.getBiome(Minecraft.getInstance().player.blockPosition()).is(configuration.getSettings().biomes().get())) {
                         mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
                         totalWeight += configuration.getSettings().naturalSpawnWeight();
                     }

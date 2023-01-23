@@ -20,10 +20,8 @@ public class MushroomCowSpawnUtil {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
 
-            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent()) {
-                if (configuration.getSettings().biomes().get().contains(level.getBiome(pos))) {
-                    totalWeight += configuration.getSettings().naturalSpawnWeight();
-                }
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && level.getBiome(pos).is(configuration.getSettings().biomes().get())) {
+                totalWeight += configuration.getSettings().naturalSpawnWeight();
             }
         }
         return totalWeight;
@@ -59,10 +57,8 @@ public class MushroomCowSpawnUtil {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
 
-            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent()) {
-                if (configuration.getSettings().biomes().get().contains(level.getBiome(pos))) {
-                    mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
-                }
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && level.getBiome(pos).is(configuration.getSettings().biomes().get())) {
+                mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
             }
         }
 

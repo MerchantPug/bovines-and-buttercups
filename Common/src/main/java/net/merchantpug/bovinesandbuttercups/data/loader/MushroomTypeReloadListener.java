@@ -3,7 +3,6 @@ package net.merchantpug.bovinesandbuttercups.data.loader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
@@ -15,7 +14,6 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 
 import java.util.Map;
-import java.util.Optional;
 
 public class MushroomTypeReloadListener extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -29,12 +27,12 @@ public class MushroomTypeReloadListener extends SimpleJsonResourceReloadListener
         MushroomTypeRegistry.clear();
         jsonElements.forEach((location, jsonElement) -> {
             try {
-                MushroomType.CODEC.codec().decode(new Dynamic<>(JsonOps.INSTANCE, jsonElement)).result().ifPresent(pair -> {
-                    if (ConfiguredCowTypeRegistry.containsKey(location))
-                        MushroomTypeRegistry.update(location, pair.getFirst());
-                    else
-                        MushroomTypeRegistry.register(location, pair.getFirst());
-                });
+                var mushroomType = MushroomType.CODEC.codec().parse(JsonOps.INSTANCE, jsonElement)
+                        .getOrThrow(false, s -> BovinesAndButtercups.LOG.error("Could not load mushroom type at location '{}'. (Skipping). {}", location, s));
+                if (ConfiguredCowTypeRegistry.containsKey(location))
+                    MushroomTypeRegistry.update(location, mushroomType);
+                else
+                    MushroomTypeRegistry.register(location, mushroomType);
             } catch (Exception ex) {
                 BovinesAndButtercups.LOG.error("Could not load mushroom type at location '{}'. (Skipping). {}", location, ex);
             }

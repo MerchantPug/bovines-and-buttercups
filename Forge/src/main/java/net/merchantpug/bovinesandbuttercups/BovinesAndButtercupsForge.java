@@ -36,10 +36,12 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.MushroomCow;
@@ -58,6 +60,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -71,6 +74,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -96,11 +100,12 @@ public class BovinesAndButtercupsForge {
         });
         eventBus.addListener((FMLCommonSetupEvent event) -> {
             BovinePacketHandler.register();
-            event.enqueueWork(() -> {
-                registerCompostables();
-                SpawnPlacements.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn);
-            });
+            event.enqueueWork(BovinesAndButtercupsForge::registerCompostables);
             BovineCowTypes.registerDefaultConfigureds();
+        });
+        eventBus.addListener((SpawnPlacementRegisterEvent event) -> {
+            event.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn, SpawnPlacementRegisterEvent.Operation.AND);
+            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).noneMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() > 0)), SpawnPlacementRegisterEvent.Operation.AND);
         });
     }
 
@@ -130,20 +135,21 @@ public class BovinesAndButtercupsForge {
 
         /*
            The below is slightly cursed due to not utilising Forge's biome modifier system, but there's not much that I
-           can do to avoid this whilst it can't modify after reload listeners.
+           can do to avoid this as it is unable to modify after reload listeners.
         */
+        // TODO. Fix this
         eventBus.addListener((ServerStartingEvent event) -> {
             var biomes = event.getServer().registryAccess().registryOrThrow(Registry.BIOME_REGISTRY);
 
             biomes.holders().forEach(biome -> {
                 boolean hasModified = false;
                 var unfrozenList = new HashMap<>(((MobSpawnSettingsAccessor)biome.value().getMobSettings()).bovinesandbuttercups$getSpawners());
-                var creatureCategory = unfrozenList.get(MobCategory.CREATURE).unwrap();
-                if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome))) {
+                var creatureCategory = new ArrayList<>(unfrozenList.get(MobCategory.CREATURE).unwrap());
+                if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && biome.is(configuredCowType.getConfiguration().getSettings().biomes().get()) && configuredCowType.getConfiguration().getSettings().naturalSpawnWeight() > 0)) {
                     creatureCategory.add(new MobSpawnSettings.SpawnerData(BovineEntityTypes.MOOBLOOM.get(), 15, 4, 4));
                     hasModified = true;
                 }
-                if (biomes.getResourceKey(biome.value()).isPresent() && biomes.getResourceKey(biome.value()).get() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome))) {
+                if (biomes.getResourceKey(biome.value()).isPresent() && biomes.getResourceKey(biome.value()).get() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && biome.is(configuredCowType.getConfiguration().getSettings().biomes().get()) && configuredCowType.getConfiguration().getSettings().naturalSpawnWeight() > 0)) {
                     creatureCategory.add(new MobSpawnSettings.SpawnerData(EntityType.MOOSHROOM, 15, 4, 4));
                     hasModified = true;
                 }
@@ -228,7 +234,6 @@ public class BovinesAndButtercupsForge {
             }
         });
 
-        // I have had to put the ALLOW implementation of this within a Common mixin because I'm unable to allow Mooshroom spawns because of 'checkMushroomSpawnRules'.
         eventBus.addListener((LivingSpawnEvent.CheckSpawn event) -> {
             if (event.getEntity() instanceof MushroomCow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(Biomes.MUSHROOM_FIELDS) && MushroomCowSpawnUtil.getTotalSpawnWeight(event.getLevel(), event.getEntity().blockPosition()) < 1 && BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() > 0) || event.getEntity() instanceof Cow && event.getLevel().getBiome(event.getEntity().blockPosition()).is(BovineTags.PREVENT_COW_SPAWNS)) {
                 event.setResult(Event.Result.DENY);

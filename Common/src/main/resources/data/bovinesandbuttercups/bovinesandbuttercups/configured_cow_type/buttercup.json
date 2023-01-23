@@ -12,7 +12,7 @@
     "effect": "minecraft:poison",
     "duration": 3600
   },
-  "spawn_biomes": "minecraft:flower_forest",
+  "spawn_biomes": "#bovinesandbuttercups:has_mooblooms",
   "natural_spawn_weight": 7,
   "thunder_conversion_types": [
     {

@@ -38,7 +38,7 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
             BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getBreedingConditions)
     ).apply(builder, MushroomCowConfiguration::new));
 
-    public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png")),Optional.empty(), 0, Optional.empty()), new MushroomCowMushroom(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_mushroom"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false), false, Optional.empty());
+    public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/mooshroom/missing_mooshroom.png")), Optional.empty(), 0, Optional.empty()), new MushroomCowMushroom(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_mushroom"))), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/mooshroom/mooshroom_mycelium.png"), false), false, Optional.empty());
 
     public MushroomCowConfiguration.MushroomCowMushroom getMushroom() {
         return this.mushroom;

@@ -83,10 +83,10 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         });
 
         createBiomeModifications(BovinesAndButtercups.asResource("moobloom"),
-                biome -> BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome.getBiomeRegistryEntry())),
+                biome -> BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && biome.getBiomeRegistryEntry().is(configuredCowType.getConfiguration().getSettings().biomes().get()) && configuredCowType.getConfiguration().getSettings().naturalSpawnWeight() > 0),
                 BovineEntityTypes.MOOBLOOM.get(), 15, 4, 4);
         createBiomeModifications(BovinesAndButtercups.asResource("mooshroom"),
-                biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && configuredCowType.getConfiguration().getSettings().biomes().get().contains(biome.getBiomeRegistryEntry())),
+                biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && biome.getBiomeRegistryEntry().is(configuredCowType.getConfiguration().getSettings().biomes().get()) && configuredCowType.getConfiguration().getSettings().naturalSpawnWeight() > 0),
                 EntityType.MOOSHROOM, 15, 4, 4);
         BiomeModifications.create(BovinesAndButtercups.asResource("remove_cows")).add(ModificationPhase.REMOVALS, biome -> biome.hasTag(BovineTags.PREVENT_COW_SPAWNS), context -> context.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW));
     }

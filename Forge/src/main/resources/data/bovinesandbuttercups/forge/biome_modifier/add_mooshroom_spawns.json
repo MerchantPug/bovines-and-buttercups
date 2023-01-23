@@ -1,0 +1,11 @@
+{
+  "type": "bovinesandbuttercups:add_cow_type_spawns",
+  "cow_type": "bovinesandbuttercups:mooshroom",
+  "excluded_biomes": "minecraft:mushroom_fields",
+  "spawners": {
+    "type": "minecraft:mooshroom",
+    "weight": 15,
+    "minCount": 4,
+    "maxCount": 4
+  }
+}

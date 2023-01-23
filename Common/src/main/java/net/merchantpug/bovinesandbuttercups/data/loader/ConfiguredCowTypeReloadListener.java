@@ -29,7 +29,6 @@ public class ConfiguredCowTypeReloadListener extends SimpleJsonResourceReloadLis
                 var configuredCowType = ConfiguredCowType.CODEC.parse(JsonOps.INSTANCE, jsonElement)
                         .getOrThrow(false, (s -> BovinesAndButtercups.LOG.error("Could not load Configured Cow Type at location '{}'. (Skipping). {}", location, s)));
                 if (ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getLoadingPriority() > configuredCowType.getLoadingPriority()) return;
-                configuredCowType.getConfiguration().getSettings().biomes().ifPresent(biomeTagKey -> BovinesAndButtercups.LOG.info(biomeTagKey.location()));
                 if (ConfiguredCowTypeRegistry.containsKey(location))
                     ConfiguredCowTypeRegistry.update(location, configuredCowType);
                 else

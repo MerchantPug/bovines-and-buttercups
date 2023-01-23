@@ -1,0 +1,10 @@
+{
+  "type": "bovinesandbuttercups:add_cow_type_spawns",
+  "cow_type": "bovinesandbuttercups:moobloom",
+  "spawners": {
+    "type": "bovinesandbuttercups:moobloom",
+    "weight": 15,
+    "minCount": 4,
+    "maxCount": 4
+  }
+}

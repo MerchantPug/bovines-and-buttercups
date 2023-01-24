@@ -14,9 +14,8 @@ public class CowTextureReloadListener extends SimplePreparableReloadListener<Set
     protected Set<ResourceLocation> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
         BovinesAndButtercupsClient.LOADED_COW_TEXTURES.clear();
         Set<ResourceLocation> cowTextures = new HashSet<>();
-        BovinesAndButtercupsClient.cowTexturePathsAsStream().forEach(path -> {
-            cowTextures.addAll(resourceManager.listResources(path, resourceLocation -> resourceLocation.getPath().endsWith(".png")).keySet());
-        });
+        BovinesAndButtercupsClient.cowTexturePathsAsStream().forEach(path ->
+                cowTextures.addAll(resourceManager.listResources(path, resourceLocation -> resourceLocation.getPath().endsWith(".png")).keySet()));
         return cowTextures;
     }
 

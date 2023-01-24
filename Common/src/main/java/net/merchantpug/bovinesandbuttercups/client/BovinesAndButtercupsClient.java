@@ -17,7 +17,7 @@ public class BovinesAndButtercupsClient {
     public static void init() {
         BovineBlockstateTypes.init();
 
-        if (Services.PLATFORM.getPlatformName().equals("Fabric") || Services.PLATFORM.getPlatformName().equals("Quilt")) {
+        if (!Services.PLATFORM.getPlatformName().equals("Forge")) {
             registerCowTexturePaths();
         }
 
@@ -58,7 +58,6 @@ public class BovinesAndButtercupsClient {
 
     public static void registerCowTexturePaths() {
         registerCowTexturePath("textures/entity/cow");
-        registerCowTexturePath("textures/entity/mooshroom");
-        registerCowTexturePath("textures/entity/moobloom");
+        registerCowTexturePath("textures/entity/bovinesandbuttercups");
     }
 }

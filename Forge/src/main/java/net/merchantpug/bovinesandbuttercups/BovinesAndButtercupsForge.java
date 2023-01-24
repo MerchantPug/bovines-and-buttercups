@@ -93,7 +93,7 @@ public class BovinesAndButtercupsForge {
         eventBus.addListener((SpawnPlacementRegisterEvent event) -> {
             event.setPhase(EventPriority.HIGHEST);
             event.register(BovineEntityTypes.MOOBLOOM.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn, SpawnPlacementRegisterEvent.Operation.REPLACE);
-            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).noneMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() > 0)), SpawnPlacementRegisterEvent.Operation.REPLACE);
+            event.register(EntityType.MOOSHROOM, (entityType, levelAccessor, mobSpawnType, blockPos, randomSource) -> (levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.MOOSHROOMS_SPAWNABLE_ON) || !levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && levelAccessor.getBlockState(blockPos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON)) && Animal.isBrightEnoughToSpawn(levelAccessor, blockPos) && (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || (MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) > 0 || MushroomCowSpawnUtil.getTotalSpawnWeight(levelAccessor, blockPos) == 0 && levelAccessor.getBiome(blockPos).is(Biomes.MUSHROOM_FIELDS) && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration mushroomCowConfiguration && mushroomCowConfiguration.usesVanillaSpawningHack()) && MushroomCow.checkMushroomSpawnRules(entityType, levelAccessor, mobSpawnType, blockPos, randomSource))), SpawnPlacementRegisterEvent.Operation.REPLACE);
         });
         eventBus.addListener((FMLCommonSetupEvent event) -> {
             BovinePacketHandler.register();
@@ -210,14 +210,14 @@ public class BovinesAndButtercupsForge {
             if (event.getTarget() instanceof MushroomCow cow) {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
                     if (cap.getMushroomCowTypeKey() == null) {
-                        if (BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).allMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() == 0)) {
+                        if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().getLevel(), cow.blockPosition()) > 0) {
+                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().getLevel(), cow.blockPosition(), cow.getRandom()));
+                        } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && cow.level.getBiome(cow.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
                             if (cow.getMushroomType() == MushroomCow.MushroomType.BROWN) {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("brown_mushroom"));
                             } else {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("red_mushroom"));
                             }
-                        } else if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().getLevel(), cow.blockPosition()) > 0) {
-                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().getLevel(), cow.blockPosition(), cow.getRandom()));
                         } else {
                             cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnType(cow.getRandom()));
                         }

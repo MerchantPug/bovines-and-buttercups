@@ -10,5 +10,6 @@
     {
       "type": "bovinesandbuttercups:brown_mushroom"
     }
-  ]
+  ],
+  "vanilla_spawning_hack": true
 }

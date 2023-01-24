@@ -12,6 +12,7 @@ import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.level.biome.Biomes;
 
 public class BovinesAndButtercupsFabriclike {
 	public static void init() {
@@ -27,18 +28,16 @@ public class BovinesAndButtercupsFabriclike {
 			if (BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.isProvidedBy(entity)) {
 				MushroomCowTypeComponent component = BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity);
 				if (component.getMushroomCowTypeKey() == null) {
-					if (BovineRegistryUtil.configuredCowTypeStream().filter(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration).anyMatch(cct -> cct.getConfiguration().getSettings().naturalSpawnWeight() > 0)) {
-						if (MushroomCowSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
+					if (MushroomCowSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
 							component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
-						} else {
-							component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnType(level.getRandom()));
-						}
-					} else {
+					} else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
 						if (((MushroomCow)entity).getMushroomType().equals(MushroomCow.MushroomType.BROWN)) {
 							component.setMushroomCowType(BovinesAndButtercups.asResource("brown_mushroom"));
 						} else {
 							component.setMushroomCowType(BovinesAndButtercups.asResource("red_mushroom"));
 						}
+					} else {
+							component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnType(level.getRandom()));
 					}
 				}
 			}

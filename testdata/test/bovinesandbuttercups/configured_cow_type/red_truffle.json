@@ -13,6 +13,8 @@
       "weight": 2
     }
   ],
+  "spawn_biomes": "minecraft:plains",
+  "natural_spawn_weight": 1,
   "can_eat_flowers": true,
   "breeding_conditions": {
     "predicates": [

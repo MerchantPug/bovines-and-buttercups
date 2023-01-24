@@ -8,13 +8,10 @@
     "BeeMixin",
     "BodyRotationControlMixin",
     "ChunkGeneratorMixin",
-    "CraftingContainerMixin",
-    "CraftingMenuMixin",
     "EntityAccessor",
     "EntityMixin",
     "EntitySuperMixin",
     "FarmBlockMixin",
-    "InventoryMenuMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
     "MushroomCowMixin",
@@ -23,7 +20,6 @@
     "WorldGenRegionAccessor"
   ],
   "client": [
-    "client.AnvilScreenMixin",
     "client.ClientLevelMixin",
     "client.EffectRenderingInventoryScreenMixin",
     "client.ItemRendererAccessor",

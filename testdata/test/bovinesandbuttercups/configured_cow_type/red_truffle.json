@@ -3,7 +3,6 @@
   "mushroom": {
     "mushroom_type": "test:red_truffle"
   },
-  "texture_location": "test:textures/entity/mooshroom/bovinesandbuttercups/red_truffle_mooshroom.png",
   "thunder_conversion_types": [
     {
       "type": "test:green_truffle",

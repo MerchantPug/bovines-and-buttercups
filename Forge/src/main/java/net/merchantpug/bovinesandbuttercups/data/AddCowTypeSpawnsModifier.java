@@ -1,8 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.data;
 
 import com.mojang.serialization.Codec;
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBiomeModifierSerializers;
+import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.world.entity.EntityType;
@@ -18,7 +20,7 @@ import java.util.Optional;
 public record AddCowTypeSpawnsModifier(CowType<?> cowType, Optional<HolderSet<Biome>> excludedBiomes, List<MobSpawnSettings.SpawnerData> spawners) implements BiomeModifier {
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        if (ConfiguredCowTypeRegistry.asStream().anyMatch(entry -> entry.getValue().getCowType() == cowType && entry.getValue().getConfiguration().getSettings().naturalSpawnWeight() > 0 && entry.getValue().getConfiguration().getSettings().biomes().isPresent() && biome.is(entry.getValue().getConfiguration().getSettings().biomes().get()))) {
+        if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(entry -> entry.getCowType() == cowType && entry.getConfiguration().getSettings().naturalSpawnWeight() > 0 && entry.getConfiguration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome, entry.getConfiguration().getSettings().biomes().get()))) {
             if (phase == Phase.ADD && (this.excludedBiomes.isEmpty() || !this.excludedBiomes.get().contains(biome))) {
                 MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
                 for (MobSpawnSettings.SpawnerData spawner : this.spawners) {

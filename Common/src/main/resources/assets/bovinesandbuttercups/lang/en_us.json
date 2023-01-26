@@ -49,6 +49,5 @@
   "commands.effect.lockdown.failed": "Unable to apply Lockdown for Lockdown",
 
   "tag.bovinesandbuttercups.moobloom_flowers": "Moobloom Flowers",
-  "bovinesandbuttercups.moobloom.source": "Moobloom: %s",
-  "moobloom.bovinesandbuttercups.unknown.name": "Unknown"
+  "configured_cow_type.bovinesandbuttercups.missing_moobloom.name": "Unknown"
 }

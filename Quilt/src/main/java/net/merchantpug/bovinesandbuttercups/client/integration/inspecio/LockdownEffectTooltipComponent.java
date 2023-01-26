@@ -59,7 +59,7 @@ public class LockdownEffectTooltipComponent extends StatusEffectTooltipComponent
 
     @Override
     public int getHeight() {
-        return ((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getHidden() ? 40 : 20 + ((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getList().size() * 20;
+        return ((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getHidden() ? 30 : 10 + ((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getList().size() * 20;
     }
 
     public void renderImage(Font textRenderer, int x, int y, PoseStack matrices, ItemRenderer itemRenderer, int z) {

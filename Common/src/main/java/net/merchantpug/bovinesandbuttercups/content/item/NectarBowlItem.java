@@ -3,15 +3,18 @@ package net.merchantpug.bovinesandbuttercups.content.item;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
+import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -26,6 +29,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 public class NectarBowlItem extends Item {
     public static final String SOURCE_KEY = "Source";
@@ -53,6 +58,31 @@ public class NectarBowlItem extends Item {
     public static void saveMoobloomTypeKey(ItemStack nectar, ResourceLocation location) {
         CompoundTag tag = nectar.getOrCreateTag();
         tag.putString(SOURCE_KEY, location.toString());
+    }
+
+    public void appendHoverText(ItemStack stack, Level level, List<Component> components, TooltipFlag flag) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains(SOURCE_KEY, Tag.TAG_STRING)) {
+            ResourceLocation location = ResourceLocation.tryParse(tag.getString(SOURCE_KEY));
+            if (ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get()) {
+                getMoobloomName(location).ifPresent(components::add);
+            }
+        }
+    }
+
+    private Optional<Component> getMoobloomName(ResourceLocation moobloomLocation) {
+        var moobloom = BovineRegistryUtil.getConfiguredCowTypeFromKey(moobloomLocation, BovineCowTypes.FLOWER_COW_TYPE.get());
+        if (!moobloom.equals(BovineRegistryUtil.getDefaultMoobloom(BovineCowTypes.FLOWER_COW_TYPE.get()))) {
+            if (moobloom.getConfiguration().getFlower().blockState().isPresent()) {
+                return Optional.of(Component.translatable(moobloom.getConfiguration().getFlower().blockState().get().getBlock().getDescriptionId()).withStyle(ChatFormatting.BLUE));
+            } else if (moobloom.getConfiguration().getFlower().flowerType().isPresent()) {
+                ResourceLocation location = moobloom.getConfiguration().getFlower().flowerType().get();
+                return Optional.of(Component.translatable("block." + location.getNamespace() + "." + location.getPath()).withStyle(ChatFormatting.BLUE));
+            } else {
+                return Optional.of(Component.translatable("configured_cow_type." + moobloomLocation.getNamespace() + "." + moobloomLocation.getPath() + ".name").withStyle(ChatFormatting.BLUE));
+            }
+        }
+        return Optional.empty();
     }
 
     @Override

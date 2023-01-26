@@ -5,6 +5,7 @@
       "Name": "minecraft:red_mushroom"
     }
   },
+  "color": "#a81012",
   "texture_location": "minecraft:textures/entity/cow/red_mooshroom.png",
   "thunder_conversion_types": [
     {

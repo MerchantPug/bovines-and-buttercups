@@ -8,6 +8,7 @@
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/pink_daisy_bud"
   },
+  "color": "#fdc5dc",
   "nectar_effect": {
     "effect": "minecraft:strength",
     "duration": 3600
@@ -49,14 +50,6 @@
         ],
         "operation": "or"
       }
-    ],
-    "particle": {
-      "type": "bovinesandbuttercups:sparkle",
-      "color": [
-        0.98823529411,
-        0.68235294117,
-        0.80784313725
-      ]
-    }
+    ]
   }
 }

@@ -8,6 +8,7 @@ import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.SourceMo
 import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -60,7 +61,7 @@ public class NectarBowlItemQuilt extends NectarBowlItem {
                                 duration = effectTag.getInt(NectarBowlItem.EFFECT_DURATION_KEY);
                             }
 
-                            MobEffect mobEffect = MobEffect.byId(effectTag.getByte(NectarBowlItem.EFFECT_ID_KEY));
+                            MobEffect mobEffect = Registry.MOB_EFFECT.get(ResourceLocation.tryParse(effectTag.getString(NectarBowlItem.EFFECT_ID_KEY)));
                             if (mobEffect != null) {
                                 effects.add(new MobEffectInstance(mobEffect, duration));
                             }

@@ -1,9 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.content.item;
 
+import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Registry;
@@ -97,6 +99,14 @@ public class NectarBowlItem extends Item {
             return new ItemStack(Items.BOWL);
         }
         return itemStack;
+    }
+
+    public static ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getCowTypeFromStack(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains(SOURCE_KEY, Tag.TAG_STRING)) {
+            return BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(tag.getString(SOURCE_KEY)), BovineCowTypes.FLOWER_COW_TYPE.get());
+        }
+        return null;
     }
 
     @Override

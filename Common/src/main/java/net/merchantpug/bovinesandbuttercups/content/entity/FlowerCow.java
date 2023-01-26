@@ -7,6 +7,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.particle.BloomParticleOptions;
 import net.merchantpug.bovinesandbuttercups.data.entity.BreedingConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
@@ -17,7 +18,6 @@ import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -363,7 +363,7 @@ public class FlowerCow extends Cow {
 
     public void spawnParticleToBreedPosition(FlowerCowConfiguration configuration, LevelAccessor level) {
         Optional<BreedingConditionConfiguration> breedingCondition = configuration.getBreedingConditions();
-        if (breedingCondition.isEmpty() || breedingCondition.get().getParticleOptions().isEmpty()) return;
+        if (breedingCondition.isEmpty()) return;
         double radius = breedingCondition.get().getRadius();
         Map<BlockState, BlockPos> stateMap = new HashMap<>();
 
@@ -396,7 +396,7 @@ public class FlowerCow extends Cow {
             VoxelShape shape = state.getShape(level, pos);
             if (shape.isEmpty()) return;
             AABB blockBox = shape.bounds();
-            createParticleTrail(blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), breedingCondition.get().getParticleOptions().get());
+            createParticleTrail(blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), new BloomParticleOptions(configuration.getColor()));
         });
     }
 

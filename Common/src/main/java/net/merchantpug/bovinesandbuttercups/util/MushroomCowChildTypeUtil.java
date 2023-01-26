@@ -6,6 +6,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.particle.ShroomParticleOptions;
 import net.merchantpug.bovinesandbuttercups.data.entity.BreedingConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
@@ -117,7 +118,7 @@ public class MushroomCowChildTypeUtil {
 
     public static void spawnParticleToBreedPosition(MushroomCow parent, MushroomCowConfiguration configuration, LevelAccessor level) {
         Optional<BreedingConditionConfiguration> breedingCondition = configuration.getBreedingConditions();
-        if (breedingCondition.isEmpty() || breedingCondition.get().getParticleOptions().isEmpty()) return;
+        if (breedingCondition.isEmpty() || configuration.getColor().isEmpty()) return;
         double radius = breedingCondition.get().getRadius();
         Map<BlockState, BlockPos> stateMap = new HashMap<>();
 
@@ -149,7 +150,7 @@ public class MushroomCowChildTypeUtil {
             VoxelShape shape = state.getShape(level, pos);
             if (shape.isEmpty()) return;
             AABB blockBox = shape.bounds();
-            createParticleTrail(parent, blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), breedingCondition.get().getParticleOptions().get());
+            createParticleTrail(parent, blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), new ShroomParticleOptions(configuration.getColor().get()));
         });
     }
 

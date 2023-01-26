@@ -25,18 +25,18 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.client.particle.SparkleParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowDatapackMushroomLayer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMyceliumLayer;
 import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlockEntityTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovineModelLayers;
-import net.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
+import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
+import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
+import net.merchantpug.bovinesandbuttercups.util.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.MushroomCowRenderer;
@@ -68,6 +68,13 @@ public class BovinesAndButtercupsClientForge {
     }
 
     @SubscribeEvent
+    public static void registerColorHandlers(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, i) ->
+                        i == 0 ? -1 : NectarBowlItem.getCowTypeFromStack(stack) != null ? Color.asInt(Color.saturateForNectar(NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getColor())) : -1,
+                        BovineItems.NECTAR_BOWL.get());
+    }
+
+    @SubscribeEvent
     public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(BovineModelLayers.MOOBLOOM_MODEL_LAYER, CowModel::createBodyLayer);
     }
@@ -92,7 +99,8 @@ public class BovinesAndButtercupsClientForge {
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
-        event.register(BovineParticleTypes.SPARKLE.get(), SparkleParticle.Provider::new);
+        event.register(BovineParticleTypes.BLOOM.get(), BloomParticle.Provider::new);
+        event.register(BovineParticleTypes.SHROOM.get(), ShroomParticle.Provider::new);
     }
 
     @SubscribeEvent

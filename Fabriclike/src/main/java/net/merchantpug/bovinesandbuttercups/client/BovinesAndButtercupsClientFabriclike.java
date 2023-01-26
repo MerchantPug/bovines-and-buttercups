@@ -1,18 +1,18 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
+import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomFlowerItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
-import net.merchantpug.bovinesandbuttercups.client.particle.SparkleParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
+import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.registry.*;
+import net.merchantpug.bovinesandbuttercups.util.Color;
 import net.minecraft.client.model.CowModel;
 
 public class BovinesAndButtercupsClientFabriclike {
@@ -33,6 +33,11 @@ public class BovinesAndButtercupsClientFabriclike {
         BuiltinItemRendererRegistry.INSTANCE.register(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), new CustomHugeMushroomItemRenderer());
 
         ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
-        ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.SPARKLE.get(), SparkleParticle.Provider::new);
+        ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.BLOOM.get(), BloomParticle.Provider::new);
+        ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.SHROOM.get(), ShroomParticle.Provider::new);
+
+        ColorProviderRegistry.ITEM.register((stack, i) ->
+                i == 0 ? -1 : NectarBowlItem.getCowTypeFromStack(stack) != null ? Color.asInt(Color.saturateForNectar(NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getColor())) : -1,
+                BovineItems.NECTAR_BOWL.get());
     }
 }

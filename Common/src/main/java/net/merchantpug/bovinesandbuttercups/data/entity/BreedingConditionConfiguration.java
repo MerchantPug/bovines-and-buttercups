@@ -17,20 +17,17 @@ import java.util.*;
 public class BreedingConditionConfiguration {
     private final double radius;
     private final List<BlockPredicate> predicates;
-    private final Optional<ParticleOptions> particleOptions;
     private final boolean includesAssociatedBlocks;
 
     public static final Codec<BreedingConditionConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.DOUBLE.optionalFieldOf("radius", 6.0).forGetter(BreedingConditionConfiguration::getRadius),
             Codec.list(BlockPredicate.CODEC).optionalFieldOf("predicates", List.of()).forGetter(BreedingConditionConfiguration::getBlockPredicates),
-            ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(BreedingConditionConfiguration::getParticleOptions),
             Codec.BOOL.optionalFieldOf("includes_associated_blocks", true).forGetter(BreedingConditionConfiguration::shouldIncludeAssociatedBlocks)
     ).apply(builder, BreedingConditionConfiguration::new));
 
-    public BreedingConditionConfiguration(double radius, List<BlockPredicate> predicates, Optional<ParticleOptions> particleOptions, boolean includesAssociatedBlocks) {
+    public BreedingConditionConfiguration(double radius, List<BlockPredicate> predicates, boolean includesAssociatedBlocks) {
         this.radius = radius;
         this.predicates = predicates;
-        this.particleOptions = particleOptions;
         this.includesAssociatedBlocks = includesAssociatedBlocks;
     }
 
@@ -40,10 +37,6 @@ public class BreedingConditionConfiguration {
 
     public List<BlockPredicate> getBlockPredicates() {
         return predicates;
-    }
-
-    public Optional<ParticleOptions> getParticleOptions() {
-        return particleOptions;
     }
 
     public boolean shouldIncludeAssociatedBlocks() {

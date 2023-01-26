@@ -8,6 +8,7 @@
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/buttercup_bud"
   },
+  "color": "#fdd500",
   "nectar_effect": {
     "effect": "minecraft:poison",
     "duration": 3600
@@ -47,14 +48,6 @@
         ],
         "operation": "or"
       }
-    ],
-    "particle": {
-      "type": "bovinesandbuttercups:sparkle",
-      "color": [
-        0.98039215686,
-        0.79215686274,
-        0.0
-      ]
-    }
+    ]
   }
 }

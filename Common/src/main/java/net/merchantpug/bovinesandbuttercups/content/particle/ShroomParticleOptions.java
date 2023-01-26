@@ -13,26 +13,26 @@ import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.Locale;
 
-public record SparkleParticleOption(Vector3f color) implements ParticleOptions {
-    public static final Deserializer<SparkleParticleOption> DESERIALIZER = new Deserializer<>() {
-        public SparkleParticleOption fromCommand(ParticleType<SparkleParticleOption> particleType, StringReader reader) throws CommandSyntaxException {
+public record ShroomParticleOptions(Vector3f color) implements ParticleOptions {
+    public static final Deserializer<ShroomParticleOptions> DESERIALIZER = new Deserializer<>() {
+        public ShroomParticleOptions fromCommand(ParticleType<ShroomParticleOptions> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
             float f = reader.readFloat();
             reader.expect(' ');
             float g = reader.readFloat();
             reader.expect(' ');
             float h = reader.readFloat();
-            return new SparkleParticleOption(new Vector3f(f, g, h));
+            return new ShroomParticleOptions(new Vector3f(f, g, h));
         }
 
-        public SparkleParticleOption fromNetwork(ParticleType<SparkleParticleOption> particleType, FriendlyByteBuf buf) {
-            return new SparkleParticleOption(new Vector3f(buf.readFloat(), buf.readFloat(), buf.readFloat()));
+        public ShroomParticleOptions fromNetwork(ParticleType<ShroomParticleOptions> particleType, FriendlyByteBuf buf) {
+            return new ShroomParticleOptions(new Vector3f(buf.readFloat(), buf.readFloat(), buf.readFloat()));
         }
     };
 
-    public static final Codec<SparkleParticleOption> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-            Vector3f.CODEC.fieldOf("color").forGetter(SparkleParticleOption::color)
-    ).apply(instance, SparkleParticleOption::new));
+    public static final Codec<ShroomParticleOptions> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+            Vector3f.CODEC.fieldOf("color").forGetter(ShroomParticleOptions::color)
+    ).apply(instance, ShroomParticleOptions::new));
 
     public void writeToNetwork(FriendlyByteBuf buf) {
         buf.writeFloat(this.color.x());
@@ -46,7 +46,7 @@ public record SparkleParticleOption(Vector3f color) implements ParticleOptions {
         );
     }
 
-    public ParticleType<SparkleParticleOption> getType() {
-        return BovineParticleTypes.SPARKLE.get();
+    public ParticleType<ShroomParticleOptions> getType() {
+        return BovineParticleTypes.SHROOM.get();
     }
 }

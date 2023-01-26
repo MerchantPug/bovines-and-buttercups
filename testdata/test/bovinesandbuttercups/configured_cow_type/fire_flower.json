@@ -6,18 +6,13 @@
   "bud": {
     "model_location": "test:bovinesandbuttercups/fire_flower_bud"
   },
+  "color": [
+    0.85882352941,
+    0.36078431372,
+    0.36078431372
+  ],
   "nectar_effect": {
     "effect": "minecraft:fire_resistance",
     "duration": 12000
-  },
-  "breeding_conditions": {
-    "particle": {
-      "type": "bovinesandbuttercups:sparkle",
-      "color": [
-        0.85882352941,
-        0.36078431372,
-        0.36078431372
-      ]
-    }
   }
 }

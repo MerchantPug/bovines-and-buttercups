@@ -8,6 +8,7 @@
   "bud": {
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/chargelily_bud"
   },
+  "color": "#73baee",
   "nectar_effect": {
     "effect": "minecraft:haste",
     "duration": 1200
@@ -18,13 +19,6 @@
     }
   ],
   "breeding_conditions": {
-    "particle": {
-      "type": "bovinesandbuttercups:sparkle",
-      "color": [
-        0.45098039215,
-        0.7294117647,
-        0.93333333333
-      ]
-    }
+    "includes_associated_blocks": true
   }
 }

@@ -2,15 +2,10 @@ package net.merchantpug.bovinesandbuttercups.util;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Vector3f;
-import com.mojang.math.Vector4f;
 import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.minecraft.util.Mth;
 
 public class Color {
-    // This entire class is based on this page https://www.chilliant.com/rgb2hsv.html
-    private static final float EPSILON = 1e-10F;
-
     public static final Codec<Vector3f> CODEC = Codec.either(Vector3f.CODEC, Codec.STRING).xmap(vec3StringEither -> vec3StringEither.map(vector3f -> vector3f, s -> {
         String hex = s;
         if (hex.startsWith("0x")) {
@@ -40,9 +35,9 @@ public class Color {
         float b = rgb.z();
 
         float l = 0.3F * r + 0.6F * g + 0.1F * b;
-        r = r + 0.6F * (l - r);
-        g = g + 0.6F * (l - g);
-        b = b + 0.6F * (l - b);
+        r = r + 0.5F * (l - r);
+        g = g + 0.5F * (l - g);
+        b = b + 0.5F * (l - b);
 
         return new Vector3f(r, g, b);
     }

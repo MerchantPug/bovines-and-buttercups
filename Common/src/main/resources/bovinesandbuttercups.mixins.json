@@ -30,5 +30,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "bovinesandbuttercups.refmap.json"
+  "refmap": "bovinesandbuttercups-refmap.json"
 }

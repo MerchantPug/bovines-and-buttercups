@@ -74,9 +74,7 @@ dependencies {
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
     implementation(project(":Common"))
-    implementation(project(path: ":Fabriclike", configuration: "namedElements")) {
-        exclude group: "net.merchantpug.bovinesandbuttercups", module: "Common"
-    }
+    implementation(project(path: ":Fabriclike", configuration: "namedElements"))
 
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
@@ -101,7 +99,7 @@ dependencies {
 loom {
     accessWidenerPath = file("src/main/resources/bovinesandbuttercups.accesswidener")
     mixin {
-        defaultRefmapName = "bovinesandbuttercups.refmap.json"
+        defaultRefmapName = "bovinesandbuttercups-refmap.json"
     }
 
     runs {

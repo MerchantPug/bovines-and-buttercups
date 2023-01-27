@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-archivesBaseName = "${project.mod_name}-Quilt"
+archivesBaseName = "${artifact_name}-Quilt"
 
 repositories {
     maven {

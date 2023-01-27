@@ -17,7 +17,7 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
-archivesBaseName = "${project.mod_name}-Forge"
+archivesBaseName = "${artifact_name}-Forge"
 
 configurations {
     library

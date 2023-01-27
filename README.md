@@ -13,13 +13,13 @@ Please check out the [Wiki](https://github.com/MerchantPug/bovines-and-buttercup
 ```gradle
 dependencies {
     // If you have a Common sourceset shared between Forge, Fabric, and Quilt
-    modImplementation "net.merchantpug:Bovines-And-Buttercups-Common:${project.bovines_version}"
+    compileOnly "net.merchantpug:Bovines-And-Buttercups-Common:${project.bovines_version}"
     
     // If you have a Fabriclike sourceset shared between Fabric and Quilt
-    modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabriclike:${project.bovines_version}"
+    modCompileOnly "net.merchantpug:Bovines-And-Buttercups-Fabriclike:${project.bovines_version}"
     
     // Forge
-    modImplementation "net.merchantpug:Bovines-And-Buttercups-Forge:${project.bovines_version}"
+    implementation fg.deobf("net.merchantpug:Bovines-And-Buttercups-Forge:${project.bovines_version}")
     
     // Fabric
     modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabric:${project.bovines_version}"

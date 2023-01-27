@@ -21,9 +21,5 @@ jobs:
         run: chmod +x gradlew
       - name: Clean Gradle
         run: ./gradlew clean
-      - name: Publish Forge Artifacts
-        run: ./gradlew Forge:build publish
-      - name: Publish Fabric Artifacts
-        run: ./gradlew Fabric:clean build publish
-      - name: Publish Quilt Artifacts
-        run: ./gradlew Quilt:clean build publish
+      - name: Publish Artifacts
+        run: ./gradlew build publish

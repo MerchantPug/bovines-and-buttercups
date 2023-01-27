@@ -131,9 +131,6 @@ tasks.withType(JavaCompile) {
     source(project(":Fabriclike").sourceSets.main.allSource)
 }
 
-// TODO: Remove this temporary fix if something happens.
-assemble.dependsOn clean
-
 publishing {
     publications {
         mavenJava(MavenPublication) {

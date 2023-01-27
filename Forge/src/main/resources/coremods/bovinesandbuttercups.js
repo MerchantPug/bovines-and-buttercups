@@ -12,7 +12,7 @@ function initializeCoreMod() {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.resources.model.ModelBakery',
                 'methodName': '<init>',
-                'methodDesc': '(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/client/color/block/BlockColors;Lnet/minecraft/util/profiling/ProfilerFiller;I)V'
+                'methodDesc': '(Lnet/minecraft/client/color/block/BlockColors;Lnet/minecraft/util/profiling/ProfilerFiller;Ljava/util/Map;Ljava/util/Map;)V'
             },
             'transformer': function(node) {
                 var target = ASMAPI.findFirstMethodCallAfter(node, ASMAPI.MethodType.VIRTUAL, "net/minecraft/client/resources/model/ModelBakery", ASMAPI.mapMethod("m_119306_"), "(Lnet/minecraft/client/resources/model/ModelResourceLocation;)V", 189); // loadTopLevel
@@ -21,9 +21,6 @@ function initializeCoreMod() {
                 }
                 var ls = new InsnList();
 				ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
-				// resourceManager
-				ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
-                ls.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/resources/model/ModelBakery", ASMAPI.mapField("f_119243_"), "Lnet/minecraft/server/packs/resources/ResourceManager;"));
 				// unbakedCache
 				ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
 				ls.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/resources/model/ModelBakery", ASMAPI.mapField("f_119212_"), "Ljava/util/Map;"));
@@ -31,7 +28,7 @@ function initializeCoreMod() {
                 ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
                 ls.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/resources/model/ModelBakery", ASMAPI.mapField("f_119214_"), "Ljava/util/Map;"));
 
-                ls.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/merchantpug/bovinesandbuttercups/client/util/BovineStateModelUtil", "initModels", "(Lnet/minecraft/client/resources/model/ModelBakery;Lnet/minecraft/server/packs/resources/ResourceManager;Ljava/util/Map;Ljava/util/Map;)V", false));
+                ls.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/merchantpug/bovinesandbuttercups/client/util/BovineStateModelUtil", "initModels", "(Lnet/minecraft/client/resources/model/ModelBakery;Ljava/util/Map;Ljava/util/Map;)V", false));
 
                 node.instructions.insert(target, ls);
                 return node;

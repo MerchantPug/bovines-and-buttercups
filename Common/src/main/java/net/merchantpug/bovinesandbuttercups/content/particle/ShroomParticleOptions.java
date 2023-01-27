@@ -2,14 +2,15 @@ package net.merchantpug.bovinesandbuttercups.content.particle;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.registry.BovineParticleTypes;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
+import org.joml.Vector3f;
 
 import java.util.Locale;
 
@@ -31,7 +32,7 @@ public record ShroomParticleOptions(Vector3f color) implements ParticleOptions {
     };
 
     public static final Codec<ShroomParticleOptions> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-            Vector3f.CODEC.fieldOf("color").forGetter(ShroomParticleOptions::color)
+            ExtraCodecs.VECTOR3F.fieldOf("color").forGetter(ShroomParticleOptions::color)
     ).apply(instance, ShroomParticleOptions::new));
 
     public void writeToNetwork(FriendlyByteBuf buf) {
@@ -42,7 +43,7 @@ public record ShroomParticleOptions(Vector3f color) implements ParticleOptions {
 
     public String writeToString() {
         return String.format(
-                Locale.ROOT, "%s %.2f %.2f %.2f", Registry.PARTICLE_TYPE.getKey(this.getType()), this.color.x(), this.color.y(), this.color.z()
+                Locale.ROOT, "%s %.2f %.2f %.2f", BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.color.x(), this.color.y(), this.color.z()
         );
     }
 

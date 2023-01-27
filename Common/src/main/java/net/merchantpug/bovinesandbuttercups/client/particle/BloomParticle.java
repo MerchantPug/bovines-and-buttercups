@@ -1,9 +1,9 @@
 package net.merchantpug.bovinesandbuttercups.client.particle;
 
-import com.mojang.math.Vector3f;
 import net.merchantpug.bovinesandbuttercups.content.particle.BloomParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
+import org.joml.Vector3f;
 
 public class BloomParticle extends SimpleAnimatedParticle {
     protected BloomParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd, SpriteSet spriteSet, Vector3f color) {

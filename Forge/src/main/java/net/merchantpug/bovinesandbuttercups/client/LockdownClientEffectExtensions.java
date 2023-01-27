@@ -27,7 +27,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
                 MobEffect mobEffect1 = list.get(lockdownEffectIndex).getKey();
 
                 TextureAtlasSprite additionalSprite = Minecraft.getInstance().getMobEffectTextures().get(mobEffect1);
-                RenderSystem.setShaderTexture(0, additionalSprite.atlas().getId());
+                RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
                 InventoryScreen.blit(poseStack, x, y + 7, blitOffset, 18, 18, additionalSprite);
             }
         });
@@ -61,7 +61,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
                 TextureAtlasSprite additionalSprite = Minecraft.getInstance().getMobEffectTextures().get(statusEffect1);
                 float finalAlpha =  a;
 
-                RenderSystem.setShaderTexture(0, additionalSprite.atlas().getId());
+                RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, finalAlpha);
                 GuiComponent.blit(poseStack, x + 3, y + 3, gui.getBlitOffset(), 18, 18, additionalSprite);
             }

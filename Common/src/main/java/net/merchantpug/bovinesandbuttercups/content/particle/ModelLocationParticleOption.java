@@ -8,6 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
@@ -40,7 +41,7 @@ public record ModelLocationParticleOption(ResourceLocation modelKey, String mode
     }
 
     public String writeToString() {
-        ResourceLocation var10000 = Registry.PARTICLE_TYPE.getKey(this.getType());
+        ResourceLocation var10000 = BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType());
         return "" + var10000 + " " + modelKey + "/" + modelVariant;
     }
 

@@ -105,7 +105,7 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
         }
     }
 
-    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
         if (state.hasBlockEntity() && level.getBlockEntity(pos) instanceof CustomMushroomBlockEntity mushroomBlockEntity) {
             return mushroomBlockEntity.getMushroomType().hugeMushroomStructureList().isPresent();
         }

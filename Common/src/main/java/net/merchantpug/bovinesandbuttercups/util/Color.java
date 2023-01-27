@@ -1,12 +1,13 @@
 package net.merchantpug.bovinesandbuttercups.util;
 
 import com.mojang.datafixers.util.Either;
-import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.minecraft.util.ExtraCodecs;
+import org.joml.Vector3f;
 
 public class Color {
-    public static final Codec<Vector3f> CODEC = Codec.either(Vector3f.CODEC, Codec.STRING).xmap(vec3StringEither -> vec3StringEither.map(vector3f -> vector3f, s -> {
+    public static final Codec<Vector3f> CODEC = Codec.either(ExtraCodecs.VECTOR3F, Codec.STRING).xmap(vec3StringEither -> vec3StringEither.map(vector3f -> vector3f, s -> {
         String hex = s;
         if (hex.startsWith("0x")) {
             hex = hex.substring(2);

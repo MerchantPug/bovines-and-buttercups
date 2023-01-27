@@ -1,12 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
+import com.mojang.math.Axis;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
@@ -80,7 +80,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
 
         poseStack.pushPose();
         poseStack.translate(0.2f, 0.35f, 0.5f);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
         poseStack.translate(0.25f, 0.37, -0.25f);
@@ -89,7 +89,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
 
         poseStack.pushPose();
         poseStack.translate(0.2f, 0.35f, 0.5f);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-1.0f, -1.0f, -1.0f);
         poseStack.translate(0.25f, 0.37, 0.05f);
@@ -101,7 +101,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         poseStack.translate(0.0f, 0.625, 0.25f);
         this.getParentModel().getHead().translateAndRotate(poseStack);
         poseStack.translate(0.0, -0.7f, -0.2f);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.05, -0.12, 0.15);
@@ -117,7 +117,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
 
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.65, -0.18, -0.55);
@@ -126,7 +126,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
 
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.03, -0.18, -0.85);
@@ -135,7 +135,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
 
         poseStack.pushPose();
         poseStack.translate(0.2f, -0.35f, 0.5);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(0.15, -0.18, -0.2);
@@ -146,7 +146,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         poseStack.pushPose();
         this.getParentModel().getHead().translateAndRotate(poseStack);
         poseStack.translate(0.0, -0.7f, -0.2f);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(45.0f));
+        poseStack.mulPose(Axis.YP.rotationDegrees(45.0f));
         poseStack.scale(-0.75f, -0.75f, 0.75f);
         poseStack.translate(-0.5, -0.5, -0.5);
         poseStack.translate(-0.05, -0.17, 0.15);

@@ -16,13 +16,13 @@ A new take on the Moobloom and other bovines.
 [[dependencies.bovinesandbuttercups]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="[44,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.bovinesandbuttercups]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.2,1.19.3)"
+    versionRange="[1.19.3,1.20)"
     ordering="NONE"
     side="BOTH"

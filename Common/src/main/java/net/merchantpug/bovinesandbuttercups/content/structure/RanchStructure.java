@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineStructureTypes;
 import net.minecraft.core.*;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -24,7 +25,7 @@ import java.util.function.Function;
 
 public class RanchStructure extends Structure {
     public static final int MAX_TOTAL_STRUCTURE_RANGE = 128;
-    public static final Codec<RanchStructure> CODEC = RecordCodecBuilder.<RanchStructure>mapCodec(builder -> builder.group(settingsCodec(builder), StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(RanchStructure::getStartPool), ResourceLocation.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(RanchStructure::getStartJigsawName), Codec.intRange(0, 7).fieldOf("size").forGetter(RanchStructure::getMaxDepth), HeightProvider.CODEC.fieldOf("start_height").forGetter(RanchStructure::getStartHeight), Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(RanchStructure::getProjectStartToHeightmap), Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(RanchStructure::getMaxDistanceFromCenter), RegistryCodecs.homogeneousList(Registry.CONFIGURED_FEATURE_REGISTRY).optionalFieldOf("allowed_features").forGetter(RanchStructure::getAllowedFeatures)).apply(builder, RanchStructure::new)).flatXmap(verifyRange(), verifyRange()).codec();
+    public static final Codec<RanchStructure> CODEC = RecordCodecBuilder.<RanchStructure>mapCodec(builder -> builder.group(settingsCodec(builder), StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter(RanchStructure::getStartPool), ResourceLocation.CODEC.optionalFieldOf("start_jigsaw_name").forGetter(RanchStructure::getStartJigsawName), Codec.intRange(0, 7).fieldOf("size").forGetter(RanchStructure::getMaxDepth), HeightProvider.CODEC.fieldOf("start_height").forGetter(RanchStructure::getStartHeight), Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(RanchStructure::getProjectStartToHeightmap), Codec.intRange(1, 128).fieldOf("max_distance_from_center").forGetter(RanchStructure::getMaxDistanceFromCenter), RegistryCodecs.homogeneousList(Registries.CONFIGURED_FEATURE).optionalFieldOf("allowed_features").forGetter(RanchStructure::getAllowedFeatures)).apply(builder, RanchStructure::new)).flatXmap(verifyRange(), verifyRange()).codec();
     private final Holder<StructureTemplatePool> startPool;
     private final Optional<ResourceLocation> startJigsawName;
     private final int maxDepth;
@@ -95,7 +96,6 @@ public class RanchStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int height = this.startHeight.sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
         BlockPos pos = new BlockPos(chunkPos.getMinBlockX(), height, chunkPos.getMinBlockZ());
-        Pools.forceBootstrap();
         return JigsawPlacement.addPieces(context, this.startPool, this.startJigsawName, this.maxDepth, pos, false, this.projectStartToHeightmap, this.maxDistanceFromCenter);
     }
 

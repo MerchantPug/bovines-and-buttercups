@@ -6,9 +6,7 @@ import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -45,7 +43,7 @@ public class BreedingConditionConfiguration {
 
     public record BlockPredicate(Optional<List<Block>> blocks, Optional<List<BlockState>> states, PredicateOperation operation) {
         public static final Codec<BlockPredicate> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                Codec.list(Registry.BLOCK.byNameCodec()).optionalFieldOf("blocks").forGetter(BlockPredicate::blocks),
+                Codec.list(BuiltInRegistries.BLOCK.byNameCodec()).optionalFieldOf("blocks").forGetter(BlockPredicate::blocks),
                 Codec.list(BlockState.CODEC).optionalFieldOf("block_states").forGetter(BlockPredicate::states),
                 PredicateOperation.CODEC.optionalFieldOf("operation", PredicateOperation.AND).forGetter(BlockPredicate::operation)
         ).apply(builder, BlockPredicate::new));

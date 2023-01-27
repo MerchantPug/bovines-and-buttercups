@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -19,7 +20,7 @@ public class LockEffectTrigger extends SimpleCriterionTrigger<LockEffectTrigger.
     protected LockEffectTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext context) {
         Optional<MobEffect> effect = Optional.empty();
         if (json.has("effect")) {
-            effect = Registry.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
+            effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
         }
         return new LockEffectTrigger.TriggerInstance(player, effect);
     }
@@ -48,7 +49,7 @@ public class LockEffectTrigger extends SimpleCriterionTrigger<LockEffectTrigger.
 
         public JsonObject serializeToJson(SerializationContext context) {
             JsonObject json = super.serializeToJson(context);
-            Optional<MobEffect> effect = Registry.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
+            Optional<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
             if (effect.isPresent()) {
                 JsonElement element = JsonParser.parseString(json.getAsJsonPrimitive("effect").getAsString());
                 json.add("effect", element);

@@ -13,12 +13,14 @@
     "EntityMixin",
     "EntitySuperMixin",
     "FarmBlockMixin",
+    "MinecraftServerMixin",
     "MobAccessor",
     "MobEffectInstanceMixin",
     "MushroomCowMixin",
     "PlacedFeatureMixin",
     "SuspiciousStewRecipeMixin",
-    "WorldGenRegionAccessor"
+    "WorldGenRegionAccessor",
+    "WorldLoaderMixin"
   ],
   "client": [
     "client.ClientLevelMixin",

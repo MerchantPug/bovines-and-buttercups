@@ -16,6 +16,7 @@ import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.MushroomTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
+import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
@@ -31,6 +32,7 @@ import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -59,6 +61,10 @@ import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -126,7 +132,14 @@ public class BovinesAndButtercupsForge {
             event.addListener(new MushroomTypeReloadListener());
         });
 
+        eventBus.addListener((RegisterCommandsEvent event) -> EffectLockdownCommand.register(event.getDispatcher(), event.getBuildContext()));
+
+        eventBus.addListener((ServerAboutToStartEvent event) -> {
+            BovinesAndButtercups.setServer(event.getServer());
+        });
+
         eventBus.addListener((OnDatapackSyncEvent event) -> {
+            if (event.getPlayer() == null) return;
             HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();
             ConfiguredCowTypeRegistry.asStream().forEach(entry -> {
                 if (entry.getValue().equals(BovineRegistryUtil.getDefaultMoobloom(entry.getValue().getCowType()))) return;
@@ -213,7 +226,7 @@ public class BovinesAndButtercupsForge {
                         if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().getLevel(), cow.blockPosition()) > 0) {
                             cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().getLevel(), cow.blockPosition(), cow.getRandom()));
                         } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && cow.level.getBiome(cow.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
-                            if (cow.getMushroomType() == MushroomCow.MushroomType.BROWN) {
+                            if (cow.getVariant() == MushroomCow.MushroomType.BROWN) {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("brown_mushroom"));
                             } else {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("red_mushroom"));
@@ -255,8 +268,6 @@ public class BovinesAndButtercupsForge {
         eventBus.addGenericListener(Entity.class, LockdownEffectCapabilityAttacher::attach);
         eventBus.addGenericListener(Entity.class, FlowerCowTargetCapabilityAttacher::attach);
 
-        eventBus.addListener((RegisterCommandsEvent event) -> EffectLockdownCommand.register(event.getDispatcher()));
-
         eventBus.addListener((BabyEntitySpawnEvent event) -> {
             Mob parentA = event.getParentA();
             Mob parentB = event.getParentB();
@@ -272,7 +283,7 @@ public class BovinesAndButtercupsForge {
             if (event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent()) {
                 Optional<Map<MobEffect, Integer>> optional = entity.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects);
                 if (optional.isEmpty() || optional.get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration())) {
-                    Optional<Holder<MobEffect>> randomEffect = Registry.MOB_EFFECT.getRandom(entity.level.random);
+                    Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(entity.level.random);
                     randomEffect.ifPresent(entry -> event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                         cap.addLockdownMobEffect(entry.value(), event.getEffectInstance().getDuration());
                         cap.sync();

@@ -7,6 +7,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineRecipeSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -14,8 +15,8 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class CustomFlowerDyeRecipe extends CustomRecipe {
-    public CustomFlowerDyeRecipe(ResourceLocation location) {
-        super(location);
+    public CustomFlowerDyeRecipe(ResourceLocation location, CraftingBookCategory craftingBookCategory) {
+        super(location, craftingBookCategory);
     }
 
     @Override

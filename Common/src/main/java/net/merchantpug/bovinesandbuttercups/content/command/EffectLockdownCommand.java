@@ -9,12 +9,15 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.arguments.ResourceArgument;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.commands.arguments.MobEffectArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -24,23 +27,23 @@ import net.minecraft.world.entity.LivingEntity;
 import static net.minecraft.commands.Commands.*;
 
 public class EffectLockdownCommand {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
         dispatcher.register(
                 literal("effect").requires(cs -> cs.hasPermission(2))
                     .then(literal("lockdown")
                         .then(argument("targets", EntityArgument.entities())
-                            .then(argument("effect", MobEffectArgument.effect()).suggests((commandContext, suggestionsBuilder) -> EffectWithoutLockdownSuggestion.suggestions(suggestionsBuilder))
-                                .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"), MobEffectArgument.getEffect(command, "effect"), null, true)
+                            .then(argument("effect", ResourceArgument.resource(context, Registries.MOB_EFFECT))).suggests((commandContext, suggestionsBuilder) -> EffectWithoutLockdownSuggestion.suggestions(suggestionsBuilder))
+                                .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"),  ResourceArgument.getMobEffect(command, "effect"), null, true)
                                 )
                                 .then(argument("duration", IntegerArgumentType.integer(1, 1000000))
-                                    .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"), MobEffectArgument.getEffect(command, "effect"), IntegerArgumentType.getInteger(command, "duration"), true)
+                                    .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"), ResourceArgument.getMobEffect(command, "effect"), IntegerArgumentType.getInteger(command, "duration"), true)
                                     )
                                     .then(argument("hideParticles", BoolArgumentType.bool())
-                                            .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"), MobEffectArgument.getEffect(command, "effect"), IntegerArgumentType.getInteger(command, "duration"), !BoolArgumentType.getBool(command, "hideParticles")))))))));
+                                            .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"), ResourceArgument.getMobEffect(command, "effect"), IntegerArgumentType.getInteger(command, "duration"), !BoolArgumentType.getBool(command, "hideParticles"))))))));
     }
 
-    private static int giveLockdownEffect(CommandContext<CommandSourceStack> command, Collection<? extends Entity> targets, MobEffect effect, @Nullable Integer seconds, boolean showParticles) throws CommandSyntaxException {
-        if (effect instanceof LockdownEffect) {
+    private static int giveLockdownEffect(CommandContext<CommandSourceStack> command, Collection<? extends Entity> targets, Holder.Reference<MobEffect> effect, @Nullable Integer seconds, boolean showParticles) throws CommandSyntaxException {
+        if (effect.value() instanceof LockdownEffect) {
             throw new SimpleCommandExceptionType(Component.translatable("commands.effect.lockdown.failed")).create();
         }
         int i = 0;
@@ -48,7 +51,7 @@ public class EffectLockdownCommand {
         for (Entity entity : targets) {
             MobEffectInstance statusEffectInstance = new MobEffectInstance(BovineEffects.LOCKDOWN.get(), j, 0, false, showParticles);
             if (!(entity instanceof LivingEntity)) continue;
-            Services.COMPONENT.addLockdownMobEffect((LivingEntity)entity, effect, j);
+            Services.COMPONENT.addLockdownMobEffect((LivingEntity)entity, effect.value(), j);
             Services.COMPONENT.syncLockdownMobEffects((LivingEntity)entity);
             if (!((LivingEntity)entity).addEffect(statusEffectInstance, command.getSource().getEntity())) continue;
             ++i;
@@ -57,9 +60,9 @@ public class EffectLockdownCommand {
             throw new SimpleCommandExceptionType(Component.translatable("commands.effect.give.failed")).create();
         }
         if (targets.size() == 1) {
-            command.getSource().sendSuccess(Component.translatable("commands.effect.lockdown.success.single", effect.getDisplayName(), targets.iterator().next().getDisplayName(), j / 20), true);
+            command.getSource().sendSuccess(Component.translatable("commands.effect.lockdown.success.single", effect.value().getDisplayName(), targets.iterator().next().getDisplayName(), j / 20), true);
         } else {
-            command.getSource().sendSuccess(Component.translatable("commands.effect.lockdown.success.multiple", effect.getDisplayName(), targets.size(), j / 20), true);
+            command.getSource().sendSuccess(Component.translatable("commands.effect.lockdown.success.multiple", effect.value().getDisplayName(), targets.size(), j / 20), true);
         }
         return i;
     }

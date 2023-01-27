@@ -1,3 +1,5 @@
+// TODO: Reimplement JEI
+/*
 package net.merchantpug.bovinesandbuttercups.integration.jei.subtype;
 
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
@@ -27,3 +29,4 @@ public class CustomMushroomSubtypeInterpreter implements IIngredientSubtypeInter
         return IIngredientSubtypeInterpreter.NONE;
     }
 }
+ */

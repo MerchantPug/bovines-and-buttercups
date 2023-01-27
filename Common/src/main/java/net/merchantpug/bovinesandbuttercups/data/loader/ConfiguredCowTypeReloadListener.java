@@ -26,7 +26,7 @@ public class ConfiguredCowTypeReloadListener extends SimpleJsonResourceReloadLis
         ConfiguredCowTypeRegistry.clear();
         jsonElements.forEach((location, jsonElement) -> {
             try {
-                var configuredCowType = ConfiguredCowType.CODEC.parse(JsonOps.INSTANCE, jsonElement)
+                var configuredCowType = ConfiguredCowType.getServerCodec().parse(JsonOps.INSTANCE, jsonElement)
                         .getOrThrow(false, (s -> BovinesAndButtercups.LOG.error("Could not load Configured Cow Type at location '{}'. (Skipping). {}", location, s)));
                 if (ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getLoadingPriority() > configuredCowType.getLoadingPriority()) return;
                 if (ConfiguredCowTypeRegistry.containsKey(location))

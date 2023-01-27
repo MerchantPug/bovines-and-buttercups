@@ -2,10 +2,9 @@ package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.content.block.*;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -14,7 +13,7 @@ import net.minecraft.world.level.material.Material;
 import java.util.function.Supplier;
 
 public class BovineBlocks {
-    private static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registry.BLOCK, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<Block> BLOCKS = RegistrationProvider.get(Registries.BLOCK, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<MoobloomFlowerBlock> BUTTERCUP = register("buttercup", () -> new MoobloomFlowerBlock(MobEffects.POISON, 12, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));
     public static final RegistryObject<MoobloomFlowerBlock> PINK_DAISY = register("pink_daisy", () -> new MoobloomFlowerBlock(MobEffects.DAMAGE_BOOST, 3, BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).offsetType(BlockBehaviour.OffsetType.XZ)));

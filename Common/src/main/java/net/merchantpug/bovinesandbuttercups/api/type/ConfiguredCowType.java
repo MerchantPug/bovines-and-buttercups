@@ -1,18 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.api.type;
 
 import com.mojang.serialization.Codec;
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.ResourceKey;
 
 public class ConfiguredCowType<CTC extends CowTypeConfiguration, CT extends CowType<CTC>> {
-    public static final Codec<ConfiguredCowType<?, ?>> CODEC = CowType.CODEC.dispatch(ConfiguredCowType::getCowType, CowType::getCodec);
 
     private final CT cowType;
     private final CTC configuration;
@@ -22,6 +12,14 @@ public class ConfiguredCowType<CTC extends CowTypeConfiguration, CT extends CowT
         this.cowType = cowType;
         this.configuration = configuration;
         this.loadingPriority = loadingPriority;
+    }
+
+    public static Codec<ConfiguredCowType<?, ?>> getServerCodec() {
+        return CowType.CODEC.dispatch(ConfiguredCowType::getCowType, CowType::getServerCodec);
+    }
+
+    public static Codec<ConfiguredCowType<?, ?>> getClientCodec() {
+        return CowType.CODEC.dispatch(ConfiguredCowType::getCowType, CowType::getClientCodec);
     }
 
     public CT getCowType() {

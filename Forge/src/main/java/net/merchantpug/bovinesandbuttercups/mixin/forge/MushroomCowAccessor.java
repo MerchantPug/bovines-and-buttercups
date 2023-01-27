@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(MushroomCow.class)
 public interface MushroomCowAccessor {
-    @Invoker("setMushroomType")
-    void bovinesandbuttercups$invokeSetMushroomType(MushroomCow.MushroomType type);
+    @Invoker("setVariant")
+    void bovinesandbuttercups$invokeSetVariant(MushroomCow.MushroomType type);
 }

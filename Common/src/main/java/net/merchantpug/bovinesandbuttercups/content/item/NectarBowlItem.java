@@ -10,7 +10,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -46,7 +46,7 @@ public class NectarBowlItem extends Item {
         CompoundTag compoundTag = nectar.getOrCreateTag();
         ListTag listTag = compoundTag.getList(EFFECTS_KEY, 9);
         CompoundTag compoundTag2 = new CompoundTag();
-        ResourceLocation effectLocation = Registry.MOB_EFFECT.getKey(effect);
+        ResourceLocation effectLocation = BuiltInRegistries.MOB_EFFECT.getKey(effect);
         if (effectLocation != null) {
             compoundTag2.putString(EFFECT_ID_KEY, effectLocation.toString());
             compoundTag2.putInt(EFFECT_DURATION_KEY, duration);
@@ -103,7 +103,7 @@ public class NectarBowlItem extends Item {
             for (int i = 0; i < nbtList.size(); ++i) {
                 MobEffect statusEffect;
                 CompoundTag compoundTag2 = nbtList.getCompound(i);
-                if ((statusEffect = Registry.MOB_EFFECT.get(ResourceLocation.tryParse(compoundTag2.getString(EFFECT_ID_KEY)))) == null) continue;
+                if ((statusEffect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(compoundTag2.getString(EFFECT_ID_KEY)))) == null) continue;
                 if (compoundTag2.contains(EFFECT_DURATION_KEY, Tag.TAG_INT)) {
                     int compoundDuration = compoundTag2.getInt(EFFECT_DURATION_KEY);
                     if (compoundDuration > duration) {

@@ -25,7 +25,7 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
 
     @Override
     public void encode(FriendlyByteBuf buf) {
-        Codec.unboundedMap(ResourceLocation.CODEC, ConfiguredCowType.CODEC).encodeStart(NbtOps.INSTANCE, configuredCowTypeMap)
+        Codec.unboundedMap(ResourceLocation.CODEC, ConfiguredCowType.getServerCodec()).encodeStart(NbtOps.INSTANCE, configuredCowTypeMap)
                 .resultOrPartial(msg -> {
                     buf.writeBoolean(false);
                     BovinesAndButtercups.LOG.error("Failed to encode configured cow types. {}", msg);
@@ -60,7 +60,7 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
         HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();
         if (buf.readBoolean()) {
             CompoundTag compoundTag = buf.readNbt();
-            Codec.unboundedMap(ResourceLocation.CODEC, ConfiguredCowType.CODEC).parse(NbtOps.INSTANCE, compoundTag)
+            Codec.unboundedMap(ResourceLocation.CODEC, ConfiguredCowType.getClientCodec()).parse(NbtOps.INSTANCE, compoundTag)
                     .resultOrPartial(msg -> BovinesAndButtercups.LOG.error("Failed to decode configured cow types. {}", msg))
                     .ifPresent(configuredCowTypeMap::putAll);
         }

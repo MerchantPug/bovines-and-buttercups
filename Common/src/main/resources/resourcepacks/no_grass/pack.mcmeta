@@ -1,6 +1,8 @@
 {
   "pack": {
     "pack_format": 9,
-    "description": "Removes grass and mycelium from cow backs."
+    "description": {
+      "translate": "resourcePack.bovinesandbuttercups.noGrass.description"
+    }
   }
 }

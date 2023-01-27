@@ -1,3 +1,5 @@
+// TODO: Reimplement JEI
+/*
 package net.merchantpug.bovinesandbuttercups.integration.jei;
 
 import mezz.jei.api.JeiPlugin;
@@ -6,3 +8,4 @@ import mezz.jei.api.JeiPlugin;
 public class BovineJeiPluginForge extends BovineJeiPlugin {
 
 }
+ */

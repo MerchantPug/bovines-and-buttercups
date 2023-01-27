@@ -1,3 +1,5 @@
+// TODO: Reimplement JEI
+/*
 package net.merchantpug.bovinesandbuttercups.integration.jei.recipe;
 
 import mezz.jei.api.constants.ModIds;
@@ -51,3 +53,4 @@ public class CustomFlowerSuspiciousStewRecipeMaker {
         return Optional.of(new ShapelessRecipe(id, "bovinesandbuttercups.custom.flower.suspicious.stew", output, inputs));
     }
 }
+ */

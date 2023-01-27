@@ -5,6 +5,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Map;

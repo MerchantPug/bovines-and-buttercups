@@ -27,20 +27,20 @@ import java.util.Optional;
 
 @Mixin(MushroomCow.class)
 public abstract class MushroomCowMixin extends EntitySuperMixin {
-    @Shadow public abstract MushroomCow.MushroomType getMushroomType();
+    @Shadow public abstract MushroomCow.MushroomType getVariant();
 
-    @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getMushroomType()Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;"))
+    @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getVariant()Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;"))
     private MushroomCow.MushroomType bovinesandbuttercups$allowFlowerFeeding(MushroomCow instance) {
         MushroomCow cow = (MushroomCow)(Object)this;
-        if (this.getMushroomType() == MushroomCow.MushroomType.RED && Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
+        if (this.getVariant() == MushroomCow.MushroomType.RED && Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
             return MushroomCow.MushroomType.BROWN;
-        } else if (this.getMushroomType() == MushroomCow.MushroomType.BROWN && !Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
+        } else if (this.getVariant() == MushroomCow.MushroomType.BROWN && !Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
             return MushroomCow.MushroomType.RED;
         }
-        return instance.getMushroomType();
+        return instance.getVariant();
     }
 
-    @Inject(method = "thunderHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;setMushroomType(Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;)V", shift = At.Shift.AFTER), cancellable = true)
+    @Inject(method = "thunderHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;setVariant(Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;)V", shift = At.Shift.AFTER), cancellable = true)
     private void bovinesandbuttercups$changeTypeOnThunderHit(ServerLevel level, LightningBolt bolt, CallbackInfo ci) {
         MushroomCow cow = (MushroomCow)(Object)this;
         if (Services.COMPONENT.getPreviousMushroomCowTypeKeyFromCow(cow).isPresent()) {
@@ -86,10 +86,10 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
         }
     }
 
-    @Inject(method = "getEffectFromItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/BlockItem;getBlock()Lnet/minecraft/world/level/block/Block;", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void bovinesandbuttercups$getEffectFromCustomFlowerStack(ItemStack itemStack, CallbackInfoReturnable<Optional<Pair<MobEffect, Integer>>> cir, Item item) {
-        if (item instanceof CustomFlowerItem) {
-            cir.setReturnValue(Optional.of(Pair.of(CustomFlowerItem.getSuspiciousStewEffect(itemStack), CustomFlowerItem.getSuspiciousStewDuration(itemStack))));
+    @Inject(method = "getEffectFromItemStack", at = @At(value = "HEAD", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    private void bovinesandbuttercups$getEffectFromCustomFlowerStack(ItemStack stack, CallbackInfoReturnable<Optional<Pair<MobEffect, Integer>>> cir) {
+        if (stack.getItem() instanceof CustomFlowerItem) {
+            cir.setReturnValue(Optional.of(Pair.of(CustomFlowerItem.getSuspiciousStewEffect(stack), CustomFlowerItem.getSuspiciousStewDuration(stack))));
         }
     }
 }

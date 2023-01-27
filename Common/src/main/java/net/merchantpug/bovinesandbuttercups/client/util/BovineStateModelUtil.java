@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineBlockstateTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockModelDefinition;
 import net.minecraft.client.renderer.block.model.multipart.MultiPart;
@@ -27,10 +28,10 @@ import java.util.Map;
 public class BovineStateModelUtil {
     private static final BlockModelDefinition.Context CONTEXT = new BlockModelDefinition.Context();
 
-    public static void initModels(ModelBakery modelBakery, ResourceManager resourceManager, Map<ResourceLocation, UnbakedModel> unbakedCache, Map<ResourceLocation, UnbakedModel> topLevelModels) {
+    public static void initModels(ModelBakery modelBakery, Map<ResourceLocation, UnbakedModel> unbakedCache, Map<ResourceLocation, UnbakedModel> topLevelModels) {
         BovineStatesAssociationRegistry.clear();
         UnbakedModel missingModel = unbakedCache.get(ModelBakery.MISSING_MODEL_LOCATION);
-        Map<ResourceLocation, Resource> blocks = resourceManager.listResources("bovinesandbuttercups", fileName -> fileName.getPath().endsWith(".json"));
+        Map<ResourceLocation, Resource> blocks = Minecraft.getInstance().getResourceManager().listResources("bovinesandbuttercups", fileName -> fileName.getPath().endsWith(".json"));
 
         for (Map.Entry<ResourceLocation, Resource> resourceEntry : blocks.entrySet()) {
             StringBuilder newIdBuilder = new StringBuilder(resourceEntry.getKey().getPath());
@@ -58,7 +59,7 @@ public class BovineStateModelUtil {
                     }
 
                     if (jsonObject.has("inventory")) {
-                        ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(jsonObject.get("inventory").getAsString(), "inventory");
+                        ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(ResourceLocation.tryParse(jsonObject.get("inventory").getAsString()), "inventory");
                         UnbakedModel model = modelBakery.getModel(inventoryModelLocation);
                         ModelResourceLocation remappedModelLocation = new ModelResourceLocation(resourceLocation, "inventory");
                         unbakedCache.put(remappedModelLocation, model);

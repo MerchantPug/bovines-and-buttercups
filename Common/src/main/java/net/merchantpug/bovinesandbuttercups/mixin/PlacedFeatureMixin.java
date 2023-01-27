@@ -5,6 +5,7 @@ import net.merchantpug.bovinesandbuttercups.content.structure.RanchStructure;
 import net.merchantpug.bovinesandbuttercups.registry.BovineStructureTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -33,7 +34,7 @@ public abstract class PlacedFeatureMixin {
         if (!(context.getLevel() instanceof WorldGenRegion region) || ((ChunkGeneratorAccess)context.generator()).bovinesandbuttercups$getStep() != GenerationStep.Decoration.VEGETAL_DECORATION) return;
 
         List<StructureSet.StructureSelectionEntry> blockingStructures = new ArrayList<>();
-        context.generator().possibleStructureSets().forEach(holder -> holder.value().structures().forEach(entry -> {
+        ((ServerChunkCache)context.getLevel().getChunkSource()).getGeneratorState().possibleStructureSets().forEach(holder -> holder.value().structures().forEach(entry -> {
             if (entry.structure().value().type() == BovineStructureTypes.RANCH.get() && (((RanchStructure)entry.structure().value()).getAllowedFeatures().isEmpty() || !((RanchStructure)entry.structure().value()).getAllowedFeatures().get().contains(this.feature())) && entry.structure().value().biomes().contains(region.getBiome(pos))) {
                 blockingStructures.add(entry);
             }

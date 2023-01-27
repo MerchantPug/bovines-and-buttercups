@@ -40,7 +40,9 @@ import net.merchantpug.bovinesandbuttercups.util.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.MushroomCowRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.EntityType;
@@ -53,6 +55,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
+
+import java.nio.file.Path;
 
 @Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class BovinesAndButtercupsClientForge {
@@ -112,10 +116,10 @@ public class BovinesAndButtercupsClientForge {
                 return;
             }
             IModFile modFile = modFileInfo.getFile();
-            event.addRepositorySource((consumer, constructor) -> {
-                consumer.accept(Pack.create(BovinesAndButtercups.asResource("mojang").toString(), false, () -> new ModFilePackResources("Moobloom Mojang Textures", modFile, "resourcepacks/mojang"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
-                consumer.accept(Pack.create(BovinesAndButtercups.asResource("no_grass").toString(), false, () -> new ModFilePackResources("No Grass Back", modFile, "resourcepacks/no_grass"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
-                consumer.accept(Pack.create(BovinesAndButtercups.asResource("no_buds").toString(), false, () -> new ModFilePackResources("No Buds", modFile, "resourcepacks/no_buds"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
+            event.addRepositorySource((consumer) -> {
+                consumer.accept(Pack.readMetaAndCreate(BovinesAndButtercups.asResource("mojang").toString(), Component.translatable("resourcePack.bovinesandbuttercups.mojang.name"), false, (s) -> new ModFilePackResources("bovinesandbuttercups/mojang", modFile, Path.of("resourcepacks/mojang")), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.DEFAULT));
+                consumer.accept(Pack.readMetaAndCreate(BovinesAndButtercups.asResource("no_grass").toString(), Component.translatable("resourcePack.bovinesandbuttercups.noGrass.name"), false, (s) -> new ModFilePackResources("bovinesandbuttercups/no_grass", modFile, Path.of("resourcepacks/no_grass")), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.DEFAULT));
+                consumer.accept(Pack.readMetaAndCreate(BovinesAndButtercups.asResource("no_buds").toString(), Component.translatable("resourcePack.bovinesandbuttercups.noBuds.name"), false, (s) -> new ModFilePackResources("bovinesandbuttercups/no_buds", modFile, Path.of("resourcepacks/no_buds")), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.DEFAULT));
             });
         }
     }

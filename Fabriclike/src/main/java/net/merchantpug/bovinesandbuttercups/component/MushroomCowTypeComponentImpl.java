@@ -85,9 +85,9 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
         this.typeId = key;
 
         if (key.equals(BovinesAndButtercups.asResource("brown_mushroom"))) {
-            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetMushroomType(MushroomCow.MushroomType.BROWN);
+            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetVariant(MushroomCow.MushroomType.BROWN);
         } else if (key.equals(BovinesAndButtercups.asResource("red_mushroom"))) {
-            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetMushroomType(MushroomCow.MushroomType.RED);
+            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetVariant(MushroomCow.MushroomType.RED);
         }
 
         BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.sync(provider);

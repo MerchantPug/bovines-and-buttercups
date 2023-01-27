@@ -4,6 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -82,7 +83,7 @@ public class LockdownEffectComponentImpl implements LockdownEffectComponent, Aut
     public void writeSyncPacket(FriendlyByteBuf buf, ServerPlayer player) {
         buf.writeInt(lockdownEffects.size());
         for (Map.Entry<MobEffect, Integer> entry : lockdownEffects.entrySet()) {
-            buf.writeInt(Registry.MOB_EFFECT.getId(entry.getKey()));
+            buf.writeInt(BuiltInRegistries.MOB_EFFECT.getId(entry.getKey()));
             buf.writeInt(entry.getValue());
         }
     }

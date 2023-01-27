@@ -1,14 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.content.item;
 
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
@@ -55,18 +52,5 @@ public class CustomMushroomItem extends BlockItem {
 
     private static Component getOrCreateNameTranslationKey(ResourceLocation location) {
         return Component.translatable("block." + location.getNamespace() + "." + location.getPath());
-    }
-
-    public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> list) {
-        if ((tab == CreativeModeTab.TAB_DECORATIONS || tab == CreativeModeTab.TAB_SEARCH)) {
-            for (MushroomType type : BovineRegistryUtil.mushroomTypeStream().filter(type -> !BovineRegistryUtil.getMushroomTypeKey(type).equals(BovinesAndButtercups.asResource("missing_mushroom"))).toList()) {
-                ItemStack stack = new ItemStack(this);
-                CompoundTag compound = new CompoundTag();
-                compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(type).toString());
-                stack.getOrCreateTag().put("BlockEntityTag", compound);
-
-                list.add(stack);
-            }
-        }
     }
 }

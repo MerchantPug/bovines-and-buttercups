@@ -1,6 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.data.entity;
 
-import com.mojang.math.Vector3f;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.CowTypeConfiguration;
@@ -8,8 +7,10 @@ import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.util.Color;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Vector3f;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -38,15 +39,17 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
         this.breedingConditions = breedingConditions;
     }
 
-    public static final Codec<MushroomCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            Settings.CODEC.forGetter(MushroomCowConfiguration::getSettings),
-            MushroomCowMushroom.CODEC.fieldOf("mushroom").forGetter(MushroomCowConfiguration::getMushroom),
-            Color.CODEC.optionalFieldOf("color").forGetter(MushroomCowConfiguration::getColor),
-            BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/mooshroom_mycelium.png"), false)).forGetter(MushroomCowConfiguration::getBackGrassConfiguration),
-            Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers),
-            Codec.BOOL.optionalFieldOf("vanilla_spawning_hack", false).forGetter(MushroomCowConfiguration::usesVanillaSpawningHack),
-            BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getBreedingConditions)
-    ).apply(builder, MushroomCowConfiguration::new));
+    public static Codec<MushroomCowConfiguration> getCodec(RegistryAccess frozen) {
+        return RecordCodecBuilder.create(builder -> builder.group(
+                Settings.getCodec(frozen).forGetter(MushroomCowConfiguration::getSettings),
+                MushroomCowMushroom.CODEC.fieldOf("mushroom").forGetter(MushroomCowConfiguration::getMushroom),
+                Color.CODEC.optionalFieldOf("color").forGetter(MushroomCowConfiguration::getColor),
+                BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/mooshroom_mycelium.png"), false)).forGetter(MushroomCowConfiguration::getBackGrassConfiguration),
+                Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers),
+                Codec.BOOL.optionalFieldOf("vanilla_spawning_hack", false).forGetter(MushroomCowConfiguration::usesVanillaSpawningHack),
+                BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getBreedingConditions)
+        ).apply(builder, MushroomCowConfiguration::new));
+    }
 
     public static final MushroomCowConfiguration MISSING = new MushroomCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/missing_mooshroom.png")), Optional.empty(), 0, Optional.empty()), new MushroomCowMushroom(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_mushroom"))), Optional.of(new Vector3f(1.0F, 1.0F, 1.0F)), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/mooshroom_mycelium.png"), false), false, false, Optional.empty());
 

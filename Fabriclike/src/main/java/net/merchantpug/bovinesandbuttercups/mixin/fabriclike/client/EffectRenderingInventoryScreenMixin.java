@@ -48,7 +48,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         MobEffect mobEffect1 = statusEffectList.get(lockdownEffectIndex).getKey();
 
         TextureAtlasSprite additionalSprite = mobEffectTextureManager.get(mobEffect1);
-        RenderSystem.setShaderTexture(0, additionalSprite.atlas().getId());
+        RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
         InventoryScreen.blit(poseStack, x + (large ? 6 : 7), i + 7, this.getBlitOffset(), 18, 18, additionalSprite);
     }
 

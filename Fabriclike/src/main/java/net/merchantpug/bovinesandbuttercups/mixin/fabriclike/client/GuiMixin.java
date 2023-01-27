@@ -71,7 +71,7 @@ public class GuiMixin extends GuiComponent {
         float a = alpha;
 
         list.add(() -> {
-            RenderSystem.setShaderTexture(0, additionalSprite.atlas().getId());
+            RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, a);
             blit(poseStack, n + 3, o + 3, this.getBlitOffset(), 18, 18, additionalSprite);
         });

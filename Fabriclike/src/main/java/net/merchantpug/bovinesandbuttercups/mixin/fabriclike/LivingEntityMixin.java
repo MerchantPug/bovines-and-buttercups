@@ -7,6 +7,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -50,7 +51,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "onEffectAdded", at = @At("TAIL"))
     private void bovinesandbuttercups$addRandomLockdown(MobEffectInstance effect, Entity entity, CallbackInfo ci) {
         if (!this.level.isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
-            Optional<Holder<MobEffect>> randomEffect = Registry.MOB_EFFECT.getRandom(this.level.random);
+            Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level.random);
             randomEffect.ifPresent(entry -> {
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).addLockdownMobEffect(entry.value(), effect.getDuration());
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
@@ -67,7 +68,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "onEffectUpdated", at = @At("TAIL"))
     private void bovinesandbuttercups$updateWithRandomLockdown(MobEffectInstance effect, boolean bl, Entity entity, CallbackInfo ci) {
         if (!this.level.isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
-            Optional<Holder<MobEffect>> randomEffect = Registry.MOB_EFFECT.getRandom(this.level.random);
+            Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level.random);
             randomEffect.ifPresent(entry -> {
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).addLockdownMobEffect(entry.value(), effect.getDuration());
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);

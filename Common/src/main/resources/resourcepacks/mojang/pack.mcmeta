@@ -1,6 +1,8 @@
 {
   "pack": {
     "pack_format": 9,
-    "description": "Returns mooblooms to their official textures."
+    "description": {
+      "translate": "resourcePack.bovinesandbuttercups.mojang.description"
+    }
   }
 }

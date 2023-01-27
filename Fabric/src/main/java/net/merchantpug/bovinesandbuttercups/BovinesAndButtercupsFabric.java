@@ -26,6 +26,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovineTags;
 import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
@@ -49,9 +50,9 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             }
             BovinesAndButtercups.VERSION = version;
 
-            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), modContainer, "Mojang Textures", ResourcePackActivationType.NORMAL);
-            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), modContainer, "No Grass Back", ResourcePackActivationType.NORMAL);
-            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_buds"), modContainer, "No Buds", ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("mojang"), modContainer, Component.translatable("resourcePack.bovinesandbuttercups.mojang.name"), ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_grass"), modContainer, Component.translatable("resourcePack.bovinesandbuttercups.noGrass.name"), ResourcePackActivationType.NORMAL);
+            ResourceManagerHelper.registerBuiltinResourcePack(BovinesAndButtercups.asResource("no_buds"), modContainer, Component.translatable("resourcePack.bovinesandbuttercups.noBuds.name"), ResourcePackActivationType.NORMAL);
         });
         BovinesAndButtercupsFabriclike.init();
         registerCompostables();

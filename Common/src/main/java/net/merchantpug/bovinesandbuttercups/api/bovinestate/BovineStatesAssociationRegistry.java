@@ -6,6 +6,7 @@ import com.google.common.collect.Tables;
 import com.mojang.datafixers.util.Pair;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
@@ -31,7 +32,7 @@ public class BovineStatesAssociationRegistry {
     public static Optional<ResourceLocation> get(ResourceLocation resourceLocation, Block block) {
         if (!REGISTRY.contains(resourceLocation, block)) {
             if (resourceLocation != null && !WARNED_KEYS.contains(Pair.of(resourceLocation, block))) {
-                BovinesAndButtercups.LOG.warn("Could not get resource location from key '{}' and block '{}'.", resourceLocation, Registry.BLOCK.getKey(block));
+                BovinesAndButtercups.LOG.warn("Could not get resource location from key '{}' and block '{}'.", resourceLocation, BuiltInRegistries.BLOCK.getKey(block));
                 WARNED_KEYS.add(Pair.of(resourceLocation, block));
             }
         }

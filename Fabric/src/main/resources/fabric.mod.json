@@ -27,9 +27,6 @@
     "cardinal-components": [
       "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
     ],
-    "jei_mod_plugin": [
-      "net.merchantpug.bovinesandbuttercups.integration.jei.BovineJeiPlugin"
-    ],
     "rei_client": [
       "net.merchantpug.bovinesandbuttercups.integration.rei.BovineReiPlugin"
     ],
@@ -54,8 +51,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.14",
-    "fabric": "*",
-    "minecraft": "1.19.x",
+    "fabric-api": "*",
+    "minecraft": ">=1.19.3",
     "java": ">=17"
   }
 }

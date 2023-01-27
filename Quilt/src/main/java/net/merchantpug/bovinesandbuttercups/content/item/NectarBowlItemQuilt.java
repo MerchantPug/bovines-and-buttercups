@@ -5,7 +5,7 @@ import io.github.queerbric.inspecio.InspecioConfig;
 import io.github.queerbric.inspecio.tooltip.CompoundTooltipComponent;
 import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.LockdownEffectTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -50,7 +50,7 @@ public class NectarBowlItemQuilt extends NectarBowlItem {
                                 duration = effectTag.getInt(NectarBowlItem.EFFECT_DURATION_KEY);
                             }
 
-                            MobEffect mobEffect = Registry.MOB_EFFECT.get(ResourceLocation.tryParse(effectTag.getString(NectarBowlItem.EFFECT_ID_KEY)));
+                            MobEffect mobEffect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(effectTag.getString(NectarBowlItem.EFFECT_ID_KEY)));
                             if (mobEffect != null) {
                                 effects.add(new MobEffectInstance(mobEffect, duration));
                             }

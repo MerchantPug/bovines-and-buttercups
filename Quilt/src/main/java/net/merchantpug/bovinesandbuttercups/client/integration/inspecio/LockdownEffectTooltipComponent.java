@@ -4,7 +4,6 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio.StatusEffectTooltipComponentAccessor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
 import io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
@@ -19,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
+import org.joml.Matrix4f;
 
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class LockdownEffectTooltipComponent extends StatusEffectTooltipComponent
 
             TextureAtlasSprite sprite = mobEffectTextureManager.get(statusEffect);
 
-            RenderSystem.setShaderTexture(0, sprite.atlas().location());
+            RenderSystem.setShaderTexture(0, sprite.atlasLocation());
             GuiComponent.blit(matrices, x, y, z, 18, 18, sprite);
 
             RenderSystem.setShaderTexture(0, LOCKDOWN_TEXTURE);

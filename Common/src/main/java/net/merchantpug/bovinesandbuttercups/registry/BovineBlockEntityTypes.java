@@ -3,14 +3,14 @@ package net.merchantpug.bovinesandbuttercups.registry;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.function.Supplier;
 
 public class BovineBlockEntityTypes {
-    private static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITY_TYPES = RegistrationProvider.get(Registry.BLOCK_ENTITY_TYPE, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITY_TYPES = RegistrationProvider.get(Registries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.MOD_ID);
 
 
     public static final RegistryObject<BlockEntityType<CustomFlowerBlockEntity>> CUSTOM_FLOWER = register("custom_flower", Services.REGISTRY.createCustomFlowerBlockEntity());

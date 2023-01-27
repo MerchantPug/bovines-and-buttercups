@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
@@ -66,7 +66,7 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
     private void handleMooshroomRender(PoseStack poseStack, MultiBufferSource buffer, int i, boolean outlineAndInvisible, int overlay, Optional<BlockState> blockState, @Nullable ModelResourceLocation modelResourceLocation) {
         poseStack.pushPose();
         poseStack.translate(0.2F, -0.35F, 0.5D);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-48.0F));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.translate(-0.5D, -0.5D, -0.5D);
         this.renderMushroomBlock(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
@@ -74,9 +74,9 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
 
         poseStack.pushPose();
         poseStack.translate(0.2F, -0.35F, 0.5D);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(42.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(42.0F));
         poseStack.translate(0.1F, 0.0D, -0.6F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(-48.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-48.0F));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.translate(-0.5D, -0.5D, -0.5D);
         this.renderMushroomBlock(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);
@@ -85,7 +85,7 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
         poseStack.pushPose();
         this.getParentModel().getHead().translateAndRotate(poseStack);
         poseStack.translate(0.0D, -0.7F, -0.2F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(-78.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-78.0F));
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         poseStack.translate(-0.5D, -0.5D, -0.5D);
         this.renderMushroomBlock(poseStack, buffer, i, outlineAndInvisible, blockRenderer, overlay, blockState, modelResourceLocation);

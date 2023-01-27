@@ -40,7 +40,7 @@ dependencies {
     modCompileOnly "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}"
     modCompileOnly "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}"
 
-    implementation "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
+    compileOnly "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
     annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
 
     compileOnly group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
@@ -66,9 +66,8 @@ loom {
 
 processResources {
     from project(":Common").sourceSets.main.resources
-    from project(":Fabriclike").sourceSets.main.resources
 
-    exclude("bovinesandbuttercups-common.accesswidener", "bovinesandbuttercups-fabriclike.accesswidener")
+    exclude("bovinesandbuttercups-common.accesswidener")
 
     inputs.property "version", project.version
 

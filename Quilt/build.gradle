@@ -141,7 +141,6 @@ processResources {
 }
 
 tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
     source(project(":Fabriclike").sourceSets.main.allSource)
 }
 

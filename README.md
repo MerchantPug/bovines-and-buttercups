@@ -2,7 +2,7 @@
 
 Here is the GitHub repository for the Bovines and Buttercups Minecraft mod.
 
-You can download the mod on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/bovines-and-buttercups, [Modrinth](https://modrinth.com/mod/bovines-and-buttercups) or [GitHub Releases](https://github.com/MerchantPug/bovines-and-buttercups/releases)
+You can download the mod on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/bovines-and-buttercups), [Modrinth](https://modrinth.com/mod/bovines-and-buttercups) or [GitHub Releases](https://github.com/MerchantPug/bovines-and-buttercups/releases)
 
 ### Datapack/Addon/Integration Creation
 Please check out the [Wiki](https://github.com/MerchantPug/bovines-and-buttercups/wiki) for more information on how to get started with these topics.

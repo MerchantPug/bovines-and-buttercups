@@ -87,7 +87,7 @@ dependencies {
 
 // Only publish to maven if an artifact cannot be found
 publish.onlyIf {
-    def connection = (HttpURLConnection) new URL("https://maven.merchantpug.net/releases/net/merchantpug/${archivesBaseName}/${version}/${archivesBaseName}-${version}.pom")
+    def connection = (HttpURLConnection) new URL("https://maven.merchantpug.net/releases/net/merchantpug/${archivesBaseName}/${version}/${archivesBaseName}-${version}.pom").openConnection()
 
     connection.setRequestProperty("Authorization", "Basic " + (System.getenv("ORG_GRADLE_PROJECT_merchantpugUsername") + ":" + System.getenv("ORG_GRADLE_PROJECT_merchantpugPassword")).bytes.encodeBase64().toString())
     connection.setConnectTimeout(10000)

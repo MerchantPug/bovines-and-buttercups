@@ -17,16 +17,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      # TODO: Fix the below mess
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Publish Common Artifacts
-        run: ./gradlew :Common:build publish
-      - name: Publish Forge Artifacts
-        run: ./gradlew :Forge:build publish
-      - name: Publish Fabriclike Artifacts
-        run: ./gradlew :Fabriclike:clean build publish
-      - name: Publish Fabric Artifacts
-        run: ./gradlew :Fabric:clean build publish
-      - name: Publish Quilt Artifacts
-        run: ./gradlew :Quilt:clean build publish
+        run: ./gradlew build publish

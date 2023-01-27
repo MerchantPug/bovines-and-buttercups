@@ -130,6 +130,9 @@ tasks.withType(JavaCompile) {
     source(project(":Fabriclike").sourceSets.main.allSource)
 }
 
+// TODO: Remove this temporary fix
+compileJava
+
 publishing {
     publications {
         mavenJava(MavenPublication) {

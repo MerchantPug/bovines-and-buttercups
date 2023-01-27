@@ -139,8 +139,8 @@ dependencies {
 // https://gist.github.com/mosamman/eaa92795b300225c6e499c0fb3d6ef6f
 
 // Only publish to maven if an artifact cannot be found
-publishMavenJavaPublicationToMerchantpugRepository.onlyIf {
-    def connection = (HttpURLConnection) new URL("https://maven.merchantpug.net/releases/net/merchantpug/${archivesBaseName}/${version}/${version}.pom")
+publish.onlyIf {
+    def connection = (HttpURLConnection) new URL("https://maven.merchantpug.net/releases/net/merchantpug/${archivesBaseName}/${version}/${version}.pom").openConnection()
 
     connection.setRequestProperty("Authorization", "Basic " + (System.getenv("ORG_GRADLE_PROJECT_merchantpugUsername") + ":" + System.getenv("ORG_GRADLE_PROJECT_merchantpugPassword")).bytes.encodeBase64().toString())
     connection.setConnectTimeout(10000)

@@ -118,7 +118,7 @@ processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
-    
+
     def environment = System.getenv("ENVIRONMENT")
     if (environment != "production") {
         from(rootProject.rootDir.absolutePath + "/testdata") { into 'data' }
@@ -131,8 +131,8 @@ tasks.withType(JavaCompile) {
     source(project(":Fabriclike").sourceSets.main.allSource)
 }
 
-// TODO: Remove this temporary fix
-compileJava
+// TODO: Remove this temporary fix if something happens.
+assemble.dependsOn clean
 
 publishing {
     publications {

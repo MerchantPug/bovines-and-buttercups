@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 
-archivesBaseName = "${mod_name}-Common"
+archivesBaseName = "${artifact_name}-Common"
 
 minecraft {
     version(minecraft_version)

@@ -4,7 +4,7 @@ plugins {
     id 'idea'
 }
 
-archivesBaseName = "${project.mod_name}-Fabric"
+archivesBaseName = "${artifact_name}-Fabric"
 
 repositories {
     maven {

@@ -34,7 +34,7 @@ minecraft.runs.all {
 }
 
 mixin {
-    add sourceSets.main, "${project.mod_id}.refmap.json"
+    add sourceSets.main, "${project.mod_id}-refmap.json"
 
     config "${project.mod_id}.mixins.json"
     config "${project.mod_id}.forge.mixins.json"

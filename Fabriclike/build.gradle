@@ -59,7 +59,7 @@ dependencies {
 
 loom {
     accessWidenerPath = file("src/main/resources/bovinesandbuttercups-fabriclike.accesswidener")
-    mixin.defaultRefmapName = "bovinesandbuttercups.refmap.json"
+    mixin.defaultRefmapName = "bovinesandbuttercups-refmap.json"
 }
 
 tasks.withType(JavaCompile) {

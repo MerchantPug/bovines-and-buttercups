@@ -8,11 +8,13 @@ modId="bovinesandbuttercups"
 version="${file.jarVersion}"
 displayName="Bovines and Buttercups"
 logoFile="bovinesandbuttercups.png"
+updateJSONURL = "https://api.modrinth.com/updates/BDg6nMn3/forge_updates.json"
 authors="MerchantPug"
 credits="SpiderKolo"
 description='''
 A new take on the Moobloom and other bovines.
 '''
+
 [[dependencies.bovinesandbuttercups]]
     modId="forge"
     mandatory=true

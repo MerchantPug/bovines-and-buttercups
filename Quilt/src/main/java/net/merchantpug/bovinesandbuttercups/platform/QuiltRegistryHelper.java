@@ -5,7 +5,7 @@ import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
-import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCowFabriclike;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCowQuilt;
 import net.merchantpug.bovinesandbuttercups.content.item.*;
 import net.merchantpug.bovinesandbuttercups.platform.services.IRegistryHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
@@ -66,7 +66,7 @@ public class QuiltRegistryHelper implements IRegistryHelper {
 
     @Override
     public <T extends FlowerCow> Supplier<EntityType<T>> createMoobloomEntity() {
-        return () -> (EntityType<T>) QuiltEntityTypeBuilder.Mob.createMob().spawnGroup(MobCategory.CREATURE).entityFactory(FlowerCowFabriclike::new).setDimensions(EntityDimensions.scalable(0.9F, 1.4F)).spawnRestriction(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn).defaultAttributes(Cow.createAttributes()).maxChunkTrackingRange(10).build();
+        return () -> (EntityType<T>) QuiltEntityTypeBuilder.Mob.createMob().spawnGroup(MobCategory.CREATURE).entityFactory(FlowerCowQuilt::new).setDimensions(EntityDimensions.scalable(0.9F, 1.4F)).spawnRestriction(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn).defaultAttributes(Cow.createAttributes()).maxChunkTrackingRange(10).build();
     }
 
     @Override

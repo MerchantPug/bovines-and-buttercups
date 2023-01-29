@@ -12,7 +12,9 @@
     "SpiderKolo"
   ],
   "contact": {
-    "homepage": ""
+    "homepage": "https://modrinth.com/mod/bovines-and-buttercups",
+    "issues": "https://github.com/MerchantPug/bovines-and-buttercups/issues",
+    "sources": "https://github.com/MerchantPug/bovines-and-buttercups"
   },
   "license": "LGPL-3.0-only",
   "icon": "assets/bovinesandbuttercups/icon.png",
@@ -31,10 +33,10 @@
       "net.merchantpug.bovinesandbuttercups.integration.jei.BovineJeiPlugin"
     ],
     "rei_client": [
-      "net.merchantpug.bovinesandbuttercups.integration.rei.BovineReiPlugin"
+      "net.merchantpug.bovinesandbuttercups.client.integration.rei.BovineReiPlugin"
     ],
     "emi": [
-      "net.merchantpug.bovinesandbuttercups.integration.emi.BovineEmiPlugin"
+      "net.merchantpug.bovinesandbuttercups.client.integration.emi.BovineEmiPlugin"
     ],
     "preLaunch": [
       "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
@@ -50,7 +52,7 @@
   "accessWidener": "bovinesandbuttercups.accesswidener",
   "mixins": [
     "bovinesandbuttercups.mixins.json",
-    "bovinesandbuttercups.fabriclike.mixins.json"
+    "bovinesandbuttercups.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14",

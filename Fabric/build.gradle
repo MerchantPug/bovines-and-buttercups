@@ -177,7 +177,7 @@ curseforge {
                     optionalDependency project
                 }
 
-                curseforge_common_optional_deps.split(", ").each { String project ->
+                cf_common_optional_deps.split(", ").each { String project ->
                     optionalDependency project
                 }
 
@@ -185,7 +185,7 @@ curseforge {
                     optionalDependency project
                 }
 
-                curseforge_fabric_embedded_deps.split(", ").each { String project ->
+                cf_fabric_embedded_deps.split(", ").each { String project ->
                     embeddedLibrary project
                 }
             }

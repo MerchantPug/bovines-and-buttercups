@@ -2,6 +2,8 @@ plugins {
     id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
     id 'idea'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 archivesBaseName = "${artifact_name}-Fabric"
@@ -145,6 +147,77 @@ publishing {
             authentication {
                 create("basic", BasicAuthentication)
             }
+        }
+    }
+}
+
+curseforge {
+    apiKey = System.getenv("CURSEFORGE_TOKEN")
+    if (apiKey == null) return
+    project {
+        id = cf_project_id
+        changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+        changelogType = 'markdown'
+        releaseType = 'release'
+        cf_java_versions.split(", ").each { String gameVersion ->
+            addGameVersion gameVersion
+        }
+        fabric_game_versions.split(", ").each { String gameVersion ->
+            addGameVersion gameVersion
+        }
+
+        mainArtifact(jar) {
+            displayName = "$project.mod_name v$project.version (Fabric)"
+            relations {
+                fabric_required_deps.split(", ").each { String project ->
+                    requiredDependency project
+                }
+
+                common_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+
+                curseforge_common_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+
+                fabric_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+
+                curseforge_fabric_embedded_deps.split(", ").each { String project ->
+                    embeddedLibrary project
+                }
+            }
+        }
+    }
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = mr_project_id
+    versionNumber = "${project.version}-fabric"
+    versionType = "release"
+    versionName = "$project.mod_name v$project.version (Fabric)"
+    changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    uploadFile = jar
+    gameVersions = fabric_game_versions.split(", ").toList()
+    loaders = [ "fabric" ]
+    dependencies {
+        fabric_required_deps.split(", ").each { String project ->
+            required.project project
+        }
+
+        common_optional_deps.split(", ").each { String project ->
+            optional.project project
+        }
+
+        fabric_optional_deps.split(", ").each { String project ->
+            optional.project project
+        }
+
+        mr_fabric_embedded_deps.split(", ").each { String project ->
+            embedded.project project
         }
     }
 }

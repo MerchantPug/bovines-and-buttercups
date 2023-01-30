@@ -11,6 +11,8 @@ buildscript {
 }
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "com.modrinth.minotaur" version "2.+"
 }
 apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle'
@@ -185,6 +187,53 @@ publishing {
             authentication {
                 create("basic", BasicAuthentication)
             }
+        }
+    }
+}
+
+curseforge {
+    apiKey = System.getenv("CURSEFORGE_TOKEN")
+    if (apiKey == null) return
+    project {
+        id = cf_project_id
+        changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+        changelogType = 'markdown'
+        releaseType = 'release'
+        cf_java_versions.split(", ").each { String gameVersion ->
+            addGameVersion gameVersion
+        }
+        forge_game_versions.split(", ").each { String gameVersion ->
+            addGameVersion gameVersion
+        }
+
+        mainArtifact(jar) {
+            displayName = "$project.mod_name v$project.version (Forge)"
+            relations {
+                common_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+
+                cf_common_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+            }
+        }
+    }
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = mr_project_id
+    versionNumber = "${project.version}-forge"
+    versionType = "release"
+    versionName = "$project.mod_name v$project.version (Forge)"
+    changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    uploadFile = jar
+    gameVersions = forge_game_versions.split(", ").toList()
+    loaders = [ "forge" ]
+    dependencies {
+        common_optional_deps.split(", ").each { String project ->
+            optional.project project
         }
     }
 }

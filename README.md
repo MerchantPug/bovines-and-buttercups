@@ -10,8 +10,7 @@ Please check out the [Wiki](https://github.com/MerchantPug/bovines-and-buttercup
 ### Implementing this mod into your project
 
 **build.gradle**
-```gradle
-
+```groovy
 repositories {
     maven {
         name = "Pug's Maven"

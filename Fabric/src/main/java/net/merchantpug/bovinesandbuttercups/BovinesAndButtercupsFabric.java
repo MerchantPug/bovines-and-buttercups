@@ -30,19 +30,26 @@ import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPack
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.MushroomCow;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BovinesAndButtercupsFabric implements ModInitializer {
+
     @Override
     public void onInitialize() {
         FabricLoader.getInstance().getModContainer(BovinesAndButtercups.MOD_ID).ifPresent(modContainer -> {
@@ -61,6 +68,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         });
         BovineRegistriesFabric.init();
         BovineCowTypes.registerDefaultConfigureds();
+        BovineCreativeTabs.register();
 
         BovinesAndButtercups.init();
 

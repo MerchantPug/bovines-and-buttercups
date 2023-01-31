@@ -27,12 +27,13 @@ import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
+import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowChildTypeUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -44,7 +45,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
@@ -54,6 +55,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -61,10 +63,7 @@ import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -74,9 +73,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Mod(BovinesAndButtercups.MOD_ID)
 public class BovinesAndButtercupsForge {
@@ -105,6 +102,50 @@ public class BovinesAndButtercupsForge {
             BovinePacketHandler.register();
             event.enqueueWork(BovinesAndButtercupsForge::registerCompostables);
             BovineCowTypes.registerDefaultConfigureds();
+        });
+        eventBus.addListener((CreativeModeTabEvent.Register event) -> {
+            event.registerCreativeModeTab(BovinesAndButtercups.asResource("items"), builder -> builder
+                    .title(Component.translatable("bovinesandbuttercups.itemGroup.items"))
+                    .icon(() -> new ItemStack(BovineItems.BUTTERCUP.get()))
+                    .displayItems((featureFlagSet, output, bl) -> {
+                        output.accept(BovineItems.MOOBLOOM_SPAWN_EGG.get());
+                        output.accept(BovineItems.FREESIA.get());
+                        output.accept(BovineItems.BIRD_OF_PARADISE.get());
+                        output.accept(BovineItems.BUTTERCUP.get());
+                        output.accept(BovineItems.LIMELIGHT.get());
+                        output.accept(BovineItems.CHARGELILY.get());
+                        output.accept(BovineItems.TROPICAL_BLUE.get());
+                        output.accept(BovineItems.HYACINTH.get());
+                        output.accept(BovineItems.PINK_DAISY.get());
+                        output.accept(BovineItems.SNOWDROP.get());
+                        output.acceptAll(CreativeTabHelper.getCustomFlowersForCreativeTab());
+                        output.acceptAll(CreativeTabHelper.getCustomMushroomsForCreativeTab());
+                        output.acceptAll(CreativeTabHelper.getCustomMushroomBlocksForCreativeTab());
+                        output.acceptAll(CreativeTabHelper.getNectarBowlsForCreativeTab());
+                    })
+            );
+        });
+        eventBus.addListener((CreativeModeTabEvent.BuildContents event) -> {
+            if (event.getTab() == CreativeModeTabs.NATURAL_BLOCKS) {
+
+                event.getEntries().putAfter(new ItemStack(Items.LILY_OF_THE_VALLEY), new ItemStack(BovineItems.FREESIA.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.FREESIA.get()), new ItemStack(BovineItems.BIRD_OF_PARADISE.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.BIRD_OF_PARADISE.get()), new ItemStack(BovineItems.BUTTERCUP.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.BUTTERCUP.get()), new ItemStack(BovineItems.LIMELIGHT.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.LIMELIGHT.get()), new ItemStack(BovineItems.CHARGELILY.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.CHARGELILY.get()), new ItemStack(BovineItems.TROPICAL_BLUE.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.TROPICAL_BLUE.get()), new ItemStack(BovineItems.HYACINTH.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.HYACINTH.get()), new ItemStack(BovineItems.PINK_DAISY.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                event.getEntries().putAfter(new ItemStack(BovineItems.PINK_DAISY.get()), new ItemStack(BovineItems.SNOWDROP.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+                CreativeTabHelper.getCustomFlowersForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(BovineItems.SNOWDROP.get()), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
+                CreativeTabHelper.getCustomMushroomsForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.RED_MUSHROOM), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
+                CreativeTabHelper.getCustomMushroomBlocksForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.RED_MUSHROOM_BLOCK), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
+            } else if (event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS) {
+                CreativeTabHelper.getNectarBowlsForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
+            } else if (event.getTab() == CreativeModeTabs.SPAWN_EGGS) {
+                event.accept(BovineItems.MOOBLOOM_SPAWN_EGG);
+            }
         });
     }
 

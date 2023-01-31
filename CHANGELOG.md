@@ -1,39 +1,22 @@
-# Bovines and Buttercups
+### Changes
+- Bowls of Nectar now default to Buttercup Moobloom color.
+- Desaturate Bowls of Nectar for closer parity with bee nectar color.
+- Added 'Bovines and Buttercups' creative mode tab and filled the existing creative mode tabs with the items from this mod.
 
-Here is the GitHub repository for the Bovines and Buttercups Minecraft mod.
+### Bugfixes
+- Fixed Locked In advancement icon showing as a white Bowl of Nectar.
+- Fixed No Grass Back and No Buds resource packs having swapping descriptions. (PR #9 - Hexasan)
 
-You can download the mod on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/bovines-and-buttercups), or [Modrinth](https://modrinth.com/mod/bovines-and-buttercups)
+### Translation
+- Added tr_tr.json (PR #10 - Hexasan)
 
-### Datapack/Addon/Integration Creation
-Please check out the [Wiki](https://github.com/MerchantPug/bovines-and-buttercups/wiki) for more information on how to get started with these topics.
+### Modloader
+**Forge**
+- Added updateJSONURL to mods.toml. The Forge mod menu tell you if an update is available through Modrinth if a file is available.
 
-### Implementing this mod into your project
+**Fabric**
+- Merged Fabriclike module from 1.0.0 into Fabric codebase separately. The developer section of the README has been updated to reflect this change.
+- Added issues and sources page to fabric.mod.json
 
-**build.gradle**
-```groovy
-repositories {
-    maven {
-        name = "Pug's Maven"
-        url = 'https://maven.merchantpug.net/releases/'
-    }
-}
-
-dependencies {
-    // If you have a Common sourceset shared between Forge, Fabric, and Quilt
-    compileOnly "net.merchantpug:Bovines-And-Buttercups-Common:${project.bovines_version}"
-    
-    // Forge
-    implementation fg.deobf("net.merchantpug:Bovines-And-Buttercups-Forge:${project.bovines_version}")
-    
-    // Fabric
-    modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabric:${project.bovines_version}"
-    
-    // Quilt
-    modImplementation "net.merchantpug:Bovines-And-Buttercups-Quilt:${project.bovines_version}"
-}
-```
-
-**gradle.properties**
-```properties
-bovines_version=[INSERT VERSION HERE]
-```
+**Quilt**
+- Merged Fabriclike module from 1.0.0 into Quilt codebase separately. The developer section of the README has been updated to reflect this change.

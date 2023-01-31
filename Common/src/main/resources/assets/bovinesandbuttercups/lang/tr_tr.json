@@ -56,5 +56,7 @@
     "resourcePack.bovinesandbuttercups.noGrass.name": "Çimen Sırt Yok",
     "resourcePack.bovinesandbuttercups.noGrass.description": "İneklerin sırtındaki çimen ve miselyumu kaldırır",
     "resourcePack.bovinesandbuttercups.noBuds.name": "Tomurcuklar Yok",
-    "resourcePack.bovinesandbuttercups.noBuds.description": "Bütün yavru moobloom tomurcuklarını, çiçeğe çevirir."
-  }
+    "resourcePack.bovinesandbuttercups.noBuds.description": "Bütün yavru moobloom tomurcuklarını, çiçeğe çevirir.",
+
+    "bovinesandbuttercups.itemGroup.items": "Bovines and Buttercups"
+}

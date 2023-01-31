@@ -15,10 +15,7 @@ import net.merchantpug.bovinesandbuttercups.data.loader.quilt.ConfiguredCowTypeR
 import net.merchantpug.bovinesandbuttercups.data.loader.quilt.FlowerTypeReloadListenerQuilt;
 import net.merchantpug.bovinesandbuttercups.data.loader.quilt.MushroomTypeReloadListenerQuilt;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
-import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovineEntityTypes;
-import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesQuilt;
-import net.merchantpug.bovinesandbuttercups.registry.BovineTags;
+import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.network.chat.Component;
@@ -58,6 +55,7 @@ public class BovinesAndButtercupsQuilt implements ModInitializer {
         BovinesAndButtercups.VERSION = version;
         BovineRegistriesQuilt.init();
         BovineCowTypes.registerDefaultConfigureds();
+        BovineCreativeTabs.register();
 
         BovinesAndButtercups.init();
 

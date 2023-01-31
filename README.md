@@ -21,13 +21,13 @@ repositories {
 dependencies {
     // If you have a Common sourceset shared between Forge, Fabric, and Quilt
     compileOnly "net.merchantpug:Bovines-And-Buttercups-Common:${project.bovines_version}"
-    
+
     // Forge
     implementation fg.deobf("net.merchantpug:Bovines-And-Buttercups-Forge:${project.bovines_version}")
-    
+
     // Fabric
     modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabric:${project.bovines_version}"
-    
+
     // Quilt
     modImplementation "net.merchantpug:Bovines-And-Buttercups-Quilt:${project.bovines_version}"
 }

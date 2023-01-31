@@ -36,9 +36,9 @@ public class Color {
         float b = rgb.z();
 
         float l = 0.3F * r + 0.6F * g + 0.1F * b;
-        r = r + 0.5F * (l - r);
-        g = g + 0.5F * (l - g);
-        b = b + 0.5F * (l - b);
+        r = r + 0.7F * (l - r);
+        g = g + 0.7F * (l - g);
+        b = b + 0.7F * (l - b);
 
         return new Vector3f(r, g, b);
     }

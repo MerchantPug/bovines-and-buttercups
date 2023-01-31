@@ -1,5 +1,5 @@
 ### Changes
-- Bowls of Nectar now default to Buttercup Moobloom color.
+- Bowls of Nectar now defaults to default Buttercup Moobloom color.
 - Desaturate Bowls of Nectar for closer parity with bee nectar color.
 
 ### Bugfixes

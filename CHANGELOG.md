@@ -1,21 +1,39 @@
-### Changes
-- Bowls of Nectar now default to Buttercup Moobloom color.
-- Desaturate Bowls of Nectar for closer parity with bee nectar color.
+# Bovines and Buttercups
 
-### Bugfixes
-- Fixed Locked In advancement icon showing as a white Bowl of Nectar.
-- Fixed No Grass Back and No Buds resource packs having swapping descriptions. (PR #9 - Hexasan)
+Here is the GitHub repository for the Bovines and Buttercups Minecraft mod.
 
-### Translation
-- Added tr_tr.json (PR #10 - Hexasan)
+You can download the mod on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/bovines-and-buttercups), or [Modrinth](https://modrinth.com/mod/bovines-and-buttercups)
 
-### Modloader
-**Forge**
-- Added updateJSONURL to mods.toml. The Forge mod menu tell you if an update is available through Modrinth if a file is available.
+### Datapack/Addon/Integration Creation
+Please check out the [Wiki](https://github.com/MerchantPug/bovines-and-buttercups/wiki) for more information on how to get started with these topics.
 
-**Fabric**
-- Merged Fabriclike module from 1.0.0 into Fabric codebase separately. The developer section of the README has been updated to reflect this change.
-- Added issues and sources page to fabric.mod.json
+### Implementing this mod into your project
 
-**Quilt**
-- Merged Fabriclike module from 1.0.0 into Quilt codebase separately. The developer section of the README has been updated to reflect this change.
+**build.gradle**
+```groovy
+repositories {
+    maven {
+        name = "Pug's Maven"
+        url = 'https://maven.merchantpug.net/releases/'
+    }
+}
+
+dependencies {
+    // If you have a Common sourceset shared between Forge, Fabric, and Quilt
+    compileOnly "net.merchantpug:Bovines-And-Buttercups-Common:${project.bovines_version}"
+    
+    // Forge
+    implementation fg.deobf("net.merchantpug:Bovines-And-Buttercups-Forge:${project.bovines_version}")
+    
+    // Fabric
+    modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabric:${project.bovines_version}"
+    
+    // Quilt
+    modImplementation "net.merchantpug:Bovines-And-Buttercups-Quilt:${project.bovines_version}"
+}
+```
+
+**gradle.properties**
+```properties
+bovines_version=[INSERT VERSION HERE]
+```

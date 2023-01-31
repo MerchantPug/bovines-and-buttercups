@@ -5,11 +5,23 @@
   "plugin": "net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsQuiltMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "client.EffectRenderingInventoryScreenMixin",
+    "client.GuiMixin",
+    "client.ModelBakeryMixin",
+    "client.MushroomCowRendererMixin",
     "inspecio.EntityTooltipComponentMixin",
     "inspecio.StatusEffectTooltipComponentAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "bovinesandbuttercups-refmap.json"
+  "refmap": "bovinesandbuttercups-refmap.json",
+  "mixins": [
+    "BeeMixin",
+    "BeePollinateGoalMixin",
+    "FlowerPotBlockMixin",
+    "LivingEntityMixin",
+    "MushroomCowAccessor",
+    "MushroomCowMixin"
+  ]
 }

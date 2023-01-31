@@ -3,17 +3,17 @@ package net.merchantpug.bovinesandbuttercups.platform;
 import com.google.auto.service.AutoService;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
-import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCowFabriclike;
+import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCowFabric;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.platform.services.IRegistryHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.*;
@@ -39,7 +39,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
 
     @Override
     public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
-        return CriteriaAccessor.callRegister(criterionTrigger);
+        return CriteriaTriggers.register(criterionTrigger);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class FabricRegistryHelper implements IRegistryHelper {
 
     @Override
     public <T extends FlowerCow> Supplier<EntityType<T>> createMoobloomEntity() {
-        return () -> (EntityType<T>) FabricEntityTypeBuilder.createMob().spawnGroup(MobCategory.CREATURE).entityFactory(FlowerCowFabriclike::new).spawnRestriction(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn).dimensions(EntityDimensions.scalable(0.9F, 1.4F)).defaultAttributes(Cow::createAttributes).trackRangeChunks(10).build();
+        return () -> (EntityType<T>) FabricEntityTypeBuilder.createMob().spawnGroup(MobCategory.CREATURE).entityFactory(FlowerCowFabric::new).spawnRestriction(SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, FlowerCow::canMoobloomSpawn).dimensions(EntityDimensions.scalable(0.9F, 1.4F)).defaultAttributes(Cow::createAttributes).trackRangeChunks(10).build();
     }
 
     @Override

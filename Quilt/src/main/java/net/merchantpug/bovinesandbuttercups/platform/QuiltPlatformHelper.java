@@ -5,7 +5,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import com.google.auto.service.AutoService;
-import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesFabriclike;
+import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesQuilt;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -34,19 +34,19 @@ public class QuiltPlatformHelper implements IPlatformHelper {
 
     @Override
     public void registerDefaultConfiguredCowTypes() {
-        BovineRegistriesFabriclike.COW_TYPE.forEach(cowType -> {
+        BovineRegistriesQuilt.COW_TYPE.forEach(cowType -> {
             ConfiguredCowTypeRegistry.register(cowType.getDefaultCowType().getFirst(), cowType.getDefaultCowType().getSecond());
         });
     }
 
     @Override
     public Codec<CowType<?>> getCowTypeCodec() {
-        return BovineRegistriesFabriclike.COW_TYPE.byNameCodec();
+        return BovineRegistriesQuilt.COW_TYPE.byNameCodec();
     }
 
     @Override
     public ResourceLocation getCowTypeKey(CowType<?> cowType) {
-        return BovineRegistriesFabriclike.COW_TYPE.getKey(cowType);
+        return BovineRegistriesQuilt.COW_TYPE.getKey(cowType);
     }
 
     @Override

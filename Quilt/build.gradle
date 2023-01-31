@@ -74,9 +74,6 @@ dependencies {
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
     implementation(project(":Common"))
-    implementation(project(path: ":Fabriclike", configuration: "namedElements")) {
-        exclude group: "net.merchantpug.bovinesandbuttercups", module: "Common"
-    }
 
     // TODO: Reimplement JEI
     // modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
@@ -123,9 +120,8 @@ loom {
 
 processResources {
     from project(":Common").sourceSets.main.resources
-    from project(":Fabriclike").sourceSets.main.resources
 
-    exclude("bovinesandbuttercups-common.accesswidener", "bovinesandbuttercups-fabriclike.accesswidener")
+    exclude("bovinesandbuttercups-common.accesswidener")
 
     inputs.property "version", project.version
 
@@ -141,7 +137,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile) {
-    source(project(":Fabriclike").sourceSets.main.allSource)
+    source(project(":Common").sourceSets.main.allSource)
 }
 
 jar {

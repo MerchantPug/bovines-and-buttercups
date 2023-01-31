@@ -28,10 +28,10 @@
       "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
     ],
     "rei_client": [
-      "net.merchantpug.bovinesandbuttercups.integration.rei.BovineReiPlugin"
+      "net.merchantpug.bovinesandbuttercups.client.integration.rei.BovineReiPlugin"
     ],
     "emi": [
-      "net.merchantpug.bovinesandbuttercups.integration.emi.BovineEmiPlugin"
+      "net.merchantpug.bovinesandbuttercups.client.integration.emi.BovineEmiPlugin"
     ],
     "preLaunch": [
       "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
@@ -47,7 +47,7 @@
   "accessWidener": "bovinesandbuttercups.accesswidener",
   "mixins": [
     "bovinesandbuttercups.mixins.json",
-    "bovinesandbuttercups.fabriclike.mixins.json"
+    "bovinesandbuttercups.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14",

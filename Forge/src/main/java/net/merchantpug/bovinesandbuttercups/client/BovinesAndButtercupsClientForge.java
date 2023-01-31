@@ -42,7 +42,6 @@ import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.MushroomCowRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.EntityType;
@@ -55,6 +54,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
+import org.joml.Vector3f;
 
 import java.nio.file.Path;
 
@@ -74,7 +74,7 @@ public class BovinesAndButtercupsClientForge {
     @SubscribeEvent
     public static void registerColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((stack, i) ->
-                        i == 0 ? -1 : NectarBowlItem.getCowTypeFromStack(stack) != null ? Color.asInt(Color.saturateForNectar(NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getColor())) : -1,
+                        i == 0 ? -1 : Color.asInt(Color.saturateForNectar(NectarBowlItem.getCowTypeFromStack(stack) != null ? NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getColor() : new Vector3f(253.0F / 255.0F, 213.0F / 255.0F, 0.0F / 255.0F))),
                         BovineItems.NECTAR_BOWL.get());
     }
 

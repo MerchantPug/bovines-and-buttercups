@@ -24,6 +24,7 @@
 
 package net.merchantpug.bovinesandbuttercups.client;
 
+import com.mojang.math.Vector3f;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
@@ -70,7 +71,7 @@ public class BovinesAndButtercupsClientForge {
     @SubscribeEvent
     public static void registerColorHandlers(RegisterColorHandlersEvent.Item event) {
         event.register((stack, i) ->
-                        i == 0 ? -1 : NectarBowlItem.getCowTypeFromStack(stack) != null ? Color.asInt(Color.saturateForNectar(NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getColor())) : -1,
+                        i == 0 ? -1 : Color.asInt(Color.saturateForNectar(NectarBowlItem.getCowTypeFromStack(stack) != null ? NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getColor() : new Vector3f(253.0F / 255.0F, 213.0F / 255.0F, 0.0F / 255.0F))),
                         BovineItems.NECTAR_BOWL.get());
     }
 

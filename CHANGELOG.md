@@ -1,4 +1,12 @@
+### Changes
+- Bowls of Nectar now default to Buttercup Moobloom color.
+- Desaturate Bowls of Nectar for closer parity with bee nectar color.
 
+### Bugfixes
+- Fixed Locked In advancement icon showing as a white Bowl of Nectar.
+
+### Translation
+- Added tr_tr.json (PR #10 - Hexasan)
 
 ### Modloader
 **Forge**

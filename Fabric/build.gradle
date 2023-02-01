@@ -159,6 +159,8 @@ curseforge {
         changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
         changelogType = 'markdown'
         releaseType = 'release'
+
+        addGameVersion 'Fabric'
         cf_java_versions.split(", ").each { String gameVersion ->
             addGameVersion gameVersion
         }

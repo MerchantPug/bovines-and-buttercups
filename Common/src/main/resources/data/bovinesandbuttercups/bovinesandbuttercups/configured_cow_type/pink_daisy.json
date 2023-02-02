@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/pink_daisy_bud"
   },
   "color": "#fdc5dc",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/pink_daisy_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:strength",
     "duration": 3600

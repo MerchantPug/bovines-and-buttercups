@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/hyacinth_bud"
   },
   "color": "#6b3ab6",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/hyacinth_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:wither",
     "duration": 3600

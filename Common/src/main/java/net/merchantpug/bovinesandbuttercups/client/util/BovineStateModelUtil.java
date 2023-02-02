@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class BovineStateModelUtil {
     private static final BlockModelDefinition.Context CONTEXT = new BlockModelDefinition.Context();
@@ -45,16 +46,12 @@ public class BovineStateModelUtil {
                 if (json instanceof JsonObject jsonObject) {
                     ResourceLocation typeLocation = ResourceLocation.tryParse(jsonObject.get("type").getAsString());
                     StateDefinition<Block, BlockState> tempStateDefinition = null;
-                    try {
-                        tempStateDefinition = BovineBlockstateTypeRegistry.get(typeLocation);
-                    } catch (NullPointerException e) {
-                        BovinesAndButtercups.LOG.warn("Could not find 'type' field value in registry. (Skipping). {}", e.getMessage());
-                    }
-
-                    if (tempStateDefinition == null) continue;
-
-                    if (jsonObject.has("linked_block_type")) {
-                        BovineStatesAssociationRegistry.register(ResourceLocation.tryParse(jsonObject.get("linked_block_type").getAsString()), tempStateDefinition.getOwner(), resourceLocation);
+                    if (!Objects.equals(typeLocation, BovinesAndButtercups.asResource("item"))) {
+                        try {
+                            tempStateDefinition = BovineBlockstateTypeRegistry.get(typeLocation);
+                        } catch (NullPointerException e) {
+                            BovinesAndButtercups.LOG.warn("Could not find 'type' field value in registry. (Skipping). {}", e.getMessage());
+                        }
                     }
 
                     if (jsonObject.has("inventory")) {
@@ -63,6 +60,12 @@ public class BovineStateModelUtil {
                         ModelResourceLocation remappedModelLocation = new ModelResourceLocation(resourceLocation, "inventory");
                         unbakedCache.put(remappedModelLocation, model);
                         topLevelModels.put(remappedModelLocation, model);
+                    }
+
+                    if (tempStateDefinition == null) continue;
+
+                    if (jsonObject.has("linked_block_type")) {
+                        BovineStatesAssociationRegistry.register(ResourceLocation.tryParse(jsonObject.get("linked_block_type").getAsString()), tempStateDefinition.getOwner(), resourceLocation);
                     }
 
                     StateDefinition<Block, BlockState> stateDefinition = tempStateDefinition;

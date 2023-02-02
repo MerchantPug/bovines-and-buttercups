@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/tropical_blue_bud"
   },
   "color": "#414df3",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/tropical_blue_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:fire_resistance",
     "duration": 12000

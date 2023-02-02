@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/chargelily_bud"
   },
   "color": "#73baee",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/chargelily_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:haste",
     "duration": 1200

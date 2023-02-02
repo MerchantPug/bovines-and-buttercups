@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/snowdrop_bud"
   },
   "color": "#c0ceeb",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/snowdrop_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:mining_fatigue",
     "duration": 12000

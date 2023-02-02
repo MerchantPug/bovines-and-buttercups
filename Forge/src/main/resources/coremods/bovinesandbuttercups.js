@@ -21,7 +21,7 @@ function initializeCoreMod() {
                 }
                 var ls = new InsnList();
                 ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
-				// resourceManager
+                // resourceManager
                 ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
                 ls.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/resources/model/ModelBakery", ASMAPI.mapField("f_119243_"), "Lnet/minecraft/server/packs/resources/ResourceManager;"));
                 // unbakedCache

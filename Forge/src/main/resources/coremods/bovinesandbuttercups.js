@@ -25,7 +25,7 @@ function initializeCoreMod() {
                 ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
                 ls.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/resources/model/ModelBakery", ASMAPI.mapField("f_119212_"), "Ljava/util/Map;"));
                 // topLevelModels
-				ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
+                ls.add(new VarInsnNode(Opcodes.ALOAD, 0)); // this
                 ls.add(new FieldInsnNode(Opcodes.GETFIELD, "net/minecraft/client/resources/model/ModelBakery", ASMAPI.mapField("f_119214_"), "Ljava/util/Map;"));
 
                 ls.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/merchantpug/bovinesandbuttercups/client/util/BovineStateModelUtil", "initModels", "(Lnet/minecraft/client/resources/model/ModelBakery;Ljava/util/Map;Ljava/util/Map;)V", false));

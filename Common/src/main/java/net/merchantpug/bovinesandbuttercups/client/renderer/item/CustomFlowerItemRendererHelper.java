@@ -46,7 +46,7 @@ public class CustomFlowerItemRendererHelper {
             boolean bl = transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
             int translationMultiplier = bl ? -1 : 1;
             poseStack.scale(1.0F / type.scale.x(), 1.0F / type.scale.y(), 1.0F / type.scale.z());
-            poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(type.rotation.x(), bl ? -type.rotation.y() : type.rotation.y(), bl ? -type.rotation.z() : type.rotation.z())));
+            poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(type.rotation.x() * ((float)Math.PI / 180F), bl ? -type.rotation.y()  * ((float)Math.PI / 180F) : type.rotation.y()  * ((float)Math.PI / 180F), bl ? -type.rotation.z() * ((float)Math.PI / 180F) : type.rotation.z() * ((float)Math.PI / 180F))));
             poseStack.translate(-((float) translationMultiplier * type.translation.x()), -type.translation.y(), -type.translation.z());
 
             flowerModel.getTransforms().getTransform(transformType).apply(bl, poseStack);

@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
@@ -20,6 +19,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.joml.Quaternionf;
 
 import java.util.Optional;
 
@@ -46,7 +46,7 @@ public class CustomMushroomItemRendererHelper {
             boolean bl = transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
             int translationMultiplier = bl ? -1 : 1;
             poseStack.scale(1.0F / type.scale.x(), 1.0F / type.scale.y(), 1.0F / type.scale.z());
-            poseStack.mulPose(QuaternionUtil.inverse(new Quaternion(type.rotation.x(), bl ? -type.rotation.y() : type.rotation.y(), bl ? -type.rotation.z() : type.rotation.z(), true)));
+            poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(type.rotation.x(), bl ? -type.rotation.y() : type.rotation.y(), bl ? -type.rotation.z() : type.rotation.z())));
             poseStack.translate(-((float) translationMultiplier * type.translation.x()), -type.translation.y(), -type.translation.z());
 
             mushroomModel.getTransforms().getTransform(transformType).apply(bl, poseStack);

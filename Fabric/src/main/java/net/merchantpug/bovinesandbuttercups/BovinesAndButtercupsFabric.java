@@ -69,17 +69,17 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             if (BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.isProvidedBy(entity)) {
                 MushroomCowTypeComponent component = BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity);
-                if (component.getMushroomCowTypeKey() == null) {
+                if (component.getMushroomCowTypeKey() == null || component.getMushroomCowTypeKey().equals(BovinesAndButtercups.asResource("missing_mushroom"))) {
                     if (MushroomCowSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
                         component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
-                    } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
+                    } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcc && mcc.usesVanillaSpawningHack()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
                         if (((MushroomCow)entity).getMushroomType().equals(MushroomCow.MushroomType.BROWN)) {
                             component.setMushroomCowType(BovinesAndButtercups.asResource("brown_mushroom"));
                         } else {
                             component.setMushroomCowType(BovinesAndButtercups.asResource("red_mushroom"));
                         }
                     } else {
-                        component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnType(level.getRandom()));
+                        component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnType(level.getRandom(), ((MushroomCow)entity).getMushroomType()));
                     }
                 }
             }

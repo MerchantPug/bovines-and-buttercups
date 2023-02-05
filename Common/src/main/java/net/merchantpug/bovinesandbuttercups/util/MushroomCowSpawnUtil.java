@@ -8,6 +8,7 @@ import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.level.LevelAccessor;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class MushroomCowSpawnUtil {
         return totalWeight;
     }
 
-    public static ResourceLocation getMooshroomSpawnType(RandomSource random) {
+    public static ResourceLocation getMooshroomSpawnType(RandomSource random, MushroomCow.MushroomType mushroomType) {
         int totalWeight = 0;
 
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
@@ -48,7 +49,10 @@ public class MushroomCowSpawnUtil {
         if (!mooshroomList.isEmpty()) {
             return BovineRegistryUtil.getConfiguredCowTypeKey(mooshroomList.get(index));
         }
-        return BovinesAndButtercups.asResource("missing_mooshroom");
+        if (mushroomType.equals(MushroomCow.MushroomType.BROWN)) {
+            return BovinesAndButtercups.asResource("brown_mushroom");
+        }
+        return BovinesAndButtercups.asResource("red_mushroom");
     }
 
     public static ResourceLocation getMooshroomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {

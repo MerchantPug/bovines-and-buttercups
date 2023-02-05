@@ -263,7 +263,7 @@ public class BovinesAndButtercupsForge {
         eventBus.addListener((PlayerEvent.StartTracking event) -> {
             if (event.getTarget() instanceof MushroomCow cow) {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
-                    if (cap.getMushroomCowTypeKey() == null) {
+                    if (cap.getMushroomCowTypeKey() == null || cap.getMushroomCowTypeKey().equals(BovinesAndButtercups.asResource("missing_mooshroom"))) {
                         if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().getLevel(), cow.blockPosition()) > 0) {
                             cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().getLevel(), cow.blockPosition(), cow.getRandom()));
                         } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && cow.level.getBiome(cow.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
@@ -273,7 +273,7 @@ public class BovinesAndButtercupsForge {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("red_mushroom"));
                             }
                         } else {
-                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnType(cow.getRandom()));
+                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnType(cow.getRandom(), cow.getVariant()));
                         }
                     }
                 });

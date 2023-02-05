@@ -22,6 +22,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
     private final FlowerCowFlower bud;
     private final Vector3f color;
     private final BackGrassConfiguration backGrassConfiguration;
+    private final Optional<ResourceLocation> nectarTexture;
     private final Optional<MobEffectInstance> nectarEffectInstance;
     private final Optional<BreedingConditionConfiguration> breedingConditions;
 
@@ -30,6 +31,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                            FlowerCowFlower bud,
                            Vector3f color,
                            BackGrassConfiguration backGrassConfiguration,
+                           Optional<ResourceLocation> nectarTexture,
                            Optional<MobEffectInstance> nectarEffectInstance,
                            Optional<BreedingConditionConfiguration> breedingConditions) {
         super(settings);
@@ -37,6 +39,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
         this.bud = bud;
         this.color = color;
         this.backGrassConfiguration = backGrassConfiguration;
+        this.nectarTexture = nectarTexture;
         this.nectarEffectInstance = nectarEffectInstance;
         this.breedingConditions = breedingConditions;
     }
@@ -48,12 +51,13 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                 FlowerCowFlower.CODEC.fieldOf("bud").forGetter(FlowerCowConfiguration::getBud),
                 Color.CODEC.fieldOf("color").forGetter(FlowerCowConfiguration::getColor),
                 BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)).forGetter(FlowerCowConfiguration::getBackGrassConfiguration),
+                ResourceLocation.CODEC.optionalFieldOf("nectar_texture").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarTexture),
                 MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
                 BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
         ).apply(builder, FlowerCowConfiguration::new));
     }
 
-    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty()), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new Vector3f(1.0F, 1.0F, 1.0F), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty());
+    public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty()), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new Vector3f(1.0F, 1.0F, 1.0F), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty(), Optional.empty());
 
     public FlowerCowFlower getFlower() {
         return this.flower;
@@ -65,6 +69,10 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
 
     public Vector3f getColor() {
         return this.color;
+    }
+
+    public Optional<ResourceLocation> getNectarTexture() {
+        return this.nectarTexture;
     }
 
     public BackGrassConfiguration getBackGrassConfiguration() {

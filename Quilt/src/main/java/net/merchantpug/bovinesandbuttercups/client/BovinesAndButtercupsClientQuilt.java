@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomFlowerItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomMushroomItemRenderer;
+import net.merchantpug.bovinesandbuttercups.client.item.NectarBowlItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
@@ -40,6 +41,7 @@ public class BovinesAndButtercupsClientQuilt implements ClientModInitializer {
         BuiltinItemRendererRegistry.INSTANCE.register(BovineItems.CUSTOM_FLOWER.get(), new CustomFlowerItemRenderer());
         BuiltinItemRendererRegistry.INSTANCE.register(BovineItems.CUSTOM_MUSHROOM.get(), new CustomMushroomItemRenderer());
         BuiltinItemRendererRegistry.INSTANCE.register(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), new CustomHugeMushroomItemRenderer());
+        BuiltinItemRendererRegistry.INSTANCE.register(BovineItems.NECTAR_BOWL.get(), new NectarBowlItemRenderer());
 
         ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
         ParticleFactoryRegistry.getInstance().register(BovineParticleTypes.BLOOM.get(), BloomParticle.Provider::new);

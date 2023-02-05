@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/buttercup_bud"
   },
   "color": "#fdd500",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/buttercup_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:poison",
     "duration": 3600

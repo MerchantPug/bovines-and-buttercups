@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/bird_of_paradise_bud"
   },
   "color": "#e58532",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/bird_of_paradise_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:slow_falling",
     "duration": 7200

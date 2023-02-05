@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/freesia_bud"
   },
   "color": "#ee4135",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/freesia_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:water_breathing",
     "duration": 12000

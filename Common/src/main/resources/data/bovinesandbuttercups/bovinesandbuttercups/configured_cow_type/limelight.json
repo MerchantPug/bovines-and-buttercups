@@ -9,6 +9,7 @@
     "model_location": "bovinesandbuttercups:bovinesandbuttercups/limelight_bud"
   },
   "color": "#a5f79e",
+  "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/limelight_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:regeneration",
     "duration": 2400

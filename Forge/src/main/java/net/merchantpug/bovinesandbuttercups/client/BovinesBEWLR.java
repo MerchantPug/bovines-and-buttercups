@@ -4,9 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomFlowerItemRendererHelper;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushroomItemRendererHelper;
 import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomMushroomItemRendererHelper;
+import net.merchantpug.bovinesandbuttercups.client.renderer.item.NectarBowlItemRendererHelper;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItemForge;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -29,6 +31,8 @@ public class BovinesBEWLR extends BlockEntityWithoutLevelRenderer {
             CustomMushroomItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
         } else if (stack.getItem() instanceof CustomHugeMushroomItemForge) {
             CustomHugeMushroomItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
+        } else if (stack.getItem() instanceof NectarBowlItem) {
+            NectarBowlItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
         }
     }
 }

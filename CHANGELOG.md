@@ -4,3 +4,4 @@
 ### Bugfixes
 - Fixed model transforms being unmodifiable by override models. #2
 - Fixed backwards compatibility with existing mooshrooms in the world.
+- Fixed built-in resource packs being out of date.

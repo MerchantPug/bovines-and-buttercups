@@ -123,8 +123,6 @@ processResources {
     }
 }
 
-assemble.dependsOn clean
-
 tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
 }

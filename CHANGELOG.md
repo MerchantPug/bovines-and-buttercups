@@ -1,2 +1,2 @@
 ### Bugfixes
-- Fix incorrect rotation on Custom Flower, Custom Mushroom, Custom Mushroom Block, and Bowl of Nectar items.
+- Fixed potential incompatibilities with mods that change the blockstates of blocks by swapping out reference BlockStateDefinition for `bovinesandbuttercups:generic` from poppies to a blank state definition.

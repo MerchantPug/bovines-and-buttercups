@@ -21,6 +21,14 @@ public class BovineBlockstateTypeRegistry {
         return REGISTRY.put(resource, block.getStateDefinition());
     }
 
+    public static StateDefinition<Block, BlockState> register(ResourceLocation resource, StateDefinition<Block, BlockState> definition) {
+        if (REGISTRY.containsKey(resource)) {
+            BovinesAndButtercups.LOG.error("BovineBlockstateTypeRegistry already contains entry for key '{}'.", resource);
+            return REGISTRY.get(resource);
+        }
+        return REGISTRY.put(resource, definition);
+    }
+
     public static StateDefinition<Block, BlockState> get(ResourceLocation resource) {
         if (!REGISTRY.containsKey(resource)) {
             BovinesAndButtercups.LOG.error("Could not get StateDefinition from key '{}'.", resource);

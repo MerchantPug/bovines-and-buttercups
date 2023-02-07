@@ -9,7 +9,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
 public class BovineBlockstateTypes {
-    public static final StateDefinition<Block, BlockState> GENERIC = BovineBlockstateTypeRegistry.register(BovinesAndButtercups.asResource("generic"), Blocks.POPPY);
+    public static final StateDefinition<Block, BlockState> EMPTY_STATE = (new StateDefinition.Builder<Block, BlockState>(Blocks.AIR)).create(Block::defaultBlockState, BlockState::new);
+
+    public static final StateDefinition<Block, BlockState> GENERIC = BovineBlockstateTypeRegistry.register(BovinesAndButtercups.asResource("generic"), EMPTY_STATE);
     public static final StateDefinition<Block, BlockState> FLOWER = BovineBlockstateTypeRegistry.register(BovinesAndButtercups.asResource("flower"), BovineBlocks.CUSTOM_FLOWER.get());
     public static final StateDefinition<Block, BlockState> MUSHROOM = BovineBlockstateTypeRegistry.register(BovinesAndButtercups.asResource("mushroom"), BovineBlocks.CUSTOM_MUSHROOM.get());
     public static final StateDefinition<Block, BlockState> POTTED_FLOWER = BovineBlockstateTypeRegistry.register(BovinesAndButtercups.asResource("potted_flower"), BovineBlocks.POTTED_CUSTOM_FLOWER.get());

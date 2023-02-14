@@ -33,7 +33,7 @@ public class ForgeRegistryHelper implements IRegistryHelper {
 
     @Override
     public NectarBowlItem createNectarBowlItem(Item.Properties properties) {
-        return new NectarBowlItem(properties);
+        return new NectarBowlItemForge(properties);
     }
 
     @Override

@@ -7,6 +7,6 @@
 - You are now able to hover over Lockdown effects to see each individual duration with EMI's centered effect display. **You'll need to update EMI to at least 0.6.3**
 
 ### Bugfixes
-- [FORGE] Fix crashes involving MobEffectEvents.
+- [FORGE] Fixed crashes involving MobEffectEvents.
 - [FORGE] Fixed Nectar Bowls not rendering at all.
 - Fixed `/effect lockdown` command not working properly.

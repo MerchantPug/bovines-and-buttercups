@@ -1,6 +1,6 @@
 ### Integration
 - Reimplemented JEI integration.
-- Added Nectar Bowls to REI and EMI contexts.
+- Added Nectar Bowls to JEI, REI and EMI contexts.
 - REI integration now treats different custom flowers and mushrooms as their own stack. 
 - Made EMI integration no longer show any `bovinesandbuttercups:missing_flower` custom flower items.
 - Made EMI integration no longer show any `bovinesandbuttercups:missing_mushroom` custom mushroom items.

@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
+package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
 import net.minecraft.world.entity.animal.MushroomCow;
 import org.spongepowered.asm.mixin.Mixin;

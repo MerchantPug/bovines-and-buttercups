@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin.fabriclike.client;
+package net.merchantpug.bovinesandbuttercups.mixin.fabric.client;
 
 import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.minecraft.client.color.block.BlockColors;

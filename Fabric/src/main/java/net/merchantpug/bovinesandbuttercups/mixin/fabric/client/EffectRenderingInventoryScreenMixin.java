@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin.fabriclike.client;
+package net.merchantpug.bovinesandbuttercups.mixin.fabric.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

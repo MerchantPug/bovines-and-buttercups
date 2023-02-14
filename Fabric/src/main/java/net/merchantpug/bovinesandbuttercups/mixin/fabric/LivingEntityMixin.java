@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
+package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;

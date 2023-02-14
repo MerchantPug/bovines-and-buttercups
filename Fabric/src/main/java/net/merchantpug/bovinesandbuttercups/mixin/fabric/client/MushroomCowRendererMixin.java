@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin.fabriclike.client;
+package net.merchantpug.bovinesandbuttercups.mixin.fabric.client;
 
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowDatapackMushroomLayer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMyceliumLayer;

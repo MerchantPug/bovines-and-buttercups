@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
+package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
 import net.merchantpug.bovinesandbuttercups.content.entity.goal.MoveToFlowerCowGoal;

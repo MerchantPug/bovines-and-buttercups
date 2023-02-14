@@ -1,4 +1,4 @@
-package net.merchantpug.bovinesandbuttercups.mixin.fabriclike;
+package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;

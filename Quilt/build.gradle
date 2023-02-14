@@ -188,7 +188,7 @@ curseforge {
         }
 
         mainArtifact(remapJar) {
-            displayName = "$project.mod_name v$project.version (Quilt)"
+            displayName = "Quilt v$project.version"
             relations {
                 quilt_required_deps.split(", ").each { String project ->
                     requiredDependency project
@@ -215,7 +215,7 @@ modrinth {
     projectId = mr_project_id
     versionNumber = "${project.version}-quilt"
     versionType = "release"
-    versionName = "$project.mod_name v$project.version (Quilt)"
+    versionName = "Quilt v$project.version"
     changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
     uploadFile = remapJar
     gameVersions = quilt_game_versions.split(", ").toList()

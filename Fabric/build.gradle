@@ -169,7 +169,7 @@ curseforge {
         }
 
         mainArtifact(remapJar) {
-            displayName = "$project.mod_name v$project.version (Fabric)"
+            displayName = "Fabric v$project.version"
             relations {
                 fabric_required_deps.split(", ").each { String project ->
                     requiredDependency project
@@ -196,7 +196,7 @@ modrinth {
     projectId = mr_project_id
     versionNumber = "${project.version}-fabric"
     versionType = "release"
-    versionName = "$project.mod_name v$project.version (Fabric)"
+    versionName = "Fabric v$project.version"
     changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
     uploadFile = remapJar
     gameVersions = fabric_game_versions.split(", ").toList()

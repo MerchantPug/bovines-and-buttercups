@@ -8,6 +8,8 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomShapelessDisplay;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
+import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -35,27 +37,42 @@ public class BovineReiPlugin implements REIClientPlugin {
 
     @Override
     public void registerBasicEntryFiltering(BasicFilteringRule<?> rule) {
+        BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).forEach(configuredCowType -> {
+            ItemStack stack = new ItemStack(BovineItems.NECTAR_BOWL.get());
+            ResourceLocation cowLocation = BovineRegistryUtil.getConfiguredCowTypeKey(configuredCowType);
+
+            FlowerCowConfiguration fcc = ((FlowerCowConfiguration)configuredCowType.getConfiguration());
+            if (fcc.getNectarEffectInstance().isEmpty()) return;
+            NectarBowlItem.saveMoobloomTypeKey(stack, cowLocation);
+            NectarBowlItem.saveMobEffect(stack, fcc.getNectarEffectInstance().get().getEffect(), fcc.getNectarEffectInstance().get().getDuration());
+
+            rule.show(() -> List.of(EntryStacks.of(stack)));
+        });
         ItemStack defaultMissingFlower = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
         rule.hide(() -> List.of(EntryStacks.of(defaultMissingFlower)));
         BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
             ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(flowerType);
 
-            CompoundTag compoundTag = new CompoundTag();
-            compoundTag.putString("Type", flowerTypeLocation.toString());
-            stack.addTagElement("BlockEntityTag", compoundTag);
+            CompoundTag tag = new CompoundTag();
+            tag.putString("Type", flowerTypeLocation.toString());
+            stack.addTagElement("BlockEntityTag", tag);
 
             rule.show(() -> List.of(EntryStacks.of(stack)));
         });
+        ItemStack defaultMissingMushroom = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
+        ItemStack defaultMissingMushroomBlock = new ItemStack(BovineItems.CUSTOM_MUSHROOM_BLOCK.get());
+        rule.hide(() -> List.of(EntryStacks.of(defaultMissingMushroom)));
+        rule.hide(() -> List.of(EntryStacks.of(defaultMissingMushroomBlock)));
         BovineRegistryUtil.mushroomTypeStream().forEach(mushroomType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
             ItemStack blockStack = new ItemStack(BovineItems.CUSTOM_MUSHROOM_BLOCK.get());
             ResourceLocation mushroomTypeLocation = BovineRegistryUtil.getMushroomTypeKey(mushroomType);
 
-            CompoundTag compoundTag = new CompoundTag();
-            compoundTag.putString("Type", mushroomTypeLocation.toString());
-            stack.addTagElement("BlockEntityTag", compoundTag);
-            blockStack.addTagElement("BlockEntityTag", compoundTag);
+            CompoundTag tag = new CompoundTag();
+            tag.putString("Type", mushroomTypeLocation.toString());
+            stack.addTagElement("BlockEntityTag", tag);
+            blockStack.addTagElement("BlockEntityTag", tag);
 
             rule.show(() -> List.of(EntryStacks.of(stack)));
             rule.show(() -> List.of(EntryStacks.of(blockStack)));

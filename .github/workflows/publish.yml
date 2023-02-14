@@ -10,10 +10,14 @@ env:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    container:
+      image: eclipse-temurin:17-jdk
+      options: --user root
     steps:
-      - uses: actions/checkout@v2
-        name: Set up JDK
-      - uses: actions/setup-java@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v2
         with:
           distribution: 'temurin'
           java-version: 17

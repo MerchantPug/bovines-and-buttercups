@@ -1,14 +1,14 @@
 package net.merchantpug.bovinesandbuttercups;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
-import org.quiltmc.loader.api.QuiltLoader;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.List;
 import java.util.Set;
 
-public class BovinesAndButtercupsQuiltMixinPlugin implements IMixinConfigPlugin {
+public class BovinesAndButtercupsFabricMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -22,9 +22,7 @@ public class BovinesAndButtercupsQuiltMixinPlugin implements IMixinConfigPlugin 
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio") && !QuiltLoader.isModLoaded("inspecio")) {
-            return false;
-        } else if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.emi") && !QuiltLoader.isModLoaded("emi")) {
+        if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.fabric.emi") && !FabricLoader.getInstance().isModLoaded("emi")) {
             return false;
         }
         return true;

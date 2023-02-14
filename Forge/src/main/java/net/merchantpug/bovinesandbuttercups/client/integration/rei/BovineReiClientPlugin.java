@@ -5,10 +5,13 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import me.shedaniel.rei.forge.REIPluginClient;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCustomShapelessDisplay;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
+import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.Optional;
 
-public class BovineReiPlugin implements REIClientPlugin {
+@REIPluginClient
+public class BovineReiClientPlugin implements REIClientPlugin {
     @Override
     public void registerDisplays(DisplayRegistry registry) {
         BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
@@ -37,7 +41,7 @@ public class BovineReiPlugin implements REIClientPlugin {
 
     @Override
     public void registerBasicEntryFiltering(BasicFilteringRule<?> rule) {
-        BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).forEach(configuredCowType -> {
+        BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration && configuredCowType != configuredCowType.getCowType().getDefaultCowType().getSecond()).forEach(configuredCowType -> {
             ItemStack stack = new ItemStack(BovineItems.NECTAR_BOWL.get());
             ResourceLocation cowLocation = BovineRegistryUtil.getConfiguredCowTypeKey(configuredCowType);
 
@@ -50,7 +54,7 @@ public class BovineReiPlugin implements REIClientPlugin {
         });
         ItemStack defaultMissingFlower = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
         rule.hide(() -> List.of(EntryStacks.of(defaultMissingFlower)));
-        BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
+        BovineRegistryUtil.flowerTypeStream().filter(flowerType -> flowerType != FlowerType.MISSING).forEach(flowerType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
             ResourceLocation flowerTypeLocation = BovineRegistryUtil.getFlowerTypeKey(flowerType);
 
@@ -64,7 +68,7 @@ public class BovineReiPlugin implements REIClientPlugin {
         ItemStack defaultMissingMushroomBlock = new ItemStack(BovineItems.CUSTOM_MUSHROOM_BLOCK.get());
         rule.hide(() -> List.of(EntryStacks.of(defaultMissingMushroom)));
         rule.hide(() -> List.of(EntryStacks.of(defaultMissingMushroomBlock)));
-        BovineRegistryUtil.mushroomTypeStream().forEach(mushroomType -> {
+        BovineRegistryUtil.mushroomTypeStream().filter(mushroomType -> mushroomType != MushroomType.MISSING).forEach(mushroomType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
             ItemStack blockStack = new ItemStack(BovineItems.CUSTOM_MUSHROOM_BLOCK.get());
             ResourceLocation mushroomTypeLocation = BovineRegistryUtil.getMushroomTypeKey(mushroomType);

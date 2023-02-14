@@ -35,6 +35,9 @@
     "rei_client": [
       "net.merchantpug.bovinesandbuttercups.client.integration.rei.BovineReiClientPlugin"
     ],
+    "rei_common": [
+      "net.merchantpug.bovinesandbuttercups.integration.rei.BovineReiPlugin"
+    ],
     "emi": [
       "net.merchantpug.bovinesandbuttercups.client.integration.emi.BovineEmiPlugin"
     ],

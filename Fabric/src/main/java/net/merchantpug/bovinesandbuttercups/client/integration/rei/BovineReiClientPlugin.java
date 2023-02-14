@@ -39,17 +39,6 @@ public class BovineReiClientPlugin implements REIClientPlugin {
 
     @Override
     public void registerBasicEntryFiltering(BasicFilteringRule<?> rule) {
-        BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration && configuredCowType != configuredCowType.getCowType().getDefaultCowType().getSecond()).forEach(configuredCowType -> {
-            ItemStack stack = new ItemStack(BovineItems.NECTAR_BOWL.get());
-            ResourceLocation cowLocation = BovineRegistryUtil.getConfiguredCowTypeKey(configuredCowType);
-
-            FlowerCowConfiguration fcc = ((FlowerCowConfiguration)configuredCowType.getConfiguration());
-            if (fcc.getNectarEffectInstance().isEmpty()) return;
-            NectarBowlItem.saveMoobloomTypeKey(stack, cowLocation);
-            NectarBowlItem.saveMobEffect(stack, fcc.getNectarEffectInstance().get().getEffect(), fcc.getNectarEffectInstance().get().getDuration());
-
-            rule.show(() -> List.of(EntryStacks.of(stack)));
-        });
         ItemStack defaultMissingFlower = new ItemStack(BovineItems.CUSTOM_FLOWER.get());
         rule.hide(() -> List.of(EntryStacks.of(defaultMissingFlower)));
         BovineRegistryUtil.flowerTypeStream().filter(flowerType -> flowerType != FlowerType.MISSING).forEach(flowerType -> {

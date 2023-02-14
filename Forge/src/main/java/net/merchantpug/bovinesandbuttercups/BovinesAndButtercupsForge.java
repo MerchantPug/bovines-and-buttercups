@@ -339,14 +339,14 @@ public class BovinesAndButtercupsForge {
             }
         });
         eventBus.addListener((MobEffectEvent.Remove event) -> {
-            if (!(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
+            if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
             event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                 cap.getLockdownMobEffects().clear();
                 cap.sync();
             });
         });
         eventBus.addListener((MobEffectEvent.Expired event) -> {
-            if (!(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
+            if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
             event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                 cap.getLockdownMobEffects().clear();
                 cap.sync();

@@ -1,5 +1,3 @@
-// TODO: Reimplement JEI
-/*
 package net.merchantpug.bovinesandbuttercups.integration.jei.recipe;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
@@ -10,6 +8,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
@@ -46,7 +45,6 @@ public class CustomFlowerDyeRecipeMaker {
         }
 
         ResourceLocation id = BovinesAndButtercups.asResource("bovinesandbuttercups.custom.flower.dye." + flowerTypeLocation.toLanguageKey());
-        return Optional.of(new ShapelessRecipe(id, "bovinesandbuttercups.custom.flower.dye", output.get().copy(), inputs));
+        return Optional.of(new ShapelessRecipe(id, "bovinesandbuttercups.custom.flower.dye", CraftingBookCategory.MISC, output.get().copy(), inputs));
     }
 }
- */

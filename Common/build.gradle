@@ -47,9 +47,7 @@ dependencies {
     annotationProcessor("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    
-    // TODO: Reimplement JEI
-    // compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 }
 
 processResources {

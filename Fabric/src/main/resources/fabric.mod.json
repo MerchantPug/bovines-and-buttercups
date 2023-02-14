@@ -29,8 +29,11 @@
     "cardinal-components": [
       "net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents"
     ],
+    "jei_mod_plugin": [
+      "net.merchantpug.bovinesandbuttercups.integration.jei.BovineJeiPlugin"
+    ],
     "rei_client": [
-      "net.merchantpug.bovinesandbuttercups.client.integration.rei.BovineReiPlugin"
+      "net.merchantpug.bovinesandbuttercups.client.integration.rei.BovineReiClientPlugin"
     ],
     "emi": [
       "net.merchantpug.bovinesandbuttercups.client.integration.emi.BovineEmiPlugin"

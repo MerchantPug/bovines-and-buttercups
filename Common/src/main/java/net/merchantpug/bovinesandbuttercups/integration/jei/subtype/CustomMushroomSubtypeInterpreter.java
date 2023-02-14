@@ -1,12 +1,9 @@
-// TODO: Reimplement JEI
-/*
 package net.merchantpug.bovinesandbuttercups.integration.jei.subtype;
 
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -29,4 +26,3 @@ public class CustomMushroomSubtypeInterpreter implements IIngredientSubtypeInter
         return IIngredientSubtypeInterpreter.NONE;
     }
 }
- */

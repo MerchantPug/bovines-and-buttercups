@@ -1,5 +1,3 @@
-// TODO: Reimplement JEI
-/*
 package net.merchantpug.bovinesandbuttercups.integration.jei;
 
 import mezz.jei.api.IModPlugin;
@@ -41,4 +39,3 @@ public class BovineJeiPlugin implements IModPlugin {
     }
 
 }
- */

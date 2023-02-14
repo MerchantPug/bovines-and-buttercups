@@ -10,6 +10,7 @@ import net.merchantpug.bovinesandbuttercups.integration.jei.recipe.CustomFlowerD
 import net.merchantpug.bovinesandbuttercups.integration.jei.recipe.CustomFlowerSuspiciousStewRecipeMaker;
 import net.merchantpug.bovinesandbuttercups.integration.jei.subtype.CustomFlowerSubtypeInterpreter;
 import net.merchantpug.bovinesandbuttercups.integration.jei.subtype.CustomMushroomSubtypeInterpreter;
+import net.merchantpug.bovinesandbuttercups.integration.jei.subtype.NectarBowlSubtypeInterpreter;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -31,6 +32,7 @@ public class BovineJeiPlugin implements IModPlugin {
         registration.registerSubtypeInterpreter(BovineItems.CUSTOM_FLOWER.get(), CustomFlowerSubtypeInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(BovineItems.CUSTOM_MUSHROOM.get(), CustomMushroomSubtypeInterpreter.INSTANCE);
         registration.registerSubtypeInterpreter(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), CustomMushroomSubtypeInterpreter.INSTANCE);
+        registration.registerSubtypeInterpreter(BovineItems.NECTAR_BOWL.get(), NectarBowlSubtypeInterpreter.INSTANCE);
     }
 
     @Override

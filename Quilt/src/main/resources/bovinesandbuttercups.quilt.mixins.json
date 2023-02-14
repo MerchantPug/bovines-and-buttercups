@@ -17,6 +17,7 @@
     "client.GuiMixin",
     "client.ModelBakeryMixin",
     "client.MushroomCowRendererMixin",
+    "emi.EffectRenderingInventoryScreenMixin",
     "inspecio.EntityTooltipComponentMixin",
     "inspecio.StatusEffectTooltipComponentAccessor"
   ],

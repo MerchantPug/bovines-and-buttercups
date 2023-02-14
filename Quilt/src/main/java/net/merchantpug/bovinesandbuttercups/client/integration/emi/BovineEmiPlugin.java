@@ -8,6 +8,11 @@ import dev.emi.emi.api.stack.EmiStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.client.integration.emi.recipe.EmiCustomFlowerSuspiciousStewRecipe;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
+import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
+import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
+import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +32,11 @@ public class BovineEmiPlugin implements EmiPlugin {
         registry.addEmiStack(customMushroom);
         registry.addEmiStack(customMushroomBlock);
         registry.addEmiStack(nectarBowl);
+
+        registry.removeEmiStacks(emiStack -> emiStack.getItemStack().getItem() instanceof CustomFlowerItem && (CustomFlowerItem.getFlowerTypeFromTag(emiStack.getItemStack()).isEmpty() || CustomFlowerItem.getFlowerTypeFromTag(emiStack.getItemStack()).get() == FlowerType.MISSING));
+        registry.removeEmiStacks(emiStack -> emiStack.getItemStack().getItem() instanceof CustomMushroomItem && (CustomMushroomItem.getMushroomTypeFromTag(emiStack.getItemStack()).isEmpty() || CustomMushroomItem.getMushroomTypeFromTag(emiStack.getItemStack()).get() == MushroomType.MISSING));
+        registry.removeEmiStacks(emiStack -> emiStack.getItemStack().getItem() instanceof CustomHugeMushroomItem && (CustomHugeMushroomItem.getMushroomTypeFromTag(emiStack.getItemStack()).isEmpty() || CustomHugeMushroomItem.getMushroomTypeFromTag(emiStack.getItemStack()).get() == MushroomType.MISSING));
+        registry.removeEmiStacks(EmiStack.of(BovineItems.NECTAR_BOWL.get()));
 
         BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());

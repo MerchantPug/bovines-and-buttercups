@@ -21,10 +21,12 @@ public class BovineEmiPlugin implements EmiPlugin {
         EmiStack customFlower = EmiStack.of(BovineItems.CUSTOM_FLOWER.get()).comparison(comparison -> comparison.copy().nbt(true).build());
         EmiStack customMushroom = EmiStack.of(BovineItems.CUSTOM_MUSHROOM.get()).comparison(comparison -> comparison.copy().nbt(true).build());
         EmiStack customMushroomBlock = EmiStack.of(BovineItems.CUSTOM_MUSHROOM_BLOCK.get()).comparison(comparison -> comparison.copy().nbt(true).build());
+        EmiStack nectarBowl = EmiStack.of(BovineItems.NECTAR_BOWL.get()).comparison(comparison -> comparison.copy().nbt(true).build());
 
         registry.addEmiStack(customFlower);
         registry.addEmiStack(customMushroom);
         registry.addEmiStack(customMushroomBlock);
+        registry.addEmiStack(nectarBowl);
 
         BovineRegistryUtil.flowerTypeStream().forEach(flowerType -> {
             ItemStack stack = new ItemStack(BovineItems.CUSTOM_FLOWER.get());

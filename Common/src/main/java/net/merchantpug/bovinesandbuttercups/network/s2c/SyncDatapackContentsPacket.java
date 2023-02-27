@@ -8,7 +8,7 @@ import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.MushroomTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.network.BovinePacketClient;
+import net.merchantpug.bovinesandbuttercups.network.BovinePacketS2C;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap,
                                          HashMap<ResourceLocation, FlowerType> flowerTypeMap,
-                                         HashMap<ResourceLocation, MushroomType> mushroomTypeMap) implements BovinePacketClient {
+                                         HashMap<ResourceLocation, MushroomType> mushroomTypeMap) implements BovinePacketS2C {
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("sync_datapack_contents");
 
     @Override

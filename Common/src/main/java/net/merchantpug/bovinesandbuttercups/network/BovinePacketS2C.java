@@ -2,6 +2,6 @@ package net.merchantpug.bovinesandbuttercups.network;
 
 import net.minecraft.client.Minecraft;
 
-public interface BovinePacketClient extends BovinePacket {
+public interface BovinePacketS2C extends BovinePacket {
     void handle(Minecraft minecraft);
 }

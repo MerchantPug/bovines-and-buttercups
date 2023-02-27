@@ -137,6 +137,14 @@ dependencies {
     */
 }
 
+jar {
+    manifest {
+        attributes(
+                "Implementation-Version": "${project.version}-forge"
+        )
+    }
+}
+
 tasks.withType(JavaCompile) {
     source(project(":Common").sourceSets.main.allSource)
 }

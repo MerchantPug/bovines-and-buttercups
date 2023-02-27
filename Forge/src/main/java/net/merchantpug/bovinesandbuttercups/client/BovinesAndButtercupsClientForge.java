@@ -30,7 +30,6 @@ import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowDatapackMushroomLayer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMyceliumLayer;
-import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
@@ -40,23 +39,13 @@ import net.merchantpug.bovinesandbuttercups.util.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.MushroomCowRenderer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
-import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.forgespi.language.IModFileInfo;
-import net.minecraftforge.forgespi.locating.IModFile;
 import org.joml.Vector3f;
-
-import java.nio.file.Path;
 
 @Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class BovinesAndButtercupsClientForge {
@@ -105,22 +94,5 @@ public class BovinesAndButtercupsClientForge {
         event.register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
         event.register(BovineParticleTypes.BLOOM.get(), BloomParticle.Provider::new);
         event.register(BovineParticleTypes.SHROOM.get(), ShroomParticle.Provider::new);
-    }
-
-    @SubscribeEvent
-    public static void addPackFinders(AddPackFindersEvent event) {
-        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-            IModFileInfo modFileInfo = ModList.get().getModFileById(BovinesAndButtercups.MOD_ID);
-            if (modFileInfo == null) {
-                BovinesAndButtercups.LOG.error("Could not find Bovines and Buttercups mod file info; built-in resource packs will be missing!");
-                return;
-            }
-            IModFile modFile = modFileInfo.getFile();
-            event.addRepositorySource((consumer) -> {
-                consumer.accept(Pack.readMetaAndCreate(BovinesAndButtercups.asResource("mojang").toString(), Component.translatable("resourcePack.bovinesandbuttercups.mojang.name"), false, (s) -> new ModFilePackResources("bovinesandbuttercups/mojang", modFile, Path.of("resourcepacks/mojang")), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.DEFAULT));
-                consumer.accept(Pack.readMetaAndCreate(BovinesAndButtercups.asResource("no_grass").toString(), Component.translatable("resourcePack.bovinesandbuttercups.noGrass.name"), false, (s) -> new ModFilePackResources("bovinesandbuttercups/no_grass", modFile, Path.of("resourcepacks/no_grass")), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.DEFAULT));
-                consumer.accept(Pack.readMetaAndCreate(BovinesAndButtercups.asResource("no_buds").toString(), Component.translatable("resourcePack.bovinesandbuttercups.noBuds.name"), false, (s) -> new ModFilePackResources("bovinesandbuttercups/no_buds", modFile, Path.of("resourcepacks/no_buds")), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.DEFAULT));
-            });
-        }
     }
 }

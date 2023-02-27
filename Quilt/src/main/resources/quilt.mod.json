@@ -3,7 +3,7 @@
   "quilt_loader": {
     "group": "net.merchantpug",
     "id": "bovinesandbuttercups",
-    "version": "${version}",
+    "version": "${version}-quilt",
     "metadata": {
       "name": "Bovines and Buttercups",
       "description": "A new take on the Moobloom and other bovines.",

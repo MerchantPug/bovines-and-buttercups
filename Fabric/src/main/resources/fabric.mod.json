@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "bovinesandbuttercups",
-  "version": "${version}",
+  "version": "${version}-fabric",
 
   "name": "Bovines and Buttercups",
   "description": "A new take on the Moobloom and other bovines.",

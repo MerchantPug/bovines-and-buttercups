@@ -1,9 +1,34 @@
+/**
+ * MIT License
+ *
+ * Copyright (c) 2019 simibubi
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package net.merchantpug.bovinesandbuttercups;
 
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.capabilities.*;
+import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.command.EffectLockdownCommand;
@@ -33,6 +58,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -51,6 +79,7 @@ import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -62,10 +91,13 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashMap;
@@ -99,6 +131,22 @@ public class BovinesAndButtercupsForge {
             BovinePacketHandler.register();
             event.enqueueWork(BovinesAndButtercupsForge::registerCompostables);
             BovineCowTypes.registerDefaultConfigureds();
+        });
+
+        eventBus.addListener((AddPackFindersEvent event) -> {
+            if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+                IModFileInfo modFileInfo = ModList.get().getModFileById(BovinesAndButtercups.MOD_ID);
+                if (modFileInfo == null) {
+                    BovinesAndButtercups.LOG.error("Could not find Bovines and Buttercups mod file info; built-in resource packs will be missing!");
+                    return;
+                }
+                IModFile modFile = modFileInfo.getFile();
+                event.addRepositorySource((consumer, constructor) -> {
+                    consumer.accept(Pack.create(BovinesAndButtercups.asResource("mojang").toString(), false, () -> new ModFilePackResources("Moobloom Mojang Textures", modFile, "resourcepacks/mojang"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
+                    consumer.accept(Pack.create(BovinesAndButtercups.asResource("no_grass").toString(), false, () -> new ModFilePackResources("No Grass Back", modFile, "resourcepacks/no_grass"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
+                    consumer.accept(Pack.create(BovinesAndButtercups.asResource("no_buds").toString(), false, () -> new ModFilePackResources("No Buds", modFile, "resourcepacks/no_buds"), constructor, Pack.Position.TOP, PackSource.DEFAULT));
+                });
+            }
         });
     }
 

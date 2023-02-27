@@ -1,3 +1,6 @@
+### Texture Changes
+- Updated Freesia Moobloom texture spot color.
+
 ### Bugfixes
 - Fixed Mojang Textures and No Grass Back built-in resource packs having an outdated path for their textures.
 - [FORGE] Fixed reload command failing due to faulty packet code.

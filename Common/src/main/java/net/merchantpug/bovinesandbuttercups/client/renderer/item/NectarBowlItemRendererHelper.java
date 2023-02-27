@@ -47,11 +47,19 @@ public class NectarBowlItemRendererHelper {
         poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(type.rotation.x() * ((float)Math.PI / 180F), left ? -type.rotation.y()  * ((float)Math.PI / 180F) : type.rotation.y()  * ((float)Math.PI / 180F), left ? -type.rotation.z() * ((float)Math.PI / 180F) : type.rotation.z() * ((float)Math.PI / 180F))));
         poseStack.translate(-((float) translationMultiplier * type.translation.x()), -type.translation.y(), -type.translation.z());
 
-        boolean bl = !nectarBowlModel.usesBlockLight();
-        if (transformType == ItemTransforms.TransformType.GUI && bl) {
+        boolean bl = transformType == ItemTransforms.TransformType.GUI && !nectarBowlModel.usesBlockLight();
+        MultiBufferSource.BufferSource source = null;
+
+        if (bl) {
             Lighting.setupForFlatItems();
+            source = Minecraft.getInstance().renderBuffers().bufferSource();
         }
 
-        Minecraft.getInstance().getItemRenderer().render(stack, transformType, left, poseStack, bufferSource, light, overlay, nectarBowlModel);
+        Minecraft.getInstance().getItemRenderer().render(stack, transformType, left, poseStack, source == null ? bufferSource : source, light, overlay, nectarBowlModel);
+
+        if (bl) {
+            source.endBatch();
+            Lighting.setupFor3DItems();
+        }
     }
 }

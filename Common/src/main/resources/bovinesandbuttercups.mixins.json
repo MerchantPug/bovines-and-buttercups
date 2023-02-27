@@ -25,7 +25,6 @@
   "client": [
     "client.ClientLevelMixin",
     "client.EffectRenderingInventoryScreenMixin",
-    "client.ItemRendererAccessor",
     "client.MushroomCowMushroomLayerMixin",
     "client.MushroomCowRendererMixin"
   ],

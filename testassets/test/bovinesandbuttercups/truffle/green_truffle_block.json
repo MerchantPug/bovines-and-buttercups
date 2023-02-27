@@ -119,5 +119,5 @@
       }
     }
   ],
-  "inventory": "test:truffle/green_truffle_block"
+  "inventory": "test:truffle/green_truffle_blocks"
 }

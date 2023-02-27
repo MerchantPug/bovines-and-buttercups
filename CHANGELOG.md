@@ -5,4 +5,6 @@
 - [FORGE] Fixed Forge thinking that Bovines always has an update by changing the version schema. 
 
 ### Miscellaneous
+- Modified built-in rendered items from this mod's rendering logic.
+- gui_light is now gotten from the model that is being displayed as opposed to the direct model.
 - Updated JAR version schema to match Modrinth version schema.

@@ -1,16 +1,16 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.item;
 
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
-import net.merchantpug.bovinesandbuttercups.mixin.client.ItemRendererAccessor;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransform;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -40,19 +40,29 @@ public class CustomHugeMushroomItemRendererHelper {
         BakedModel mushroomModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);
         ItemRenderer itemRenderer =  Minecraft.getInstance().getItemRenderer();
 
-        if (mushroomModel.getTransforms() != ItemTransforms.NO_TRANSFORMS) {
-            BakedModel originalModel = itemRenderer.getModel(stack, level, null, 0);
-            ItemTransform type = originalModel.getTransforms().getTransform(transformType);
+        BakedModel originalModel = itemRenderer.getModel(stack, level, null, 0);
+        ItemTransform transform = originalModel.getTransforms().getTransform(transformType);
 
-            boolean bl = transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
-            int translationMultiplier = bl ? -1 : 1;
-            poseStack.scale(1.0F / type.scale.x(), 1.0F / type.scale.y(), 1.0F / type.scale.z());
-            poseStack.mulPose(QuaternionUtil.inverse(new Quaternion(type.rotation.x(), bl ? -type.rotation.y() : type.rotation.y(), bl ? -type.rotation.z() : type.rotation.z(), true)));
-            poseStack.translate(-((float) translationMultiplier * type.translation.x()), -type.translation.y(), -type.translation.z());
+        boolean left = transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
+        int translationMultiplier = left ? -1 : 1;
+        poseStack.translate(0.5F, 0.5F, 0.5F);
+        poseStack.scale(1.0F / transform.scale.x(), 1.0F / transform.scale.y(), 1.0F / transform.scale.z());
+        poseStack.mulPose(QuaternionUtil.inverse(new Quaternion(transform.rotation.x(), left ? -transform.rotation.y() : transform.rotation.y(), left ? -transform.rotation.z() : transform.rotation.z(), true)));
+        poseStack.translate(-((float) translationMultiplier * transform.translation.x()), -transform.translation.y(), -transform.translation.z());
 
-            mushroomModel.getTransforms().getTransform(transformType).apply(bl, poseStack);
+        boolean bl = transformType == ItemTransforms.TransformType.GUI && !mushroomModel.usesBlockLight();
+        MultiBufferSource.BufferSource source = null;
+
+        if (bl) {
+            Lighting.setupForFlatItems();
+            source = Minecraft.getInstance().renderBuffers().bufferSource();
         }
 
-        ((ItemRendererAccessor)itemRenderer).bovinesandbuttercups$invokeRenderModelLists(mushroomModel, stack, light, overlay, poseStack, ItemRenderer.getFoilBuffer(bufferSource, ItemBlockRenderTypes.getRenderType(stack, true), true, stack.hasFoil()));
+        Minecraft.getInstance().getItemRenderer().render(stack, transformType, left, poseStack, source == null ? bufferSource : source, light, overlay, mushroomModel);
+
+        if (bl) {
+            source.endBatch();
+            Lighting.setupFor3DItems();
+        }
     }
 }

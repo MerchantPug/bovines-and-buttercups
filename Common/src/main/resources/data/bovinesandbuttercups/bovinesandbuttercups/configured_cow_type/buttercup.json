@@ -12,7 +12,7 @@
   "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/buttercup_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:poison",
-    "duration": 3600
+    "duration": 2400
   },
   "spawn_biomes": "#bovinesandbuttercups:has_mooblooms",
   "natural_spawn_weight": 7,

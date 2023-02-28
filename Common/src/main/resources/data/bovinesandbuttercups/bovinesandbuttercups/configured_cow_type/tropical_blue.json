@@ -12,7 +12,7 @@
   "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/tropical_blue_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:fire_resistance",
-    "duration": 12000
+    "duration": 9600
   },
   "thunder_conversion_types": [
     {

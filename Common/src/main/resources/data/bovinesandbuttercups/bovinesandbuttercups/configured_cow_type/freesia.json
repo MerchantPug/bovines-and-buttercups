@@ -12,7 +12,7 @@
   "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/freesia_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:water_breathing",
-    "duration": 12000
+    "duration": 9600
   },
   "thunder_conversion_types": [
     {

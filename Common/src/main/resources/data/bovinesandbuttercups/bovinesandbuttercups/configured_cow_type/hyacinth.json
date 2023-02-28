@@ -12,7 +12,7 @@
   "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/hyacinth_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:wither",
-    "duration": 2400
+    "duration": 3600
   },
   "thunder_conversion_types": [
     {

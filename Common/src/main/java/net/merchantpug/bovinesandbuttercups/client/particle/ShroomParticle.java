@@ -17,7 +17,7 @@ public class ShroomParticle extends TextureSheetParticle {
         this.yd = yd;
         this.zd = zd;
         this.hasPhysics = false;
-        this.friction = 1.0F;
+        this.friction = 0.78F;
         this.gravity = 0.0F;
     }
 

@@ -77,7 +77,7 @@ public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
             });
         }
 
-        entityMap.values().forEach(entity -> createParticleTrail(parent, finalBox.getCenter().add(new Vec3(entity.getX(), entity.getY(), entity.getZ())), particle));
+        entityMap.values().forEach(entity -> createParticleTrail(parent, new Vec3(entity.getX(), entity.getY(), entity.getZ()), particle));
     }
 
     private void createParticleTrail(Entity parent, Vec3 pos, ParticleOptions options) {

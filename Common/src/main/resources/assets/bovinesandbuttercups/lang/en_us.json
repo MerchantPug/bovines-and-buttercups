@@ -49,5 +49,14 @@
   "commands.effect.lockdown.failed": "Unable to apply Lockdown for Lockdown",
 
   "tag.bovinesandbuttercups.moobloom_flowers": "Moobloom Flowers",
-  "configured_cow_type.bovinesandbuttercups.missing_moobloom.name": "Unknown"
+  "configured_cow_type.bovinesandbuttercups.missing_moobloom.name": "Unknown",
+
+  "resourcePack.bovinesandbuttercups.mojang.name": "Mojang Textures",
+  "resourcePack.bovinesandbuttercups.mojang.description": "Returns mooblooms to their official textures.",
+  "resourcePack.bovinesandbuttercups.noGrass.name": "No Grass Back",
+  "resourcePack.bovinesandbuttercups.noGrass.description": "Removes grass and mycelium from cow backs.",
+  "resourcePack.bovinesandbuttercups.noBuds.name": "No Buds",
+  "resourcePack.bovinesandbuttercups.noBuds.description": "Sets all baby moobloom buds to flowers.",
+
+  "bovinesandbuttercups.itemGroup.items": "Bovines and Buttercups"
 }

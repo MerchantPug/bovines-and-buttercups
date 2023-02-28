@@ -90,11 +90,11 @@
               "conditions": [
                 {
                   "type": "bovinesandbuttercups:block_location",
-                  "location": "bovinesandbuttercups:snowdrop"
+                  "location": "bovinesandbuttercups:tropical_blue"
                 },
                 {
                   "type": "bovinesandbuttercups:block_location",
-                  "location": "bovinesandbuttercups:potted_snowdrop"
+                  "location": "bovinesandbuttercups:potted_tropical_blue"
                 }
               ]
             }

@@ -101,11 +101,11 @@
               "conditions": [
                 {
                   "type": "bovinesandbuttercups:block_location",
-                  "location": "bovinesandbuttercups:buttercup"
+                  "location": "bovinesandbuttercups:pink_daisy"
                 },
                 {
                   "type": "bovinesandbuttercups:block_location",
-                  "location": "bovinesandbuttercups:potted_buttercup"
+                  "location": "bovinesandbuttercups:potted_pink_daisy"
                 }
               ]
             }

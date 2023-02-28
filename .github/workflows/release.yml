@@ -29,4 +29,4 @@ jobs:
       - name: Clean libs folders
         run: ./gradlew clean
       - name: Upload releases
-        run: ./gradlew build curseforge github modrinth --stacktrace
+        run: ./gradlew build curseforge github modrinth publish --stacktrace

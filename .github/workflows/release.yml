@@ -9,6 +9,8 @@ env:
   CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+  ORG_GRADLE_PROJECT_merchantpugUsername: ${{ secrets.MAVEN_NAME }} # token
+  ORG_GRADLE_PROJECT_merchantpugPassword: ${{ secrets.MAVEN_TOKEN }} # password
 
 jobs:
   release:
@@ -29,4 +31,4 @@ jobs:
       - name: Clean libs folders
         run: ./gradlew clean
       - name: Upload releases
-        run: ./gradlew build curseforge github modrinth publish --stacktrace
+        run: ./gradlew build curseforge github modrinth --stacktrace

@@ -20,7 +20,7 @@ import net.minecraft.world.entity.Entity;
 import java.util.function.Supplier;
 
 public class BovineEntityConditionTypes {
-    public static final RegistrationProvider<EntityConditionType<?>> ENTITY_CONDITION_TYPE = RegistrationProvider.get(BovineRegistryKeys.ENTITY_CONDITION_TYPE_KEY, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<EntityConditionType<?>> ENTITY_CONDITION_TYPE = RegistrationProvider.get(BovineRegistryKeys.ENTITY_CONDITION_TYPE_KEY, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<EntityConditionType<AndConditionConfiguration<Entity>>> AND = register("and", () -> new EntityConditionType<>(AndConditionConfiguration.getCodec(EntityConfiguredCondition.CODEC)));
     public static final RegistryObject<EntityConditionType<ConstantConditionConfiguration<Entity>>> CONSTANT = register("constant", () -> new EntityConditionType<>(ConstantConditionConfiguration.getCodec(EntityConfiguredCondition.CODEC)));

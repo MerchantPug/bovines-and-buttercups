@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import java.util.function.Supplier;
 
 public class BovineBlockConditionTypes {
-    public static final RegistrationProvider<BlockConditionType<?>> BLOCK_CONDITION_TYPE = RegistrationProvider.get(BovineRegistryKeys.BLOCK_CONDITION_TYPE_KEY, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<BlockConditionType<?>> BLOCK_CONDITION_TYPE = RegistrationProvider.get(BovineRegistryKeys.BLOCK_CONDITION_TYPE_KEY, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<BlockConditionType<AndConditionConfiguration<BlockInWorld>>> AND = register("and", () -> new BlockConditionType<>(AndConditionConfiguration.getCodec(BlockConfiguredCondition.CODEC)));
     public static final RegistryObject<BlockConditionType<ConstantConditionConfiguration<BlockInWorld>>> CONSTANT = register("constant", () -> new BlockConditionType<>(ConstantConditionConfiguration.getCodec(BlockConfiguredCondition.CODEC)));

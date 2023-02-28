@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import java.util.function.Supplier;
 
 public class BovineBiomeConditionTypes {
-    public static final RegistrationProvider<BiomeConditionType<?>> BIOME_CONDITION_TYPE = RegistrationProvider.get(BovineRegistryKeys.BIOME_CONDITION_TYPE_KEY, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<BiomeConditionType<?>> BIOME_CONDITION_TYPE = RegistrationProvider.get(BovineRegistryKeys.BIOME_CONDITION_TYPE_KEY, BovinesAndButtercups.MOD_ID);
 
     public static final RegistryObject<BiomeConditionType<AndConditionConfiguration<Holder<Biome>>>> AND = register("and", () -> new BiomeConditionType<>(AndConditionConfiguration.getCodec(BiomeConfiguredCondition.CODEC)));
     public static final RegistryObject<BiomeConditionType<ConstantConditionConfiguration<Holder<Biome>>>> CONSTANT = register("constant", () -> new BiomeConditionType<>(ConstantConditionConfiguration.getCodec(BiomeConfiguredCondition.CODEC)));

@@ -12,7 +12,7 @@ import com.mojang.serialization.MapCodec;
 import java.util.function.Supplier;
 
 public class BovineCowTypes {
-    public static final RegistrationProvider<CowType<?>> COW_TYPE = RegistrationProvider.get(BovineRegistryKeys.COW_TYPE_KEY, BovinesAndButtercups.MOD_ID);
+    private static final RegistrationProvider<CowType<?>> COW_TYPE = RegistrationProvider.get(BovineRegistryKeys.COW_TYPE_KEY, BovinesAndButtercups.MOD_ID);
 
     public static final Supplier<CowType<FlowerCowConfiguration>> FLOWER_COW_TYPE = register("moobloom", () -> new CowType<>(asMapCodec(FlowerCowConfiguration.CODEC)));
     public static final Supplier<CowType<MushroomCowConfiguration>> MUSHROOM_COW_TYPE = register("mooshroom", () -> new CowType<>(asMapCodec(MushroomCowConfiguration.CODEC)));

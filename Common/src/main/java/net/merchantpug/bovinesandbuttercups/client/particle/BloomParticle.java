@@ -15,6 +15,7 @@ public class BloomParticle extends SimpleAnimatedParticle {
         this.xd = xd;
         this.yd = yd;
         this.zd = zd;
+        this.friction = 0.78F;
         this.lifetime = (int)(16.0D / (Math.random() * 0.8D + 0.2D));
     }
 

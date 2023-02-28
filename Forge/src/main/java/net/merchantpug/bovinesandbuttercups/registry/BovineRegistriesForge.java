@@ -19,7 +19,7 @@ public class BovineRegistriesForge {
     public static final DeferredRegister<EntityConditionType<?>> ENTITY_CONDITION_TYPE = DeferredRegister.create(BovineRegistryKeys.ENTITY_CONDITION_TYPE_KEY.location(), BovinesAndButtercups.MOD_ID);
     public static final Supplier<IForgeRegistry<EntityConditionType<?>>> ENTITY_CONDITION_TYPE_REGISTRY = ENTITY_CONDITION_TYPE.makeRegistry(() -> new RegistryBuilder<EntityConditionType<?>>().disableSaving().hasTags());
 
-    public static final DeferredRegister<BlockConditionType<?>> BLOCK_CONDITION_TYPE = DeferredRegister.create(BovineRegistryKeys.ENTITY_CONDITION_TYPE_KEY.location(), BovinesAndButtercups.MOD_ID);
+    public static final DeferredRegister<BlockConditionType<?>> BLOCK_CONDITION_TYPE = DeferredRegister.create(BovineRegistryKeys.BLOCK_CONDITION_TYPE_KEY.location(), BovinesAndButtercups.MOD_ID);
     public static final Supplier<IForgeRegistry<BlockConditionType<?>>> BLOCK_CONDITION_TYPE_REGISTRY = BLOCK_CONDITION_TYPE.makeRegistry(() -> new RegistryBuilder<BlockConditionType<?>>().disableSaving().hasTags());
 
     public static final DeferredRegister<BiomeConditionType<?>> BIOME_CONDITION_TYPE = DeferredRegister.create(BovineRegistryKeys.BIOME_CONDITION_TYPE_KEY.location(), BovinesAndButtercups.MOD_ID);

@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionType;
+import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
@@ -55,6 +56,11 @@ public class QuiltPlatformHelper implements IPlatformHelper {
     @Override
     public Codec<BlockConditionType<?>> getBlockConditionTypeCodec() {
         return BovineRegistriesQuilt.BLOCK_CONDITION_TYPE.byNameCodec();
+    }
+
+    @Override
+    public Codec<BiomeConditionType<?>> getBiomeConditionTypeCodec() {
+        return BovineRegistriesQuilt.BIOME_CONDITION_TYPE.byNameCodec();
     }
 
     @Override

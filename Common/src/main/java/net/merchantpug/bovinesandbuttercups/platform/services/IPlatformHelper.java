@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.platform.services;
 
 import com.mojang.serialization.Codec;
+import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
@@ -26,6 +27,8 @@ public interface IPlatformHelper {
     Codec<EntityConditionType<?>> getEntityConditionTypeCodec();
 
     Codec<BlockConditionType<?>> getBlockConditionTypeCodec();
+
+    Codec<BiomeConditionType<?>> getBiomeConditionTypeCodec();
 
     ResourceLocation getCowTypeKey(CowType<?> cowType);
 

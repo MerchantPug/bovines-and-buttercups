@@ -1,6 +1,11 @@
 ### Gameplay
 - Readjusted Limelight Moobloom breeding conditions to utilise Big or Small Dripleaf instead of Azaleas. Oak wood is no longer valid and you should instead use Flowering Azalea Leaves for the condition, you can still use Flowering Azaleas as per normal.
 - Successful breeding particles now have a low random amount of delta applied to them.
+- Buttercup (Poison), Hyacinth (Wither) and Pink Daisy (Strength) nectar lockdown durations have been reduced to 2 minutes. (Previously 3 minutes)
+- Freesia (Water Breathing) and Tropical Blue (Fire Resistance) nectar lockdown durations have been reduced to 8 minutes. (Previously 10 minutes)
+- Snowdrop (Mining Fatigue) nectar lockdown durations has been reduced to 6 minutes. (Previously 10 minutes)
+
+Your existing nectars prior to this update will keep their durations, use them wisely!
 
 ### Data Packing
 - Any Weighted Configured Cow Type field now supports directly passing through a Resource Location.

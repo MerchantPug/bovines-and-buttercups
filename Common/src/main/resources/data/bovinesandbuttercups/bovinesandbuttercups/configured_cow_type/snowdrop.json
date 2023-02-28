@@ -12,7 +12,7 @@
   "nectar_texture": "bovinesandbuttercups:bovinesandbuttercups/item/snowdrop_nectar_bowl",
   "nectar_effect": {
     "effect": "minecraft:mining_fatigue",
-    "duration": 12000
+    "duration": 7200
   },
   "thunder_conversion_types": [
     {

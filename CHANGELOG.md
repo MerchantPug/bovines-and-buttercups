@@ -15,6 +15,9 @@ Your existing nectars prior to this update will keep their durations, use them w
 ### Texture Changes
 - Updated Freesia Moobloom texture spot color.
 
+### Language
+- Added Chinese Traditional language support (#13/#14 - Pancakes0228)
+
 ### Bugfixes
 - Fixed Mojang Textures and No Grass Back built-in resource packs having an outdated path for their textures.
 - [FORGE] Fixed broken built-in resource pack implementation.

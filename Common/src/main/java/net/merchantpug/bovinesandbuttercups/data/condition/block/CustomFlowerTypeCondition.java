@@ -5,16 +5,17 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
-import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
-import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
 public class CustomFlowerTypeCondition extends ConditionConfiguration<BlockInWorld> {
-    public static final MapCodec<CustomFlowerTypeCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            ResourceLocation.CODEC.fieldOf("location").forGetter(CustomFlowerTypeCondition::getLocation)
-    ).apply(builder, CustomFlowerTypeCondition::new));
+    public static MapCodec<CustomFlowerTypeCondition> getCodec(RegistryAccess registryAccess) {
+        return RecordCodecBuilder.mapCodec(builder -> builder.group(
+                ResourceLocation.CODEC.fieldOf("location").forGetter(CustomFlowerTypeCondition::getLocation)
+        ).apply(builder, CustomFlowerTypeCondition::new));
+    }
 
     private final ResourceLocation location;
 

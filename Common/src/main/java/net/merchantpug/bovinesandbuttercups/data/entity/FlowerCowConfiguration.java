@@ -53,7 +53,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
                 BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)).forGetter(FlowerCowConfiguration::getBackGrassConfiguration),
                 ResourceLocation.CODEC.optionalFieldOf("nectar_texture").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarTexture),
                 MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
-                BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
+                BreedingConditionConfiguration.getCodec(frozen).optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
         ).apply(builder, FlowerCowConfiguration::new));
     }
 

@@ -6,6 +6,7 @@ import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConfiguredCondition;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -13,9 +14,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.biome.Biome;
 
 public class BiomeConditionCondition extends ConditionConfiguration<Entity> {
-    public static final MapCodec<BiomeConditionCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            BiomeConfiguredCondition.CODEC.fieldOf("biome_condition").forGetter(BiomeConditionCondition::getBiomeCondition)
-    ).apply(builder, BiomeConditionCondition::new));
+    public static MapCodec<BiomeConditionCondition> getCodec(RegistryAccess registryAccess) {
+        return RecordCodecBuilder.mapCodec(builder -> builder.group(
+                BiomeConfiguredCondition.getCodec(registryAccess).fieldOf("biome_condition").forGetter(BiomeConditionCondition::getBiomeCondition)
+        ).apply(builder, BiomeConditionCondition::new));
+    }
 
     private final ConfiguredCondition<Holder<Biome>, ?, ?> biomeCondition;
 

@@ -1,11 +1,14 @@
 package net.merchantpug.bovinesandbuttercups.api.condition;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.RegistryAccess;
+
+import java.util.function.Function;
 
 public abstract class ConditionType<T, CC extends ConditionConfiguration<T>> {
-    protected Codec<ConfiguredCondition<T, CC, ConditionType<T, CC>>> configuredCodec;
+    protected final Function<RegistryAccess, MapCodec<CC>> codecFunction;
 
-    public Codec<ConfiguredCondition<T, CC, ConditionType<T, CC>>> getCodec() {
-        return configuredCodec;
+    public ConditionType(Function<RegistryAccess, MapCodec<CC>> codecFunction) {
+        this.codecFunction = codecFunction;
     }
 }

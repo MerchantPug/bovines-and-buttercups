@@ -8,13 +8,16 @@ import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomPotBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
 public class CustomPottedMushroomBlockTypeCondition extends ConditionConfiguration<BlockInWorld> {
-    public static final MapCodec<CustomPottedMushroomBlockTypeCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            ResourceLocation.CODEC.fieldOf("location").forGetter(CustomPottedMushroomBlockTypeCondition::getLocation)
-    ).apply(builder, CustomPottedMushroomBlockTypeCondition::new));
+    public static MapCodec<CustomPottedMushroomBlockTypeCondition> getCodec(RegistryAccess registryAccess) {
+        return RecordCodecBuilder.mapCodec(builder -> builder.group(
+                ResourceLocation.CODEC.fieldOf("location").forGetter(CustomPottedMushroomBlockTypeCondition::getLocation)
+        ).apply(builder, CustomPottedMushroomBlockTypeCondition::new));
+    }
 
     private final ResourceLocation location;
 

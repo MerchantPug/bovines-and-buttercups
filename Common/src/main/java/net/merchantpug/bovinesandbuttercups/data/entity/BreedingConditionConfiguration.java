@@ -9,6 +9,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.*;
+import java.util.function.Function;
 
 public class BreedingConditionConfiguration {
     private final double radius;
@@ -24,13 +26,15 @@ public class BreedingConditionConfiguration {
     private final List<BlockPredicate> predicates;
     private final boolean includesAssociatedBlocks;
 
-    public static final Codec<BreedingConditionConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            Codec.DOUBLE.optionalFieldOf("radius", 6.0).forGetter(BreedingConditionConfiguration::getRadius),
-            EntityConfiguredCondition.CODEC.optionalFieldOf("condition").forGetter(BreedingConditionConfiguration::getCondition),
-            EntityConfiguredCondition.CODEC.optionalFieldOf("other_condition").forGetter(BreedingConditionConfiguration::getOtherCondition),
-            Codec.list(BlockPredicate.CODEC).optionalFieldOf("predicates", List.of()).forGetter(BreedingConditionConfiguration::getBlockPredicates),
-            Codec.BOOL.optionalFieldOf("includes_associated_blocks", true).forGetter(BreedingConditionConfiguration::shouldIncludeAssociatedBlocks)
-    ).apply(builder, BreedingConditionConfiguration::new));
+    public static Codec<BreedingConditionConfiguration> getCodec(RegistryAccess registryAccess) {
+        return RecordCodecBuilder.create(builder -> builder.group(
+                Codec.DOUBLE.optionalFieldOf("radius", 6.0).forGetter(BreedingConditionConfiguration::getRadius),
+                EntityConfiguredCondition.getCodec(registryAccess).optionalFieldOf("condition").forGetter(BreedingConditionConfiguration::getCondition),
+                EntityConfiguredCondition.getCodec(registryAccess).optionalFieldOf("other_condition").forGetter(BreedingConditionConfiguration::getOtherCondition),
+                Codec.list(BlockPredicate.CODEC).optionalFieldOf("predicates", List.of()).forGetter(BreedingConditionConfiguration::getBlockPredicates),
+                Codec.BOOL.optionalFieldOf("includes_associated_blocks", true).forGetter(BreedingConditionConfiguration::shouldIncludeAssociatedBlocks)
+        ).apply(builder, BreedingConditionConfiguration::new));
+    }
 
     public BreedingConditionConfiguration(double radius, Optional<ConfiguredCondition<Entity, ?, ?>> condition, Optional<ConfiguredCondition<Entity, ?, ?>> otherCondition, List<BlockPredicate> predicates, boolean includesAssociatedBlocks) {
         this.radius = radius;

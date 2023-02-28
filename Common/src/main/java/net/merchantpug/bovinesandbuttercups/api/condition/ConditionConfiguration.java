@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.api.condition;
 
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.function.Predicate;

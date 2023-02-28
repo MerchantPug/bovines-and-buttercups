@@ -47,7 +47,7 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
                 BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/mooshroom_mycelium.png"), false)).forGetter(MushroomCowConfiguration::getBackGrassConfiguration),
                 Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers),
                 Codec.BOOL.optionalFieldOf("vanilla_spawning_hack", false).forGetter(MushroomCowConfiguration::usesVanillaSpawningHack),
-                BreedingConditionConfiguration.CODEC.optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getBreedingConditions)
+                BreedingConditionConfiguration.getCodec(frozen).optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getBreedingConditions)
         ).apply(builder, MushroomCowConfiguration::new));
     }
 

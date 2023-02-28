@@ -6,7 +6,6 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
-import net.merchantpug.bovinesandbuttercups.content.particle.BloomParticleOptions;
 import net.merchantpug.bovinesandbuttercups.content.particle.ShroomParticleOptions;
 import net.merchantpug.bovinesandbuttercups.data.entity.BreedingConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
@@ -64,9 +63,9 @@ public class MushroomCowChildTypeUtil {
             int random = parent.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
             if (!bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getCondition().isPresent() && randomType.getConfiguration().getColor().isPresent())
-                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(parent, new BloomParticleOptions(randomType.getConfiguration().getColor().get()));
+                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(parent, new ShroomParticleOptions(randomType.getConfiguration().getColor().get()));
             else if (bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getOtherCondition().isPresent() && randomType.getConfiguration().getColor().isPresent())
-                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(other, new BloomParticleOptions(randomType.getConfiguration().getColor().get()));
+                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(other, new ShroomParticleOptions(randomType.getConfiguration().getColor().get()));
             else
                 spawnParticleToBreedPosition(parent, randomType.getConfiguration(), level);
 

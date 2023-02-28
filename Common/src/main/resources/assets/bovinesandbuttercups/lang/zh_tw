@@ -1,0 +1,62 @@
+{
+  "advancements.husbandry.bovinesandbuttercups.prevent_an_effect.title": "狀態免除",
+  "advancements.husbandry.bovinesandbuttercups.prevent_an_effect.description": "使用花蜜避免狀態效果的影響。",
+  "advancements.husbandry.bovinesandbuttercups.lock_an_effect.title": "狀態鎖定",
+  "advancements.husbandry.bovinesandbuttercups.lock_an_effect.description": "使用花蜜鎖定狀態效果的持續時間。",
+  "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.title": "斑斕銀河",
+  "advancements.husbandry.bovinesandbuttercups.mutate_a_moobloom.description": "繁殖出變異的哞花子代。",
+
+  "block.bovinesandbuttercups.buttercup": "毛茛",
+  "block.bovinesandbuttercups.pink_daisy": "粉色雛菊",
+  "block.bovinesandbuttercups.limelight": "水亞木",
+  "block.bovinesandbuttercups.bird_of_paradise": "天堂鳥",
+  "block.bovinesandbuttercups.chargelily": "青百合",
+  "block.bovinesandbuttercups.hyacinth": "風信子",
+  "block.bovinesandbuttercups.snowdrop": "雪花蓮",
+  "block.bovinesandbuttercups.tropical_blue": "熱帶藍",
+  "block.bovinesandbuttercups.freesia": "小蒼蘭",
+  "block.bovinesandbuttercups.potted_buttercup": "毛茛盆栽",
+  "block.bovinesandbuttercups.potted_pink_daisy": "粉色雛菊盆栽",
+  "block.bovinesandbuttercups.potted_limelight": "水亞木盆栽",
+  "block.bovinesandbuttercups.potted_bird_of_paradise": "天堂鳥盆栽",
+  "block.bovinesandbuttercups.potted_chargelily": "青百合盆栽",
+  "block.bovinesandbuttercups.potted_hyacinth": "風信子盆栽",
+  "block.bovinesandbuttercups.potted_snowdrop": "雪花蓮盆栽",
+  "block.bovinesandbuttercups.potted_tropical_blue": "熱帶藍盆栽",
+  "block.bovinesandbuttercups.potted_freesia": "小蒼蘭盆栽",
+
+  "block.bovinesandbuttercups.custom_flower": "未知的花",
+  "block.bovinesandbuttercups.missing_flower": "未知的花",
+  "block.bovinesandbuttercups.custom_mushroom": "未知的蘑菇",
+  "block.bovinesandbuttercups.missing_mushroom": "未知的蘑菇",
+  "block.bovinesandbuttercups.custom_mushroom_block": "未知的蘑菇方塊",
+  "block.bovinesandbuttercups.missing_mushroom_block": "未知的蘑菇方塊",
+  "block.bovinesandbuttercups.custom_potted_flower": "未知的花盆",
+  "block.bovinesandbuttercups.custom_potted_mushroom": "未知的花盆",
+
+  "item.bovinesandbuttercups.nectar_bowl": "花蜜碗",
+  "item.bovinesandbuttercups.moobloom_spawn_egg": "哞花 生怪蛋",
+
+  "entity.bovinesandbuttercups.moobloom": "哞花",
+  "subtitles.entity.moobloom.convert": "哞花轉變",
+  "subtitles.entity.moobloom.eat": "哞花進食",
+  "subtitles.entity.moobloom.milk": "哞花裝桶",
+
+  "effect.bovinesandbuttercups.lockdown": "封鎖",
+
+  "commands.effect.lockdown.success.single": "將封鎖效果給予 %s 的 %s",
+  "commands.effect.lockdown.success.multiple": "將封鎖效果給予 %s 的 %s 目標",
+  "commands.effect.lockdown.failed": "無法為其使用封鎖",
+
+  "tag.bovinesandbuttercups.moobloom_flowers": "哞花之花",
+  "configured_cow_type.bovinesandbuttercups.missing_moobloom.name": "未知",
+
+  "resourcePack.bovinesandbuttercups.mojang.name": "Mojang 紋理",
+  "resourcePack.bovinesandbuttercups.mojang.description": "將哞花恢復為官方材質。",
+  "resourcePack.bovinesandbuttercups.noGrass.name": "沒有草",
+  "resourcePack.bovinesandbuttercups.noGrass.description": "修剪哞花背上的草和菌絲體。",
+  "resourcePack.bovinesandbuttercups.noBuds.name": "沒有花蕾",
+  "resourcePack.bovinesandbuttercups.noBuds.description": "將所有幼牛哞花的花蕾設置為花朵。",
+
+  "bovinesandbuttercups.itemGroup.items": "Bovines and Buttercups"
+}

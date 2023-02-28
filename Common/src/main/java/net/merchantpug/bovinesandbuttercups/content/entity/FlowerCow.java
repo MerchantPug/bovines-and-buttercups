@@ -336,18 +336,35 @@ public class FlowerCow extends Cow {
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> chooseBabyType(LevelAccessor level, FlowerCow otherParent, FlowerCow child) {
         List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
+        boolean bl = false;
 
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(type -> type.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
             ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> flowerCowType = (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType;
             if (flowerCowType.getConfiguration().getBreedingConditions().isEmpty()) continue;
-            if (this.testBreedingBlocks(flowerCowType.getConfiguration(), level))
+            var conditions = flowerCowType.getConfiguration().getBreedingConditions().get();
+
+            if (conditions.getCondition().isPresent() && conditions.getOtherCondition().isPresent() && conditions.getCondition().get().test(this) && conditions.getOtherCondition().get().test(otherParent))
                 eligibleCowTypes.add(flowerCowType);
+            else if (conditions.getOtherCondition().isEmpty() && conditions.getCondition().isPresent() && conditions.getCondition().get().test(this))
+                eligibleCowTypes.add(flowerCowType);
+            else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isPresent() && conditions.getOtherCondition().get().test(otherParent)) {
+                bl = true;
+                eligibleCowTypes.add(flowerCowType);
+            } else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isEmpty() && testBreedingBlocks(flowerCowType.getConfiguration(), level)) {
+                eligibleCowTypes.add(flowerCowType);
+            }
         }
 
         if (!eligibleCowTypes.isEmpty()) {
             int random = this.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
-            this.spawnParticleToBreedPosition(randomType.getConfiguration(), level);
+            if (!bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getCondition().isPresent())
+                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(this, new BloomParticleOptions(randomType.getConfiguration().getColor()));
+            else if (bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getOtherCondition().isPresent())
+                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(otherParent, new BloomParticleOptions(randomType.getConfiguration().getColor()));
+            else
+                spawnParticleToBreedPosition(randomType.getConfiguration(), level);
+
             if (this.getLoveCause() != null && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(this.getFlowerCowType())) && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(otherParent.getFlowerCowType()))) {
                 BovineCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, BovineRegistryUtil.getConfiguredCowTypeKey(randomType));
             }

@@ -22,33 +22,78 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-      {
-        "block_states": [
-          {
-            "Name": "minecraft:sunflower",
-            "Properties": {
-              "half": "upper"
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:block_state",
+              "state": {
+                "Name": "minecraft:sunflower",
+                "Properties": {
+                  "half": "upper"
+                }
+              }
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:dandelion"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_dandelion"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:birch_log"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:birch_wood"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:birch_sapling"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_birch_sapling"
+                }
+              ]
             }
-          }
-        ]
-      },
-      {
-        "blocks": [
-          "minecraft:dandelion",
-          "minecraft:potted_dandelion"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:birch_log",
-          "minecraft:birch_wood",
-          "minecraft:birch_sapling",
-          "minecraft:potted_birch_sapling"
-        ],
-        "operation": "or"
-      }
-    ]
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:buttercup"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:potted_buttercup"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

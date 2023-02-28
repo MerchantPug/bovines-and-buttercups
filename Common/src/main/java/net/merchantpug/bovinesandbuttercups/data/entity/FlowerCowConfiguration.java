@@ -84,6 +84,7 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
         return this.breedingConditions;
     }
 
+
     @Override
     public boolean equals(final Object obj) {
         if (obj == this)

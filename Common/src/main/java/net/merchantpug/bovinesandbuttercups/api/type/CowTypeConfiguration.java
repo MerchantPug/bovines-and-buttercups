@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.api.type;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -54,22 +55,26 @@ public class CowTypeConfiguration {
      */
     public record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
         public static final MapCodec<Settings> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(Settings::cowTexture),
+                ResourceLocation.CODEC.optionalFieldOf("texture_location").forGetter(Settings::cowTexture),
                 Codec.either(TagKey.hashedCodec(Registry.BIOME_REGISTRY), BuiltinRegistries.BIOME.holderByNameCodec()).optionalFieldOf("spawn_biomes")
                         .xmap(tagKeyBiomeEither ->
-                                tagKeyBiomeEither.map(tagKeyBiomeEither1 -> tagKeyBiomeEither1.map(BuiltinRegistries.BIOME::getOrCreateTag, biome -> (HolderSet<Biome>)HolderSet.direct(biome))),
+                                tagKeyBiomeEither.map(tagKey -> tagKey.map(BuiltinRegistries.BIOME::getOrCreateTag, biome -> (HolderSet<Biome>)HolderSet.direct(biome))),
                                 biomes -> biomes.map(holders -> holders.unwrap().mapBoth(tagKey -> tagKey, holders1 -> holders1.get(0)))).forGetter(Settings::biomes),
                 Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(Settings::naturalSpawnWeight),
-                Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").orElseGet(Optional::empty).forGetter(Settings::thunderConverts)
+                Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").forGetter(Settings::thunderConverts)
         ).apply(instance, Settings::new));
     }
 
     public record WeightedConfiguredCowType(ResourceLocation configuredCowTypeResource,
                                             int weight) {
-        public static final Codec<WeightedConfiguredCowType> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+        public static final Codec<WeightedConfiguredCowType> DIRECT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
                 ResourceLocation.CODEC.fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowTypeResource),
                 Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
         ).apply(builder, WeightedConfiguredCowType::new));
+
+        public static final Codec<WeightedConfiguredCowType> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
+                .xmap(objectResourceLocationEither -> objectResourceLocationEither.map(o -> o, location -> new WeightedConfiguredCowType(location, 1)), Either::left);
+
 
         public Optional<ConfiguredCowType<?, ?>> getConfiguredCowType() {
             if (!BovineRegistryUtil.isConfiguredCowTypeInRegistry(configuredCowTypeResource())) {

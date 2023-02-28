@@ -26,13 +26,21 @@ public class MushroomTypeReloadListener extends SimpleJsonResourceReloadListener
         MushroomTypeRegistry.clear();
         jsonElements.forEach((location, jsonElement) -> {
             try {
-                var mushroomType = MushroomType.CODEC.codec().parse(JsonOps.INSTANCE, jsonElement)
-                        .getOrThrow(false, s -> BovinesAndButtercups.LOG.error("Could not load mushroom type at location '{}'. (Skipping). {}", location, s));
-                if (MushroomTypeRegistry.containsKey(location) && FlowerTypeRegistry.get(location).loadingPriority() > mushroomType.loadingPriority()) return;
+                var dataResult = MushroomType.CODEC.codec().parse(JsonOps.INSTANCE, jsonElement);
+                var mushroomType = dataResult.resultOrPartial(s -> {});
+
+                if (dataResult.error().isPresent()) {
+                    if (mushroomType.isPresent())
+                        BovinesAndButtercups.LOG.warn("Error loading Mushroom Type '{}'. Mushroom Type will only be partially loaded. {}", location, dataResult.error().get().message());
+                    else
+                        BovinesAndButtercups.LOG.warn("Error loading Mushroom Type '{}'. (Skipping). {}", location, dataResult.error().get().message());
+                }
+
+                if (mushroomType.isEmpty() || MushroomTypeRegistry.containsKey(location) && FlowerTypeRegistry.get(location).loadingPriority() > mushroomType.get().loadingPriority()) return;
                 if (MushroomTypeRegistry.containsKey(location))
-                    MushroomTypeRegistry.update(location, mushroomType);
+                    MushroomTypeRegistry.update(location, mushroomType.get());
                 else
-                    MushroomTypeRegistry.register(location, mushroomType);
+                    MushroomTypeRegistry.register(location, mushroomType.get());
             } catch (Exception ex) {
                 BovinesAndButtercups.LOG.error("Could not load mushroom type at location '{}'. (Skipping). {}", location, ex);
             }

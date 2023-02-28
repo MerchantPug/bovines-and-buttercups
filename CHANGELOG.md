@@ -1,3 +1,7 @@
+### Data Packing
+- Any Weighted Configured Cow Type field now supports directly passing through a Resource Location.
+- Updated Breeding Condition systems, please check the documentation at a later date for more information.
+
 ### Texture Changes
 - Updated Freesia Moobloom texture spot color.
 

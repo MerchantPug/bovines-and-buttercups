@@ -14,5 +14,17 @@
   "nectar_effect": {
     "effect": "minecraft:fire_resistance",
     "duration": 12000
+  },
+  "breeding_conditions": {
+    "condition": {
+      "type": "bovinesandbuttercups:entities_in_radius",
+      "radius": 6.0,
+      "entity_conditions": [
+        {
+          "type": "bovinesandbuttercups:entity_type",
+          "location": "minecraft:magma_cube"
+        }
+      ]
+    }
   }
 }

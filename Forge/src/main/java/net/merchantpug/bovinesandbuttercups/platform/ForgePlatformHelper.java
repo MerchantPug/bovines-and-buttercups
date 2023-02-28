@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.mojang.serialization.Codec;
+import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
+import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
@@ -8,7 +10,6 @@ import com.google.auto.service.AutoService;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesForge;
 import net.merchantpug.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
@@ -45,6 +46,16 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public Codec<CowType<?>> getCowTypeCodec() {
         return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.COW_TYPE_REGISTRY.get().getCodec());
+    }
+
+    @Override
+    public Codec<EntityConditionType<?>> getEntityConditionTypeCodec() {
+        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.ENTITY_CONDITION_TYPE_REGISTRY.get().getCodec());
+    }
+
+    @Override
+    public Codec<BlockConditionType<?>> getBlockConditionTypeCodec() {
+        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.BLOCK_CONDITION_TYPE_REGISTRY.get().getCodec());
     }
 
     @Override

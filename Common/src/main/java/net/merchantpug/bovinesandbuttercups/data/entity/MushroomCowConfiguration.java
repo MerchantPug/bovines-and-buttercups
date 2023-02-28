@@ -41,7 +41,7 @@ public class MushroomCowConfiguration extends CowTypeConfiguration {
     public static final Codec<MushroomCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Settings.CODEC.forGetter(MushroomCowConfiguration::getSettings),
             MushroomCowMushroom.CODEC.fieldOf("mushroom").forGetter(MushroomCowConfiguration::getMushroom),
-            Color.CODEC.optionalFieldOf("color").forGetter(MushroomCowConfiguration::getColor),
+            Color.CODEC.optionalFieldOf("color").orElseGet(Optional::empty).forGetter(MushroomCowConfiguration::getColor),
             BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/mooshroom_mycelium.png"), false)).forGetter(MushroomCowConfiguration::getBackGrassConfiguration),
             Codec.BOOL.optionalFieldOf("can_eat_flowers", false).forGetter(MushroomCowConfiguration::canEatFlowers),
             Codec.BOOL.optionalFieldOf("vanilla_spawning_hack", false).forGetter(MushroomCowConfiguration::usesVanillaSpawningHack),

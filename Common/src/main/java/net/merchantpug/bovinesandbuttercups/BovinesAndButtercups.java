@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.merchantpug.bovinesandbuttercups.registry.*;
+import net.merchantpug.bovinesandbuttercups.registry.condition.BovineBlockConditionTypes;
+import net.merchantpug.bovinesandbuttercups.registry.condition.BovineEntityConditionTypes;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -21,6 +23,8 @@ public class BovinesAndButtercups {
         BovineItems.register();
         BovineBlocks.register();
         BovineBlockEntityTypes.register();
+        BovineBlockConditionTypes.register();
+        BovineEntityConditionTypes.register();
         BovineCowTypes.register();
         BovineCriteriaTriggers.register();
         BovineEffects.register();

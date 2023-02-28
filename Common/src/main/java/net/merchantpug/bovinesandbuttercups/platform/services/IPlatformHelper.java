@@ -1,9 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.platform.services;
 
 import com.mojang.serialization.Codec;
+import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
+import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
@@ -21,6 +22,10 @@ public interface IPlatformHelper {
     void registerDefaultConfiguredCowTypes();
 
     Codec<CowType<?>> getCowTypeCodec();
+
+    Codec<EntityConditionType<?>> getEntityConditionTypeCodec();
+
+    Codec<BlockConditionType<?>> getBlockConditionTypeCodec();
 
     ResourceLocation getCowTypeKey(CowType<?> cowType);
 

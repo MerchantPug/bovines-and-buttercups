@@ -1,3 +1,10 @@
+### Data Packing
+- Any Weighted Configured Cow Type field now supports directly passing through a Resource Location.
+- Updated Breeding Condition systems, please check the documentation at a later date for more information.
+
+### Texture Changes
+- Updated Freesia Moobloom texture spot color.
+
 ### Bugfixes
 - Fixed Mojang Textures and No Grass Back built-in resource packs having an outdated path for their textures.
 - [FORGE] Fixed broken built-in resource pack implementation.

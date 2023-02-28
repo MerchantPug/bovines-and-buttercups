@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.api.type;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -68,10 +69,14 @@ public class CowTypeConfiguration {
 
     public record WeightedConfiguredCowType(ResourceLocation configuredCowTypeResource,
                                             int weight) {
-        public static final Codec<WeightedConfiguredCowType> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+        public static final Codec<WeightedConfiguredCowType> DIRECT_CODEC = RecordCodecBuilder.create(builder -> builder.group(
                 ResourceLocation.CODEC.fieldOf("type").forGetter(WeightedConfiguredCowType::configuredCowTypeResource),
                 Codec.INT.optionalFieldOf("weight", 1).forGetter(WeightedConfiguredCowType::weight)
         ).apply(builder, WeightedConfiguredCowType::new));
+
+        public static final Codec<WeightedConfiguredCowType> CODEC = Codec.either(DIRECT_CODEC, ResourceLocation.CODEC)
+                .xmap(objectResourceLocationEither -> objectResourceLocationEither.map(o -> o, location -> new WeightedConfiguredCowType(location, 1)), Either::left);
+
 
         public Optional<ConfiguredCowType<?, ?>> getConfiguredCowType() {
             if (!BovineRegistryUtil.isConfiguredCowTypeInRegistry(configuredCowTypeResource())) {

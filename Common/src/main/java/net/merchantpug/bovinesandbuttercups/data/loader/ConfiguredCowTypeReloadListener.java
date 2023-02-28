@@ -26,13 +26,21 @@ public class ConfiguredCowTypeReloadListener extends SimpleJsonResourceReloadLis
         ConfiguredCowTypeRegistry.clear();
         jsonElements.forEach((location, jsonElement) -> {
             try {
-                var configuredCowType = ConfiguredCowType.getServerCodec().parse(JsonOps.INSTANCE, jsonElement)
-                        .getOrThrow(false, (s -> BovinesAndButtercups.LOG.error("Could not load Configured Cow Type at location '{}'. (Skipping). {}", location, s)));
-                if (ConfiguredCowTypeRegistry.containsKey(location) && ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getLoadingPriority() > configuredCowType.getLoadingPriority()) return;
+                var dataResult = ConfiguredCowType.getServerCodec().parse(JsonOps.INSTANCE, jsonElement);
+                var configuredCowType = dataResult.resultOrPartial(BovinesAndButtercups.LOG::error);
+
+                dataResult.error().ifPresent(result -> {
+                    if (configuredCowType.isPresent())
+                        BovinesAndButtercups.LOG.error("Error loading Configured Cow Type '{}'. Configured Cow Type will only be partially loaded. {}", location, result.message());
+                    else
+                        BovinesAndButtercups.LOG.error("Error loading Configured Cow Type '{}'. (Skipping). {}", location, result.message());
+                });
+
+                if (configuredCowType.isEmpty() || ConfiguredCowTypeRegistry.containsKey(location) && ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getLoadingPriority() > configuredCowType.get().getLoadingPriority()) return;
                 if (ConfiguredCowTypeRegistry.containsKey(location))
-                    ConfiguredCowTypeRegistry.update(location, configuredCowType);
+                    ConfiguredCowTypeRegistry.update(location, configuredCowType.get());
                 else
-                    ConfiguredCowTypeRegistry.register(location, configuredCowType);
+                    ConfiguredCowTypeRegistry.register(location, configuredCowType.get());
             } catch (Exception ex) {
                 BovinesAndButtercups.LOG.error("Could not load Configured Cow Type at location '{}'. (Skipping). {}", location, ex);
             }

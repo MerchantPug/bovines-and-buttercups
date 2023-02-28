@@ -6,6 +6,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
+import net.merchantpug.bovinesandbuttercups.content.particle.BloomParticleOptions;
 import net.merchantpug.bovinesandbuttercups.content.particle.ShroomParticleOptions;
 import net.merchantpug.bovinesandbuttercups.data.entity.BreedingConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
@@ -35,13 +36,24 @@ import java.util.*;
 public class MushroomCowChildTypeUtil {
     public static ResourceLocation chooseMooshroomBabyType(MushroomCow parent, MushroomCow other, MushroomCow child, @Nullable Player player) {
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
+        boolean bl = false;
         Level level = parent.level;
 
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(type -> type.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> mushroomCowType = (ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType;
             if (mushroomCowType.getConfiguration().getBreedingConditions().isEmpty()) continue;
-            if (testBreedingBlocks(parent, mushroomCowType.getConfiguration(), level))
+            var conditions = mushroomCowType.getConfiguration().getBreedingConditions().get();
+
+            if (conditions.getCondition().isPresent() && conditions.getOtherCondition().isPresent() && conditions.getCondition().get().test(parent) && conditions.getOtherCondition().get().test(other))
                 eligibleCowTypes.add(mushroomCowType);
+            else if (conditions.getOtherCondition().isEmpty() && conditions.getCondition().isPresent() && conditions.getCondition().get().test(parent))
+                eligibleCowTypes.add(mushroomCowType);
+            else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isPresent() && conditions.getOtherCondition().get().test(other)) {
+                bl = true;
+                eligibleCowTypes.add(mushroomCowType);
+            } else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isEmpty() && testBreedingBlocks(parent, mushroomCowType.getConfiguration(), level)) {
+                eligibleCowTypes.add(mushroomCowType);
+            }
         }
 
 
@@ -51,7 +63,13 @@ public class MushroomCowChildTypeUtil {
         if (!eligibleCowTypes.isEmpty()) {
             int random = parent.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
-            spawnParticleToBreedPosition(parent, randomType.getConfiguration(), level);
+            if (!bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getCondition().isPresent() && randomType.getConfiguration().getColor().isPresent())
+                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(parent, new BloomParticleOptions(randomType.getConfiguration().getColor().get()));
+            else if (bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getOtherCondition().isPresent() && randomType.getConfiguration().getColor().isPresent())
+                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(other, new BloomParticleOptions(randomType.getConfiguration().getColor().get()));
+            else
+                spawnParticleToBreedPosition(parent, randomType.getConfiguration(), level);
+
             ResourceLocation randomTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(randomType);
 
             if (player instanceof ServerPlayer serverPlayer && !randomTypeKey.equals(parentTypeKey) && !randomTypeKey.equals(otherTypeKey)) {

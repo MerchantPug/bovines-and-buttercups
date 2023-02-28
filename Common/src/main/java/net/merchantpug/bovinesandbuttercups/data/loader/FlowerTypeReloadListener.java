@@ -26,13 +26,21 @@ public class FlowerTypeReloadListener extends SimpleJsonResourceReloadListener {
         FlowerTypeRegistry.clear();
         jsonElements.forEach((location, jsonElement) -> {
             try {
-                var flowerType = FlowerType.CODEC.codec().parse(JsonOps.INSTANCE, jsonElement)
-                        .getOrThrow(false, s -> BovinesAndButtercups.LOG.error("Could not load flower type at location '{}'. (Skipping). {}", location, s));
-                if (FlowerTypeRegistry.containsKey(location) && FlowerTypeRegistry.get(location).loadingPriority() > flowerType.loadingPriority()) return;
+                var dataResult = FlowerType.CODEC.codec().parse(JsonOps.INSTANCE, jsonElement);
+                var flowerType = dataResult.resultOrPartial(s -> {});
+
+                if (dataResult.error().isPresent()) {
+                    if (flowerType.isPresent())
+                        BovinesAndButtercups.LOG.warn("Error loading Flower Type '{}'. Flower Type will only be partially loaded. {}", location, dataResult.error().get().message());
+                    else
+                        BovinesAndButtercups.LOG.warn("Error loading Flower Type '{}'. (Skipping). {}", location, dataResult.error().get().message());
+                }
+
+                if (flowerType.isEmpty() || FlowerTypeRegistry.containsKey(location) && FlowerTypeRegistry.get(location).loadingPriority() > flowerType.get().loadingPriority()) return;
                 if (FlowerTypeRegistry.containsKey(location))
-                    FlowerTypeRegistry.update(location, flowerType);
+                    FlowerTypeRegistry.update(location, flowerType.get());
                 else
-                    FlowerTypeRegistry.register(location, flowerType);
+                    FlowerTypeRegistry.register(location, flowerType.get());
             } catch (Exception ex) {
                 BovinesAndButtercups.LOG.error("Could not load flower type at location '{}'. (Skipping). {}", location, ex);
             }

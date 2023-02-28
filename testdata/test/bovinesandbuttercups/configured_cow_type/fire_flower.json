@@ -29,8 +29,8 @@
           ],
           "entity_conditions": [
             {
-              "type": "bovinesandbuttercups:entity_type",
-              "location": "minecraft:magma_cube"
+              "type": "bovinesandbuttercups:predicate",
+              "predicate": "test:is_magma_cube"
             }
           ]
         },

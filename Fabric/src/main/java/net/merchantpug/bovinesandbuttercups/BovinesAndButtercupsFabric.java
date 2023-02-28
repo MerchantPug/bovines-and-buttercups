@@ -66,6 +66,8 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             EffectLockdownCommand.register(dispatcher);
         });
+        ServerLifecycleEvents.SERVER_STARTING.register(BovinesAndButtercups::setServer);
+
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             if (BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.isProvidedBy(entity)) {
                 MushroomCowTypeComponent component = BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity);

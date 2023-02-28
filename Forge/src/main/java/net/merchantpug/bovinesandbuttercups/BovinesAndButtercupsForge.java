@@ -88,6 +88,7 @@ import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -172,6 +173,10 @@ public class BovinesAndButtercupsForge {
             event.addListener(new ConfiguredCowTypeReloadListener());
             event.addListener(new FlowerTypeReloadListener());
             event.addListener(new MushroomTypeReloadListener());
+        });
+
+        eventBus.addListener((ServerAboutToStartEvent event) -> {
+            BovinesAndButtercups.setServer(event.getServer());
         });
 
         eventBus.addListener((OnDatapackSyncEvent event) -> {

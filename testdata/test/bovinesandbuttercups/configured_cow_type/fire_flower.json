@@ -17,42 +17,57 @@
   },
   "breeding_conditions": {
     "condition": {
-      "type": "bovinesandbuttercups:or",
+      "type": "bovinesandbuttercups:and",
       "conditions": [
         {
-          "type": "bovinesandbuttercups:entities_in_radius",
-          "radius": 6.0,
-          "offset": [
-            0,
-            4,
-            0
-          ],
-          "entity_conditions": [
-            {
-              "type": "bovinesandbuttercups:predicate",
-              "predicate": "test:is_magma_cube"
+          "type": "bovinesandbuttercups:not",
+          "condition": {
+            "type": "bovinesandbuttercups:biome_condition",
+            "biome_condition": {
+              "type": "bovinesandbuttercups:biome_location",
+              "location": "#bovinesandbuttercups:has_mooblooms"
             }
-          ]
+          }
         },
         {
-          "type": "bovinesandbuttercups:blocks_in_radius",
-          "radius": 6.0,
-          "offset": [
-            0,
-            4,
-            0
-          ],
-          "block_conditions": [
+          "type": "bovinesandbuttercups:or",
+          "conditions": [
             {
-              "type": "bovinesandbuttercups:or",
-              "conditions": [
+              "type": "bovinesandbuttercups:entities_in_radius",
+              "radius": 6.0,
+              "offset": [
+                0,
+                4,
+                0
+              ],
+              "entity_conditions": [
                 {
-                  "type": "bovinesandbuttercups:custom_flower_type",
-                  "location": "test:fire_flower"
-                },
+                  "type": "bovinesandbuttercups:predicate",
+                  "predicate": "test:is_magma_cube"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:blocks_in_radius",
+              "radius": 6.0,
+              "offset": [
+                0,
+                4,
+                0
+              ],
+              "block_conditions": [
                 {
-                  "type": "bovinesandbuttercups:custom_potted_flower_type",
-                  "location": "test:fire_flower"
+                  "type": "bovinesandbuttercups:or",
+                  "conditions": [
+                    {
+                      "type": "bovinesandbuttercups:custom_flower_type",
+                      "location": "test:fire_flower"
+                    },
+                    {
+                      "type": "bovinesandbuttercups:custom_potted_flower_type",
+                      "location": "test:fire_flower"
+                    }
+                  ]
                 }
               ]
             }

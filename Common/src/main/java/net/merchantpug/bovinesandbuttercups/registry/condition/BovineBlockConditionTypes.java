@@ -35,7 +35,7 @@ public class BovineBlockConditionTypes {
 
     }
 
-    private static <CC extends ConditionConfiguration<BlockInWorld>> RegistryObject<BlockConditionType<CC>> register(String name, Supplier<BlockConditionType<CC>> cowType) {
-        return BLOCK_CONDITION_TYPE.register(name, cowType);
+    private static <CC extends ConditionConfiguration<BlockInWorld>> RegistryObject<BlockConditionType<CC>> register(String name, Supplier<BlockConditionType<CC>> conditionType) {
+        return BLOCK_CONDITION_TYPE.register(name, conditionType);
     }
 }

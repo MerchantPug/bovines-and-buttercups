@@ -62,9 +62,9 @@ public class BovinesAndButtercupsQuilt implements ModInitializer {
 
         BovinesAndButtercups.init();
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            EffectLockdownCommand.register(dispatcher);
-        });
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> EffectLockdownCommand.register(dispatcher));
+        org.quiltmc.qsl.lifecycle.api.event.ServerLifecycleEvents.STARTING.register(BovinesAndButtercups::setServer);
+
         ServerEntityLoadEvents.AFTER_LOAD.register((entity, level) -> {
             if (BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.isProvidedBy(entity)) {
                 MushroomCowTypeComponent component = BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity);

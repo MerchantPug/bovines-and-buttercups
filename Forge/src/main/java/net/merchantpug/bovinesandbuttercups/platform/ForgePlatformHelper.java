@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.mojang.serialization.Codec;
+import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
@@ -56,6 +57,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public Codec<BlockConditionType<?>> getBlockConditionTypeCodec() {
         return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.BLOCK_CONDITION_TYPE_REGISTRY.get().getCodec());
+    }
+
+    @Override
+    public Codec<BiomeConditionType<?>> getBiomeConditionTypeCodec() {
+        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.BIOME_CONDITION_TYPE_REGISTRY.get().getCodec());
     }
 
     @Override

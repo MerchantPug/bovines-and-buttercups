@@ -20,30 +20,93 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-      {
-        "blocks": [
-          "minecraft:melon",
-          "minecraft:melon_stem"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:poppy",
-          "minecraft:potted_poppy"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:acacia_log",
-          "minecraft:acacia_wood",
-          "minecraft:acacia_sapling",
-          "minecraft:potted_acacia_sapling"
-        ],
-        "operation": "or"
-      }
-    ]
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:melon"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:melon_stem"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:poppy"
+
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_poppy"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:acacia_log"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:acacia_wood"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:acacia_sapling"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_acacia_sapling"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:bird_of_paradise"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:potted_bird_of_paradise"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

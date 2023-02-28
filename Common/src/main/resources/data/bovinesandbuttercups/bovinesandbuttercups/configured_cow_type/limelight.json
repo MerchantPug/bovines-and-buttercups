@@ -20,30 +20,94 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-      {
-        "blocks": [
-          "minecraft:moss_block",
-          "minecraft:moss_carpet"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:flowering_azalea",
-          "minecraft:potted_flowering_azalea_bush"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:oak_log",
-          "minecraft:oak_wood",
-          "minecraft:azalea",
-          "minecraft:potted_azalea_bush"
-        ],
-        "operation": "or"
-      }
-    ]
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:moss_block"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:moss_carpet"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:big_dripleaf"
+
+                },
+                {
+                  "type": "bovinesandbuttercups:block_state",
+                  "state": {
+                    "Name": "minecraft:small_dripleaf",
+                    "Properties": {
+                      "half": "upper"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:flowering_azalea_leaves"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:flowering_azalea"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_flowering_azalea_bush"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:limelight"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:potted_limelight"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

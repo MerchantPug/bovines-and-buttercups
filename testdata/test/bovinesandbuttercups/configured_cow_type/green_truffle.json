@@ -13,23 +13,59 @@
       "weight": 1
     }
   ],
+  "color": "#00ff00",
   "can_eat_flowers": true,
   "breeding_conditions": {
-    "predicates": [
-      {
-        "blocks": [
-          "minecraft:green_glazed_terracotta",
-          "minecraft:lime_glazed_terracotta"
-        ],
-        "operation": "and"
-      }
-    ],
-    "particle": {
-      "type": "bovinesandbuttercups:sparkle",
-      "color": [
-        0.0,
-        1.0,
-        0.0
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:block_location",
+              "location": "minecraft:green_glazed_terracotta"
+            },
+            {
+              "type": "bovinesandbuttercups:block_location",
+              "location": "minecraft:lime_glazed_terracotta"
+            }
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:custom_mushroom_type",
+                  "location": "test:green_truffle"
+                },
+                {
+                  "type": "bovinesandbuttercups:custom_mushroom_block_type",
+                  "location": "test:green_truffle"
+                },
+                {
+                  "type": "bovinesandbuttercups:custom_potted_mushroom_type",
+                  "location": "test:green_truffle"
+                }
+              ]
+            }
+          ]
+        }
       ]
     }
   }

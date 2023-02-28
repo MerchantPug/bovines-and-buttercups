@@ -421,7 +421,7 @@ public class FlowerCow extends Cow {
         double value = (1 - (1 / (pos.distanceTo(this.position()) + 1))) / 4;
 
         for (double d = 0.0; d < 1.0; d += value) {
-            ((ServerLevel)this.level).sendParticles(options, Mth.lerp(d, pos.x(), this.position().x()), Mth.lerp(d, pos.y(), this.position().y()), Mth.lerp(d, pos.z(), this.position().z()), 1, 0, 0, 0, 0);
+            ((ServerLevel)this.level).sendParticles(options, Mth.lerp(d, pos.x(), this.position().x()), Mth.lerp(d, pos.y(), this.position().y()), Mth.lerp(d, pos.z(), this.position().z()), 1, 0.05, 0.05,  0.05, 0.01);
         }
     }
 

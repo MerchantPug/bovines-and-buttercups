@@ -20,29 +20,87 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-      {
-        "blocks": [
-          "minecraft:cocoa"
-        ]
-      },
-      {
-        "blocks": [
-          "minecraft:bamboo",
-          "minecraft:bamboo_sapling",
-          "minecraft:potted_bamboo"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:jungle_log",
-          "minecraft:jungle_wood",
-          "minecraft:jungle_sapling",
-          "minecraft:potted_jungle_sapling"
-        ],
-        "operation": "or"
-      }
-    ]
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:block_location",
+              "location": "minecraft:cocoa"
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:bamboo"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:bamboo_sapling"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_bamboo"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:jungle_log"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:jungle_wood"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:jungle_sapling"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_jungle_sapling"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:snowdrop"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:potted_snowdrop"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

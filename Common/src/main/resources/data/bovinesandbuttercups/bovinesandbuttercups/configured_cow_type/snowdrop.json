@@ -20,28 +20,83 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-      {
-        "blocks": [
-          "minecraft:snow_block"
-        ]
-      },
-      {
-        "blocks": [
-          "minecraft:fern",
-          "minecraft:potted_fern"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:spruce_log",
-          "minecraft:spruce_wood",
-          "minecraft:spruce_sapling",
-          "minecraft:potted_spruce_sapling"
-        ],
-        "operation": "or"
-      }
-    ]
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:block_location",
+              "location": "minecraft:snow_block"
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:fern"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_fern"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:spruce_log"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:spruce_wood"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:spruce_sapling"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_spruce_sapling"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:snowdrop"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:potted_snowdrop"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

@@ -17,12 +17,46 @@
   },
   "breeding_conditions": {
     "condition": {
-      "type": "bovinesandbuttercups:entities_in_radius",
-      "radius": 6.0,
-      "entity_conditions": [
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
         {
-          "type": "bovinesandbuttercups:entity_type",
-          "location": "minecraft:magma_cube"
+          "type": "bovinesandbuttercups:entities_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "entity_conditions": [
+            {
+              "type": "bovinesandbuttercups:entity_type",
+              "location": "minecraft:magma_cube"
+            }
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:custom_flower_type",
+                  "location": "test:fire_flower"
+                },
+                {
+                  "type": "bovinesandbuttercups:custom_potted_flower_type",
+                  "location": "test:fire_flower"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

@@ -22,35 +22,96 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-      {
-        "block_states": [
-          {
-            "Name": "minecraft:lilac",
-            "Properties": {
-              "half": "upper"
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:block_state",
+              "state": {
+                "Name": "minecraft:lilac",
+                "Properties": {
+                  "half": "upper"
+                }
+              }
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:allium"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_allium"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:pink_tulip"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_pink_tulip"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:oak_log"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:oak_wood"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:oak_sapling"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_oak_sapling"
+                }
+              ]
             }
-          }
-        ]
-      },
-      {
-        "blocks": [
-          "minecraft:allium",
-          "minecraft:potted_allium",
-          "minecraft:pink_tulip",
-          "minecraft:potted_pink_tulip"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:oak_log",
-          "minecraft:oak_wood",
-          "minecraft:oak_sapling",
-          "minecraft:potted_oak_sapling"
-        ],
-        "operation": "or"
-      }
-    ]
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:buttercup"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:potted_buttercup"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

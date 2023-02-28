@@ -20,28 +20,83 @@
     }
   ],
   "breeding_conditions": {
-    "predicates": [
-      {
-        "blocks": [
-          "minecraft:lily_pad"
-        ]
-      },
-      {
-        "blocks": [
-          "minecraft:blue_orchid",
-          "minecraft:potted_blue_orchid"
-        ],
-        "operation": "or"
-      },
-      {
-        "blocks": [
-          "minecraft:mangrove_log",
-          "minecraft:mangrove_wood",
-          "minecraft:mangrove_propagule",
-          "minecraft:potted_mangrove_propagule"
-        ],
-        "operation": "or"
-      }
-    ]
+    "condition": {
+      "type": "bovinesandbuttercups:or",
+      "conditions": [
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:block_location",
+              "location": "minecraft:lily_pad"
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:blue_orchid"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_blue_orchid"
+                }
+              ]
+            },
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:mangrove_log"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:mangrove_wood"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:mangrove_propagule"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "minecraft:potted_mangrove_propagule"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "bovinesandbuttercups:blocks_in_radius",
+          "radius": 6.0,
+          "offset": [
+            0,
+            4,
+            0
+          ],
+          "block_conditions": [
+            {
+              "type": "bovinesandbuttercups:or",
+              "conditions": [
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:freesia"
+                },
+                {
+                  "type": "bovinesandbuttercups:block_location",
+                  "location": "bovinesandbuttercups:potted_freesia"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   }
 }

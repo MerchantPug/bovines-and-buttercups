@@ -8,10 +8,7 @@ import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityCondition
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.AndConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.OrConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.BiomeConditionConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.BlocksInRadiusConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.EntitiesInRadiusConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.PredicateConditionConfiguration;
+import net.merchantpug.bovinesandbuttercups.data.condition.entity.*;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.RegistrationProvider;
 import net.merchantpug.bovinesandbuttercups.registry.RegistryObject;
@@ -29,6 +26,7 @@ public class BovineEntityConditionTypes {
     public static final RegistryObject<EntityConditionType<BiomeConditionConditionConfiguration>> BIOME_CONDITION = register("biome_condition", () -> new EntityConditionType<>(BiomeConditionConditionConfiguration.CODEC));
     public static final RegistryObject<EntityConditionType<BlocksInRadiusConditionConfiguration>> BLOCKS_IN_RADIUS = register("blocks_in_radius", () -> new EntityConditionType<>(BlocksInRadiusConditionConfiguration.CODEC));
     public static final RegistryObject<EntityConditionType<EntitiesInRadiusConditionConfiguration>> ENTITIES_IN_RADIUS = register("entities_in_radius", () -> new EntityConditionType<>(EntitiesInRadiusConditionConfiguration.CODEC));
+    public static final RegistryObject<EntityConditionType<EntityTypeLocationConditionConfiguration>> ENTITY_TYPE_LOCATION = register("entity_type_location", () -> new EntityConditionType<>(EntityTypeLocationConditionConfiguration.CODEC));
     public static final RegistryObject<EntityConditionType<PredicateConditionConfiguration>> PREDICATE = register("predicate", () -> new EntityConditionType<>(PredicateConditionConfiguration.CODEC));
 
     public static void register() {

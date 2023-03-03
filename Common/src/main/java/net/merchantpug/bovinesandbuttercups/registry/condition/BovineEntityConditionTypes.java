@@ -8,10 +8,7 @@ import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityCondition
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.AndConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.OrConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.BiomeConditionCondition;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.BlocksInRadiusCondition;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.EntitiesInRadiusCondition;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.PredicateCondition;
+import net.merchantpug.bovinesandbuttercups.data.condition.entity.*;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.RegistrationProvider;
 import net.merchantpug.bovinesandbuttercups.registry.RegistryObject;
@@ -29,6 +26,7 @@ public class BovineEntityConditionTypes {
     public static final RegistryObject<EntityConditionType<BiomeConditionCondition>> BIOME_CONDITION = register("biome_condition", () -> new EntityConditionType<>(BiomeConditionCondition::getCodec));
     public static final RegistryObject<EntityConditionType<BlocksInRadiusCondition>> BLOCKS_IN_RADIUS = register("blocks_in_radius", () -> new EntityConditionType<>(BlocksInRadiusCondition::getCodec));
     public static final RegistryObject<EntityConditionType<EntitiesInRadiusCondition>> ENTITIES_IN_RADIUS = register("entities_in_radius", () -> new EntityConditionType<>(EntitiesInRadiusCondition::getCodec));
+    public static final RegistryObject<EntityConditionType<EntityTypeLocationConditionConfiguration>> ENTITY_TYPE_LOCATION = register("entity_type_location", () -> new EntityConditionType<>(EntityTypeLocationConditionConfiguration::getCodec));
     public static final RegistryObject<EntityConditionType<PredicateCondition>> PREDICATE = register("predicate", () -> new EntityConditionType<>(PredicateCondition::getCodec));
 
     public static void register() {

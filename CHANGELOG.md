@@ -3,3 +3,4 @@
 
 ### Bugfixes
 - Exclude `bovinesandbuttercups:not` meta conditions from feedback of `bovinesandbuttercups:blocks_in_radius` and `bovinesandbuttercups:entities_in_radius`.
+- [FORGE] Fixed packet classes causing a crash on Forge servers.

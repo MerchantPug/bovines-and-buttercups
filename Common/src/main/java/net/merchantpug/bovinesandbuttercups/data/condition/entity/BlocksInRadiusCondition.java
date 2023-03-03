@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConfiguredCondition;
+import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.NotConditionConfiguration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
@@ -75,7 +76,7 @@ public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
             BlockState state = parent.level.getBlockState(pos);
             if (state.getShape(parent.level, pos).isEmpty()) continue;
 
-            for (ConfiguredCondition<BlockInWorld, ?, ?> condition : blockConditions) {
+            for (ConfiguredCondition<BlockInWorld, ?, ?> condition : blockConditions.stream().filter(condition -> !(condition.getConfiguration() instanceof NotConditionConfiguration<?>)).collect(Collectors.toSet())) {
                 if (condition.test(new BlockInWorld(parent.level, pos, false)) && (!posMap.containsKey(condition) || pos.distSqr(parent.blockPosition()) < posMap.get(condition).distSqr(parent.blockPosition())))
                     posMap.put(condition, pos.immutable());
             }

@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
+import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.NotConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
@@ -16,6 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
     public static MapCodec<EntitiesInRadiusCondition> getCodec(RegistryAccess registryAccess) {
@@ -46,7 +48,7 @@ public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
         HashMap<ConfiguredCondition<Entity, ?, ?>, Boolean> conditionStates = new HashMap<>();
         entityConditions.forEach(condition -> conditionStates.put(condition, false));
 
-        for (ConfiguredCondition<Entity, ?, ?> condition : entityConditions) {
+        for (ConfiguredCondition<Entity, ?, ?> condition : entityConditions.stream().filter(condition -> !(condition.getConfiguration() instanceof NotConditionConfiguration<Entity>)).collect(Collectors.toSet())) {
             if (entity.level.getEntities(entity, box, condition).stream().findFirst().isPresent())
                 conditionStates.put(condition, true);
         }

@@ -11,6 +11,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BovinePacketHandler {
@@ -30,9 +31,9 @@ public class BovinePacketHandler {
         INSTANCE.registerMessage(i++, SyncMushroomCowTypePacket.class, SyncMushroomCowTypePacket::encode, SyncMushroomCowTypePacket::decode, SyncMushroomCowTypePacket::handle);
     }
 
-    private static <MSG extends BovinePacketS2C> BiConsumer<MSG, Supplier<NetworkEvent.Context>> createCommonS2CHandler(BiConsumer<MSG, Minecraft> handler) {
+    private static <MSG extends BovinePacketS2C> BiConsumer<MSG, Supplier<NetworkEvent.Context>> createCommonS2CHandler(Consumer<MSG> handler) {
         return (msg, ctx) -> {
-            handler.accept(msg, Minecraft.getInstance());
+            handler.accept(msg);
             ctx.get().setPacketHandled(true);
         };
     }

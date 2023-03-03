@@ -83,8 +83,8 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
         return new SyncDatapackContentsPacket(configuredCowTypeMap, flowerTypeMap, mushroomTypeMap);
     }
 
-    public void handle(Minecraft minecraft) {
-        minecraft.execute(() -> {
+    public void handle() {
+        Minecraft.getInstance().execute(() -> {
             ConfiguredCowTypeRegistry.clear();
             configuredCowTypeMap().forEach(ConfiguredCowTypeRegistry::register);
             FlowerTypeRegistry.clear();

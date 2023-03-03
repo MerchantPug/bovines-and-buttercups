@@ -11,14 +11,14 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
-public class PredicateCondition extends ConditionConfiguration<Entity> {
-    public static final MapCodec<PredicateCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            ResourceLocation.CODEC.fieldOf("predicate").forGetter(PredicateCondition::getPredicateLocation)
-    ).apply(builder, PredicateCondition::new));
+public class PredicateConditionConfiguration extends ConditionConfiguration<Entity> {
+    public static final MapCodec<PredicateConditionConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+            ResourceLocation.CODEC.fieldOf("predicate").forGetter(PredicateConditionConfiguration::getPredicateLocation)
+    ).apply(builder, PredicateConditionConfiguration::new));
 
     private final ResourceLocation predicateLocation;
 
-    public PredicateCondition(ResourceLocation predicateLocation) {
+    public PredicateConditionConfiguration(ResourceLocation predicateLocation) {
         this.predicateLocation = predicateLocation;
     }
 

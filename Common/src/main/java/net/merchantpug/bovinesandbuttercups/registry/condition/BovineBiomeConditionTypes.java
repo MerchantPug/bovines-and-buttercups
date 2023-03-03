@@ -4,20 +4,16 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConfiguredCondition;
-import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
-import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.AndConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.ConstantConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.NotConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.OrConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.condition.biome.BiomeLocationCondition;
-import net.merchantpug.bovinesandbuttercups.data.condition.block.*;
+import net.merchantpug.bovinesandbuttercups.data.condition.biome.BiomeLocationConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.RegistrationProvider;
 import net.merchantpug.bovinesandbuttercups.registry.RegistryObject;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
 import java.util.function.Supplier;
 
@@ -28,7 +24,7 @@ public class BovineBiomeConditionTypes {
     public static final RegistryObject<BiomeConditionType<ConstantConditionConfiguration<Holder<Biome>>>> CONSTANT = register("constant", () -> new BiomeConditionType<>(ConstantConditionConfiguration.getCodec(BiomeConfiguredCondition.CODEC)));
     public static final RegistryObject<BiomeConditionType<NotConditionConfiguration<Holder<Biome>>>> NOT = register("not", () -> new BiomeConditionType<>(NotConditionConfiguration.getCodec(BiomeConfiguredCondition.CODEC)));
     public static final RegistryObject<BiomeConditionType<OrConditionConfiguration<Holder<Biome>>>> OR = register("or", () -> new BiomeConditionType<>(OrConditionConfiguration.getCodec(BiomeConfiguredCondition.CODEC)));
-    public static final RegistryObject<BiomeConditionType<BiomeLocationCondition>> BIOME_LOCATION = register("biome_location", () -> new BiomeConditionType<>(BiomeLocationCondition.CODEC));
+    public static final RegistryObject<BiomeConditionType<BiomeLocationConditionConfiguration>> BIOME_LOCATION = register("biome_location", () -> new BiomeConditionType<>(BiomeLocationConditionConfiguration.CODEC));
 
     public static void register() {
 

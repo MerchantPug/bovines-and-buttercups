@@ -12,14 +12,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.biome.Biome;
 
-public class BiomeConditionCondition extends ConditionConfiguration<Entity> {
-    public static final MapCodec<BiomeConditionCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            BiomeConfiguredCondition.CODEC.fieldOf("biome_condition").forGetter(BiomeConditionCondition::getBiomeCondition)
-    ).apply(builder, BiomeConditionCondition::new));
+public class BiomeConditionConditionConfiguration extends ConditionConfiguration<Entity> {
+    public static final MapCodec<BiomeConditionConditionConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+            BiomeConfiguredCondition.CODEC.fieldOf("biome_condition").forGetter(BiomeConditionConditionConfiguration::getBiomeCondition)
+    ).apply(builder, BiomeConditionConditionConfiguration::new));
 
     private final ConfiguredCondition<Holder<Biome>, ?, ?> biomeCondition;
 
-    public BiomeConditionCondition(ConfiguredCondition<Holder<Biome>, ?, ?> biomeCondition) {
+    public BiomeConditionConditionConfiguration(ConfiguredCondition<Holder<Biome>, ?, ?> biomeCondition) {
         this.biomeCondition = biomeCondition;
     }
 

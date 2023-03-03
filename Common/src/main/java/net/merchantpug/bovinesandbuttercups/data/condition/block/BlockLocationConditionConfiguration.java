@@ -10,16 +10,16 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
-public class BlockLocationCondition extends ConditionConfiguration<BlockInWorld> {
-    public static final MapCodec<BlockLocationCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+public class BlockLocationConditionConfiguration extends ConditionConfiguration<BlockInWorld> {
+    public static final MapCodec<BlockLocationConditionConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Codec.either(TagKey.hashedCodec(Registry.BLOCK_REGISTRY), Registry.BLOCK.holderByNameCodec()).fieldOf("location").xmap(tagKeyBlockEither ->
                             tagKeyBlockEither.map(Registry.BLOCK::getOrCreateTag, block ->(HolderSet<Block>)HolderSet.direct(block)),
-                            holders -> holders.unwrap().mapBoth(tagKey -> tagKey, holders1 -> holders1.get(0))).forGetter(BlockLocationCondition::getBlocks)
-    ).apply(builder, BlockLocationCondition::new));
+                            holders -> holders.unwrap().mapBoth(tagKey -> tagKey, holders1 -> holders1.get(0))).forGetter(BlockLocationConditionConfiguration::getBlocks)
+    ).apply(builder, BlockLocationConditionConfiguration::new));
 
     private final HolderSet<Block> blocks;
 
-    public BlockLocationCondition(HolderSet<Block> blocks) {
+    public BlockLocationConditionConfiguration(HolderSet<Block> blocks) {
         this.blocks = blocks;
     }
 

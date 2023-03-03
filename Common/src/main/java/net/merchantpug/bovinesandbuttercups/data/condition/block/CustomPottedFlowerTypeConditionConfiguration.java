@@ -4,21 +4,19 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerPotBlock;
-import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
-public class CustomPottedFlowerTypeCondition extends ConditionConfiguration<BlockInWorld> {
-    public static final MapCodec<CustomPottedFlowerTypeCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            ResourceLocation.CODEC.fieldOf("location").forGetter(CustomPottedFlowerTypeCondition::getLocation)
-    ).apply(builder, CustomPottedFlowerTypeCondition::new));
+public class CustomPottedFlowerTypeConditionConfiguration extends ConditionConfiguration<BlockInWorld> {
+    public static final MapCodec<CustomPottedFlowerTypeConditionConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+            ResourceLocation.CODEC.fieldOf("location").forGetter(CustomPottedFlowerTypeConditionConfiguration::getLocation)
+    ).apply(builder, CustomPottedFlowerTypeConditionConfiguration::new));
 
     private final ResourceLocation location;
 
-    public CustomPottedFlowerTypeCondition(ResourceLocation location) {
+    public CustomPottedFlowerTypeConditionConfiguration(ResourceLocation location) {
         this.location = location;
     }
 

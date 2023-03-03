@@ -11,16 +11,16 @@ import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
-public class BiomeLocationCondition extends ConditionConfiguration<Holder<Biome>> {
-    public static final MapCodec<BiomeLocationCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+public class BiomeLocationConditionConfiguration extends ConditionConfiguration<Holder<Biome>> {
+    public static final MapCodec<BiomeLocationConditionConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
             Codec.either(TagKey.hashedCodec(Registry.BIOME_REGISTRY), BuiltinRegistries.BIOME.holderByNameCodec()).fieldOf("location").xmap(tagKeyBiomeEither ->
                             tagKeyBiomeEither.map(BuiltinRegistries.BIOME::getOrCreateTag, biome ->(HolderSet<Biome>)HolderSet.direct(biome)),
-                    holders -> holders.unwrap().mapBoth(tagKey -> tagKey, holders1 -> holders1.get(0))).forGetter(BiomeLocationCondition::getBiomes)
-    ).apply(builder, BiomeLocationCondition::new));
+                    holders -> holders.unwrap().mapBoth(tagKey -> tagKey, holders1 -> holders1.get(0))).forGetter(BiomeLocationConditionConfiguration::getBiomes)
+    ).apply(builder, BiomeLocationConditionConfiguration::new));
 
     private final HolderSet<Biome> biomes;
 
-    public BiomeLocationCondition(HolderSet<Biome> biomes) {
+    public BiomeLocationConditionConfiguration(HolderSet<Biome> biomes) {
         this.biomes = biomes;
     }
 

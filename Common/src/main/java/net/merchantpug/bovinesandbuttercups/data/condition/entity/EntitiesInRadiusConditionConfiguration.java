@@ -1,42 +1,35 @@
 package net.merchantpug.bovinesandbuttercups.data.condition.entity;
 
-import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
-import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConfiguredCondition;
+import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.NotConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
-    public static final MapCodec<EntitiesInRadiusCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Codec.list(EntityConfiguredCondition.CODEC).fieldOf("entity_conditions").forGetter(EntitiesInRadiusCondition::getConditions),
-            Codec.DOUBLE.fieldOf("radius").forGetter(EntitiesInRadiusCondition::getRadius),
-            Vec3.CODEC.optionalFieldOf("offset").forGetter(EntitiesInRadiusCondition::getOffset)
-    ).apply(builder, EntitiesInRadiusCondition::new));
+public class EntitiesInRadiusConditionConfiguration extends ConditionConfiguration<Entity> {
+    public static final MapCodec<EntitiesInRadiusConditionConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+            Codec.list(EntityConfiguredCondition.CODEC).fieldOf("entity_conditions").forGetter(EntitiesInRadiusConditionConfiguration::getConditions),
+            Codec.DOUBLE.fieldOf("radius").forGetter(EntitiesInRadiusConditionConfiguration::getRadius),
+            Vec3.CODEC.optionalFieldOf("offset").forGetter(EntitiesInRadiusConditionConfiguration::getOffset)
+    ).apply(builder, EntitiesInRadiusConditionConfiguration::new));
 
     private final List<ConfiguredCondition<Entity, ?, ?>> entityConditions;
     private final double radius;
     private final Optional<Vec3> offset;
 
-    public EntitiesInRadiusCondition(List<ConfiguredCondition<Entity, ?, ?>> blockConditions, double radius, Optional<Vec3> offset) {
+    public EntitiesInRadiusConditionConfiguration(List<ConfiguredCondition<Entity, ?, ?>> blockConditions, double radius, Optional<Vec3> offset) {
         this.entityConditions = blockConditions;
         this.radius = radius;
         this.offset = offset;
@@ -52,7 +45,7 @@ public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
         HashMap<ConfiguredCondition<Entity, ?, ?>, Boolean> conditionStates = new HashMap<>();
         entityConditions.forEach(condition -> conditionStates.put(condition, false));
 
-        for (ConfiguredCondition<Entity, ?, ?> condition : entityConditions) {
+        for (ConfiguredCondition<Entity, ?, ?> condition : entityConditions.stream().filter(condition -> !(condition.getConfiguration() instanceof NotConditionConfiguration<Entity>)).collect(Collectors.toSet())) {
             if (entity.level.getEntities(entity, box, condition).stream().findFirst().isPresent())
                 conditionStates.put(condition, true);
         }

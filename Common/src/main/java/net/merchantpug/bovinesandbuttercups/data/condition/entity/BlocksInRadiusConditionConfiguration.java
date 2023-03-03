@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConfiguredCondition;
+import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.NotConditionConfiguration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -21,18 +22,18 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
-    public static final MapCodec<BlocksInRadiusCondition> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
-            Codec.list(BlockConfiguredCondition.CODEC).fieldOf("block_conditions").forGetter(BlocksInRadiusCondition::getConditions),
-            Codec.DOUBLE.fieldOf("radius").forGetter(BlocksInRadiusCondition::getRadius),
-            Vec3.CODEC.optionalFieldOf("offset").forGetter(BlocksInRadiusCondition::getOffset)
-    ).apply(builder, BlocksInRadiusCondition::new));
+public class BlocksInRadiusConditionConfiguration extends ConditionConfiguration<Entity> {
+    public static final MapCodec<BlocksInRadiusConditionConfiguration> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+            Codec.list(BlockConfiguredCondition.CODEC).fieldOf("block_conditions").forGetter(BlocksInRadiusConditionConfiguration::getConditions),
+            Codec.DOUBLE.fieldOf("radius").forGetter(BlocksInRadiusConditionConfiguration::getRadius),
+            Vec3.CODEC.optionalFieldOf("offset").forGetter(BlocksInRadiusConditionConfiguration::getOffset)
+    ).apply(builder, BlocksInRadiusConditionConfiguration::new));
 
     private final List<ConfiguredCondition<BlockInWorld, ?, ?>> blockConditions;
     private final double radius;
     private final Optional<Vec3> offset;
 
-    public BlocksInRadiusCondition(List<ConfiguredCondition<BlockInWorld, ?, ?>> blockConditions, double radius, Optional<Vec3> offset) {
+    public BlocksInRadiusConditionConfiguration(List<ConfiguredCondition<BlockInWorld, ?, ?>> blockConditions, double radius, Optional<Vec3> offset) {
         this.blockConditions = blockConditions;
         this.radius = radius;
         this.offset = offset;
@@ -72,7 +73,7 @@ public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
             BlockState state = parent.level.getBlockState(pos);
             if (state.getShape(parent.level, pos).isEmpty()) continue;
 
-            for (ConfiguredCondition<BlockInWorld, ?, ?> condition : blockConditions) {
+            for (ConfiguredCondition<BlockInWorld, ?, ?> condition : blockConditions.stream().filter(condition -> !(condition.getConfiguration() instanceof NotConditionConfiguration<?>)).collect(Collectors.toSet())) {
                 if (condition.test(new BlockInWorld(parent.level, pos, false)) && (!posMap.containsKey(condition) || pos.distSqr(parent.blockPosition()) < posMap.get(condition).distSqr(parent.blockPosition())))
                     posMap.put(condition, pos.immutable());
             }
@@ -80,6 +81,7 @@ public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
 
         posMap.values().forEach(pos -> {
             VoxelShape shape = parent.level.getBlockState(pos).getShape(parent.level, pos);
+            if (shape.isEmpty()) return;
             AABB blockBox = shape.bounds();
             createParticleTrail(parent, blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), particle);
         });

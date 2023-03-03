@@ -8,10 +8,10 @@ import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityCondition
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.AndConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.OrConditionConfiguration;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.BiomeConditionCondition;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.BlocksInRadiusCondition;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.EntitiesInRadiusCondition;
-import net.merchantpug.bovinesandbuttercups.data.condition.entity.PredicateCondition;
+import net.merchantpug.bovinesandbuttercups.data.condition.entity.BiomeConditionConditionConfiguration;
+import net.merchantpug.bovinesandbuttercups.data.condition.entity.BlocksInRadiusConditionConfiguration;
+import net.merchantpug.bovinesandbuttercups.data.condition.entity.EntitiesInRadiusConditionConfiguration;
+import net.merchantpug.bovinesandbuttercups.data.condition.entity.PredicateConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRegistryKeys;
 import net.merchantpug.bovinesandbuttercups.registry.RegistrationProvider;
 import net.merchantpug.bovinesandbuttercups.registry.RegistryObject;
@@ -26,10 +26,10 @@ public class BovineEntityConditionTypes {
     public static final RegistryObject<EntityConditionType<ConstantConditionConfiguration<Entity>>> CONSTANT = register("constant", () -> new EntityConditionType<>(ConstantConditionConfiguration.getCodec(EntityConfiguredCondition.CODEC)));
     public static final RegistryObject<EntityConditionType<NotConditionConfiguration<Entity>>> NOT = register("not", () -> new EntityConditionType<>(NotConditionConfiguration.getCodec(EntityConfiguredCondition.CODEC)));
     public static final RegistryObject<EntityConditionType<OrConditionConfiguration<Entity>>> OR = register("or", () -> new EntityConditionType<>(OrConditionConfiguration.getCodec(EntityConfiguredCondition.CODEC)));
-    public static final RegistryObject<EntityConditionType<BiomeConditionCondition>> BIOME_CONDITION = register("biome_condition", () -> new EntityConditionType<>(BiomeConditionCondition.CODEC));
-    public static final RegistryObject<EntityConditionType<BlocksInRadiusCondition>> BLOCKS_IN_RADIUS = register("blocks_in_radius", () -> new EntityConditionType<>(BlocksInRadiusCondition.CODEC));
-    public static final RegistryObject<EntityConditionType<EntitiesInRadiusCondition>> ENTITIES_IN_RADIUS = register("entities_in_radius", () -> new EntityConditionType<>(EntitiesInRadiusCondition.CODEC));
-    public static final RegistryObject<EntityConditionType<PredicateCondition>> PREDICATE = register("predicate", () -> new EntityConditionType<>(PredicateCondition.CODEC));
+    public static final RegistryObject<EntityConditionType<BiomeConditionConditionConfiguration>> BIOME_CONDITION = register("biome_condition", () -> new EntityConditionType<>(BiomeConditionConditionConfiguration.CODEC));
+    public static final RegistryObject<EntityConditionType<BlocksInRadiusConditionConfiguration>> BLOCKS_IN_RADIUS = register("blocks_in_radius", () -> new EntityConditionType<>(BlocksInRadiusConditionConfiguration.CODEC));
+    public static final RegistryObject<EntityConditionType<EntitiesInRadiusConditionConfiguration>> ENTITIES_IN_RADIUS = register("entities_in_radius", () -> new EntityConditionType<>(EntitiesInRadiusConditionConfiguration.CODEC));
+    public static final RegistryObject<EntityConditionType<PredicateConditionConfiguration>> PREDICATE = register("predicate", () -> new EntityConditionType<>(PredicateConditionConfiguration.CODEC));
 
     public static void register() {
 

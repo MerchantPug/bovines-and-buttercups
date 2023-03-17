@@ -38,7 +38,7 @@ public class GuiMixin extends GuiComponent {
 
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
             RenderSystem.setShaderTexture(0, BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"));
-            blit(poseStack, k, l, this.getBlitOffset(), 36, 4, 24, 24, 64, 32);
+            blit(poseStack, k, l, 0, 36, 4, 24, 24, 64, 32);
             RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);
         }
     }
@@ -76,7 +76,7 @@ public class GuiMixin extends GuiComponent {
         list.add(() -> {
             RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, a);
-            blit(poseStack, n + 3, o + 3, this.getBlitOffset(), 18, 18, additionalSprite);
+            blit(poseStack, n + 3, o + 3, 0, 18, 18, additionalSprite);
         });
     }
 }

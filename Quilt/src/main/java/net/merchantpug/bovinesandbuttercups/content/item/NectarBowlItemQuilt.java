@@ -1,9 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.content.item;
 
-import io.github.queerbric.inspecio.Inspecio;
-import io.github.queerbric.inspecio.InspecioConfig;
-import io.github.queerbric.inspecio.tooltip.CompoundTooltipComponent;
-import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.LockdownEffectTooltipComponent;
+// TODO: Reintroduce Inspecio compat
+// import io.github.queerbric.inspecio.Inspecio;
+// import io.github.queerbric.inspecio.InspecioConfig;
+// import io.github.queerbric.inspecio.tooltip.CompoundTooltipComponent;
+// import net.merchantpug.bovinesandbuttercups.client.integration.inspecio.LockdownEffectTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +29,8 @@ public class NectarBowlItemQuilt extends NectarBowlItem {
 
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        // TODO: Reintroduce Inspecio compat
+        /*
         if (QuiltLoader.isModLoaded("inspecio")) {
             List<TooltipComponent> components = new ArrayList<>();
             super.getTooltipImage(stack).ifPresent(components::add);
@@ -73,6 +76,7 @@ public class NectarBowlItemQuilt extends NectarBowlItem {
                 return Optional.of(comp);
             }
         }
+         */
         return super.getTooltipImage(stack);
     }
 }

@@ -47,50 +47,52 @@ dependencies {
     annotationProcessor("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+
+    // TODO: Reintroduce JEI once it updates
+    // compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 }
 
 processResources {
 
-    def buildProps = project.properties.clone()
+def buildProps = project.properties.clone()
 
-    filesMatching(['pack.mcmeta']) {
+filesMatching(['pack.mcmeta']) {
 
-        expand buildProps
-    }
+    expand buildProps
+}
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId project.group
-            artifactId project.archivesBaseName
-            version project.version
-            from components.java
-        }
-    }
-
-    repositories {
-        maven {
-            name = "merchantpug"
-            url = "https://maven.merchantpug.net/releases"
-            credentials(PasswordCredentials)
-            authentication {
-                create("basic", BasicAuthentication)
-            }
-        }
+publications {
+    mavenJava(MavenPublication) {
+        groupId project.group
+        artifactId project.archivesBaseName
+        version project.version
+        from components.java
     }
 }
 
-githubRelease {
-    if (System.getenv("GITHUB_TOKEN") == null) return
-    token = System.getenv("GITHUB_TOKEN")
-    owner = gh_owner
-    repo = gh_repo
-    tagName = version
-    targetCommitish = gh_commitish
-    releaseName = "$project.mod_name v$project.version"
-    body {
-        new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+repositories {
+    maven {
+        name = "merchantpug"
+        url = "https://maven.merchantpug.net/releases"
+        credentials(PasswordCredentials)
+        authentication {
+            create("basic", BasicAuthentication)
+        }
     }
+}
+}
+
+githubRelease {
+if (System.getenv("GITHUB_TOKEN") == null) return
+token = System.getenv("GITHUB_TOKEN")
+owner = gh_owner
+repo = gh_repo
+tagName = version
+targetCommitish = gh_commitish
+releaseName = "$project.mod_name v$project.version"
+body {
+    new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+}
 }

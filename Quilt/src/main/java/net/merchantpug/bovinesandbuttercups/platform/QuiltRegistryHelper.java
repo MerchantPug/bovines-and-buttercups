@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.google.auto.service.AutoService;
-import net.fabricmc.fabric.mixin.object.builder.CriteriaAccessor;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.*;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;

@@ -4,7 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio.StatusEffectTooltipComponentAccessor;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent;
+// import io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -22,6 +22,7 @@ import org.joml.Matrix4f;
 
 import java.util.List;
 
+/*
 public class LockdownEffectTooltipComponent extends StatusEffectTooltipComponent {
     private static final ResourceLocation MYSTERY_TEXTURE = new ResourceLocation("inspecio", "textures/mob_effects/mystery.png");
     private static final ResourceLocation LOCKDOWN_TEXTURE = BovinesAndButtercups.asResource("textures/mob_effect/lockdown.png");
@@ -114,3 +115,4 @@ public class LockdownEffectTooltipComponent extends StatusEffectTooltipComponent
         }
     }
 }
+ */

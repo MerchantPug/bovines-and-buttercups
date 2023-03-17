@@ -1,5 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.integration.jei.subtype;
 
+// TODO: Reintroduce JEI compat
+/*
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
@@ -26,3 +28,4 @@ public class CustomFlowerSubtypeInterpreter implements IIngredientSubtypeInterpr
         return IIngredientSubtypeInterpreter.NONE;
     }
 }
+ */

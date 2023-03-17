@@ -15,12 +15,12 @@ public class ModelLocationParticle extends TextureSheetParticle {
     private final float vo;
 
     public ModelLocationParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ResourceLocation location, String variant) {
-        this(level, x, y, z, xSpeed, ySpeed, zSpeed, location, variant, new BlockPos(x, y, z));
+        this(level, x, y, z, xSpeed, ySpeed, zSpeed, location, variant, new BlockPos((int)x, (int)y, (int)z));
     }
 
-    public ModelLocationParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ResourceLocation location, String variant, BlockPos p_172459_) {
+    public ModelLocationParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ResourceLocation location, String variant, BlockPos pos) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
-        this.pos = p_172459_;
+        this.pos = pos;
         this.setSprite(Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(location, variant)).getParticleIcon());
         this.gravity = 1.0F;
         this.rCol = 0.6F;

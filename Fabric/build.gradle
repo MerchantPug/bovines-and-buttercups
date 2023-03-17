@@ -63,8 +63,10 @@ dependencies {
 
     implementation(project(":Common"))
 
+    /* TODO: Reintroduce recipe viewer mods when they update
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
+    */
 
     // modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 
@@ -75,13 +77,11 @@ dependencies {
     modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}") {
         exclude module: 'dev.architectury'
     }
-    modRuntimeOnly "dev.architectury:architectury-fabric:${architectury_version}"
-    */
+    // modRuntimeOnly "dev.architectury:architectury-fabric:${architectury_version}"
+     */
 
-    modCompileOnly "dev.emi:emi:${emi_version}"
+    // modCompileOnly "dev.emi:emi:${emi_version}"
     // modRuntimeOnly "dev.emi:emi:${emi_version}"
-
-    modRuntimeOnly "maven.modrinth:lazydfu:0.1.3"
 }
 
 loom {
@@ -175,7 +175,7 @@ curseforge {
                     requiredDependency project
                 }
 
-                common_optional_deps.split(", ").each { String project ->
+                cf_common_optional_deps.split(", ").each { String project ->
                     optionalDependency project
                 }
 
@@ -206,7 +206,7 @@ modrinth {
             required.project project
         }
 
-        common_optional_deps.split(", ").each { String project ->
+        mr_common_optional_deps.split(", ").each { String project ->
             optional.project project
         }
 

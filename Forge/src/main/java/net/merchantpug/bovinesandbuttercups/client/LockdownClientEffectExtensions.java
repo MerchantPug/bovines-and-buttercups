@@ -63,7 +63,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
 
                 RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, finalAlpha);
-                GuiComponent.blit(poseStack, x + 3, y + 3, gui.getBlitOffset(), 18, 18, additionalSprite);
+                GuiComponent.blit(poseStack, x + 3, y + 3, 0, 18, 18, additionalSprite);
             }
         });
         return false;

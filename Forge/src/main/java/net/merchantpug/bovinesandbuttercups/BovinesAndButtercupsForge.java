@@ -112,7 +112,7 @@ public class BovinesAndButtercupsForge {
             event.registerCreativeModeTab(BovinesAndButtercups.asResource("items"), builder -> builder
                     .title(Component.translatable("bovinesandbuttercups.itemGroup.items"))
                     .icon(() -> new ItemStack(BovineItems.BUTTERCUP.get()))
-                    .displayItems((featureFlagSet, output, bl) -> {
+                    .displayItems((params, output) -> {
                         output.accept(BovineItems.MOOBLOOM_SPAWN_EGG.get());
                         output.accept(BovineItems.FREESIA.get());
                         output.accept(BovineItems.BIRD_OF_PARADISE.get());
@@ -132,7 +132,6 @@ public class BovinesAndButtercupsForge {
         });
         eventBus.addListener((CreativeModeTabEvent.BuildContents event) -> {
             if (event.getTab() == CreativeModeTabs.NATURAL_BLOCKS) {
-
                 event.getEntries().putAfter(new ItemStack(Items.LILY_OF_THE_VALLEY), new ItemStack(BovineItems.FREESIA.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(new ItemStack(BovineItems.FREESIA.get()), new ItemStack(BovineItems.BIRD_OF_PARADISE.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(new ItemStack(BovineItems.BIRD_OF_PARADISE.get()), new ItemStack(BovineItems.BUTTERCUP.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);

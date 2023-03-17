@@ -22,7 +22,8 @@ public class BovinesAndButtercupsFabricMixinPlugin implements IMixinConfigPlugin
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.fabric.emi") && !FabricLoader.getInstance().isModLoaded("emi")) {
+        // TODO: Reintroduce EMI compat
+        if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.fabric.emi") /*&& !FabricLoader.getInstance().isModLoaded("emi")*/) {
             return false;
         }
         return true;

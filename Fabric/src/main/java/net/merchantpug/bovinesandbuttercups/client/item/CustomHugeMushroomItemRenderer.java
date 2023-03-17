@@ -6,6 +6,7 @@ import net.merchantpug.bovinesandbuttercups.client.renderer.item.CustomHugeMushr
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class CustomHugeMushroomItemRenderer implements BuiltinItemRendererRegistry.DynamicItemRenderer {
@@ -14,7 +15,7 @@ public class CustomHugeMushroomItemRenderer implements BuiltinItemRendererRegist
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void render(ItemStack stack, ItemTransforms.TransformType mode, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
+    public void render(ItemStack stack, ItemDisplayContext mode, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         if (!(stack.getItem() instanceof CustomHugeMushroomItem)) return;
         CustomHugeMushroomItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, mode);
     }

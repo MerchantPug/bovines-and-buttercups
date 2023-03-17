@@ -1,10 +1,12 @@
 package net.merchantpug.bovinesandbuttercups.client.integration.emi.recipe;
 
+/*
 import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
+ */
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+/* TODO: Reintroduce EMI compat
 public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecipe {
     public EmiCustomFlowerSuspiciousStewRecipe() {
         super(List.of(
@@ -82,3 +85,4 @@ public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecip
         return stack;
     }
 }
+ */

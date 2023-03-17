@@ -117,11 +117,13 @@ dependencies {
     compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.5-SNAPSHOT:processor'
 
+    /* TODO: Reintroduce JEI when it updates
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     // TODO: For some odd reason the below two lines are necessary to compile, feel free to PR an easier method if you know one.
     testCompileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
     testCompileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    */
 
     // runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
@@ -134,7 +136,7 @@ dependencies {
     runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
     runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
     runtimeOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
-    */
+     */
 }
 
 jar {
@@ -220,7 +222,7 @@ curseforge {
         mainArtifact(jar) {
             displayName = "Forge v$project.version"
             relations {
-                common_optional_deps.split(", ").each { String project ->
+                cf_common_optional_deps.split(", ").each { String project ->
                     optionalDependency project
                 }
             }
@@ -239,7 +241,7 @@ modrinth {
     gameVersions = forge_game_versions.split(", ").toList()
     loaders = [ "forge" ]
     dependencies {
-        common_optional_deps.split(", ").each { String project ->
+        mr_common_optional_deps.split(", ").each { String project ->
             optional.project project
         }
     }

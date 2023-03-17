@@ -4,6 +4,7 @@ import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRecipeSerializers;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -37,7 +38,7 @@ public class CustomFlowerDyeRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer container) {
+    public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
         ItemStack stack = ItemStack.EMPTY;
         ItemStack dyeStack = ItemStack.EMPTY;
 

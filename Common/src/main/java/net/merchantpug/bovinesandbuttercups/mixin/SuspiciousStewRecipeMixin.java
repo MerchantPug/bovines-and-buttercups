@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -14,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(SuspiciousStewRecipe.class)
 public class SuspiciousStewRecipeMixin {
-    @Inject(method = "assemble(Lnet/minecraft/world/inventory/CraftingContainer;)Lnet/minecraft/world/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getItem()Lnet/minecraft/world/item/Item;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$saveCustomFlowerMobEffect(CraftingContainer container, CallbackInfoReturnable<ItemStack> cir, ItemStack stewStack, int i, ItemStack flowerStack) {
+    @Inject(method = "assemble(Lnet/minecraft/world/inventory/CraftingContainer;Lnet/minecraft/core/RegistryAccess;)Lnet/minecraft/world/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getItem()Lnet/minecraft/world/item/Item;", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void bovinesandbuttercups$saveCustomFlowerMobEffect(CraftingContainer container, RegistryAccess access, CallbackInfoReturnable<ItemStack> cir, ItemStack stewStack, int i, ItemStack flowerStack) {
         if (flowerStack.getItem() instanceof CustomFlowerItem) {
             MobEffect effect = CustomFlowerItem.getSuspiciousStewEffect(flowerStack);
             int duration = CustomFlowerItem.getSuspiciousStewDuration(flowerStack);

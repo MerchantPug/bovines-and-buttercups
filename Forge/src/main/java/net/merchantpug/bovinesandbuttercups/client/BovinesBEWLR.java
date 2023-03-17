@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class BovinesBEWLR extends BlockEntityWithoutLevelRenderer {
@@ -21,7 +22,7 @@ public class BovinesBEWLR extends BlockEntityWithoutLevelRenderer {
         super(blockEntityRenderDispatcher, entityModelSet);
     }
 
-    public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
+    public void renderByItem(ItemStack stack, ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay) {
         if (stack.getItem() instanceof CustomFlowerItem) {
             CustomFlowerItemRendererHelper.render(stack, poseStack, bufferSource, light, overlay, transformType);
         } else if (stack.getItem() instanceof CustomMushroomItem) {

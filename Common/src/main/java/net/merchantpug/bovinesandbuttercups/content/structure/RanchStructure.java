@@ -41,7 +41,7 @@ public class RanchStructure extends Structure {
                 case BURY, BEARD_THIN, BEARD_BOX -> 12;
             };
 
-            return structure.maxDistanceFromCenter + (int) distanceModifier > MAX_TOTAL_STRUCTURE_RANGE ? DataResult.error("Structure size including terrain adaptation must not exceed 128") : DataResult.success(structure);
+            return structure.maxDistanceFromCenter + (int) distanceModifier > MAX_TOTAL_STRUCTURE_RANGE ? DataResult.error(() -> "Structure size including terrain adaptation must not exceed 128") : DataResult.success(structure);
         };
     }
 

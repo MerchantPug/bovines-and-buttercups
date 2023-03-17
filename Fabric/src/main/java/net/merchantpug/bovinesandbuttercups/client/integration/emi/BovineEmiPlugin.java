@@ -1,5 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.client.integration.emi;
 
+// TODO: Reintroduce EMI compat
+/*
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -57,3 +59,4 @@ public class BovineEmiPlugin implements EmiPlugin {
         }
     }
 }
+ */

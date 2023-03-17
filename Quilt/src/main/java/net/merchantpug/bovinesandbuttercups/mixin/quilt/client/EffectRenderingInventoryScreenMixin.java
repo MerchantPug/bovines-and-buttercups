@@ -49,7 +49,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
 
         TextureAtlasSprite additionalSprite = mobEffectTextureManager.get(mobEffect1);
         RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
-        InventoryScreen.blit(poseStack, x + (large ? 6 : 7), i + 7, this.getBlitOffset(), 18, 18, additionalSprite);
+        InventoryScreen.blit(poseStack, x + (large ? 6 : 7), i + 7, 0, 18, 18, additionalSprite);
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;)V"), locals = LocalCapture.CAPTURE_FAILHARD)

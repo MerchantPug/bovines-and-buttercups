@@ -1,16 +1,19 @@
 package net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio;
 
-import io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.List;
 
-@Mixin(value = StatusEffectTooltipComponent.class, remap = false)
+@Pseudo
+@Mixin(targets = "io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent", remap = false)
 public interface StatusEffectTooltipComponentAccessor {
+// TODO: Reintroduce Inspecio compat
+/*
     @Accessor(value = "list", remap = false)
     List<MobEffectInstance> bovinesandbuttercups$getList();
 
@@ -25,4 +28,5 @@ public interface StatusEffectTooltipComponentAccessor {
 
     @Invoker(value = "getHiddenTime", remap = false)
     Component bovinesandbuttercups$invokeGetHiddenTime();
+ */
 }

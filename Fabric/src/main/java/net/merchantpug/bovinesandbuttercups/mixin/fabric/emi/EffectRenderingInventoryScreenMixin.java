@@ -31,6 +31,8 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         super(abstractContainerMenu, inventory, component);
     }
 
+    // TODO: Reintroduce EMI compat
+    /*
     @Inject(method = "emi$drawCenteredEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void bovinesandbuttercups$drawCenteredEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfoReturnable<Boolean> cir, Collection<MobEffectInstance> effects, int size, boolean wide, int y, int xOff, int width, int x, MobEffectInstance hovered, int restoreY, Iterator it, MobEffectInstance inst, int ew) {
         if (mouseX >= x && mouseX < x + ew && mouseY >= y && mouseY < y + 32) {
@@ -63,4 +65,5 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         }));
         return newList;
     }
+     */
 }

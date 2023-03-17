@@ -16,7 +16,7 @@ public class BovineCreativeTabs {
     public static CreativeModeTab BOVINES_AND_BUTTERCUPS = FabricItemGroup.builder(BovinesAndButtercups.asResource("items"))
             .title(Component.translatable("bovinesandbuttercups.itemGroup.items"))
             .icon(() -> new ItemStack(BovineItems.BUTTERCUP.get()))
-            .displayItems((featureFlagSet, output, bl) -> {
+            .displayItems((params, output) -> {
                 output.accept(BovineItems.MOOBLOOM_SPAWN_EGG.get());
                 output.accept(BovineItems.FREESIA.get());
                 output.accept(BovineItems.BIRD_OF_PARADISE.get());

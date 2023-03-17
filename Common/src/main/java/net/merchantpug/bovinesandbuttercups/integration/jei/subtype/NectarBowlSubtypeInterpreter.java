@@ -1,5 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.integration.jei.subtype;
 
+// TODO - Reimplement JEI once it updates
+/*
 import mezz.jei.api.ingredients.subtypes.IIngredientSubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
@@ -27,3 +29,4 @@ public class NectarBowlSubtypeInterpreter implements IIngredientSubtypeInterpret
         return IIngredientSubtypeInterpreter.NONE;
     }
 }
+ */

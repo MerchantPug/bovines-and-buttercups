@@ -1,13 +1,15 @@
 package net.merchantpug.bovinesandbuttercups.client.integration.emi;
 
+/*
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
 import dev.emi.emi.api.stack.EmiStack;
+ */
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.client.integration.emi.recipe.EmiCustomFlowerSuspiciousStewRecipe;
+// import net.merchantpug.bovinesandbuttercups.client.integration.emi.recipe.EmiCustomFlowerSuspiciousStewRecipe;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
+/* TODO: Reintroduce EMI compat
 public class BovineEmiPlugin implements EmiPlugin {
     @Override
     public void register(EmiRegistry registry) {
@@ -56,3 +59,4 @@ public class BovineEmiPlugin implements EmiPlugin {
         }
     }
 }
+ */

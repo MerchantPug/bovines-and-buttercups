@@ -1,1 +1,2 @@
+- Updated to 1.19.4.
 - Modified Moobloom textures to no longer use nectar status effects for their eyes' color.

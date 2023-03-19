@@ -22,10 +22,10 @@ public class BovinesAndButtercupsQuiltMixinPlugin implements IMixinConfigPlugin 
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        // TODO: Reintroduce Inspecio and EMI compat
+        // TODO: Reintroduce Inspecio compat
         if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio") /*&& !QuiltLoader.isModLoaded("inspecio")*/) {
             return false;
-        } else if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.emi") /*&& !QuiltLoader.isModLoaded("emi")*/) {
+        } else if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.emi") && !QuiltLoader.isModLoaded("emi")) {
             return false;
         }
         return true;

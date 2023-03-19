@@ -1,6 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.client.integration.emi.recipe;
 
-/*
 import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
@@ -83,4 +82,3 @@ public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecip
         return stack;
     }
 }
- */

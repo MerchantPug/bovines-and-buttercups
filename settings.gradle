@@ -35,5 +35,4 @@ pluginManagement {
 }
 
 rootProject.name = 'bovines-and-buttercups'
-// TODO Reintroduce Forge at a later date
 include("Common", "Fabric", "Forge", "Quilt")

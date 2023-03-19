@@ -194,6 +194,10 @@ curseforge {
                     requiredDependency project
                 }
 
+                common_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+
                 cf_common_optional_deps.split(", ").each { String project ->
                     optionalDependency project
                 }
@@ -222,6 +226,10 @@ modrinth {
     loaders = [ "quilt" ]
     dependencies {
         quilt_required_deps.split(", ").each { String project ->
+            required.project project
+        }
+
+        common_optional_deps.split(", ").each { String project ->
             required.project project
         }
 

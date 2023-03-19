@@ -220,6 +220,10 @@ curseforge {
         mainArtifact(jar) {
             displayName = "Forge v$project.version"
             relations {
+                common_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+
                 cf_common_optional_deps.split(", ").each { String project ->
                     optionalDependency project
                 }
@@ -239,6 +243,10 @@ modrinth {
     gameVersions = forge_game_versions.split(", ").toList()
     loaders = [ "forge" ]
     dependencies {
+        common_optional_deps.split(", ").each { String project ->
+            optional.project project
+        }
+
         mr_common_optional_deps.split(", ").each { String project ->
             optional.project project
         }

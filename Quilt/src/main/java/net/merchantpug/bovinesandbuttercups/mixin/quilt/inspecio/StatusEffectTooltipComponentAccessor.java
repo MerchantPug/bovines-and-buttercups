@@ -12,8 +12,6 @@ import java.util.List;
 @Pseudo
 @Mixin(targets = "io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent", remap = false)
 public interface StatusEffectTooltipComponentAccessor {
-// TODO: Reintroduce Inspecio compat
-/*
     @Accessor(value = "list", remap = false)
     List<MobEffectInstance> bovinesandbuttercups$getList();
 
@@ -28,5 +26,4 @@ public interface StatusEffectTooltipComponentAccessor {
 
     @Invoker(value = "getHiddenTime", remap = false)
     Component bovinesandbuttercups$invokeGetHiddenTime();
- */
 }

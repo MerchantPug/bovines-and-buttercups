@@ -1,6 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio;
 
-// TODO: Reintroduce Inspecio compat
+import io.github.queerbric.inspecio.tooltip.EntityTooltipComponent;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
@@ -9,8 +9,7 @@ import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-// import io.github.queerbric.inspecio.InspecioConfig;
-// import io.github.queerbric.inspecio.tooltip.EntityTooltipComponent;
+import io.github.queerbric.inspecio.InspecioConfig;
 import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -27,10 +26,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.*;
 
 @Pseudo
-@Mixin(targets = "io.github.queerbric.inspecio.tooltip.EntityTooltipComponent", remap = false)
+@Mixin(value = EntityTooltipComponent.class, remap = false)
 public class EntityTooltipComponentMixin {
-// TODO: Reintroduce Inspecio compat
-/*
     @Inject(method = "adjustEntity", at = @At("HEAD"), remap = false)
     private static void bovinesandbuttercups$adjustCowEntities(Entity entity, CompoundTag itemTag, InspecioConfig.EntitiesConfig config, CallbackInfo ci) {
         Level level = Minecraft.getInstance().level;
@@ -102,5 +99,4 @@ public class EntityTooltipComponentMixin {
             }
         }
     }
- */
 }

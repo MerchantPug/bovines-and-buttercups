@@ -175,7 +175,7 @@ curseforge {
                     requiredDependency project
                 }
 
-                common_optional_deps.split(", ").each { String project ->
+                cf_common_optional_deps.split(", ").each { String project ->
                     optionalDependency project
                 }
 
@@ -206,7 +206,7 @@ modrinth {
             required.project project
         }
 
-        common_optional_deps.split(", ").each { String project ->
+        mr_common_optional_deps.split(", ").each { String project ->
             optional.project project
         }
 

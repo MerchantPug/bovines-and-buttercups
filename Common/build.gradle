@@ -48,8 +48,7 @@ dependencies {
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
-    // TODO: Reintroduce JEI once it updates
-    // compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 }
 
 processResources {
@@ -85,14 +84,14 @@ repositories {
 }
 
 githubRelease {
-if (System.getenv("GITHUB_TOKEN") == null) return
-token = System.getenv("GITHUB_TOKEN")
-owner = gh_owner
-repo = gh_repo
-tagName = version
-targetCommitish = gh_commitish
-releaseName = "$project.mod_name v$project.version"
-body {
-    new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
-}
+    if (System.getenv("GITHUB_TOKEN") == null) return
+    token = System.getenv("GITHUB_TOKEN")
+    owner = gh_owner
+    repo = gh_repo
+    tagName = version
+    targetCommitish = gh_commitish
+    releaseName = "$project.mod_name v$project.version"
+    body {
+        new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    }
 }

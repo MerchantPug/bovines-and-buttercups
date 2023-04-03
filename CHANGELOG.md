@@ -1,2 +1,2 @@
-- Updated to 1.19.4.
-- Modified Moobloom textures to no longer use nectar status effects for their eyes' color.
+- Reimplement JEI classes.
+- Fix REI Client Plugin being commented out on Fabric and Forge.

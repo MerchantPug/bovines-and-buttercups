@@ -63,10 +63,8 @@ dependencies {
 
     implementation(project(":Common"))
 
-    /* TODO: Reintroduce JEI once it updates
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
-    */
 
     // modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 
@@ -175,6 +173,10 @@ curseforge {
                     requiredDependency project
                 }
 
+                common_optional_deps.split(", ").each { String project ->
+                    optionalDependency project
+                }
+
                 cf_common_optional_deps.split(", ").each { String project ->
                     optionalDependency project
                 }
@@ -204,6 +206,10 @@ modrinth {
     dependencies {
         fabric_required_deps.split(", ").each { String project ->
             required.project project
+        }
+
+        common_optional_deps.split(", ").each { String project ->
+            optional.project project
         }
 
         mr_common_optional_deps.split(", ").each { String project ->

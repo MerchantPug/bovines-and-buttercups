@@ -1,7 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.integration.jei;
 
-// TODO: Reintroduce JEI compat
-/*
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.recipe.RecipeType;
@@ -43,4 +41,3 @@ public class BovineJeiPlugin implements IModPlugin {
     }
 
 }
- */

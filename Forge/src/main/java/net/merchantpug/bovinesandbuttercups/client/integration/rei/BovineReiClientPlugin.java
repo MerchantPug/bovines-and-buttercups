@@ -1,6 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.client.integration.rei;
 
-/*
 import me.shedaniel.rei.api.client.entry.filtering.base.BasicFilteringRule;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
@@ -84,4 +83,3 @@ public class BovineReiClientPlugin implements REIClientPlugin {
         });
     }
 }
- */

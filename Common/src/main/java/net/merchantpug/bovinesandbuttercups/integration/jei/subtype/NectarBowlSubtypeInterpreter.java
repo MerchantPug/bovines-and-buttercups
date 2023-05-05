@@ -21,7 +21,7 @@ public class NectarBowlSubtypeInterpreter implements IIngredientSubtypeInterpret
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("Source")) {
             ConfiguredCowType<?, ?> configuredCowType = BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(tag.getString("Source")), BovineCowTypes.FLOWER_COW_TYPE.get());
-            if (configuredCowType != configuredCowType.getCowType().getDefaultCowType().getSecond()) {
+            if (configuredCowType != null && configuredCowType != configuredCowType.getCowType().getDefaultCowType().getSecond()) {
                 return tag.getString("Source");
             }
         }

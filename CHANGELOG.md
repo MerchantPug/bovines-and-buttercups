@@ -1,1 +1,2 @@
-- Modified Moobloom textures to no longer use nectar status effects for their eyes' color.
+**Bugfixes**
+- Added null-check to JEI recipes to ensure that they won't crash.

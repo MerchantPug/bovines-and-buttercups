@@ -19,7 +19,7 @@ public class CustomFlowerSubtypeInterpreter implements IIngredientSubtypeInterpr
         CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
         if (compound.contains("Type")) {
             FlowerType flowerType = BovineRegistryUtil.getFlowerTypeFromKey(ResourceLocation.tryParse(compound.getString("Type")));
-            if (!flowerType.equals(FlowerType.MISSING)) {
+            if (flowerType != null && !flowerType.equals(FlowerType.MISSING)) {
                 return compound.getString("Type");
             }
         }

@@ -18,7 +18,7 @@ A new take on the Moobloom and other bovines.
 [[dependencies.bovinesandbuttercups]]
     modId="forge"
     mandatory=true
-    versionRange="[44,)"
+    versionRange="[45.0.23,)"
     ordering="NONE"
     side="BOTH"
 

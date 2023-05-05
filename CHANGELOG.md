@@ -1,2 +1,2 @@
-- Reimplement JEI classes.
-- Fix REI Client Plugin being commented out on Fabric and Forge.
+**Bugfixes**
+- Added null-check to JEI recipes to ensure that they won't crash.

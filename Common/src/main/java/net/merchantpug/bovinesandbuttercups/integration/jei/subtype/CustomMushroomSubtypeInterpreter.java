@@ -19,7 +19,7 @@ public class CustomMushroomSubtypeInterpreter implements IIngredientSubtypeInter
         CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
         if (compound.contains("Type")) {
             MushroomType mushroomType = BovineRegistryUtil.getMushroomTypeFromKey(ResourceLocation.tryParse(compound.getString("Type")));
-            if (!mushroomType.equals(MushroomType.MISSING)) {
+            if (mushroomType != null && !mushroomType.equals(MushroomType.MISSING)) {
                 return compound.getString("Type");
             }
         }

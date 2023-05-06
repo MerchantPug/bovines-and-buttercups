@@ -43,6 +43,8 @@ mixin {
     config "${project.mod_id}.forge.mixins.json"
 }
 
+jarJar.enable()
+
 minecraft {
     mappings channel: 'official', version: minecraft_version
     

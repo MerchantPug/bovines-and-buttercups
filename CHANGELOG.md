@@ -3,3 +3,4 @@
 
 **Forge**
 - Updated required Forge version to fix spawn event changes.
+- Moved Mixin Extras dependency to use JarJar instead of shadow.

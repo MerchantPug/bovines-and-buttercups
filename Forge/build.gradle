@@ -7,33 +7,18 @@ buildscript {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
+
 plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.modrinth.minotaur" version "2.+"
 }
-
 apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = "${artifact_name}-Forge"
-
-configurations {
-    library
-    shade
-    implementation.extendsFrom(shade)
-}
-
-// Used to manually add non-mc libraries to the runtime classpaths found in build/classpath
-// If you have any module issues, check these files to make sure there are no duplicate dependencies
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
 
 mixin {
     add sourceSets.main, "${project.mod_id}-refmap.json"
@@ -41,6 +26,8 @@ mixin {
     config "${project.mod_id}.mixins.json"
     config "${project.mod_id}.forge.mixins.json"
 }
+
+jarJar.enable()
 
 minecraft {
     mappings channel: 'official', version: minecraft_version
@@ -110,9 +97,11 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    shade fg.deobf("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
-    library fg.deobf("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
-    annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
+    jarJar(group: 'com.github.LlamaLad7', name: 'MixinExtras', version: "[${mixin_extras_version},0.2.0)") {
+        jarJar.pin(it, mixin_extras_version)
+    }
+    minecraftLibrary "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
+    annotationProcessor("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
 
     compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.5-SNAPSHOT:processor'
@@ -163,19 +152,7 @@ processResources {
     }
 }
 
-shadowJar {
-    configurations = [project.configurations.shade]
-
-    classifier ''
-    relocate 'com.llamalad7', 'net.merchantpug.shadowed.com.llamalad7'
-
-    finalizedBy 'reobfShadowJar'
-    mergeServiceFiles()
-}
-
-reobf {
-    shadowJar {}
-}
+jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
@@ -183,7 +160,7 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact jar
+            artifact jarJar
         }
     }
 
@@ -198,7 +175,6 @@ publishing {
         }
     }
 }
-
 
 curseforge {
     apiKey = System.getenv("CURSEFORGE_TOKEN")
@@ -217,7 +193,7 @@ curseforge {
             addGameVersion gameVersion
         }
 
-        mainArtifact(jar) {
+        mainArtifact(jarJar) {
             displayName = "Forge v$project.version"
             relations {
                 common_optional_deps.split(", ").each { String project ->
@@ -238,7 +214,7 @@ modrinth {
     versionType = "release"
     versionName = "Forge v$project.version"
     changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
-    uploadFile = jar
+    uploadFile = jarJar
     gameVersions = forge_game_versions.split(", ").toList()
     loaders = [ "forge" ]
     dependencies {

@@ -167,6 +167,10 @@ processResources {
     }
 }
 
+tasks.jarJar.configure {
+    archiveClassifier = ""
+}
+
 reobf {
     jarJar {}
 }

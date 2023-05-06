@@ -167,19 +167,11 @@ processResources {
     }
 }
 
-shadowJar {
-    configurations = [project.configurations.shade]
-
-    classifier ''
-    relocate 'com.llamalad7', 'net.merchantpug.shadowed.com.llamalad7'
-
-    finalizedBy 'reobfShadowJar'
-    mergeServiceFiles()
-}
-
 reobf {
-    shadowJar {}
+    jarJar {}
 }
+
+jar.finalizedBy('reobfJar')
 
 publishing {
     publications {
@@ -187,7 +179,7 @@ publishing {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact jarJar
+            artifact jar
         }
     }
 
@@ -202,7 +194,6 @@ publishing {
         }
     }
 }
-
 
 curseforge {
     apiKey = System.getenv("CURSEFORGE_TOKEN")
@@ -221,7 +212,7 @@ curseforge {
             addGameVersion gameVersion
         }
 
-        mainArtifact(jarJar) {
+        mainArtifact(jar) {
             displayName = "Forge v$project.version"
             relations {
                 common_optional_deps.split(", ").each { String project ->
@@ -243,7 +234,7 @@ modrinth {
     versionType = "release"
     versionName = "Forge v$project.version"
     changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
-    uploadFile = jarJar
+    uploadFile = jar
     gameVersions = forge_game_versions.split(", ").toList()
     loaders = [ "forge" ]
     dependencies {

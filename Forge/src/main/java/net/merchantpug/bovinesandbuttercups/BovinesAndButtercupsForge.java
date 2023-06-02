@@ -17,7 +17,6 @@ import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.MushroomTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
@@ -26,6 +25,7 @@ import net.merchantpug.bovinesandbuttercups.data.loader.FlowerTypeReloadListener
 import net.merchantpug.bovinesandbuttercups.data.loader.MushroomTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
+import net.merchantpug.bovinesandbuttercups.network.s2c.SyncLockdownEffectsPacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
@@ -188,6 +188,12 @@ public class BovinesAndButtercupsForge {
     public void addForgeBusEventListeners() {
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
 
+        eventBus.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
+            if (event.getEntity() instanceof ServerPlayer player) {
+                BovinePacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncLockdownEffectsPacket(player.getId(), player.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects).orElse(Map.of())));
+            }
+        });
+
         eventBus.addListener((AddReloadListenerEvent event) -> {
             event.addListener(new ConfiguredCowTypeReloadListener());
             event.addListener(new FlowerTypeReloadListener());
@@ -298,7 +304,7 @@ public class BovinesAndButtercupsForge {
                         }
                     }
                 });
-                cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(MushroomCowTypeCapabilityImpl::sync);
+                cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(MushroomCowTypeCapability::sync);
             } else if (event.getTarget() instanceof Bee bee && ((BeeAccess) bee).bovinesandbuttercups$getPollinateFlowerCowGoal() == null) {
                 PollinateFlowerCowGoal pollinateGoal = new PollinateFlowerCowGoal(bee);
                 bee.goalSelector.addGoal(4, pollinateGoal);

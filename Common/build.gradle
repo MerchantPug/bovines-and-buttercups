@@ -48,8 +48,7 @@ dependencies {
     compileOnly group: 'org.spongepowered', name:'mixin', version:'0.8.5'
     compileOnly group: 'org.ow2.asm', name: 'asm-tree', version: '9.4'
 
-    compileOnly("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
-    annotationProcessor("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
+    compileOnly(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras_version}"))
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")

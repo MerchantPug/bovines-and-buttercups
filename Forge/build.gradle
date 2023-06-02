@@ -119,8 +119,10 @@ dependencies {
     jarJar(group: 'com.github.LlamaLad7', name: 'MixinExtras', version: "[${mixin_extras_version},0.2.0)") {
         jarJar.pin(it, mixin_extras_version)
     }
-    minecraftLibrary "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
-    annotationProcessor("com.github.LlamaLad7:MixinExtras:${mixin_extras_version}")
+    implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras_version}"))
+    implementation(jarJar("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}")) {
+        jarJar.ranged(it, "[0.2.0-beta.8,)")
+    }
 
     compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.5-SNAPSHOT:processor'

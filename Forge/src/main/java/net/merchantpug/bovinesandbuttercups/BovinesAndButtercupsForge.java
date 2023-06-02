@@ -49,6 +49,7 @@ import net.merchantpug.bovinesandbuttercups.data.loader.FlowerTypeReloadListener
 import net.merchantpug.bovinesandbuttercups.data.loader.MushroomTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
+import net.merchantpug.bovinesandbuttercups.network.s2c.SyncLockdownEffectsPacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowChildTypeUtil;
@@ -168,6 +169,12 @@ public class BovinesAndButtercupsForge {
 
     public void addForgeBusEventListeners() {
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
+
+        eventBus.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
+            if (event.getEntity() instanceof ServerPlayer player) {
+                BovinePacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncLockdownEffectsPacket(player.getId(), player.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects).orElse(Map.of())));
+            }
+        });
 
         eventBus.addListener((AddReloadListenerEvent event) -> {
             event.addListener(new ConfiguredCowTypeReloadListener());

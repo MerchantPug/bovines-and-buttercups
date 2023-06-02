@@ -23,14 +23,6 @@ apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = "${artifact_name}-Forge"
 
-// Used to manually add non-mc libraries to the runtime classpaths found in build/classpath
-// If you have any module issues, check these files to make sure there are no duplicate dependencies
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
-
 mixin {
     add sourceSets.main, "${project.mod_id}-refmap.json"
 

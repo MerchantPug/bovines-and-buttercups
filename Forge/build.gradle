@@ -1,12 +1,15 @@
 buildscript {
     repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
     }
     dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
+
 plugins {
     id 'java'
     id 'eclipse'
@@ -115,11 +118,10 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    jarJar(group: 'com.github.LlamaLad7', name: 'MixinExtras', version: "[${mixin_extras_version},0.2.0)") {
-        jarJar.pin(it, mixin_extras_version)
+    implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras_version}"))
+    implementation(jarJar("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}")) {
+        jarJar.ranged(it, "${mixin_extras_version}")
     }
-    minecraftLibrary "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
-    annotationProcessor "com.github.LlamaLad7:MixinExtras:${mixin_extras_version}"
 
     compileOnly project(":Common")
     annotationProcessor 'org.spongepowered:mixin:0.8.5-SNAPSHOT:processor'
@@ -129,7 +131,6 @@ dependencies {
     // TODO: For some odd reason the below two lines are necessary to compile, feel free to PR an easier method if you know one.
     testCompileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
     testCompileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-
     // runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     // TODO: Use REI API jar once https://github.com/shedaniel/RoughlyEnoughItems/issues/1194 is fixed.

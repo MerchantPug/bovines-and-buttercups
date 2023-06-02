@@ -40,9 +40,6 @@
     ],
     "emi": [
       "net.merchantpug.bovinesandbuttercups.client.integration.emi.BovineEmiPlugin"
-    ],
-    "preLaunch": [
-      "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
     ]
   },
   "custom": {

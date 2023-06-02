@@ -5,3 +5,4 @@
 
 **Bugfixes**
 - Fixed crash due to broken EMI compat.
+- Fixed Lockdown linked effect durations following the old format.

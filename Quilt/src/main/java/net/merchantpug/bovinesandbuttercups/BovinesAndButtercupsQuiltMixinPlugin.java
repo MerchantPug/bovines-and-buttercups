@@ -24,8 +24,6 @@ public class BovinesAndButtercupsQuiltMixinPlugin implements IMixinConfigPlugin 
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.inspecio") && !QuiltLoader.isModLoaded("inspecio")) {
             return false;
-        } else if (mixinClassName.startsWith("net.merchantpug.bovinesandbuttercups.mixin.quilt.emi") && !QuiltLoader.isModLoaded("emi")) {
-            return false;
         }
         return true;
     }

@@ -15,7 +15,6 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.modrinth.minotaur" version "2.+"
 }
@@ -23,12 +22,6 @@ plugins {
 apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = "${artifact_name}-Forge"
-
-configurations {
-    library
-    shade
-    implementation.extendsFrom(shade)
-}
 
 // Used to manually add non-mc libraries to the runtime classpaths found in build/classpath
 // If you have any module issues, check these files to make sure there are no duplicate dependencies

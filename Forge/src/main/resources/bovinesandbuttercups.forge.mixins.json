@@ -9,7 +9,6 @@
     "MushroomCowMixin"
   ],
   "client": [
-    "client.EffectRenderingInventoryScreenMixin",
     "client.GuiMixin"
   ],
   "injectors": {

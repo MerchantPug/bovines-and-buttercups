@@ -124,6 +124,11 @@ dependencies {
     runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
     runtimeOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
      */
+
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
+    // TODO: For some odd reason the below line is necessary to compile, feel free to PR an easier method if you know one.
+    testCompileOnly(fg.deobf("dev.emi:emi-forge:${emi_version}:api"))
+    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
 }
 
 jar {

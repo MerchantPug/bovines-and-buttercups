@@ -95,9 +95,12 @@ repositories {
         url 'https://jitpack.io'
     }
     maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url 'https://maven.terraformersmc.com/'
     }
     maven {
         // location of a maven mirror for JEI files, as a fallback
@@ -139,6 +142,11 @@ dependencies {
     runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
     runtimeOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
     */
+
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
+    // TODO: For some odd reason the below two lines are necessary to compile, feel free to PR an easier method if you know one.
+    testCompileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
+    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
 }
 
 jar {

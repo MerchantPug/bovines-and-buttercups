@@ -1,5 +1,6 @@
-**Bugfixes**
-- Added null-check to JEI subtype interpreters to ensure that they won't break.
+**Compatibility**
+- Update EMI compat to 1.0.1.
+- Internally changed how Lockdown effect description rendering works.
 
-**Forge**
-- Moved Mixin Extras dependency to use JarJar instead of shadow.
+**Bugfixes**
+- Fixed crash due to broken EMI compat.

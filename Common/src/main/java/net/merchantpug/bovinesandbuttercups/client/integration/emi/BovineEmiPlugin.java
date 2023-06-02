@@ -1,9 +1,9 @@
 package net.merchantpug.bovinesandbuttercups.client.integration.emi;
 
-import dev.emi.emi.EmiUtil;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
+import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
@@ -23,10 +23,10 @@ import java.util.List;
 public class BovineEmiPlugin implements EmiPlugin {
     @Override
     public void register(EmiRegistry registry) {
-        EmiStack customFlower = EmiStack.of(BovineItems.CUSTOM_FLOWER.get()).comparison(comparison -> comparison.copy().nbt(true).build());
-        EmiStack customMushroom = EmiStack.of(BovineItems.CUSTOM_MUSHROOM.get()).comparison(comparison -> comparison.copy().nbt(true).build());
-        EmiStack customMushroomBlock = EmiStack.of(BovineItems.CUSTOM_MUSHROOM_BLOCK.get()).comparison(comparison -> comparison.copy().nbt(true).build());
-        EmiStack nectarBowl = EmiStack.of(BovineItems.NECTAR_BOWL.get()).comparison(comparison -> comparison.copy().nbt(true).build());
+        EmiStack customFlower = EmiStack.of(BovineItems.CUSTOM_FLOWER.get()).comparison(Comparison.compareNbt());
+        EmiStack customMushroom = EmiStack.of(BovineItems.CUSTOM_MUSHROOM.get()).comparison(Comparison.compareNbt());
+        EmiStack customMushroomBlock = EmiStack.of(BovineItems.CUSTOM_MUSHROOM_BLOCK.get()).comparison(Comparison.compareNbt());
+        EmiStack nectarBowl = EmiStack.of(BovineItems.NECTAR_BOWL.get()).comparison(Comparison.compareNbt());
 
         registry.addEmiStack(customFlower);
         registry.addEmiStack(customMushroom);
@@ -47,7 +47,7 @@ public class BovineEmiPlugin implements EmiPlugin {
             stack.addTagElement("BlockEntityTag", compoundTag);
 
             if (flowerType.dyeCraftResult().isPresent()) {
-                registry.addRecipe(new EmiCraftingRecipe(List.of(EmiStack.of(stack)), EmiStack.of(flowerType.dyeCraftResult().get().copy()), BovinesAndButtercups.asResource("custom_flower_dye/" + EmiUtil.subId(flowerTypeLocation))));
+                registry.addRecipe(new EmiCraftingRecipe(List.of(EmiStack.of(stack)), EmiStack.of(flowerType.dyeCraftResult().get().copy()), BovinesAndButtercups.asResource("custom_flower_dye/" + flowerTypeLocation.getNamespace() + "/" + flowerTypeLocation.getPath())));
             }
         });
 

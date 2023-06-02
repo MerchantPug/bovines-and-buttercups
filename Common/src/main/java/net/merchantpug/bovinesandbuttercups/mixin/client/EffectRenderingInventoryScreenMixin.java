@@ -59,7 +59,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
                 l += j;
             }
             if (mobEffectInstance != null) {
-                List<Component> list = List.of(this.getEffectName(mobEffectInstance), Component.literal(MobEffectUtil.formatDuration(mobEffectInstance, 1.0F)));
+                List<Component> list = List.of(this.getEffectName(mobEffectInstance), MobEffectUtil.formatDuration(mobEffectInstance, 1.0F));
                 this.renderTooltip(poseStack, list, Optional.empty(), mouseX, mouseY);
             }
         }

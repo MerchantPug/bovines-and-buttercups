@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -13,7 +15,7 @@ import net.minecraft.world.item.Items;
 import java.util.stream.Stream;
 
 public class BovineCreativeTabs {
-    public static CreativeModeTab BOVINES_AND_BUTTERCUPS = FabricItemGroup.builder(BovinesAndButtercups.asResource("items"))
+    public static final CreativeModeTab BOVINES_AND_BUTTERCUPS = FabricItemGroup.builder()
             .title(Component.translatable("bovinesandbuttercups.itemGroup.items"))
             .icon(() -> new ItemStack(BovineItems.BUTTERCUP.get()))
             .displayItems((params, output) -> {
@@ -35,6 +37,7 @@ public class BovineCreativeTabs {
             .build();
 
     public static void register() {
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BovinesAndButtercups.asResource("items"), BOVINES_AND_BUTTERCUPS);
         registerCreativeTabEntries();
     }
 

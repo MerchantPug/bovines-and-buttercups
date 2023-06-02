@@ -17,16 +17,16 @@ public class MutationTrigger extends SimpleCriterionTrigger<MutationTrigger.Trig
     static final ResourceLocation ID = BovinesAndButtercups.asResource("mutation");
 
     @Override
-    protected MutationTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext context) {
+    protected MutationTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext context) {
         List<ResourceLocation> moobloomKeys = new ArrayList<>();
         if (json.has("types")) {
             json.getAsJsonArray("types").forEach(jsonElement -> {
                 moobloomKeys.add(ResourceLocation.tryParse(jsonElement.getAsString()));
             });
         }
-        EntityPredicate.Composite parent = EntityPredicate.Composite.fromJson(json, "parent", context);
-        EntityPredicate.Composite partner = EntityPredicate.Composite.fromJson(json, "partner", context);
-        EntityPredicate.Composite child = EntityPredicate.Composite.fromJson(json, "child", context);
+        ContextAwarePredicate parent = EntityPredicate.fromJson(json, "parent", context);
+        ContextAwarePredicate partner = EntityPredicate.fromJson(json, "partner", context);
+        ContextAwarePredicate child = EntityPredicate.fromJson(json, "child", context);
         return new MutationTrigger.TriggerInstance(player, moobloomKeys, parent, partner, child);
     }
 
@@ -45,11 +45,11 @@ public class MutationTrigger extends SimpleCriterionTrigger<MutationTrigger.Trig
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final List<ResourceLocation> types;
-        private final EntityPredicate.Composite parent;
-        private final EntityPredicate.Composite partner;
-        private final EntityPredicate.Composite child;
+        private final ContextAwarePredicate parent;
+        private final ContextAwarePredicate partner;
+        private final ContextAwarePredicate child;
 
-        public TriggerInstance(EntityPredicate.Composite player, List<ResourceLocation> types, EntityPredicate.Composite parent, EntityPredicate.Composite partner, EntityPredicate.Composite child) {
+        public TriggerInstance(ContextAwarePredicate player, List<ResourceLocation> types, ContextAwarePredicate parent, ContextAwarePredicate partner, ContextAwarePredicate child) {
             super(MutationTrigger.ID, player);
             this.types = types;
             this.parent = parent;
@@ -58,7 +58,7 @@ public class MutationTrigger extends SimpleCriterionTrigger<MutationTrigger.Trig
         }
 
         public boolean matches(LootContext parentContext, LootContext partnerContext, LootContext childContext, ResourceLocation type) {
-            if ((types.isEmpty() || types.contains(type)) && this.child == EntityPredicate.Composite.ANY || childContext != null && this.child.matches(childContext)) {
+            if ((types.isEmpty() || types.contains(type)) && this.child == ContextAwarePredicate.ANY || childContext != null && this.child.matches(childContext)) {
                 return this.parent.matches(parentContext) && this.partner.matches(partnerContext) || this.parent.matches(partnerContext) && this.partner.matches(parentContext);
             }
             return false;

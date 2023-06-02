@@ -136,12 +136,12 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
                     if (ChunkPos.rangeClosed(new ChunkPos(centeredPos), new ChunkPos(centeredPos.offset(template.getSize()))).allMatch((chunkPos) -> level.isLoaded(chunkPos.getWorldPosition()))) {
                         StructurePlaceSettings placeSettings = new StructurePlaceSettings().setRotationPivot(new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2));
                         if (!template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).isEmpty()) {
-                            int minX = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos.getX()).min(Integer::compare).orElseThrow();
-                            int maxX = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos.getX()).max(Integer::compare).orElseThrow();
-                            int minY = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos.getY()).min(Integer::compare).orElseThrow();
-                            int maxY = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos.getY()).max(Integer::compare).orElseThrow();
-                            int minZ = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos.getZ()).min(Integer::compare).orElseThrow();
-                            int maxZ = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos.getZ()).max(Integer::compare).orElseThrow();
+                            int minX = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos().getX()).min(Integer::compare).orElseThrow();
+                            int maxX = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos().getX()).max(Integer::compare).orElseThrow();
+                            int minY = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos().getY()).min(Integer::compare).orElseThrow();
+                            int maxY = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos().getY()).max(Integer::compare).orElseThrow();
+                            int minZ = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos().getZ()).min(Integer::compare).orElseThrow();
+                            int maxZ = template.filterBlocks(centeredPos, placeSettings, BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).stream().map(info -> info.pos().getZ()).max(Integer::compare).orElseThrow();
 
                             if (level.getBlockStates(AABB.of(new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ))).allMatch(bs -> bs.isAir() || bs.is(BlockTags.LEAVES))) {
                                 template.placeInWorld(level, centeredPos, centeredPos, placeSettings, randomSource, 2);

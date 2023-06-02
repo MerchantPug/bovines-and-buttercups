@@ -45,13 +45,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -81,10 +81,10 @@ public class FlowerCow extends Cow {
         super.defineSynchedData();
         ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> naturalSpawnType;
 
-        if (getTotalSpawnWeight(this.getLevel(), this.blockPosition()) > 0) {
-            naturalSpawnType = getMoobloomSpawnTypeDependingOnBiome(this.getLevel(), this.blockPosition(), this.getRandom());
+        if (getTotalSpawnWeight(this.level(), this.blockPosition()) > 0) {
+            naturalSpawnType = getMoobloomSpawnTypeDependingOnBiome(this.level(), this.blockPosition(), this.getRandom());
         } else {
-            naturalSpawnType = getMoobloomSpawnType(this.getLevel(), this.getRandom());
+            naturalSpawnType = getMoobloomSpawnType(this.level(), this.getRandom());
         }
 
         this.entityData.define(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(naturalSpawnType).toString());
@@ -198,7 +198,7 @@ public class FlowerCow extends Cow {
         if (this.isInvulnerableTo(source)) {
             return false;
         }
-        if (bee != null && !this.level.isClientSide()) {
+        if (bee != null && !this.level().isClientSide()) {
             this.setStandingStillForBeeTicks(0);
             bee = null;
         }
@@ -207,11 +207,11 @@ public class FlowerCow extends Cow {
 
     @Override
     public void tick() {
-        if (bee != null && !bee.isAlive() && !this.level.isClientSide()) {
+        if (bee != null && !bee.isAlive() && !this.level().isClientSide()) {
             this.setStandingStillForBeeTicks(0);
             bee = null;
         }
-        if (this.getStandingStillForBeeTicks() > 0 && !this.level.isClientSide())
+        if (this.getStandingStillForBeeTicks() > 0 && !this.level().isClientSide())
             this.setStandingStillForBeeTicks(this.getStandingStillForBeeTicks() - 1);
 
         super.tick();
@@ -220,8 +220,8 @@ public class FlowerCow extends Cow {
         else if (this.getPollinatedResetTicks() <= 0 && this.getTimesPollinated() > 0)
             this.setTimesPollinated(0);
 
-        if (this.getTicksUntilFlowers() > 0 && !this.level.isClientSide && this.age % 8 == 0)
-            ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + this.getBbHeight(), this.position().z(), 1, 0.3, 0.1, 0.2, 0.0);
+        if (this.getTicksUntilFlowers() > 0 && !this.level().isClientSide && this.age % 8 == 0)
+            ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + this.getBbHeight(), this.position().z(), 1, 0.3, 0.1, 0.2, 0.0);
 
         if (this.getStandingStillForBeeTicks() > 0) {
             if (!hasRefreshedDimensionsForLaying) {
@@ -229,7 +229,7 @@ public class FlowerCow extends Cow {
                 ((EntityAccessor)this).bovinesandbuttercups$setEyeHeight(this.getDimensions(this.getPose()).height * 0.85F);
                 hasRefreshedDimensionsForLaying = true;
             }
-            if (!this.level.isClientSide() && this.bee != null)
+            if (!this.level().isClientSide() && this.bee != null)
                 this.getLookControl().setLookAt(bee);
         } else if (hasRefreshedDimensionsForLaying) {
             this.refreshDimensions();
@@ -239,7 +239,7 @@ public class FlowerCow extends Cow {
     }
 
     public void spreadFlowers(boolean boneMealed) {
-        if (this.level.isClientSide) return;
+        if (this.level().isClientSide) return;
 
         BlockState state = null;
         if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent())
@@ -257,24 +257,24 @@ public class FlowerCow extends Cow {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for(int i = 0; i < maxTries; ++i) {
             pos.setWithOffset(this.blockPosition(), random.nextInt(xZScale) - random.nextInt(xZScale), random.nextInt(2) - random.nextInt(2), random.nextInt(xZScale) - random.nextInt(xZScale));
-            if (state.canSurvive(this.level, pos) && this.level.getBlockState(pos).isAir())
+            if (state.canSurvive(this.level(), pos) && this.level().getBlockState(pos).isAir())
                 this.setBlockToFlower(state, pos);
         }
         this.gameEvent(GameEvent.BLOCK_PLACE, this);
     }
 
     public void setBlockToFlower(BlockState state, BlockPos pos) {
-        if (this.level.isClientSide) return;
-        ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D, pos.getY() + 0.3D, pos.getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
+        if (this.level().isClientSide) return;
+        ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5D, pos.getY() + 0.3D, pos.getZ() + 0.5D, 4, 0.2, 0.1, 0.2, 0.0);
         if (state.getBlock() == BovineBlocks.CUSTOM_FLOWER.get() && this.getFlowerCowType().getConfiguration().getFlower().getFlowerType().isPresent()) {
-            this.level.setBlock(pos, state, 3);
-            BlockEntity blockEntity = this.level.getBlockEntity(pos);
+            this.level().setBlock(pos, state, 3);
+            BlockEntity blockEntity = this.level().getBlockEntity(pos);
             if (blockEntity instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
                 customFlowerBlockEntity.setFlowerTypeName(BovineRegistryUtil.getFlowerTypeKey(this.getFlowerCowType().getConfiguration().getFlower().getFlowerType().get()).toString());
                 customFlowerBlockEntity.setChanged();
             }
         } else {
-            this.level.setBlock(pos, state, 3);
+            this.level().setBlock(pos, state, 3);
         }
     }
 
@@ -292,7 +292,7 @@ public class FlowerCow extends Cow {
 
         if (this.getTicksUntilFlowers() > 0)
             this.setTicksUntilFlowers(this.getTicksUntilFlowers() - 1);
-        else if (this.getTimesPollinated() > 2 && this.getTicksUntilFlowers() == 0 && (this.level.getBlockState(this.blockPosition()).getMaterial().isReplaceable() || this.level.getBlockState(this.blockPosition()).getMaterial() == Material.PLANT)) {
+        else if (this.getTimesPollinated() > 2 && this.getTicksUntilFlowers() == 0 && (this.level().getBlockState(this.blockPosition()).is(BlockTags.REPLACEABLE) || this.level().getBlockState(this.blockPosition()).is(BlockTags.DIRT) || this.level().getBlockState(this.blockPosition()).is(Blocks.FARMLAND))) {
             this.spreadFlowers(false);
             this.setPollinatedResetTicks(0);
             this.setTimesPollinated(0);
@@ -307,12 +307,12 @@ public class FlowerCow extends Cow {
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
-                if (!this.level.isClientSide) {
-                    ((ServerLevel) this.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + 1.6D, this.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
+                if (!this.level().isClientSide) {
+                    ((ServerLevel) this.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.position().x(), this.position().y() + 1.6D, this.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
                 }
                 this.spreadFlowers(true);
                 this.playSound(BovineSoundEvents.MOOBLOOM_EAT.get(), 1.0f, (random.nextFloat() * 0.4F) + 0.8F);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             } else if (itemStack.is(Items.BOWL)) {
                 ItemStack itemStack2;
                 itemStack2 = new ItemStack(BovineItems.NECTAR_BOWL.get());
@@ -328,7 +328,7 @@ public class FlowerCow extends Cow {
                 ItemStack itemStack3 = ItemUtils.createFilledResult(itemStack, player, itemStack2, false);
                 player.setItemInHand(hand, itemStack3);
                 this.playSound(BovineSoundEvents.MOOBLOOM_MILK.get(), 1.0f, 1.0f);
-                return InteractionResult.sidedSuccess(this.level.isClientSide);
+                return InteractionResult.sidedSuccess(this.level().isClientSide);
             }
         }
         return super.mobInteract(player, hand);
@@ -350,7 +350,7 @@ public class FlowerCow extends Cow {
             else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isPresent() && conditions.getOtherCondition().get().test(otherParent)) {
                 bl = true;
                 eligibleCowTypes.add(flowerCowType);
-            } else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isEmpty() && testBreedingBlocks(flowerCowType.getConfiguration(), level)) {
+            } else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isEmpty() && testBreedingBlocks(flowerCowType.getConfiguration(), level())) {
                 eligibleCowTypes.add(flowerCowType);
             }
         }
@@ -363,7 +363,7 @@ public class FlowerCow extends Cow {
             else if (bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getOtherCondition().isPresent())
                 randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(otherParent, new BloomParticleOptions(randomType.getConfiguration().getColor()));
             else
-                spawnParticleToBreedPosition(randomType.getConfiguration(), level);
+                spawnParticleToBreedPosition(randomType.getConfiguration(), level());
 
             if (this.getLoveCause() != null && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(this.getFlowerCowType())) && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(otherParent.getFlowerCowType()))) {
                 BovineCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, BovineRegistryUtil.getConfiguredCowTypeKey(randomType));
@@ -386,7 +386,7 @@ public class FlowerCow extends Cow {
 
         AABB box = new AABB(this.blockPosition()).move(0, radius - 1, 0).inflate(radius);
         for (BlockPos pos : BlockPos.betweenClosed((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ)) {
-            BlockState state = level.getBlockState(pos);
+            BlockState state = level().getBlockState(pos);
 
             breedingCondition.get().getBlockPredicates().forEach(blockPredicate -> {
                 if (blockPredicate.operation() != BreedingConditionConfiguration.PredicateOperation.NOT && (blockPredicate.blocks().isPresent() && blockPredicate.blocks().get().contains(state.getBlock()) || blockPredicate.states().isPresent() && blockPredicate.states().get().contains(state)) && (!stateMap.containsKey(state) || pos.distSqr(this.blockPosition()) < stateMap.get(state).distSqr(this.blockPosition()))) {
@@ -400,8 +400,8 @@ public class FlowerCow extends Cow {
                     stateMap.put(state, pos.immutable());
                     break;
                 } else if (configuration.getFlower().getFlowerType().isPresent() &&
-                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get() ||
-                                state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get())) {
+                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level().getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get() ||
+                                state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level().getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;
@@ -410,7 +410,7 @@ public class FlowerCow extends Cow {
         }
 
         stateMap.forEach((state, pos) -> {
-            VoxelShape shape = state.getShape(level, pos);
+            VoxelShape shape = state.getShape(level(), pos);
             if (shape.isEmpty()) return;
             AABB blockBox = shape.bounds();
             createParticleTrail(blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), new BloomParticleOptions(configuration.getColor()));
@@ -421,7 +421,7 @@ public class FlowerCow extends Cow {
         double value = (1 - (1 / (pos.distanceTo(this.position()) + 1))) / 4;
 
         for (double d = 0.0; d < 1.0; d += value) {
-            ((ServerLevel)this.level).sendParticles(options, Mth.lerp(d, pos.x(), this.position().x()), Mth.lerp(d, pos.y(), this.position().y()), Mth.lerp(d, pos.z(), this.position().z()), 1, 0.05, 0.05,  0.05, 0.01);
+            ((ServerLevel)this.level()).sendParticles(options, Mth.lerp(d, pos.x(), this.position().x()), Mth.lerp(d, pos.y(), this.position().y()), Mth.lerp(d, pos.z(), this.position().z()), 1, 0.05, 0.05,  0.05, 0.01);
         }
     }
 
@@ -439,7 +439,7 @@ public class FlowerCow extends Cow {
 
         AABB box = new AABB(this.blockPosition()).move(0, radius - 2, 0).inflate(radius - 1);
         for (BlockPos pos : BlockPos.betweenClosed((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ)) {
-            BlockState state = level.getBlockState(pos);
+            BlockState state = level().getBlockState(pos);
 
             for (Map.Entry<BreedingConditionConfiguration.BlockPredicate, Set<BlockState>> entry : predicateValues.entrySet()) {
                 if (!entry.getValue().contains(state) && (entry.getKey().blocks().isPresent() && entry.getKey().blocks().get().contains(state.getBlock()) || entry.getKey().states().isPresent() && entry.getKey().states().get().contains(state))) {
@@ -452,8 +452,8 @@ public class FlowerCow extends Cow {
                     associatedBlockFound = true;
                     break;
                 } else if (configuration.getFlower().getFlowerType().isPresent() &&
-                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get() ||
-                        state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level.getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get())) {
+                        (state.is(BovineBlocks.CUSTOM_FLOWER.get()) && level().getBlockEntity(pos) instanceof CustomFlowerBlockEntity flowerBlockEntity && flowerBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get() ||
+                        state.is(BovineBlocks.POTTED_CUSTOM_FLOWER.get()) && level().getBlockEntity(pos) instanceof CustomFlowerPotBlockEntity flowerPotBlockEntity && flowerPotBlockEntity.getFlowerType() == configuration.getFlower().getFlowerType().get())) {
                     associatedBlockFound = true;
                     break;
                 }
@@ -564,10 +564,10 @@ public class FlowerCow extends Cow {
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData entityData, @Nullable CompoundTag entityTag) {
         if (entityTag == null || !entityTag.contains("Type")) {
-            if (getTotalSpawnWeight(level, this.blockPosition()) > 0) {
-                this.setFlowerType(getMoobloomSpawnTypeDependingOnBiome(level, this.blockPosition(), this.getRandom()), level);
+            if (getTotalSpawnWeight(level(), this.blockPosition()) > 0) {
+                this.setFlowerType(getMoobloomSpawnTypeDependingOnBiome(level(), this.blockPosition(), this.getRandom()), level());
             } else {
-                this.setFlowerType(getMoobloomSpawnType(level, this.getRandom()), level);
+                this.setFlowerType(getMoobloomSpawnType(level(), this.getRandom()), level());
             }
         }
         return super.finalizeSpawn(level, difficulty, spawnType, entityData, entityTag);
@@ -644,11 +644,11 @@ public class FlowerCow extends Cow {
     public List<ItemStack> xplatformShear(SoundSource category) {
         // Implemented in FlowerCowFabriclike and FlowerCowForge
         List<ItemStack> stacks = new ArrayList<>();
-        this.level.playSound(null, this, BovineSoundEvents.MOOBLOOM_SHEAR.get(), category, 1.0f, 1.0f);
-        if (!this.level.isClientSide) {
-            ((ServerLevel)this.level).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+        this.level().playSound(null, this, BovineSoundEvents.MOOBLOOM_SHEAR.get(), category, 1.0f, 1.0f);
+        if (!this.level().isClientSide) {
+            ((ServerLevel)this.level()).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(0.5), this.getZ(), 1, 0.0, 0.0, 0.0, 0.0);
             this.discard();
-            Cow cowEntity = EntityType.COW.create(this.level);
+            Cow cowEntity = EntityType.COW.create(this.level());
             if (cowEntity != null) {
                 cowEntity.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
                 cowEntity.setHealth(this.getHealth());
@@ -661,7 +661,7 @@ public class FlowerCow extends Cow {
                     cowEntity.setPersistenceRequired();
                 }
                 cowEntity.setInvulnerable(this.isInvulnerable());
-                this.level.addFreshEntity(cowEntity);
+                this.level().addFreshEntity(cowEntity);
                 for (int i = 0; i < 5; ++i) {
                     if (this.getFlowerCowType().getConfiguration().getFlower().blockState().isPresent()) {
                         stacks.add(new ItemStack(this.getFlowerCowType().getConfiguration().getFlower().blockState().get().getBlock()));

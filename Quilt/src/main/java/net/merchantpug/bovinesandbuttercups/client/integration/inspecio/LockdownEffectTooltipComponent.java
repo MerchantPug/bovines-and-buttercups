@@ -8,7 +8,7 @@ import io.github.queerbric.inspecio.tooltip.StatusEffectTooltipComponent;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -63,29 +63,22 @@ public class LockdownEffectTooltipComponent extends StatusEffectTooltipComponent
         return ((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getHidden() ? 30 : 10 + ((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getList().size() * 20;
     }
 
-    public void renderImage(Font textRenderer, int x, int y, PoseStack matrices, ItemRenderer itemRenderer) {
+    public void renderImage(Font textRenderer, int x, int y, GuiGraphics graphics, ItemRenderer itemRenderer) {
         Minecraft client = Minecraft.getInstance();
         MobEffectTextureManager mobEffectTextureManager = client.getMobEffectTextures();
         List<MobEffectInstance> statusEffectList = ((StatusEffectTooltipComponentAccessor) this).bovinesandbuttercups$getList();
 
         if (((StatusEffectTooltipComponentAccessor)this).bovinesandbuttercups$getHidden()) {
-            RenderSystem.setShaderTexture(0, MYSTERY_TEXTURE);
-            GuiComponent.blit(matrices, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
-
-            RenderSystem.setShaderTexture(0, LOCKDOWN_TEXTURE);
-            GuiComponent.blit(matrices, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
+            graphics.blit(MYSTERY_TEXTURE, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
+            graphics.blit(LOCKDOWN_TEXTURE, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
         } else if (!statusEffectList.isEmpty()) {
             int lockdownEffectIndex = Minecraft.getInstance().player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();
 
             MobEffect statusEffect = statusEffectList.get(lockdownEffectIndex).getEffect();
 
             TextureAtlasSprite sprite = mobEffectTextureManager.get(statusEffect);
-
-            RenderSystem.setShaderTexture(0, sprite.atlasLocation());
-            GuiComponent.blit(matrices, x, y, 0, 18, 18, sprite);
-
-            RenderSystem.setShaderTexture(0, LOCKDOWN_TEXTURE);
-            GuiComponent.blit(matrices, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
+            graphics.blit(x, y, 0, 18, 18, sprite);
+            graphics.blit(LOCKDOWN_TEXTURE, x, y, 0.0F, 0.0F, 18, 18, 18, 18);
         }
     }
 

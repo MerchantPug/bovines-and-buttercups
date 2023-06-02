@@ -56,7 +56,7 @@ public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
             Set<? extends ConfiguredCondition<BlockInWorld, ?, ?>> conditions = conditionStates.entrySet().stream().filter(entry -> !entry.getValue()).map(Map.Entry::getKey).collect(Collectors.toSet());
 
             for (ConfiguredCondition<BlockInWorld, ?, ?> condition : conditions) {
-                conditionStates.put(condition, condition.test(new BlockInWorld(entity.level, pos, false)));
+                conditionStates.put(condition, condition.test(new BlockInWorld(entity.level(), pos, false)));
             }
         }
 
@@ -73,17 +73,17 @@ public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
         HashMap<ConfiguredCondition<BlockInWorld, ?, ?>, BlockPos> posMap = new HashMap<>();
 
         for (BlockPos pos : BlockPos.betweenClosed((int) box.minX, (int) box.minY, (int) box.minZ, (int) box.maxX, (int) box.maxY, (int) box.maxZ)) {
-            BlockState state = parent.level.getBlockState(pos);
-            if (state.getShape(parent.level, pos).isEmpty()) continue;
+            BlockState state = parent.level().getBlockState(pos);
+            if (state.getShape(parent.level(), pos).isEmpty()) continue;
 
             for (ConfiguredCondition<BlockInWorld, ?, ?> condition : blockConditions.stream().filter(condition -> !(condition.getConfiguration() instanceof NotConditionConfiguration<?>)).collect(Collectors.toSet())) {
-                if (condition.test(new BlockInWorld(parent.level, pos, false)) && (!posMap.containsKey(condition) || pos.distSqr(parent.blockPosition()) < posMap.get(condition).distSqr(parent.blockPosition())))
+                if (condition.test(new BlockInWorld(parent.level(), pos, false)) && (!posMap.containsKey(condition) || pos.distSqr(parent.blockPosition()) < posMap.get(condition).distSqr(parent.blockPosition())))
                     posMap.put(condition, pos.immutable());
             }
         }
 
         posMap.values().forEach(pos -> {
-            VoxelShape shape = parent.level.getBlockState(pos).getShape(parent.level, pos);
+            VoxelShape shape = parent.level().getBlockState(pos).getShape(parent.level(), pos);
             AABB blockBox = shape.bounds();
             createParticleTrail(parent, blockBox.getCenter().add(new Vec3(pos.getX(), pos.getY(), pos.getZ())), particle);
         });
@@ -93,7 +93,7 @@ public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
         double value = (1 - (1 / (pos.distanceTo(parent.position()) + 1))) / 4;
 
         for (double d = 0.0; d < 1.0; d += value) {
-            ((ServerLevel)parent.level).sendParticles(options, Mth.lerp(d, pos.x(), parent.position().x()), Mth.lerp(d, pos.y(), parent.position().y()), Mth.lerp(d, pos.z(), parent.position().z()), 1, 0.05, 0.05, 0.05, 0.01);
+            ((ServerLevel)parent.level()).sendParticles(options, Mth.lerp(d, pos.x(), parent.position().x()), Mth.lerp(d, pos.y(), parent.position().y()), Mth.lerp(d, pos.z(), parent.position().z()), 1, 0.05, 0.05, 0.05, 0.01);
         }
     }
 

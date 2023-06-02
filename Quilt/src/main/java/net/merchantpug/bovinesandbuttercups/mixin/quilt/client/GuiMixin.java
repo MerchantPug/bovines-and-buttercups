@@ -8,7 +8,7 @@ import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.MobEffectTextureManager;
@@ -29,22 +29,20 @@ import java.util.List;
 import java.util.Map;
 
 @Mixin(Gui.class)
-public class GuiMixin extends GuiComponent {
+public class GuiMixin {
     @Shadow @Final private Minecraft minecraft;
 
-    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$overlayLockdownBorder(PoseStack poseStack, CallbackInfo ci, Collection<MobEffectInstance> collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l) {
+    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics guiGraphics, CallbackInfo ci, Collection<MobEffectInstance> collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l) {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovineEffects.LOCKDOWN.get())) return;
 
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
-            RenderSystem.setShaderTexture(0, BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"));
-            blit(poseStack, k, l, 0, 36, 4, 24, 24, 64, 32);
-            RenderSystem.setShaderTexture(0, AbstractContainerScreen.INVENTORY_LOCATION);
+            guiGraphics.blit(BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"), k, 0, 36, 4, 24, 24, 64, 32);
         }
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(PoseStack poseStack, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l, float f, TextureAtlasSprite sprite, int n, int o, float g) {
+    private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(GuiGraphics guiGraphics, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l, float f, TextureAtlasSprite sprite, int n, int o, float g) {
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
 
         List<Map.Entry<MobEffect, Integer>> statusEffectList = BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().toList();
@@ -74,9 +72,9 @@ public class GuiMixin extends GuiComponent {
         float a = alpha;
 
         list.add(() -> {
-            RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
-            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, a);
-            blit(poseStack, n + 3, o + 3, 0, 18, 18, additionalSprite);
+            guiGraphics.setColor(1.0f, 1.0f, 1.0f, a);
+            guiGraphics.blit(n + 3, o + 3, 0, 18, 18, additionalSprite);
+            guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0F);
         });
     }
 }

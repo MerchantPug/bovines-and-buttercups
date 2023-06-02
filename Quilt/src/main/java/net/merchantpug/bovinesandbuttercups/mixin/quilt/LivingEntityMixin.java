@@ -49,14 +49,14 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "onEffectAdded", at = @At("TAIL"))
     private void bovinesandbuttercups$addRandomLockdown(MobEffectInstance effect, Entity entity, CallbackInfo ci) {
-        if (!this.level.isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
-            Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level.random);
+        if (!this.level().isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
+            Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level().random);
             randomEffect.ifPresent(entry -> {
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).addLockdownMobEffect(entry.value(), effect.getDuration());
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
             });
         }
-        if (!this.level.isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && !BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty()) {
+        if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && !BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty()) {
             BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().forEach((effect1, duration) -> {
                 if (!this.hasEffect(effect1)) return;
                 BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
@@ -66,8 +66,8 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "onEffectUpdated", at = @At("TAIL"))
     private void bovinesandbuttercups$updateWithRandomLockdown(MobEffectInstance effect, boolean bl, Entity entity, CallbackInfo ci) {
-        if (!this.level.isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
-            Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level.random);
+        if (!this.level().isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
+            Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level().random);
             randomEffect.ifPresent(entry -> {
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).addLockdownMobEffect(entry.value(), effect.getDuration());
                 BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
@@ -77,7 +77,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "onEffectRemoved", at = @At("TAIL"))
     private void bovinesandbuttercups$removeAllLockdownEffects(MobEffectInstance effect, CallbackInfo ci) {
-        if (this.level.isClientSide || !(effect.getEffect() instanceof LockdownEffect)) return;
+        if (this.level().isClientSide || !(effect.getEffect() instanceof LockdownEffect)) return;
         BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().clear();
         BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
     }
@@ -85,7 +85,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "canBeAffected", at = @At(value = "RETURN"), cancellable = true)
     private void bovinesandbuttercups$cancelStatusEffectIfLocked(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
         if (this.hasEffect(BovineEffects.LOCKDOWN.get()) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().containsKey(effect.getEffect())) {
-            if (!this.level.isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer) {
+            if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer) {
                 BovineCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, effect.getEffect());
             }
             cir.setReturnValue(false);

@@ -24,7 +24,7 @@ public class MushroomCowMyceliumLayer extends RenderLayer<MushroomCow, CowModel<
         float b = 1.0F;
 
         if (Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getBackGrassConfiguration().grassTinted()) {
-            int biomeColor = BiomeColors.getAverageGrassColor(entity.level, entity.blockPosition());
+            int biomeColor = BiomeColors.getAverageGrassColor(entity.level(), entity.blockPosition());
             r = (biomeColor >> 16 & 0xFF) / 255.0F;
             g = (biomeColor >> 8 & 0xFF) / 255.0F;
             b = (biomeColor & 0xFF) / 255.0f;

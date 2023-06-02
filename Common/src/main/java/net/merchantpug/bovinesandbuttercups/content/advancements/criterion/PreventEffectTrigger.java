@@ -16,7 +16,7 @@ public class PreventEffectTrigger extends SimpleCriterionTrigger<PreventEffectTr
     static final ResourceLocation ID = BovinesAndButtercups.asResource("prevent_effect");
 
     @Override
-    protected PreventEffectTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext context) {
+    protected PreventEffectTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext context) {
         Optional<MobEffect> effect = Optional.empty();
         if (json.has("effect")) {
             effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
@@ -37,7 +37,7 @@ public class PreventEffectTrigger extends SimpleCriterionTrigger<PreventEffectTr
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final Optional<MobEffect> effect;
 
-        public TriggerInstance(EntityPredicate.Composite player, Optional<MobEffect> effect) {
+        public TriggerInstance(ContextAwarePredicate player, Optional<MobEffect> effect) {
             super(PreventEffectTrigger.ID, player);
             this.effect = effect;
         }

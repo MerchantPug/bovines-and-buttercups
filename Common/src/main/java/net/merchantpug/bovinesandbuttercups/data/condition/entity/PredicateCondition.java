@@ -9,6 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootDataType;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
@@ -27,9 +29,9 @@ public class PredicateCondition extends ConditionConfiguration<Entity> {
 
     @Override
     public boolean test(Entity entity) {
-        if (!entity.level.isClientSide) {
-            var predicate = BovinesAndButtercups.getServer().getPredicateManager().get(predicateLocation);
-            return predicate != null && predicate.test(new LootContext.Builder(((ServerLevel)entity.level)).withParameter(LootContextParams.ORIGIN, entity.position()).withParameter(LootContextParams.THIS_ENTITY, entity).create(LootContextParamSets.SELECTOR));
+        if (!entity.level().isClientSide) {
+            var predicate = BovinesAndButtercups.getServer().getLootData().getElement(LootDataType.PREDICATE, predicateLocation);
+            return predicate != null && predicate.test(new LootContext.Builder(new LootParams.Builder((ServerLevel)entity.level()).withParameter(LootContextParams.ORIGIN, entity.position()).withParameter(LootContextParams.THIS_ENTITY, entity).create(LootContextParamSets.SELECTOR)).create(null));
         }
         return false;
     }

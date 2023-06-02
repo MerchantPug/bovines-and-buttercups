@@ -26,7 +26,7 @@ public class FlowerCowGrassLayer<T extends FlowerCow, M extends CowModel<T>> ext
         float b = 1.0F;
 
         if (entity.getFlowerCowType().getConfiguration().getBackGrassConfiguration().grassTinted()) {
-            int biomeColor = BiomeColors.getAverageGrassColor(entity.level, entity.blockPosition());
+            int biomeColor = BiomeColors.getAverageGrassColor(entity.level(), entity.blockPosition());
             r = (biomeColor >> 16 & 0xFF) / 255.0F;
             g = (biomeColor >> 8 & 0xFF) / 255.0F;
             b = (biomeColor & 0xFF) / 255.0f;

@@ -17,12 +17,12 @@ public class LockEffectTrigger extends SimpleCriterionTrigger<LockEffectTrigger.
     static final ResourceLocation ID = BovinesAndButtercups.asResource("lock_effect");
 
     @Override
-    protected LockEffectTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite player, DeserializationContext context) {
+    protected LockEffectTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext context) {
         Optional<MobEffect> effect = Optional.empty();
         if (json.has("effect")) {
             effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
         }
-        return new LockEffectTrigger.TriggerInstance(player, effect);
+        return new LockEffectTrigger.TriggerInstance(predicate, effect);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class LockEffectTrigger extends SimpleCriterionTrigger<LockEffectTrigger.
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final Optional<MobEffect> effect;
 
-        public TriggerInstance(EntityPredicate.Composite player, Optional<MobEffect> effect) {
-            super(LockEffectTrigger.ID, player);
+        public TriggerInstance(ContextAwarePredicate predicate, Optional<MobEffect> effect) {
+            super(LockEffectTrigger.ID, predicate);
             this.effect = effect;
         }
 

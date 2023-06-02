@@ -49,7 +49,7 @@ public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
         entityConditions.forEach(condition -> conditionStates.put(condition, false));
 
         for (ConfiguredCondition<Entity, ?, ?> condition : entityConditions.stream().filter(condition -> !(condition.getConfiguration() instanceof NotConditionConfiguration<Entity>)).collect(Collectors.toSet())) {
-            if (entity.level.getEntities(entity, box, condition).stream().findFirst().isPresent())
+            if (entity.level().getEntities(entity, box, condition).stream().findFirst().isPresent())
                 conditionStates.put(condition, true);
         }
 
@@ -67,7 +67,7 @@ public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
         HashMap<ConfiguredCondition<Entity, ?, ?>, Entity> entityMap = new HashMap<>();
 
         for (ConfiguredCondition<Entity, ?, ?> condition : entityConditions) {
-            parent.level.getEntities(parent, finalBox, condition).forEach(entity -> {
+            parent.level().getEntities(parent, finalBox, condition).forEach(entity -> {
                 if (!entityMap.containsKey(condition) || parent.distanceToSqr(entity) < parent.distanceToSqr(entityMap.get(condition)))
                     entityMap.put(condition, entity);
             });
@@ -80,7 +80,7 @@ public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
         double value = (1 - (1 / (pos.distanceTo(parent.position()) + 1))) / 4;
 
         for (double d = 0.0; d < 1.0; d += value) {
-            ((ServerLevel)parent.level).sendParticles(options, Mth.lerp(d, pos.x(), parent.position().x()), Mth.lerp(d, pos.y(), parent.position().y()), Mth.lerp(d, pos.z(), parent.position().z()), 1, 0.05, 0.05, 0.05, 0.01);
+            ((ServerLevel)parent.level()).sendParticles(options, Mth.lerp(d, pos.x(), parent.position().x()), Mth.lerp(d, pos.y(), parent.position().y()), Mth.lerp(d, pos.z(), parent.position().z()), 1, 0.05, 0.05, 0.05, 0.01);
         }
     }
 

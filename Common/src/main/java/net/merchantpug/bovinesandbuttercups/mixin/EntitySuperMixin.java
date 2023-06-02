@@ -14,7 +14,7 @@ public abstract class EntitySuperMixin {
     @Shadow
     public abstract void thunderHit(ServerLevel $$0, LightningBolt $$1);
 
-    @Shadow public Level level;
+    @Shadow public abstract Level level();
 
     @Shadow public abstract Vec3 position();
 

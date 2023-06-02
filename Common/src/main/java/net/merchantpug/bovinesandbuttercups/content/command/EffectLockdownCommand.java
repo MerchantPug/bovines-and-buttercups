@@ -64,9 +64,9 @@ public class EffectLockdownCommand {
             throw new SimpleCommandExceptionType(Component.translatable("commands.effect.give.failed")).create();
         }
         if (targets.size() == 1) {
-            command.getSource().sendSuccess(Component.translatable("commands.effect.lockdown.success.single", effect.value().getDisplayName(), targets.iterator().next().getDisplayName(), j / 20), true);
+            command.getSource().sendSuccess(() -> Component.translatable("commands.effect.lockdown.success.single", effect.value().getDisplayName(), targets.iterator().next().getDisplayName(), j / 20), true);
         } else {
-            command.getSource().sendSuccess(Component.translatable("commands.effect.lockdown.success.multiple", effect.value().getDisplayName(), targets.size(), j / 20), true);
+            command.getSource().sendSuccess(() -> Component.translatable("commands.effect.lockdown.success.multiple", effect.value().getDisplayName(), targets.size(), j / 20), true);
         }
         return i;
     }

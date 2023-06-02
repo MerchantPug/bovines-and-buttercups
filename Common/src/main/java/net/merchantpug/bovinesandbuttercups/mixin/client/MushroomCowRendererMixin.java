@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Locale;
 
-@Mixin(value = MushroomCowRenderer.class, priority = 1001)
+@Mixin(value = MushroomCowRenderer.class, priority = 1500)
 public abstract class MushroomCowRendererMixin {
     @Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/MushroomCow;)Lnet/minecraft/resources/ResourceLocation;", at = @At("RETURN"), cancellable = true)
     private void bovinesandbuttercups$changeTextureLocation(MushroomCow entity, CallbackInfoReturnable<ResourceLocation> cir) {

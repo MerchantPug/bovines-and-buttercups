@@ -50,10 +50,10 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
             return false;
         } if (bee.hasNectar()) {
             return false;
-        } else if (bee.level.isRaining()) {
+        } else if (bee.level().isRaining()) {
             return false;
         } else if (Services.COMPONENT.getMoobloomTarget(bee).isPresent()) {
-            Optional<Entity> entity = Optional.ofNullable(((ServerLevel)bee.getLevel()).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()));
+            Optional<Entity> entity = Optional.ofNullable(((ServerLevel)bee.level()).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()));
             if (entity.isPresent() && entity.get() instanceof FlowerCow flowerCow) {
                 this.moobloom = flowerCow;
                 setFlowerCow();
@@ -89,7 +89,7 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
             return false;
         } else if (this.moobloom == null) {
             return false;
-        } else if (bee.level.isRaining()) {
+        } else if (bee.level().isRaining()) {
             return false;
         } else if (this.hasPollinatedLongEnough()) {
             return bee.getRandom().nextFloat() < 0.2F;
@@ -139,8 +139,8 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
             if (moobloom.getTimesPollinated() == 3) {
                 moobloom.setTicksUntilFlowers(moobloom.getRandom().nextIntBetweenInclusive(80, 120));
             }
-            if (!moobloom.level.isClientSide) {
-                ((ServerLevel) moobloom.level).sendParticles(ParticleTypes.HAPPY_VILLAGER, moobloom.position().x(), moobloom.position().y() + 1.4D, moobloom.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
+            if (!moobloom.level().isClientSide) {
+                ((ServerLevel) moobloom.level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, moobloom.position().x(), moobloom.position().y() + 1.4D, moobloom.position().z(), 8, 0.5, 0.1, 0.4, 0.0);
             }
         }
 
@@ -168,8 +168,8 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
             bee.setSavedFlowerPos(null);
             Services.COMPONENT.setMoobloomTarget(bee, null);
             this.moobloom = null;
-        } else if (Services.COMPONENT.getMoobloomTarget(bee).isPresent() && !bee.level.isClientSide() ){
-            Entity entity = ((ServerLevel)bee.level).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get());
+        } else if (Services.COMPONENT.getMoobloomTarget(bee).isPresent() && !bee.level().isClientSide() ){
+            Entity entity = ((ServerLevel)bee.level()).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get());
             if ((entity instanceof FlowerCow moobloom)) {
                 moobloom.setStandingStillForBeeTicks(600);
                 moobloom.setBee(this.bee);
@@ -227,7 +227,7 @@ public class PollinateFlowerCowGoal extends Bee.BaseBeeGoal {
     }
 
     private Optional<FlowerCow> findMoobloom() {
-        FlowerCow moobloom = this.bee.level.getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level.getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((FlowerCow)entity).getTicksUntilFlowers() == 0 && ((FlowerCow)entity).bee == null), null, bee.getX(), bee.getY(), bee.getZ(), bee.getBoundingBox().inflate(6.0F, 4.0, 6.0F));
+        FlowerCow moobloom = this.bee.level().getNearestEntity(FlowerCow.class, TargetingConditions.forNonCombat().selector(entity -> entity.getLastHurtByMobTimestamp() <= entity.tickCount - 100 && entity.level().getBlockState(entity.blockPosition().above(2)).isAir() && !entity.isBaby() && ((FlowerCow)entity).getTicksUntilFlowers() == 0 && ((FlowerCow)entity).bee == null), null, bee.getX(), bee.getY(), bee.getZ(), bee.getBoundingBox().inflate(6.0F, 4.0, 6.0F));
         return Optional.ofNullable(moobloom);
     }
 }

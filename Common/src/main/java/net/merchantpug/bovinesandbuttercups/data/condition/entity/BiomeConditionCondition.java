@@ -28,12 +28,12 @@ public class BiomeConditionCondition extends ConditionConfiguration<Entity> {
 
     @Override
     public boolean test(Entity entity) {
-        return biomeCondition.test(entity.level.getBiome(entity.blockPosition()));
+        return biomeCondition.test(entity.level().getBiome(entity.blockPosition()));
     }
 
     @Override
     public void returnCowFeedback(LivingEntity parent, ParticleOptions particle) {
-        ((ServerLevel)parent.level).sendParticles(particle, parent.position().x(), parent.position().y(), parent.position().z(), 12, 1.0, 1.0, 1.0, 0.01);
+        ((ServerLevel)parent.level()).sendParticles(particle, parent.position().x(), parent.position().y(), parent.position().z(), 12, 1.0, 1.0, 1.0, 0.01);
     }
 
     public ConfiguredCondition<Holder<Biome>, ?, ?> getBiomeCondition() {

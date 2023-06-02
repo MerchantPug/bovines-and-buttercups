@@ -25,10 +25,10 @@ public class FlowerCowFabric extends FlowerCow implements Shearable {
         if (itemStack.is(Items.SHEARS) && this.readyForShearing()) {
             this.shear(SoundSource.PLAYERS);
             this.gameEvent(GameEvent.SHEAR, player);
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 itemStack.hurtAndBreak(1, player, other -> other.broadcastBreakEvent(hand));
             }
-            return InteractionResult.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
     }
@@ -37,7 +37,7 @@ public class FlowerCowFabric extends FlowerCow implements Shearable {
     public void shear(SoundSource category) {
         List<ItemStack> stacks = this.xplatformShear(category);
         for (ItemStack stack : stacks) {
-            this.level.addFreshEntity(new ItemEntity(this.level, this.getX(), this.getY(1.0), this.getZ(), stack));
+            this.level().addFreshEntity(new ItemEntity(this.level(), this.getX(), this.getY(1.0), this.getZ(), stack));
         }
     }
 

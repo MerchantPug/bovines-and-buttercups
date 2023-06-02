@@ -19,13 +19,13 @@ public class MoveToFlowerCowGoal extends Bee.BaseBeeGoal {
     public MoveToFlowerCowGoal(Bee bee) {
         bee.super();
         this.bee = bee;
-        this.ticks = bee.level.random.nextInt(10);
+        this.ticks = bee.level().random.nextInt(10);
         this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
     public boolean canBeeUse() {
-        return !bee.hasRestriction() && this.shouldMoveToMoobloom() && Services.COMPONENT.getMoobloomTarget(bee).isPresent() && ((ServerLevel) bee.level).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()) != null && !bee.blockPosition().closerToCenterThan(((ServerLevel) bee.level).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()).position(), 2);
+        return !bee.hasRestriction() && this.shouldMoveToMoobloom() && Services.COMPONENT.getMoobloomTarget(bee).isPresent() && ((ServerLevel) bee.level()).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()) != null && !bee.blockPosition().closerToCenterThan(((ServerLevel) bee.level()).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get()).position(), 2);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class MoveToFlowerCowGoal extends Bee.BaseBeeGoal {
         if (Services.COMPONENT.getMoobloomTarget(bee).isEmpty()) {
             return;
         }
-        Entity entity = ((ServerLevel)bee.level).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get());
+        Entity entity = ((ServerLevel)bee.level()).getEntity(Services.COMPONENT.getMoobloomTarget(bee).get());
         if (!(entity instanceof FlowerCow moobloom)) {
             return;
         }

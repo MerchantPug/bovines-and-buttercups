@@ -36,7 +36,7 @@ public class MushroomCowChildTypeUtil {
     public static ResourceLocation chooseMooshroomBabyType(MushroomCow parent, MushroomCow other, MushroomCow child, @Nullable Player player) {
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> eligibleCowTypes = new ArrayList<>();
         boolean bl = false;
-        Level level = parent.level;
+        Level level = parent.level();
 
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(type -> type.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
             ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> mushroomCowType = (ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType;
@@ -175,7 +175,7 @@ public class MushroomCowChildTypeUtil {
         double value = (1 - (1 / (pos.distanceTo(parent.position()) + 1))) / 4;
 
         for (double d = 0.0; d < 1.0; d += value) {
-            ((ServerLevel)parent.level).sendParticles(options, Mth.lerp(d, pos.x(), parent.position().x()), Mth.lerp(d, pos.y(), parent.position().y()), Mth.lerp(d, pos.z(), parent.position().z()), 1, 0.05, 0.05,  0.05, 0.01);
+            ((ServerLevel)parent.level()).sendParticles(options, Mth.lerp(d, pos.x(), parent.position().x()), Mth.lerp(d, pos.y(), parent.position().y()), Mth.lerp(d, pos.z(), parent.position().z()), 1, 0.05, 0.05,  0.05, 0.01);
         }
     }
 }

@@ -5,4 +5,5 @@
 
 **Bugfixes**
 - Fixed crash due to broken EMI compat.
+- [FORGE] Fixed lockdown effect icon not displaying when rejoining world.
 - Fixed Lockdown linked effect durations following the old format.

@@ -42,30 +42,34 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
+            ideaModule "${rootProject.name}.${project.name}.test"
             taskName 'Client'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}.forge.mixins.json"
             mods {
-                modClientRun {
+                create(mod_id) {
                     source sourceSets.main
+                    source sourceSets.test
                     source project(":Common").sourceSets.main
+                    source project(":Common").sourceSets.test
                 }
             }
         }
 
         server {
             workingDirectory project.file('run')
-            ideaModule "${rootProject.name}.${project.name}.main"
+            ideaModule "${rootProject.name}.${project.name}.test"
             taskName 'Server'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             args "-mixin.config=${project.mod_id}.mixins.json", "-mixin.config=${project.mod_id}.forge.mixins.json"
             mods {
-                modServerRun {
+                create(mod_id) {
                     source sourceSets.main
+                    source sourceSets.test
                     source project(":Common").sourceSets.main
+                    source project(":Common").sourceSets.test
                 }
             }
         }
@@ -151,12 +155,11 @@ processResources {
         expand "refmap_target": "${project.mod_id}."
     }
     exclude("bovinesandbuttercups-common.accesswidener")
+}
 
-    def environment = System.getenv("ENVIRONMENT")
-    if (environment != "production") {
-        from(rootProject.rootDir.absolutePath + "/testdata") { into 'data' }
-        from(rootProject.rootDir.absolutePath + "/testassets") { into 'assets'}
-    }
+processTestResources {
+    outputs.upToDateWhen { false }
+    from project(":Common").sourceSets.test.resources
 }
 
 tasks.jarJar.configure {

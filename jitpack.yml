@@ -3,5 +3,3 @@ jdk:
 Fix install:
   - ./gradlew clean
   - ./gradlew assemble publishToMavenLocal
-env:
-  ENVIRONMENT: "production"

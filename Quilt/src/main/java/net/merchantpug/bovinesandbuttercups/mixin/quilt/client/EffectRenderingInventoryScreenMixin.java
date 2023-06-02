@@ -48,21 +48,4 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         InventoryScreen.blit(poseStack, x + (large ? 6 : 7), i + 7, 0, 18, 18, additionalSprite);
     }
 
-    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lcom/mojang/blaze3d/vertex/PoseStack;IILjava/lang/Iterable;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$drawEffectDescriptionWhenHoveredOver(PoseStack poseStack, int mouseX, int mouseY, CallbackInfo ci, int i, int j, Collection collection, boolean bl, int k, Iterable<MobEffectInstance> iterable) {
-        if (mouseX >= i && mouseX <= i + 119) {
-            int l = this.topPos;
-            MobEffectInstance mobEffectInstance = null;
-            for (MobEffectInstance mobEffectInstance2 : iterable) {
-                if (mouseY >= l && mouseY <= l + k && mobEffectInstance2.getEffect() instanceof LockdownEffect) {
-                    mobEffectInstance = mobEffectInstance2;
-                }
-                l += k;
-            }
-            if (mobEffectInstance != null) {
-                List<Component> list = List.of(this.getEffectName(mobEffectInstance), Component.literal(MobEffectUtil.formatDuration(mobEffectInstance, 1.0F)));
-                this.renderTooltip(poseStack, list, Optional.empty(), mouseX, mouseY);
-            }
-        }
-    }
 }

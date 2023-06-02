@@ -22,20 +22,6 @@ apply plugin: 'maven-publish'
 
 archivesBaseName = "${artifact_name}-Forge"
 
-configurations {
-    library
-    shade
-    implementation.extendsFrom(shade)
-}
-
-// Used to manually add non-mc libraries to the runtime classpaths found in build/classpath
-// If you have any module issues, check these files to make sure there are no duplicate dependencies
-minecraft.runs.all {
-    lazyToken('minecraft_classpath') {
-        configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
-    }
-}
-
 mixin {
     add sourceSets.main, "${project.mod_id}-refmap.json"
 
@@ -116,12 +102,9 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    jarJar(group: 'com.github.LlamaLad7', name: 'MixinExtras', version: "[${mixin_extras_version},0.2.0)") {
-        jarJar.pin(it, mixin_extras_version)
-    }
     implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras_version}"))
     implementation(jarJar("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}")) {
-        jarJar.ranged(it, "[0.2.0-beta.8,)")
+        jarJar.ranged(it, "[${mixin_extras_version},)")
     }
 
     compileOnly project(":Common")

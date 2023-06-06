@@ -48,24 +48,29 @@ loom {
 
     mods {
         register(mod_id) {
-            sourceSet(project(":Common").sourceSets.test)
+            sourceSet(sourceSets.main)
             sourceSet(sourceSets.test)
         }
     }
     runs {
         client {
             client()
-            source(sourceSets.test)
             setConfigName("Fabric Client")
             ideConfigGenerated(true)
             runDir("run")
         }
         server {
             server()
-            source(sourceSets.test)
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run")
+        }
+        test {
+            client()
+            source(sourceSets.test)
+            setConfigName("Fabric Test")
+            ideConfigGenerated(true)
+            runDir("run_test")
         }
     }
 }

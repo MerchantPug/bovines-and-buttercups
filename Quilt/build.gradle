@@ -58,8 +58,6 @@ loom {
 
     mods {
         register(mod_id) {
-            sourceSet(project(":Common").sourceSets.main)
-            sourceSet(project(":Common").sourceSets.test)
             sourceSet(sourceSets.main)
             sourceSet(sourceSets.test)
         }
@@ -67,17 +65,22 @@ loom {
     runs {
         client {
             client()
-            source(sourceSets.test)
             setConfigName("Quilt Client")
             ideConfigGenerated(true)
             runDir("run")
         }
         server {
             server()
-            source(sourceSets.test)
             setConfigName("Quilt Server")
             ideConfigGenerated(true)
             runDir("run")
+        }
+        test {
+            client()
+            source(sourceSets.test)
+            setConfigName("Quilt Test")
+            ideConfigGenerated(true)
+            runDir("run_test")
         }
     }
 }

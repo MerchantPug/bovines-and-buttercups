@@ -1,7 +1,9 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
     id "org.quiltmc.loom" version "1.2.+"
     id 'maven-publish'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "net.darkhax.curseforgegradle" version "1.0.7"
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -183,47 +185,43 @@ publishing {
     }
 }
 
-curseforge {
-    apiKey = System.getenv("CURSEFORGE_TOKEN") != null ? System.getenv("CURSEFORGE_TOKEN") : ""
-    if (apiKey == "") return
-    project {
-        id = cf_project_id
-        changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
-        changelogType = 'markdown'
-        releaseType = 'release'
 
-        addGameVersion 'Quilt'
-        cf_java_versions.split(", ").each { String gameVersion ->
-            addGameVersion gameVersion
-        }
-        quilt_game_versions.split(", ").each { String gameVersion ->
-            addGameVersion gameVersion
-        }
+tasks.register('curseforge', TaskPublishCurseForge) {
+    disableVersionDetection()
+    apiToken = System.getenv("CURSEFORGE_TOKEN")
 
-        mainArtifact(remapJar) {
-            displayName = "Quilt v$project.version"
-            relations {
-                quilt_required_deps.split(", ").each { String project ->
-                    requiredDependency project
-                }
+    def mainFile = upload(cf_project_id, remapJar)
+    mainFile.displayName = "Quilt v${rootProject.version}"
+    mainFile.releaseType = "release"
+    mainFile.changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    mainFile.changelogType = "markdown"
+    mainFile.addModLoader('Quilt')
+    java_versions.split(", ").each {
+        mainFile.addJavaVersion(it)
+    }
 
-                common_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
+    quilt_game_versions.split(", ").each {
+        mainFile.addGameVersion(it)
+    }
 
-                cf_common_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
+    quilt_required_deps.split(", ").each {
+        mainFile.addRequirement(it)
+    }
 
-                quilt_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
+    common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
 
-                cf_quilt_embedded_deps.split(", ").each { String project ->
-                    embeddedLibrary project
-                }
-            }
-        }
+    cf_common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
+
+    quilt_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
+
+    cf_quilt_embedded_deps.split(", ").each { String project ->
+        mainFile.addEmbedded(it)
     }
 }
 

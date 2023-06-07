@@ -1,8 +1,10 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
     id 'fabric-loom' version '1.2-SNAPSHOT'
     id 'maven-publish'
     id 'idea'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id "net.darkhax.curseforgegradle" version "1.0.7"
     id "com.modrinth.minotaur" version "2.+"
 }
 
@@ -165,48 +167,42 @@ publishing {
     }
 }
 
+tasks.register('curseforge', TaskPublishCurseForge) {
+    disableVersionDetection()
+    apiToken = System.getenv("CURSEFORGE_TOKEN")
 
-curseforge {
-    apiKey = System.getenv("CURSEFORGE_TOKEN")
-    if (apiKey == null) return
-    project {
-        id = cf_project_id
-        changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
-        changelogType = 'markdown'
-        releaseType = 'release'
+    def mainFile = upload(cf_project_id, remapJar)
+    mainFile.displayName = "Fabric v${rootProject.version}"
+    mainFile.releaseType = "release"
+    mainFile.changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    mainFile.changelogType = "markdown"
+    mainFile.addModLoader('Fabric')
+    java_versions.split(", ").each {
+        mainFile.addJavaVersion(it)
+    }
 
-        addGameVersion 'Fabric'
-        cf_java_versions.split(", ").each { String gameVersion ->
-            addGameVersion gameVersion
-        }
-        fabric_game_versions.split(", ").each { String gameVersion ->
-            addGameVersion gameVersion
-        }
+    fabric_game_versions.split(", ").each {
+        mainFile.addGameVersion(it)
+    }
 
-        mainArtifact(remapJar) {
-            displayName = "Fabric v$project.version"
-            relations {
-                fabric_required_deps.split(", ").each { String project ->
-                    requiredDependency project
-                }
+    fabric_required_deps.split(", ").each {
+        mainFile.addRequirement(it)
+    }
 
-                common_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
+    common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
 
-                cf_common_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
+    cf_common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
 
-                fabric_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
+    fabric_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
 
-                cf_fabric_embedded_deps.split(", ").each { String project ->
-                    embeddedLibrary project
-                }
-            }
-        }
+    cf_fabric_embedded_deps.split(", ").each { String project ->
+        mainFile.addEmbedded(it)
     }
 }
 

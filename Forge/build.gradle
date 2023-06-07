@@ -1,10 +1,9 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 buildscript {
     repositories {
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
-    }
-    dependencies {
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 
@@ -13,10 +12,10 @@ plugins {
     id 'eclipse'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '5.1.+'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
+    id "net.darkhax.curseforgegradle" version "1.0.7"
     id "com.modrinth.minotaur" version "2.+"
 }
-apply plugin: 'org.spongepowered.mixin'
 
 archivesBaseName = "${artifact_name}-Forge"
 
@@ -194,34 +193,27 @@ publishing {
     }
 }
 
-curseforge {
-    apiKey = System.getenv("CURSEFORGE_TOKEN")
-    if (apiKey == null) return
-    project {
-        id = cf_project_id
-        changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
-        changelogType = 'markdown'
-        releaseType = 'release'
+tasks.register('curseforge', TaskPublishCurseForge) {
+    disableVersionDetection()
+    apiToken = System.getenv("CURSEFORGE_TOKEN")
 
-        addGameVersion 'Forge'
-        cf_java_versions.split(", ").each { String gameVersion ->
-            addGameVersion gameVersion
-        }
-        forge_game_versions.split(", ").each { String gameVersion ->
-            addGameVersion gameVersion
-        }
-
-        mainArtifact(jar) {
-            displayName = "Forge v$project.version"
-            relations {
-                common_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
-                cf_common_optional_deps.split(", ").each { String project ->
-                    optionalDependency project
-                }
-            }
-        }
+    def mainFile = upload(cf_project_id, jar)
+    mainFile.displayName = "Forge v${rootProject.version}+${minecraft_version}"
+    mainFile.releaseType = "release"
+    mainFile.changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    mainFile.changelogType = "markdown"
+    mainFile.addModLoader('Forge')
+    forge_game_versions.split(", ").each {
+        mainFile.addGameVersion(it)
+    }
+    java_versions.split(", ").each {
+        mainFile.addJavaVersion(it)
+    }
+    common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
+    cf_common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
     }
 }
 

@@ -37,7 +37,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         if (lockdownEffectInstance.isEmpty()) return;
 
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && Services.COMPONENT.getLockdownMobEffects(this.minecraft.player).entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
-            guiGraphics.blit(BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"), i,0, 0, 0, 32, 32, 64, 32);
+            guiGraphics.blit(BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"), x, i, 0, 0, 32, 32, 64, 32);
         }
     }
 

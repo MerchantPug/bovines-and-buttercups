@@ -37,7 +37,7 @@ public class GuiMixin {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovineEffects.LOCKDOWN.get())) return;
 
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
-            guiGraphics.blit(BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"), k, 0, 36, 4, 24, 24, 64, 32);
+            guiGraphics.blit(BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"), k, l, 36, 4, 24, 24, 64, 32);
         }
     }
 

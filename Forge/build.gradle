@@ -105,7 +105,7 @@ dependencies {
 
     implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras_version}"))
     jarJar("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}") {
-        jarJar.ranged(it, "[${mixin_extras_version},)")
+        jarJar.pin(it, "[${mixin_extras_version},)")
     }
 
     compileOnly project(":Common")
@@ -161,7 +161,7 @@ processTestResources {
     from project(":Common").sourceSets.test.resources
 }
 
-tasks.jarJar.configure {
+tasks.named('jarJar') {
     archiveClassifier = ""
 }
 

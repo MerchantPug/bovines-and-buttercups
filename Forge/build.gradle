@@ -105,8 +105,7 @@ dependencies {
 
     implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras_version}"))
     jarJar("com.github.llamalad7.mixinextras:mixinextras-forge:${mixin_extras_version}") {
-        String version = mixin_extras_version
-        jarJar.pin(it, "[${version.split("-")[0]},)")
+        jarJar.pin(it, "[0.2.0,)")
     }
 
     compileOnly project(":Common")

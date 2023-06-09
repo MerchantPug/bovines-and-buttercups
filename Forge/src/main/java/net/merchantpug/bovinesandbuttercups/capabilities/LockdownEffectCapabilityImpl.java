@@ -75,7 +75,7 @@ public class LockdownEffectCapabilityImpl implements LockdownEffectCapability {
 
     @Override
     public void sync() {
-        if (provider.level.isClientSide) return;
+        if (provider.level().isClientSide) return;
         BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> provider), new SyncLockdownEffectsPacket(provider.getId(), this.lockdownEffects));
     }
 }

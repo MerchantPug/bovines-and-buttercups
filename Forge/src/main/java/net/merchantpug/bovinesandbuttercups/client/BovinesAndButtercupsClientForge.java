@@ -91,8 +91,8 @@ public class BovinesAndButtercupsClientForge {
 
     @SubscribeEvent
     public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
-        event.register(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
-        event.register(BovineParticleTypes.BLOOM.get(), BloomParticle.Provider::new);
-        event.register(BovineParticleTypes.SHROOM.get(), ShroomParticle.Provider::new);
+        event.registerSpecial(BovineParticleTypes.MODEL_LOCATION.get(), new ModelLocationParticle.Provider());
+        event.registerSpriteSet(BovineParticleTypes.BLOOM.get(), BloomParticle.Provider::new);
+        event.registerSpriteSet(BovineParticleTypes.SHROOM.get(), ShroomParticle.Provider::new);
     }
 }

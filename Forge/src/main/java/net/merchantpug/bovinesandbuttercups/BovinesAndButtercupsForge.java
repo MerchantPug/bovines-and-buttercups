@@ -17,7 +17,6 @@ import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.MushroomTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
-import net.merchantpug.bovinesandbuttercups.data.entity.FlowerCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
@@ -77,7 +76,6 @@ import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.nio.file.Path;
 import java.util.*;
 
 @Mod(BovinesAndButtercups.MOD_ID)
@@ -88,7 +86,9 @@ public class BovinesAndButtercupsForge {
 
         BovineRegistriesForge.init(eventBus);
         BovinesAndButtercups.init();
+        BovineCreativeTabs.init(eventBus);
         BovineBiomeModifierSerializers.register(eventBus);
+
 
         this.addModBusEventListeners();
         this.addForgeBusEventListeners();
@@ -108,30 +108,8 @@ public class BovinesAndButtercupsForge {
             event.enqueueWork(BovinesAndButtercupsForge::registerCompostables);
             BovineCowTypes.registerDefaultConfigureds();
         });
-        eventBus.addListener((CreativeModeTabEvent.Register event) -> {
-            event.registerCreativeModeTab(BovinesAndButtercups.asResource("items"), builder -> builder
-                    .title(Component.translatable("bovinesandbuttercups.itemGroup.items"))
-                    .icon(() -> new ItemStack(BovineItems.BUTTERCUP.get()))
-                    .displayItems((params, output) -> {
-                        output.accept(BovineItems.MOOBLOOM_SPAWN_EGG.get());
-                        output.accept(BovineItems.FREESIA.get());
-                        output.accept(BovineItems.BIRD_OF_PARADISE.get());
-                        output.accept(BovineItems.BUTTERCUP.get());
-                        output.accept(BovineItems.LIMELIGHT.get());
-                        output.accept(BovineItems.CHARGELILY.get());
-                        output.accept(BovineItems.TROPICAL_BLUE.get());
-                        output.accept(BovineItems.HYACINTH.get());
-                        output.accept(BovineItems.PINK_DAISY.get());
-                        output.accept(BovineItems.SNOWDROP.get());
-                        output.acceptAll(CreativeTabHelper.getCustomFlowersForCreativeTab());
-                        output.acceptAll(CreativeTabHelper.getCustomMushroomsForCreativeTab());
-                        output.acceptAll(CreativeTabHelper.getCustomMushroomBlocksForCreativeTab());
-                        output.acceptAll(CreativeTabHelper.getNectarBowlsForCreativeTab());
-                    })
-            );
-        });
-        eventBus.addListener((CreativeModeTabEvent.BuildContents event) -> {
-            if (event.getTab() == CreativeModeTabs.NATURAL_BLOCKS) {
+        eventBus.addListener((BuildCreativeModeTabContentsEvent event) -> {
+            if (event.getTabKey() == CreativeModeTabs.NATURAL_BLOCKS) {
                 event.getEntries().putAfter(new ItemStack(Items.LILY_OF_THE_VALLEY), new ItemStack(BovineItems.FREESIA.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(new ItemStack(BovineItems.FREESIA.get()), new ItemStack(BovineItems.BIRD_OF_PARADISE.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 event.getEntries().putAfter(new ItemStack(BovineItems.BIRD_OF_PARADISE.get()), new ItemStack(BovineItems.BUTTERCUP.get()), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -145,9 +123,9 @@ public class BovinesAndButtercupsForge {
                 CreativeTabHelper.getCustomFlowersForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(BovineItems.SNOWDROP.get()), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 CreativeTabHelper.getCustomMushroomsForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.RED_MUSHROOM), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
                 CreativeTabHelper.getCustomMushroomBlocksForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.RED_MUSHROOM_BLOCK), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
-            } else if (event.getTab() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 CreativeTabHelper.getNectarBowlsForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
-            } else if (event.getTab() == CreativeModeTabs.SPAWN_EGGS) {
+            } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
                 event.accept(BovineItems.MOOBLOOM_SPAWN_EGG);
             }
         });
@@ -284,9 +262,9 @@ public class BovinesAndButtercupsForge {
             if (event.getTarget() instanceof MushroomCow cow) {
                 cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
                     if (cap.getMushroomCowTypeKey() == null || cap.getMushroomCowTypeKey().equals(BovinesAndButtercups.asResource("missing_mooshroom"))) {
-                        if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().getLevel(), cow.blockPosition()) > 0) {
-                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().getLevel(), cow.blockPosition(), cow.getRandom()));
-                        } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && cow.level.getBiome(cow.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
+                        if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().level(), cow.blockPosition()) > 0) {
+                            cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().level(), cow.blockPosition(), cow.getRandom()));
+                        } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && cow.level().getBiome(cow.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
                             if (cow.getVariant() == MushroomCow.MushroomType.BROWN) {
                                 cap.setMushroomType(BovinesAndButtercups.asResource("brown_mushroom"));
                             } else {
@@ -316,7 +294,7 @@ public class BovinesAndButtercupsForge {
                 }));
                 Services.COMPONENT.setLockdownMobEffects(event.getEntity(), lockdownEffectsToUpdate);
             }
-            if (event.getEntity() instanceof Bee bee && !event.getEntity().getLevel().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
+            if (event.getEntity() instanceof Bee bee && !event.getEntity().level().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
             }
         });
@@ -344,13 +322,13 @@ public class BovinesAndButtercupsForge {
             if (event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent()) {
                 Optional<Map<MobEffect, Integer>> optional = entity.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects);
                 if (optional.isEmpty() || optional.get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration())) {
-                    Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(entity.level.random);
+                    Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(entity.level().random);
                     randomEffect.ifPresent(entry -> event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                         cap.addLockdownMobEffect(entry.value(), event.getEffectInstance().getDuration());
                         cap.sync();
                     }));
                 }
-                if (!entity.level.isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && !optional.get().isEmpty()) {
+                if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && !optional.get().isEmpty()) {
                     optional.get().forEach((effect1, duration) -> {
                         if (!serverPlayer.hasEffect(effect1)) return;
                         BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
@@ -376,7 +354,7 @@ public class BovinesAndButtercupsForge {
             Entity entity = event.getEntity();
             entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
                 if (cap.getLockdownMobEffects().containsKey(event.getEffectInstance().getEffect())) {
-                    if (!entity.level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
+                    if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer) {
                         BovineCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, event.getEffectInstance().getEffect());
                     }
                     event.setResult(Event.Result.DENY);

@@ -1,13 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
@@ -19,7 +17,7 @@ import java.util.Map;
 
 public class LockdownClientEffectExtensions implements IClientMobEffectExtensions {
     @Override
-    public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, PoseStack poseStack, int x, int y, int blitOffset) {
+    public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
         Minecraft.getInstance().player.getCapability(LockdownEffectCapability.INSTANCE).map(cap -> cap.getLockdownMobEffects().entrySet().stream().toList()).ifPresent(list -> {
             if (!list.isEmpty()) {
                 int lockdownEffectIndex = Minecraft.getInstance().player.tickCount / (160 / list.size()) % list.size();
@@ -28,7 +26,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
 
                 TextureAtlasSprite additionalSprite = Minecraft.getInstance().getMobEffectTextures().get(mobEffect1);
                 RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
-                InventoryScreen.blit(poseStack, x, y + 7, blitOffset, 18, 18, additionalSprite);
+                guiGraphics.blit(x, y + 7, blitOffset, 18, 18, additionalSprite);
             }
         });
 
@@ -36,7 +34,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
     }
 
     @Override
-    public boolean renderGuiIcon(MobEffectInstance instance, Gui gui, PoseStack poseStack, int x, int y, float z, float alpha) {
+    public boolean renderGuiIcon(MobEffectInstance instance, Gui gui, GuiGraphics guiGraphics, int x, int y, float z, float alpha) {
         Minecraft.getInstance().player.getCapability(LockdownEffectCapability.INSTANCE).map(cap -> cap.getLockdownMobEffects().entrySet().stream().toList()).ifPresent(list -> {
             if (!list.isEmpty()) {
                 int lockdownEffectIndex = Minecraft.getInstance().player.tickCount / (160 / list.size()) % list.size();
@@ -63,7 +61,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
 
                 RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, finalAlpha);
-                GuiComponent.blit(poseStack, x + 3, y + 3, 0, 18, 18, additionalSprite);
+                guiGraphics.blit(x + 3, y + 3, 0, 18, 18, additionalSprite);
             }
         });
         return false;

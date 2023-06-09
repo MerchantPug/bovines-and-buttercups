@@ -106,7 +106,7 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
 
     @Override
     public void sync() {
-        if (provider.level.isClientSide || this.typeId == null) return;
+        if (provider.level().isClientSide || this.typeId == null) return;
         BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncMushroomCowTypePacket(provider.getId(), this.typeId, this.previousTypeId));
     }
 }

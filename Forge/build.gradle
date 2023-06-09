@@ -11,7 +11,7 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '6.+'
     id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
     id "net.darkhax.curseforgegradle" version "1.0.7"
     id "com.modrinth.minotaur" version "2.+"
@@ -133,7 +133,7 @@ dependencies {
     compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
     // TODO: For some odd reason the below line is necessary to compile, feel free to PR an easier method if you know one.
     testCompileOnly(fg.deobf("dev.emi:emi-forge:${emi_version}:api"))
-    runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
+    // runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
 }
 
 jar {

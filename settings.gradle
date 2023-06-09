@@ -35,5 +35,5 @@ pluginManagement {
 }
 
 rootProject.name = 'bovines-and-buttercups'
-include("Common", "Fabric", "Quilt")
-// include("Common", "Fabric", "Forge", "Quilt")
+// include("Common", "Fabric", "Quilt")
+include("Common", "Fabric", "Forge", "Quilt")

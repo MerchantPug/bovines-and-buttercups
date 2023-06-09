@@ -82,7 +82,7 @@ loom {
             source(sourceSets.test)
             setConfigName("Quilt Test")
             ideConfigGenerated(true)
-            runDir("run_test")
+            runDir("run")
         }
     }
 }
@@ -113,8 +113,8 @@ dependencies {
 
     implementation(project(":Common"))
 
-    modCompileOnly("mezz.jei:jei-1.19.4-common-api:${jei_version}") { transitive false }
-    modCompileOnly("mezz.jei:jei-1.19.4-fabric-api:${jei_version}") { transitive false }
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}") { transitive false }
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}") { transitive false }
 
     // modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 

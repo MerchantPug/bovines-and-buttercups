@@ -35,7 +35,7 @@ public class FlowerCowTargetCapabilityImpl implements FlowerCowTargetCapability 
 
     @Override
     public void sync() {
-        if (provider.level.isClientSide) return;
+        if (provider.level().isClientSide) return;
         BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncFlowerCowTargetPacket(provider.getId(), this.moobloom));
     }
 

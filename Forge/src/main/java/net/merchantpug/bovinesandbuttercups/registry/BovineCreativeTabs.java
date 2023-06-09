@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

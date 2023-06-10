@@ -161,7 +161,7 @@ processTestResources {
     from project(":Common").sourceSets.test.resources
 }
 
-tasks.named('jarJar') {
+tasks.jarJar.configure {
     archiveClassifier = ""
 }
 

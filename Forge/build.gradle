@@ -168,13 +168,18 @@ tasks.jarJar.configure {
 
 jar.finalizedBy('jarJar')
 
+
+tasks.withType(PublishToMavenRepository) {
+    dependsOn('jarJar')
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId project.group
             artifactId project.archivesBaseName
             version project.version
-            artifact jarJar
+            artifact jar
         }
     }
 

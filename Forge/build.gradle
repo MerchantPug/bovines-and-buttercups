@@ -225,11 +225,11 @@ modrinth {
     gameVersions = forge_game_versions.split(", ").toList()
     loaders = [ "forge" ]
     dependencies {
-        common_optional_deps.split(", ").each { String project ->
-            optional.project project
+        common_optional_deps.split(", ").each {
+            optional.project it
         }
-        mr_common_optional_deps.split(", ").each { String project ->
-            optional.project project
+        mr_common_optional_deps.split(", ").each {
+            optional.project it
         }
     }
 }

@@ -197,7 +197,7 @@ tasks.register('curseforge', TaskPublishCurseForge) {
         mainFile.addOptional(it)
     }
 
-    cf_fabric_embedded_deps.split(", ").each { String project ->
+    cf_fabric_embedded_deps.split(", ").each {
         mainFile.addEmbedded(it)
     }
 }

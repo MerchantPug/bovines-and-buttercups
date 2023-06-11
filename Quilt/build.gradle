@@ -220,7 +220,7 @@ tasks.register('curseforge', TaskPublishCurseForge) {
         mainFile.addOptional(it)
     }
 
-    cf_quilt_embedded_deps.split(", ").each { String project ->
+    cf_quilt_embedded_deps.split(", ").each {
         mainFile.addEmbedded(it)
     }
 }
@@ -236,24 +236,24 @@ modrinth {
     gameVersions = quilt_game_versions.split(", ").toList()
     loaders = [ "quilt" ]
     dependencies {
-        quilt_required_deps.split(", ").each { String project ->
-            required.project project
+        quilt_required_deps.split(", ").each {
+            required.project it
         }
 
-        common_optional_deps.split(", ").each { String project ->
-            optional.project project
+        common_optional_deps.split(", ").each {
+            optional.project it
         }
 
-        mr_common_optional_deps.split(", ").each { String project ->
-            optional.project project
+        mr_common_optional_deps.split(", ").each {
+            optional.project it
         }
 
-        quilt_optional_deps.split(", ").each { String project ->
-            optional.project project
+        quilt_optional_deps.split(", ").each {
+            optional.project it
         }
 
-        mr_quilt_embedded_deps.split(", ").each { String project ->
-            embedded.project project
+        mr_quilt_embedded_deps.split(", ").each {
+            embedded.project it
         }
     }
 }

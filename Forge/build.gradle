@@ -163,13 +163,10 @@ processTestResources {
 
 tasks.jarJar.configure {
     archiveClassifier = ""
+    dependsOn('reobfJar')
 }
 
-reobf {
-    jarJar {}
-}
-
-jar.finalizedBy('reobfJar')
+jar.finalizedBy('jarJar')
 
 publishing {
     publications {

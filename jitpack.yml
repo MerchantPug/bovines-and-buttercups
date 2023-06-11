@@ -1,5 +1,5 @@
 jdk:
   - openjdk17
-Fix install:
+install:
   - ./gradlew clean
   - ./gradlew assemble publishToMavenLocal

@@ -1,2 +1,2 @@
-**Bugfixes**
-- [FORGE] Fixed lockdown effect icon not displaying when rejoining world.
+### Bugfixes
+- Fixed JEI plugin entrypoint pointing to the incorrect place on Quilt.

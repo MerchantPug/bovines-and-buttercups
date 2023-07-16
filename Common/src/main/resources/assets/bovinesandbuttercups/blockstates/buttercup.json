@@ -2,7 +2,6 @@
   "variants": {
     "": {
       "model": "bovinesandbuttercups:block/buttercup"
-    },
-    ""
+    }
   }
 }

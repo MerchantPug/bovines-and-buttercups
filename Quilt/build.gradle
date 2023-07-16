@@ -67,14 +67,12 @@ loom {
     runs {
         client {
             client()
-            source(sourceSets.test)
             setConfigName("Quilt Client")
             ideConfigGenerated(true)
             runDir("run")
         }
         server {
             server()
-            source(sourceSets.test)
             setConfigName("Quilt Server")
             ideConfigGenerated(true)
             runDir("run")

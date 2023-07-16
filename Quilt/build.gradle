@@ -67,20 +67,15 @@ loom {
     runs {
         client {
             client()
+            source(sourceSets.test)
             setConfigName("Quilt Client")
             ideConfigGenerated(true)
             runDir("run")
         }
         server {
             server()
-            setConfigName("Quilt Server")
-            ideConfigGenerated(true)
-            runDir("run")
-        }
-        test {
-            client()
             source(sourceSets.test)
-            setConfigName("Quilt Test")
+            setConfigName("Quilt Server")
             ideConfigGenerated(true)
             runDir("run")
         }
@@ -135,10 +130,6 @@ dependencies {
 
     modCompileOnly("maven.modrinth:inspecio:${inspecio_version}") { transitive false }
 
-    modCompileOnly "maven.modrinth:stackable-flowers:${stackable_flowers_version}"
-    // modLocalRuntime "maven.modrinth:stackable-flowers:${stackable_flowers_version}"
-    modCompileOnly "maven.modrinth:bushier-flowers:${bushier_flowers_fabric_version}"
-    // modLocalRuntime "maven.modrinth:bushier-flowers:${bushier_flowers_fabric_version}"
 }
 
 processResources {

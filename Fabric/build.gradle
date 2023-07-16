@@ -57,22 +57,26 @@ loom {
     runs {
         client {
             client()
+            source(sourceSets.test)
             setConfigName("Fabric Client")
             ideConfigGenerated(true)
             runDir("run")
         }
         server {
             server()
+            source(sourceSets.test)
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run")
         }
-        test {
-            client()
-            source(sourceSets.test)
-            setConfigName("Fabric Test")
-            ideConfigGenerated(true)
-            runDir("run")
+        datagen {
+            inherit client
+            name "Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.modid=${mod_id}"
+
+            runDir "build/datagen"
         }
     }
 }
@@ -122,11 +126,6 @@ dependencies {
 
     modCompileOnly("dev.emi:emi-fabric:${emi_version}:api") { transitive false }
     // modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
-
-    modCompileOnly "maven.modrinth:stackable-flowers:${stackable_flowers_version}"
-    modLocalRuntime "maven.modrinth:stackable-flowers:${stackable_flowers_version}"
-    modCompileOnly "maven.modrinth:bushier-flowers:${bushier_flowers_fabric_version}"
-    // modLocalRuntime "maven.modrinth:bushier-flowers:${bushier_flowers_fabric_version}"
 
 }
 

@@ -80,8 +80,4 @@ public class ForgePlatformHelper implements IPlatformHelper {
         return PottedBlockMapUtil.getPottedContentMap();
     }
 
-    @Override
-    public void addMoobloomFlowerBlockProperties(StateDefinition.Builder<Block, BlockState> builder) {
-        // Intentionally left blank, there are no extra properties necessary on Forge.
-    }
 }

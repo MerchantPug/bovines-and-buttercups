@@ -80,9 +80,4 @@ public class QuiltPlatformHelper implements IPlatformHelper {
         return FlowerPotBlock.POTTED_BY_CONTENT;
     }
 
-    @Override
-    public void addMoobloomFlowerBlockProperties(StateDefinition.Builder<Block, BlockState> builder) {
-        if (isModLoaded("stackableflowers"))
-            builder.add(BlockStateProperties.FLOWER_AMOUNT);
-    }
 }

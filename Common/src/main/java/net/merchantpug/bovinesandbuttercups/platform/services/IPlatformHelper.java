@@ -38,6 +38,4 @@ public interface IPlatformHelper {
 
     Map<Block, Block> getPottedBlockMap();
 
-    void addMoobloomFlowerBlockProperties(StateDefinition.Builder<Block, BlockState> builder);
-
 }

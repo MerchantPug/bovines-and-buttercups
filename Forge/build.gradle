@@ -141,9 +141,6 @@ dependencies {
     // TODO: For some odd reason the below line is necessary to compile, feel free to PR an easier method if you know one.
     testCompileOnly(fg.deobf("dev.emi:emi-forge:${emi_version}:api"))
     // runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
-
-    compileOnly fg.deobf("maven.modrinth:bushier-flowers:${bushier_flowers_forge_version}")
-    runtimeOnly fg.deobf("maven.modrinth:bushier-flowers:${bushier_flowers_forge_version}")
 }
 
 jar {

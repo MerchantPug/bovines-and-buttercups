@@ -31,7 +31,7 @@ public class MoobloomFlowerBlock extends FlowerBlock {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(PERSISTENT);
-        Services.PLATFORM.addMoobloomFlowerBlockProperties(builder);
     }
 }

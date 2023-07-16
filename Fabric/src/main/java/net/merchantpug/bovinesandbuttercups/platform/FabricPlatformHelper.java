@@ -1,7 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.mojang.serialization.Codec;
-import net.merchantpug.bovinesandbuttercups.api.condition.ConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
@@ -16,6 +15,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.Map;
 
@@ -77,5 +79,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public Map<Block, Block> getPottedBlockMap() {
         return FlowerPotBlock.POTTED_BY_CONTENT;
+    }
+
+    @Override
+    public void addMoobloomFlowerBlockProperties(StateDefinition.Builder<Block, BlockState> builder) {
+        if (isModLoaded("stackableflowers"))
+            builder.add(BlockStateProperties.FLOWER_AMOUNT);
     }
 }

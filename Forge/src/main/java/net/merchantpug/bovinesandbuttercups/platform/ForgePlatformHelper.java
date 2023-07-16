@@ -12,12 +12,12 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesForge;
 import net.merchantpug.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.targets.FMLServerLaunchHandler;
 
 import java.util.Map;
 
@@ -78,5 +78,10 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public Map<Block, Block> getPottedBlockMap() {
         return PottedBlockMapUtil.getPottedContentMap();
+    }
+
+    @Override
+    public void addMoobloomFlowerBlockProperties(StateDefinition.Builder<Block, BlockState> builder) {
+        // Intentionally left blank, there are no extra properties necessary on Forge.
     }
 }

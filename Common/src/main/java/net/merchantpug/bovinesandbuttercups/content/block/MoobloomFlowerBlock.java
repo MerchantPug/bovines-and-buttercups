@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -31,5 +32,6 @@ public class MoobloomFlowerBlock extends FlowerBlock {
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(PERSISTENT);
+        Services.PLATFORM.addMoobloomFlowerBlockProperties(builder);
     }
 }

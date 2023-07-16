@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 
 import java.util.Map;
 
@@ -35,4 +37,7 @@ public interface IPlatformHelper {
     void setRenderLayer(Block block, RenderType renderType);
 
     Map<Block, Block> getPottedBlockMap();
+
+    void addMoobloomFlowerBlockProperties(StateDefinition.Builder<Block, BlockState> builder);
+
 }

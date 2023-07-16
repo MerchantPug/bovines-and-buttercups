@@ -37,7 +37,7 @@ repositories {
     }
     maven {
         name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        url = 'https://maven.ladysnake.org/releases'
     }
     maven {
         // location of the maven that hosts JEI files since January 2023
@@ -134,6 +134,11 @@ dependencies {
     // modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
 
     modCompileOnly("maven.modrinth:inspecio:${inspecio_version}") { transitive false }
+
+    modCompileOnly "maven.modrinth:stackable-flowers:${stackable_flowers_version}"
+    // modLocalRuntime "maven.modrinth:stackable-flowers:${stackable_flowers_version}"
+    modCompileOnly "maven.modrinth:bushier-flowers:${bushier_flowers_fabric_version}"
+    // modLocalRuntime "maven.modrinth:bushier-flowers:${bushier_flowers_fabric_version}"
 }
 
 processResources {

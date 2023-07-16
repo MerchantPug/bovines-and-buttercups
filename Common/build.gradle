@@ -40,6 +40,13 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
 }
 
 dependencies {
@@ -52,16 +59,16 @@ dependencies {
 
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}:api"
+    compileOnly "maven.modrinth:bushier-flowers:${bushier_flowers_forge_version}"
 }
 
 processResources {
+    def buildProps = project.properties.clone()
 
-def buildProps = project.properties.clone()
+    filesMatching(['pack.mcmeta']) {
 
-filesMatching(['pack.mcmeta']) {
-
-    expand buildProps
-}
+        expand buildProps
+    }
 }
 
 publishing {

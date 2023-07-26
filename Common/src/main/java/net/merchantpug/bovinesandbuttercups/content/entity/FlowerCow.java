@@ -74,20 +74,19 @@ public class FlowerCow extends Cow {
     public FlowerCow(EntityType<? extends FlowerCow> entityType, Level level) {
         super(entityType, level);
         this.bee = null;
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
         ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> naturalSpawnType;
-
         if (getTotalSpawnWeight(this.level(), this.blockPosition()) > 0) {
             naturalSpawnType = getMoobloomSpawnTypeDependingOnBiome(this.level(), this.blockPosition(), this.getRandom());
         } else {
             naturalSpawnType = getMoobloomSpawnType(this.level(), this.getRandom());
         }
+       this.entityData.set(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(naturalSpawnType).toString());
+    }
 
-        this.entityData.define(TYPE_ID, BovineRegistryUtil.getConfiguredCowTypeKey(naturalSpawnType).toString());
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(TYPE_ID, "bovinesandbuttercups:missing");
         this.entityData.define(PREVIOUS_TYPE_ID, "");
         this.entityData.define(POLLINATED_RESET_TICKS, 0);
         this.entityData.define(TICKS_UNTIL_FLOWERS, 0);
@@ -490,11 +489,13 @@ public class FlowerCow extends Cow {
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getFlowerCowType() {
         try {
             if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(ResourceLocation.tryParse(getTypeId())) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(this.entityData.get(TYPE_ID)), BovineCowTypes.FLOWER_COW_TYPE.get()).getConfiguration()) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE.get());
+                this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE.get());
+                return this.type;
             } else if (this.type != null) {
                 return this.type;
             } else if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(ResourceLocation.tryParse(getTypeId()))) {
-                return BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE.get());
+                this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(getTypeId()), BovineCowTypes.FLOWER_COW_TYPE.get());
+                return this.type;
             }
             this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_moobloom"), BovineCowTypes.FLOWER_COW_TYPE.get());
             BovinesAndButtercups.LOG.warn("Could not find type '{}' from moobloom at {}. Setting type to 'bovinesandbuttercups:missing_moobloom'.", ResourceLocation.tryParse(getTypeId()), position());

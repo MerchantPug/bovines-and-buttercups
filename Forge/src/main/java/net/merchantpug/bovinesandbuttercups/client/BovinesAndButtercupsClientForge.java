@@ -26,19 +26,22 @@ package net.merchantpug.bovinesandbuttercups.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.client.particle.BloomParticle;
+import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
 import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
+import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowDatapackMushroomLayer;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.MushroomCowMyceliumLayer;
-import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticle;
+import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.client.util.CowTextureReloadListener;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.registry.*;
-import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
 import net.merchantpug.bovinesandbuttercups.util.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.renderer.entity.MushroomCowRenderer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
@@ -46,6 +49,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.joml.Vector3f;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class BovinesAndButtercupsClientForge {
@@ -58,6 +64,14 @@ public class BovinesAndButtercupsClientForge {
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         BovinesAndButtercupsClient.registerCowTexturePaths();
         event.registerReloadListener(new CowTextureReloadListener());
+    }
+
+    @SubscribeEvent
+    public static void registerModels(ModelEvent.RegisterAdditional event) {
+        ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
+        Set<ResourceLocation> modelsToLoad = new HashSet<>();
+        BovineStateModelUtil.initModels(resourceManager, modelsToLoad::add);
+        modelsToLoad.forEach(event::register);
     }
 
     @SubscribeEvent

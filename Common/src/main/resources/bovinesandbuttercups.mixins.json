@@ -25,9 +25,9 @@
   "client": [
     "client.ClientLevelMixin",
     "client.EffectRenderingInventoryScreenMixin",
+    "client.GuiGraphicsMixin",
     "client.MushroomCowMushroomLayerMixin",
-    "client.MushroomCowRendererMixin",
-    "client.GuiGraphicsMixin"
+    "client.MushroomCowRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

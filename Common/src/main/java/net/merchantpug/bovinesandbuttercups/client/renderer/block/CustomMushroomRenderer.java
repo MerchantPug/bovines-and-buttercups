@@ -1,13 +1,15 @@
 package net.merchantpug.bovinesandbuttercups.client.renderer.block;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -32,9 +34,9 @@ public class CustomMushroomRenderer implements BlockEntityRenderer<CustomMushroo
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"), "");
 
         if (blockEntity.getMushroomType() != null) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(blockEntity.getMushroomType()), blockEntity.getBlockState().getBlock());
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getBlock(BovineRegistryUtil.getMushroomTypeKey(blockEntity.getMushroomType()), BovineBlockstateTypes.MUSHROOM);
             if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "");
+                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "bovinesandbuttercups_" + BlockModelShaper.statePropertiesToString(blockEntity.getBlockState().getValues()));
             }
         }
 

@@ -7,11 +7,8 @@ import com.google.gson.JsonParser;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineBlockstateTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockModelDefinition;
-import net.minecraft.client.renderer.block.model.multipart.MultiPart;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -21,21 +18,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
+import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class BovineStateModelUtil {
     private static final BlockModelDefinition.Context CONTEXT = new BlockModelDefinition.Context();
 
-    public static void initModels(ModelBakery modelBakery, Map<ResourceLocation, UnbakedModel> unbakedCache, Map<ResourceLocation, UnbakedModel> topLevelModels) {
+    public static void initModels(ResourceManager manager, Consumer<ResourceLocation> consumer) {
         BovineStatesAssociationRegistry.clear();
-        UnbakedModel missingModel = unbakedCache.get(ModelBakery.MISSING_MODEL_LOCATION);
-        Map<ResourceLocation, Resource> blocks = Minecraft.getInstance().getResourceManager().listResources("bovinesandbuttercups", fileName -> fileName.getPath().endsWith(".json"));
+        Map<ResourceLocation, Resource> blocks = manager.listResources("blockstates/bovinesandbuttercups", fileName -> fileName.getPath().endsWith(".json"));
 
         for (Map.Entry<ResourceLocation, Resource> resourceEntry : blocks.entrySet()) {
             StringBuilder newIdBuilder = new StringBuilder(resourceEntry.getKey().getPath());
+            newIdBuilder.replace(0, 12, "");
             newIdBuilder.replace(newIdBuilder.length() - 5, newIdBuilder.length(), "");
             String newId = newIdBuilder.toString();
             ResourceLocation resourceLocation = new ResourceLocation(resourceEntry.getKey().getNamespace(), newId);
@@ -51,67 +50,112 @@ public class BovineStateModelUtil {
                         try {
                             tempStateDefinition = BovineBlockstateTypeRegistry.get(typeLocation);
                         } catch (NullPointerException e) {
-                            BovinesAndButtercups.LOG.warn("Could not find 'type' field value in registry. (Skipping). {}", e.getMessage());
+                            BovinesAndButtercups.LOG.warn("Could not find 'type' field value in bovinestate type registry. (Skipping). {}", e.getMessage());
+                            continue;
                         }
                     }
 
-                    if (jsonObject.has("inventory")) {
-                        ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(ResourceLocation.tryParse(jsonObject.get("inventory").getAsString()), "inventory");
-                        UnbakedModel model = modelBakery.getModel(inventoryModelLocation);
-                        ModelResourceLocation remappedModelLocation = new ModelResourceLocation(resourceLocation, "inventory");
-                        unbakedCache.put(remappedModelLocation, model);
-                        topLevelModels.put(remappedModelLocation, model);
-                    }
-
-                    if (tempStateDefinition == null) continue;
-
-                    if (jsonObject.has("linked_block_type")) {
-                        BovineStatesAssociationRegistry.register(ResourceLocation.tryParse(jsonObject.get("linked_block_type").getAsString()), tempStateDefinition.getOwner(), resourceLocation);
+                    if (tempStateDefinition == null) {
+                        if (jsonObject.has("inventory")) {
+                            ResourceLocation resourceLocation1 = ResourceLocation.tryParse(jsonObject.get("inventory").getAsString());
+                            if (resourceLocation1 == null) {
+                                BovinesAndButtercups.LOG.warn("Could not create valid resource location from string '{}'.", jsonObject.get("inventory").getAsString());
+                            } else {
+                                BovineStatesAssociationRegistry.registerItem(resourceLocation, resourceLocation1);
+                                ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(resourceLocation1, "inventory");
+                                consumer.accept(inventoryModelLocation);
+                            }
+                        }
+                        continue;
                     }
 
                     StateDefinition<Block, BlockState> stateDefinition = tempStateDefinition;
+                    ImmutableList<BlockState> possibleStates = stateDefinition.getPossibleStates();
                     CONTEXT.setDefinition(stateDefinition);
 
-                    Reader modelReader = resourceEntry.getValue().openAsReader();
-                    BlockModelDefinition modelDefinition = BlockModelDefinition.fromStream(CONTEXT, modelReader);
-                    modelReader.close();
+                    if (jsonObject.has("linked_block_type")) {
+                        ResourceLocation linkedType = ResourceLocation.tryParse(jsonObject.get("linked_block_type").getAsString());
+                        BovineStatesAssociationRegistry.registerBlock(linkedType, tempStateDefinition, resourceLocation);
 
-                    ImmutableList<BlockState> possibleStates = stateDefinition.getPossibleStates();
-
-                    MultiPart multipart = null;
-                    HashMap<BlockState, UnbakedModel> map = new HashMap<>();
-
-                    if (modelDefinition.isMultiPart()) {
-                        multipart = modelDefinition.getMultiPart();
-                        MultiPart finalMultipart = multipart;
-                        possibleStates.forEach((state) -> map.put(state, finalMultipart));
+                        if (jsonObject.has("inventory")) {
+                            ResourceLocation resourceLocation1 = ResourceLocation.tryParse(jsonObject.get("inventory").getAsString());
+                            if (resourceLocation1 == null) {
+                                BovinesAndButtercups.LOG.warn("Could not create valid resource location from string '{}'.", jsonObject.get("inventory").getAsString());
+                            } else {
+                                BovineStatesAssociationRegistry.registerItem(linkedType, resourceLocation1);
+                                ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(resourceLocation1, "inventory");
+                                consumer.accept(inventoryModelLocation);
+                            }
+                        }
                     }
 
-                    MultiPart finalMultipart = multipart;
-
-                    modelDefinition.getVariants().forEach((string, multiVariant) -> {
-                        try {
-                            possibleStates.stream().filter(ModelBakery.predicate(stateDefinition, string)).forEach((state) -> {
-                                UnbakedModel unbakedModel = map.put(state, multiVariant);
-                                if (unbakedModel != null && unbakedModel != finalMultipart) {
-                                    map.put(state, missingModel);
-                                    throw new RuntimeException("Overlapping definition with: " + modelDefinition.getVariants().entrySet().stream().filter((model) -> model.getValue() == unbakedModel).findFirst().get().getKey());
-                                }
-                            });
-                        } catch (Exception e) {
-                            BovinesAndButtercups.LOG.warn("Exception loading bovinestate definition: '{}' in resourcepack: '{}' for variant: '{}': {}", newId, multiVariant, string, e.getMessage());
-                        }
-                    });
-
-                    map.forEach((state, unbakedModel) -> {
-                        ModelResourceLocation modelLocation = BlockModelShaper.stateToModelLocation(resourceLocation, state);
-                        unbakedCache.put(modelLocation, unbakedModel);
-                        topLevelModels.put(modelLocation, unbakedModel);
-                    });
+                    for (BlockState state : possibleStates) {
+                        consumer.accept(new ModelResourceLocation(resourceLocation, "bovinesandbuttercups_" + BlockModelShaper.statePropertiesToString(state.getValues())));
+                    }
                 }
             } catch (Exception ignored) {
 
             }
         }
     }
+
+    public static UnbakedModel getVariantModel(ResourceManager manager, ModelResourceLocation modelId) {
+        if (modelId.getVariant().startsWith("bovinesandbuttercups_")) {
+            ResourceLocation modelLocation = new ResourceLocation(modelId.getNamespace(), "blockstates/" + modelId.getPath() + ".json");
+            Optional<Resource> resource = manager.getResource(modelLocation);
+
+            if (resource.isEmpty()) {
+                BovinesAndButtercups.LOG.error("Could not find BovineState file at location: {}.", modelLocation);
+                return null;
+            }
+
+            JsonElement json = null;
+            try {
+                var reader = resource.get().openAsReader();
+                json = JsonParser.parseReader(reader);
+                reader.close();
+            } catch (IOException e) {
+                BovinesAndButtercups.LOG.error("Exception in reading Bovinestate JSON at location '"  + modelLocation + "'.", e);
+            }
+
+            if (json == null || !json.isJsonObject()) {
+                BovinesAndButtercups.LOG.error("BovineState JSON at location '{}' was not found or is not a JSON object.", modelLocation);
+                return null;
+            }
+
+            JsonObject jsonObject = json.getAsJsonObject();
+
+            ResourceLocation typeLocation = ResourceLocation.tryParse(jsonObject.get("type").getAsString());
+            StateDefinition<Block, BlockState> stateDefinition = BovineBlockstateTypeRegistry.get(typeLocation);
+            if (stateDefinition == null) {
+                return null;
+            }
+            CONTEXT.setDefinition(stateDefinition);
+
+            BlockModelDefinition modelDefinition = null;
+            try {
+                Reader modelReader = resource.get().openAsReader();
+                modelDefinition = BlockModelDefinition.fromStream(CONTEXT, modelReader);
+                modelReader.close();
+            } catch (Exception e) {
+                BovinesAndButtercups.LOG.error("Could not create BlockModelDefinition from bovinestate '" + modelLocation + "' context:", e);
+            }
+
+            if (modelDefinition == null) {
+                return null;
+            }
+
+            if (modelDefinition.isMultiPart()) {
+                return modelDefinition.getMultiPart();
+            }
+
+            if (modelDefinition.hasVariant(modelId.getVariant().replaceFirst("bovinesandbuttercups_", ""))) {
+                return modelDefinition.getVariant(modelId.getVariant().replaceFirst("bovinesandbuttercups_", ""));
+            } else {
+                return modelDefinition.getVariant("");
+            }
+        }
+        return null;
+    }
+
 }

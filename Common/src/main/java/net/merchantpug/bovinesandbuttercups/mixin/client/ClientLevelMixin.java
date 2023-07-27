@@ -3,16 +3,15 @@ package net.merchantpug.bovinesandbuttercups.mixin.client;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
+import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomHugeMushroomBlock;
-import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
+import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.particle.ModelLocationParticleOption;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
@@ -69,14 +68,14 @@ public abstract class ClientLevelMixin extends Level {
                             ResourceLocation resourceLocation = null;
                             String variant = "bovines";
                             if (this.getBlockEntity(blockPos) instanceof CustomFlowerBlockEntity customFlowerBlockEntity) {
-                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(customFlowerBlockEntity.getFlowerType()), BovineBlocks.CUSTOM_FLOWER.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
-                                variant = BlockModelShaper.statePropertiesToString(blockState.getValues());
+                                resourceLocation = BovineStatesAssociationRegistry.getBlock(BovineRegistryUtil.getFlowerTypeKey(customFlowerBlockEntity.getFlowerType()), BovineBlockstateTypes.FLOWER).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"));
+                                variant = "bovinesandbuttercups_persistent=true";
                             } else if (this.getBlockEntity(blockPos) instanceof CustomMushroomBlockEntity customMushroomBlockEntity) {
-                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
-                                variant = "";
+                                resourceLocation = BovineStatesAssociationRegistry.getBlock(BovineRegistryUtil.getMushroomTypeKey(customMushroomBlockEntity.getMushroomType()), BovineBlockstateTypes.MUSHROOM).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"));
+                                variant = "bovinesandbuttercups_";
                             } else if (this.getBlockEntity(blockPos) instanceof CustomHugeMushroomBlockEntity customHugeMushroomBlockEntity) {
-                                resourceLocation = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(customHugeMushroomBlockEntity.getMushroomType()), BovineBlocks.CUSTOM_MUSHROOM_BLOCK.get()).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"));
-                                variant = "down=true,east=true,north=true,south=true,up=true,west=true";
+                                resourceLocation = BovineStatesAssociationRegistry.getBlock(BovineRegistryUtil.getMushroomTypeKey(customHugeMushroomBlockEntity.getMushroomType()), BovineBlockstateTypes.MUSHROOM_BLOCK).orElseGet(() -> BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom_block"));
+                                variant = "bovinesandbuttercups_down=true,east=true,north=true,south=true,up=true,west=true";
                             }
                             if (resourceLocation != null) {
                                 this.addParticle(new ModelLocationParticleOption(resourceLocation, variant), blockPos.getX() + d7, blockPos.getY() + d8, blockPos.getZ() + d9, d4 - 0.5D, d5 - 0.5D, d6 - 0.5D);

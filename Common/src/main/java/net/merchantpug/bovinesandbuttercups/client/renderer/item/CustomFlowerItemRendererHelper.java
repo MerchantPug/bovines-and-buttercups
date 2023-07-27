@@ -6,7 +6,6 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,12 +23,12 @@ import java.util.Optional;
 
 public class CustomFlowerItemRendererHelper {
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemDisplayContext transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_flower"), "inventory");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("missing_flower"), "inventory");
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
         if (CustomFlowerItem.getFlowerTypeFromTag(stack).isPresent()) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getFlowerTypeKey(CustomFlowerItem.getFlowerTypeFromTag(stack).get()), BovineBlocks.CUSTOM_FLOWER.get());
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(BovineRegistryUtil.getFlowerTypeKey(CustomFlowerItem.getFlowerTypeFromTag(stack).get()));
             if (modelLocationWithoutVariant.isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
             }

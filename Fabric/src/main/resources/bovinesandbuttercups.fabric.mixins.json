@@ -14,7 +14,7 @@
   "client": [
     "client.EffectRenderingInventoryScreenMixin",
     "client.GuiMixin",
-    "client.ModelBakeryMixin",
+    "client.ModelManagerAccessor",
     "client.MushroomCowRendererMixin"
   ],
   "injectors": {

@@ -1,7 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.*;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomFlowerItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomHugeMushroomItemRenderer;
 import net.merchantpug.bovinesandbuttercups.client.item.CustomMushroomItemRenderer;
@@ -11,6 +15,7 @@ import net.merchantpug.bovinesandbuttercups.client.particle.ModelLocationParticl
 import net.merchantpug.bovinesandbuttercups.client.particle.ShroomParticle;
 import net.merchantpug.bovinesandbuttercups.client.renderer.block.*;
 import net.merchantpug.bovinesandbuttercups.client.renderer.entity.FlowerCowRenderer;
+import net.merchantpug.bovinesandbuttercups.client.util.BovineStateModelUtil;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketsS2C;
 import net.merchantpug.bovinesandbuttercups.registry.*;
@@ -52,5 +57,9 @@ public class BovinesAndButtercupsClientQuilt implements ClientModInitializer {
                 BovineItems.NECTAR_BOWL.get());
 
         ResourceLoader.get(PackType.CLIENT_RESOURCES).registerReloader(new CowTextureReloadListenerQuilt());
+
+        ModelLoadingRegistry.INSTANCE.registerModelProvider(BovineStateModelUtil::initModels);
+        ModelLoadingRegistry.INSTANCE.registerVariantProvider(manager -> (modelId, context) -> BovineStateModelUtil.getVariantModel(manager, modelId));
+
     }
 }

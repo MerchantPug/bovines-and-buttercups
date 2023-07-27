@@ -9,7 +9,9 @@
     "MushroomCowMixin"
   ],
   "client": [
-    "client.GuiMixin"
+    "client.GuiMixin",
+    "client.ModelBakeryMixin",
+    "client.ModelManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

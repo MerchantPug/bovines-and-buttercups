@@ -3,6 +3,7 @@ package net.merchantpug.bovinesandbuttercups.client.renderer.item;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.item.NectarBowlItem;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
 import net.minecraft.client.Minecraft;
@@ -28,10 +29,10 @@ public class NectarBowlItemRendererHelper {
         if (NectarBowlItem.getCowTypeFromStack(stack) != null) {
             Optional<ResourceLocation> modelLocationWithoutVariant = NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getNectarTexture();
             if (modelLocationWithoutVariant.isPresent()) {
-                modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
+                modelResourceLocation = new ModelResourceLocation(BovineStatesAssociationRegistry.getItem(modelLocationWithoutVariant.get()).orElse(BovinesAndButtercups.asResource("buttercup_nectar_bowl")), "inventory");
             }
         } else {
-            modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/item/buttercup_nectar_bowl"), "inventory");
+            modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("buttercup_nectar_bowl"), "inventory");
         }
 
         BakedModel nectarBowlModel = Minecraft.getInstance().getModelManager().getModel(modelResourceLocation);

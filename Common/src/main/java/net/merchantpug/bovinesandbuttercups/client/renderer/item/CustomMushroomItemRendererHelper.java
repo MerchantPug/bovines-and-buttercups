@@ -6,7 +6,6 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.bovinestate.BovineStatesAssociationRegistry;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomHugeMushroomItem;
-import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.merchantpug.bovinesandbuttercups.util.QuaternionUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,12 +23,12 @@ import java.util.Optional;
 
 public class CustomMushroomItemRendererHelper {
     public static void render(ItemStack stack, PoseStack poseStack, MultiBufferSource bufferSource, int light, int overlay, ItemDisplayContext transformType) {
-        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("bovinesandbuttercups/missing_mushroom"), "inventory");
+        ModelResourceLocation modelResourceLocation = new ModelResourceLocation(BovinesAndButtercups.asResource("missing_mushroom"), "inventory");
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
         if (CustomHugeMushroomItem.getMushroomTypeFromTag(stack).isPresent()) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.get(BovineRegistryUtil.getMushroomTypeKey(CustomHugeMushroomItem.getMushroomTypeFromTag(stack).get()), BovineBlocks.CUSTOM_MUSHROOM.get());
+            Optional<ResourceLocation> modelLocationWithoutVariant = BovineStatesAssociationRegistry.getItem(BovineRegistryUtil.getMushroomTypeKey(CustomHugeMushroomItem.getMushroomTypeFromTag(stack).get()));
             if (modelLocationWithoutVariant.isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(modelLocationWithoutVariant.get(), "inventory");
             }

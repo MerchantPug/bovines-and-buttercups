@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.client.platform.services.IClientHelper;
 import net.merchantpug.bovinesandbuttercups.client.resources.BovineBlockstateTypes;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
@@ -13,8 +14,10 @@ import java.util.stream.Stream;
 public class BovinesAndButtercupsClient {
     public static final HashSet<ResourceLocation> LOADED_COW_TEXTURES = new HashSet<>();
     private static final HashSet<String> COW_TEXTURE_PATHS = new HashSet<>();
+    public static IClientHelper HELPER;
 
     public static void init() {
+        HELPER =  Services.load(IClientHelper.class);
         BovineBlockstateTypes.init();
 
         if (!Services.PLATFORM.getPlatformName().equals("Forge")) {

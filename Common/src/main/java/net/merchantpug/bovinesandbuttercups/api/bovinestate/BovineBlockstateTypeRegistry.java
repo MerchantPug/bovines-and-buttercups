@@ -13,20 +13,13 @@ import java.util.stream.Stream;
 public class BovineBlockstateTypeRegistry {
     private static final Map<ResourceLocation, StateDefinition<Block, BlockState>> REGISTRY = new HashMap<>();
 
-    public static StateDefinition<Block, BlockState> register(ResourceLocation resource, Block block) {
-        if (REGISTRY.containsKey(resource)) {
-            BovinesAndButtercups.LOG.error("BovineBlockstateTypeRegistry already contains entry for key '{}'.", resource);
-            return REGISTRY.get(resource);
-        }
-        return REGISTRY.put(resource, block.getStateDefinition());
-    }
-
     public static StateDefinition<Block, BlockState> register(ResourceLocation resource, StateDefinition<Block, BlockState> definition) {
         if (REGISTRY.containsKey(resource)) {
             BovinesAndButtercups.LOG.error("BovineBlockstateTypeRegistry already contains entry for key '{}'.", resource);
             return REGISTRY.get(resource);
         }
-        return REGISTRY.put(resource, definition);
+        REGISTRY.put(resource, definition);
+        return definition;
     }
 
     public static StateDefinition<Block, BlockState> get(ResourceLocation resource) {

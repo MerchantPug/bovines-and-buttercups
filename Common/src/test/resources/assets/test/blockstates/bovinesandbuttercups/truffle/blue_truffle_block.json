@@ -4,7 +4,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "test:block/truffle/blue_truffle_block"
+        "model": "test:truffle/blue_truffle_block"
       },
       "when": {
         "north": "true"

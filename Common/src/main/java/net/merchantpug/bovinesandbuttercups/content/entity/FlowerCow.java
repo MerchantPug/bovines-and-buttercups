@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -66,6 +67,7 @@ public class FlowerCow extends Cow {
     private static final EntityDataAccessor<Integer> TICKS_UNTIL_FLOWERS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TIMES_POLLINATED = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> STANDING_STILL_FOR_BEE_TICKS = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ALLOW_SHEARING = SynchedEntityData.defineId(FlowerCow.class, EntityDataSerializers.BOOLEAN);
     private ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> type;
     @Nullable public Bee bee;
     private boolean hasRefreshedDimensionsForLaying;
@@ -92,6 +94,7 @@ public class FlowerCow extends Cow {
         this.entityData.define(TICKS_UNTIL_FLOWERS, 0);
         this.entityData.define(TIMES_POLLINATED, 0);
         this.entityData.define(STANDING_STILL_FOR_BEE_TICKS, 0);
+        this.entityData.define(ALLOW_SHEARING, true);
     }
 
     @Override
@@ -111,6 +114,7 @@ public class FlowerCow extends Cow {
         compound.putInt("PollinatedResetTicks", this.getPollinatedResetTicks());
         compound.putInt("TicksUntilFlowers", this.getTicksUntilFlowers());
         compound.putInt("TimesPollinated", this.getTimesPollinated());
+        compound.putBoolean("AllowShearing", this.shouldAllowShearing());
     }
 
     @Override
@@ -130,6 +134,9 @@ public class FlowerCow extends Cow {
         }
         if (compound.contains("TimesPollinated", 99)) {
             this.setTimesPollinated(compound.getInt("TimesPollinated"));
+        }
+        if (compound.contains("AllowShearing", Tag.TAG_BYTE)) {
+            this.setAllowShearing(compound.getBoolean("AllowShearing"));
         }
     }
 
@@ -483,7 +490,7 @@ public class FlowerCow extends Cow {
     }
 
     public boolean xplatformReadyForShearing() {
-        return this.isAlive() && !this.isBaby();
+        return this.isAlive() && !this.isBaby() && this.entityData.get(ALLOW_SHEARING);
     }
 
     public ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> getFlowerCowType() {
@@ -559,6 +566,14 @@ public class FlowerCow extends Cow {
 
     public void setStandingStillForBeeTicks(int value) {
         this.entityData.set(STANDING_STILL_FOR_BEE_TICKS, value);
+    }
+
+    public boolean shouldAllowShearing() {
+        return this.entityData.get(ALLOW_SHEARING);
+    }
+
+    public void setAllowShearing(boolean value) {
+        this.entityData.set(ALLOW_SHEARING, value);
     }
 
     @Override

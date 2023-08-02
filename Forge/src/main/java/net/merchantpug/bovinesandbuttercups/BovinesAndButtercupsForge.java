@@ -165,6 +165,18 @@ public class BovinesAndButtercupsForge {
     public void addForgeBusEventListeners() {
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
 
+        eventBus.addListener((PlayerInteractEvent.EntityInteract event) -> {
+            if (!event.getItemStack().is(Items.SHEARS)) return;
+            if (event.getTarget() instanceof FlowerCow cow && !cow.shouldAllowShearing()) {
+                event.setCanceled(true);
+            }
+            event.getTarget().getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
+                if (!cap.shouldAllowShearing()) {
+                    event.setCanceled(true);
+                }
+            });
+        });
+
         eventBus.addListener((AddReloadListenerEvent event) -> {
             event.addListener(new ConfiguredCowTypeReloadListener());
             event.addListener(new FlowerTypeReloadListener());

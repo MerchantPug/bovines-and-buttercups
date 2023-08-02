@@ -13,4 +13,7 @@ public interface MushroomCowTypeComponent extends Component {
 
     @Nullable ResourceLocation getPreviousMushroomCowTypeKey();
     void setPreviousMushroomCowTypeKey(@Nullable ResourceLocation key);
+
+    boolean shouldAllowShearing();
+    void setAllowShearing(boolean value);
 }

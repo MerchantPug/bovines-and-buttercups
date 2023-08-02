@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+// TODO: Rewrite this entire thing.
 public class BovineStateModelUtil {
     private static final BlockModelDefinition.Context CONTEXT = new BlockModelDefinition.Context();
 
@@ -44,6 +45,10 @@ public class BovineStateModelUtil {
                 JsonElement json = JsonParser.parseReader(reader);
                 reader.close();
                 if (json instanceof JsonObject jsonObject) {
+                    if (!jsonObject.has("type")) {
+                        BovinesAndButtercups.LOG.error("Could not find 'type' field inside bovinestate json: {}.", resourceLocation);
+                        continue;
+                    }
                     ResourceLocation typeLocation = ResourceLocation.tryParse(jsonObject.get("type").getAsString());
                     StateDefinition<Block, BlockState> tempStateDefinition = null;
                     if (!Objects.equals(typeLocation, BovinesAndButtercups.asResource("item"))) {
@@ -61,7 +66,7 @@ public class BovineStateModelUtil {
                             if (resourceLocation1 == null) {
                                 BovinesAndButtercups.LOG.warn("Could not create valid resource location from string '{}'.", jsonObject.get("inventory").getAsString());
                             } else {
-                                BovineStatesAssociationRegistry.registerItem(resourceLocation, resourceLocation1);
+                                BovineStatesAssociationRegistry.registerItem(resourceLocation, null, true, resourceLocation1);
                                 ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(resourceLocation1, "inventory");
                                 consumer.accept(inventoryModelLocation);
                             }
@@ -75,6 +80,12 @@ public class BovineStateModelUtil {
 
                     if (jsonObject.has("linked_block_type")) {
                         ResourceLocation linkedType = ResourceLocation.tryParse(jsonObject.get("linked_block_type").getAsString());
+
+                        if (linkedType == null) {
+                            BovinesAndButtercups.LOG.info("Could not parse linked_block_type from key: {}.", jsonObject.get("linked_block_type").getAsString());
+                            continue;
+                        }
+
                         BovineStatesAssociationRegistry.registerBlock(linkedType, tempStateDefinition, resourceLocation);
 
                         if (jsonObject.has("inventory")) {
@@ -82,7 +93,7 @@ public class BovineStateModelUtil {
                             if (resourceLocation1 == null) {
                                 BovinesAndButtercups.LOG.warn("Could not create valid resource location from string '{}'.", jsonObject.get("inventory").getAsString());
                             } else {
-                                BovineStatesAssociationRegistry.registerItem(linkedType, resourceLocation1);
+                                BovineStatesAssociationRegistry.registerItem(linkedType, stateDefinition, false, resourceLocation1);
                                 ModelResourceLocation inventoryModelLocation = new ModelResourceLocation(resourceLocation1, "inventory");
                                 consumer.accept(inventoryModelLocation);
                             }

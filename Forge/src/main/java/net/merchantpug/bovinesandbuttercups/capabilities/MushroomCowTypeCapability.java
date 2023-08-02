@@ -20,5 +20,8 @@ public interface MushroomCowTypeCapability extends INBTSerializable<CompoundTag>
     @Nullable ResourceLocation getPreviousMushroomTypeKey();
     void setPreviousMushroomTypeKey(@Nullable ResourceLocation key);
 
+    boolean shouldAllowShearing();
+    void setAllowShearing(boolean value);
+
     void sync();
 }

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-public record SyncMushroomCowTypePacket(int entityId, ResourceLocation typeKey, @Nullable ResourceLocation previousTypeKey) {
+public record SyncMushroomCowTypePacket(int entityId, ResourceLocation typeKey, @Nullable ResourceLocation previousTypeKey, boolean allowShearing) {
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(entityId);
         buf.writeResourceLocation(typeKey);
@@ -22,6 +22,7 @@ public record SyncMushroomCowTypePacket(int entityId, ResourceLocation typeKey, 
         if (previousTypeKey != null) {
             buf.writeResourceLocation(previousTypeKey);
         }
+        buf.writeBoolean(allowShearing);
     }
 
     public static SyncMushroomCowTypePacket decode(FriendlyByteBuf buf) {
@@ -31,7 +32,8 @@ public record SyncMushroomCowTypePacket(int entityId, ResourceLocation typeKey, 
         if (buf.readBoolean()) {
             previousTypeKey = buf.readResourceLocation();
         }
-        return new SyncMushroomCowTypePacket(entityId, typeKey, previousTypeKey);
+        boolean allowShearing = buf.readBoolean();
+        return new SyncMushroomCowTypePacket(entityId, typeKey, previousTypeKey, allowShearing);
     }
 
     public void handle(Supplier<NetworkEvent.Context> context) {
@@ -45,6 +47,7 @@ public record SyncMushroomCowTypePacket(int entityId, ResourceLocation typeKey, 
                 mushroomCow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> {
                     capability.setMushroomType(typeKey());
                     capability.setPreviousMushroomTypeKey(previousTypeKey());
+                    capability.setAllowShearing(allowShearing());
                 });
             });
         }));

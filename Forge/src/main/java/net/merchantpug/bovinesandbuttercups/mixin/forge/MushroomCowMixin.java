@@ -1,6 +1,8 @@
 package net.merchantpug.bovinesandbuttercups.mixin.forge;
 
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
+import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.minecraft.nbt.CompoundTag;
@@ -26,22 +28,29 @@ public abstract class MushroomCowMixin {
         }
     }
 
+    ConfiguredCowType<MushroomCowConfiguration, ?> bovinesandbuttercups$capturedCowConfig;
+
+    @Inject(method = "shearInternal", at = @At("HEAD"), remap = false)
+    private void bovinesandbuttercups$captureBeforeShearing(SoundSource source, CallbackInfoReturnable<List<ItemStack>> cir) {
+        MushroomCow cow = (MushroomCow)(Object)this;
+        bovinesandbuttercups$capturedCowConfig = Services.COMPONENT.getMushroomCowTypeFromCow(cow);
+    }
+
     @Inject(method = "shearInternal", at = @At(value = "RETURN", target = "Lnet/minecraft/world/entity/item/ItemEntity;<init>(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/item/ItemStack;)V"), remap = false, cancellable = true)
     private void bovinesandbuttercups$modifyShearItem(SoundSource source, CallbackInfoReturnable<List<ItemStack>> cir) {
         List<ItemStack> list = new ArrayList<>();
-        MushroomCow cow = (MushroomCow)(Object)this;
-        if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().getMushroom().blockState().isPresent()) {
+        if (bovinesandbuttercups$capturedCowConfig.configuration().getMushroom().blockState().isPresent()) {
             for(int i = 0; i < 5; ++i) {
-                list.add(new ItemStack(Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().getMushroom().blockState().get().getBlock()));
+                list.add(new ItemStack(bovinesandbuttercups$capturedCowConfig.configuration().getMushroom().blockState().get().getBlock()));
             }
             cir.setReturnValue(list);
-        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().getMushroom().getMushroomType().isPresent()) {
+        } else if (bovinesandbuttercups$capturedCowConfig.configuration().getMushroom().getMushroomType().isPresent()) {
             ItemStack itemStack = new ItemStack(BovineItems.CUSTOM_MUSHROOM.get());
             CompoundTag compound = new CompoundTag();
-            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().getMushroom().getMushroomType().get()).toString());
+            compound.putString("Type", BovineRegistryUtil.getMushroomTypeKey(bovinesandbuttercups$capturedCowConfig.configuration().getMushroom().getMushroomType().get()).toString());
             itemStack.getOrCreateTag().put("BlockEntityTag", compound);
             for(int i = 0; i < 5; ++i) {
-                list.add(itemStack);
+                list.add(itemStack.copy());
             }
             cir.setReturnValue(list);
         }

@@ -21,6 +21,7 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
     private ResourceLocation previousTypeId;
     private ConfiguredCowType<MushroomCowConfiguration, ?> type;
     private final MushroomCow provider;
+    private boolean allowShearing = true;
 
     public MushroomCowTypeComponentImpl(MushroomCow provider) {
         this.provider = provider;
@@ -39,6 +40,9 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
         if (tag.contains("PreviousType", Tag.TAG_STRING)) {
             this.setPreviousMushroomCowTypeKey(ResourceLocation.tryParse(tag.getString("PreviousType")));
         }
+        if (tag.contains("AllowShearing", Tag.TAG_BYTE)) {
+            this.setAllowShearing(tag.getBoolean("AllowShearing"));
+        }
     }
 
     @Override
@@ -49,6 +53,7 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
         if (this.previousTypeId != null) {
             tag.putString("PreviousType", this.previousTypeId.toString());
         }
+        tag.putBoolean("AllowShearing", this.allowShearing);
     }
 
     @Override
@@ -107,11 +112,22 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
     }
 
     @Override
+    public boolean shouldAllowShearing() {
+        return this.allowShearing;
+    }
+
+    @Override
+    public void setAllowShearing(boolean value) {
+        this.allowShearing = value;
+    }
+
+    @Override
     public void writeSyncPacket(FriendlyByteBuf buf, ServerPlayer player) {
         buf.writeBoolean(this.typeId != null);
         if (this.typeId != null) {
             buf.writeResourceLocation(this.typeId);
         }
+        buf.writeBoolean(this.allowShearing);
     }
 
     @Override
@@ -120,5 +136,6 @@ public class MushroomCowTypeComponentImpl implements MushroomCowTypeComponent, A
             this.typeId = buf.readResourceLocation();
         }
         this.getMushroomCowType();
+        this.allowShearing = buf.readBoolean();
     }
 }

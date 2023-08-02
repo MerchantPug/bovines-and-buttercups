@@ -18,10 +18,11 @@ import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 
 public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability {
-    ResourceLocation typeId;
-    @Nullable ResourceLocation previousTypeId;
-    ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> type;
-    MushroomCow provider;
+    private ResourceLocation typeId;
+    private @Nullable ResourceLocation previousTypeId;
+    private ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> type;
+    private final MushroomCow provider;
+    private boolean allowShearing = true;
 
     public MushroomCowTypeCapabilityImpl(MushroomCow provider) {
         this.provider = provider;
@@ -36,6 +37,7 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
         if (this.previousTypeId != null) {
             tag.putString("PreviousType", this.previousTypeId.toString());
         }
+        tag.putBoolean("AllowShearing", this.allowShearing);
         return tag;
     }
 
@@ -46,6 +48,9 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
         }
         if (tag.contains("PreviousType", Tag.TAG_STRING)) {
             this.setPreviousMushroomTypeKey(ResourceLocation.tryParse(tag.getString("PreviousType")));
+        }
+        if (tag.contains("AllowShearing", Tag.TAG_BYTE)) {
+            this.setAllowShearing(tag.getBoolean("AllowShearing"));
         }
     }
 
@@ -79,6 +84,16 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
     }
 
     @Override
+    public boolean shouldAllowShearing() {
+        return allowShearing;
+    }
+
+    @Override
+    public void setAllowShearing(boolean value) {
+        allowShearing = value;
+    }
+
+    @Override
     public void setMushroomType(ResourceLocation key) {
         this.typeId = key;
 
@@ -107,6 +122,6 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
     @Override
     public void sync() {
         if (provider.level().isClientSide || this.typeId == null) return;
-        BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncMushroomCowTypePacket(provider.getId(), this.typeId, this.previousTypeId));
+        BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncMushroomCowTypePacket(provider.getId(), this.typeId, this.previousTypeId, this.allowShearing));
     }
 }

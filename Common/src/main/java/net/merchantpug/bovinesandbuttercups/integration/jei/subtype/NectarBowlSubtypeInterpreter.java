@@ -19,7 +19,7 @@ public class NectarBowlSubtypeInterpreter implements IIngredientSubtypeInterpret
         CompoundTag compound = stack.getTag().getCompound("BlockEntityTag");
         if (compound.contains("Source")) {
             ConfiguredCowType<?, ?> configuredCowType = BovineRegistryUtil.getConfiguredCowTypeFromKey(ResourceLocation.tryParse(compound.getString("Source")));
-            if (configuredCowType != configuredCowType.getCowType().getDefaultCowType().getSecond()) {
+            if (configuredCowType != configuredCowType.cowType().getDefaultCowType().getSecond()) {
                 return compound.getString("Source");
             }
         }

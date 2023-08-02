@@ -7,44 +7,24 @@ import net.merchantpug.bovinesandbuttercups.platform.Services;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.util.ClassUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.function.Function;
 
 public class CowType<CTC extends CowTypeConfiguration> {
     public static final Codec<CowType<?>> CODEC = Services.PLATFORM.getCowTypeCodec();
 
-    Function<RegistryAccess, Codec<CTC>> codecFunction;
-    private Codec<ConfiguredCowType<CTC, CowType<CTC>>> serverConfiguredCodec;
-    private Codec<ConfiguredCowType<CTC, CowType<CTC>>> clientConfiguredCodec;
+    private Codec<ConfiguredCowType<CTC, CowType<CTC>>> codec;
     private Pair<ResourceLocation, ConfiguredCowType<CTC, CowType<CTC>>> defaultConfiguredCowType;
 
-    public CowType(Function<RegistryAccess, Codec<CTC>> codecFunction) {
-        this.codecFunction = codecFunction;
+    public CowType(Codec<CTC> codec) {
+        this.codec = RecordCodecBuilder.create(instance ->
+                instance.group(
+                        ClassUtil.asMapCodec(codec).forGetter(ConfiguredCowType::configuration),
+                        Codec.INT.optionalFieldOf("loading_priority", 0).forGetter(ConfiguredCowType::loadingPriority)
+                ).apply(instance, (ctc, integer) -> new ConfiguredCowType<>(this, ctc, integer)));;
     }
 
-    public Codec<ConfiguredCowType<CTC, CowType<CTC>>> getServerCodec() {
-        if (this.serverConfiguredCodec != null) {
-            return this.serverConfiguredCodec;
-        }
-        return this.serverConfiguredCodec = RecordCodecBuilder.create(instance ->
-                instance.group(
-                        ClassUtil.asMapCodec(codecFunction.apply(BovinesAndButtercups.getServer() == null ? BovinesAndButtercups.getInitialRegistryAccess() : BovinesAndButtercups.getServer().registryAccess())).forGetter(ConfiguredCowType::getConfiguration),
-                        Codec.INT.optionalFieldOf("loading_priority", 0).forGetter(ConfiguredCowType::getLoadingPriority)
-                ).apply(instance, (ctc, integer) -> new ConfiguredCowType<>(this, ctc, integer)));
-    }
-
-    public Codec<ConfiguredCowType<CTC, CowType<CTC>>> getClientCodec() {
-        if (this.clientConfiguredCodec != null) {
-            return clientConfiguredCodec;
-        }
-        return this.clientConfiguredCodec = RecordCodecBuilder.create(instance ->
-                instance.group(
-                        ClassUtil.asMapCodec(codecFunction.apply(Minecraft.getInstance().level == null ? BovinesAndButtercups.getInitialRegistryAccess() : Minecraft.getInstance().level.registryAccess())).forGetter(ConfiguredCowType::getConfiguration),
-                        Codec.INT.optionalFieldOf("loading_priority", 0).forGetter(ConfiguredCowType::getLoadingPriority)
-                ).apply(instance, (ctc, integer) -> new ConfiguredCowType<>(this, ctc, integer)));
+    public Codec<ConfiguredCowType<CTC, CowType<CTC>>> getCodec() {
+        return codec;
     }
 
     public Pair<ResourceLocation, ConfiguredCowType<CTC, CowType<CTC>>> getDefaultCowType() {

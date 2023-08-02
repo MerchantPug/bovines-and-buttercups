@@ -6,9 +6,9 @@ import net.minecraft.core.RegistryAccess;
 import java.util.function.Function;
 
 public abstract class ConditionType<T, CC extends ConditionConfiguration<T>> {
-    protected final Function<RegistryAccess, MapCodec<CC>> codecFunction;
+    protected final MapCodec<CC> codec;
 
-    public ConditionType(Function<RegistryAccess, MapCodec<CC>> codecFunction) {
-        this.codecFunction = codecFunction;
+    public ConditionType(MapCodec<CC> codec) {
+        this.codec = codec;
     }
 }

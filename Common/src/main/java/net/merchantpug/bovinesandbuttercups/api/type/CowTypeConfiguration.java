@@ -5,11 +5,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
+import net.merchantpug.bovinesandbuttercups.util.CodecUtil;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
 import java.util.List;
@@ -54,13 +53,10 @@ public class CowTypeConfiguration {
      * @param thunderConverts A list of weighted cow types that this cow will/have a chance to convert into upon being struck by lightning.
      */
     public record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
-        public static MapCodec<Settings> getCodec(RegistryAccess registryAccess) {
+        public static MapCodec<Settings> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
                     ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(Settings::cowTexture),
-                    Codec.either(TagKey.hashedCodec(Registries.BIOME), registryAccess.registry(Registries.BIOME).get().holderByNameCodec()).optionalFieldOf("spawn_biomes")
-                            .xmap(tagKeyBiomeEither ->
-                                            tagKeyBiomeEither.map(tagKeyBiomeEither1 -> tagKeyBiomeEither1.map(tagKey -> registryAccess.registry(Registries.BIOME).get().getOrCreateTag(tagKey), biome -> (HolderSet<Biome>)HolderSet.direct(biome))),
-                                    biomes -> biomes.map(holders -> holders.unwrap().mapBoth(tagKey -> tagKey, holders1 -> holders1.get(0)))).forGetter(Settings::biomes),
+                    CodecUtil.optionalTagOrObjectCodec(Registries.BIOME, "spawn_biomes").forGetter(Settings::biomes),
                     Codec.INT.optionalFieldOf("natural_spawn_weight", 0).forGetter(Settings::naturalSpawnWeight),
                     Codec.list(WeightedConfiguredCowType.CODEC).optionalFieldOf("thunder_conversion_types").orElseGet(Optional::empty).forGetter(Settings::thunderConverts)
             ).apply(instance, Settings::new));

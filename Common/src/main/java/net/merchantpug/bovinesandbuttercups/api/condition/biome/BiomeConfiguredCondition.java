@@ -16,7 +16,7 @@ public class BiomeConfiguredCondition<CC extends ConditionConfiguration<Holder<B
         super(conditionType, conditionConfiguration);
     }
 
-    public static Codec<ConfiguredCondition<Holder<Biome>, ?, ?>> getCodec(RegistryAccess access) {
-        return BiomeConditionType.CODEC.dispatch(BiomeConfiguredCondition::getType, biomeConditionType -> biomeConditionType.getCodec(access));
+    public static Codec<ConfiguredCondition<Holder<Biome>, ?, ?>> getCodec() {
+        return BiomeConditionType.CODEC.dispatch(BiomeConfiguredCondition::getType, BiomeConditionType::getCodec);
     }
 }

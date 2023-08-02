@@ -15,7 +15,6 @@ public class BovinesAndButtercups {
     public static final String MOD_NAME = "Bovines and Buttercups";
     public static final Logger LOG = LogManager.getLogger(MOD_NAME);
     private static MinecraftServer server;
-    private static RegistryAccess initialRegistryAccess;
     public static String VERSION;
 
     public static void init() {
@@ -44,16 +43,6 @@ public class BovinesAndButtercups {
     protected static void setServer(MinecraftServer server) {
         if (BovinesAndButtercups.server == null) {
             BovinesAndButtercups.server = server;
-        }
-    }
-
-    public static RegistryAccess getInitialRegistryAccess() {
-        return initialRegistryAccess;
-    }
-
-    public static void setRegistryAccess(RegistryAccess registryAccess) {
-        if (BovinesAndButtercups.initialRegistryAccess == null) {
-            BovinesAndButtercups.initialRegistryAccess = registryAccess;
         }
     }
 

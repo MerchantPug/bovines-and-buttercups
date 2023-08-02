@@ -8,7 +8,6 @@ import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.NotConditionConfiguration;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -24,9 +23,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BlocksInRadiusCondition extends ConditionConfiguration<Entity> {
-    public static MapCodec<BlocksInRadiusCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<BlocksInRadiusCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
-                Codec.list(BlockConfiguredCondition.getCodec(registryAccess)).fieldOf("block_conditions").forGetter(BlocksInRadiusCondition::getConditions),
+                Codec.list(BlockConfiguredCondition.getCodec()).fieldOf("block_conditions").forGetter(BlocksInRadiusCondition::getConditions),
                 Codec.DOUBLE.fieldOf("radius").forGetter(BlocksInRadiusCondition::getRadius),
                 Vec3.CODEC.optionalFieldOf("offset").forGetter(BlocksInRadiusCondition::getOffset)
         ).apply(builder, BlocksInRadiusCondition::new));

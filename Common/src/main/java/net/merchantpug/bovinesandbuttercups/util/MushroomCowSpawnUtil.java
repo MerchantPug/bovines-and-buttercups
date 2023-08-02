@@ -18,8 +18,8 @@ public class MushroomCowSpawnUtil {
     public static int getTotalSpawnWeight(LevelAccessor level, BlockPos pos) {
         int totalWeight = 0;
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
-            if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration).toList()) {
+            if (!(cowType.configuration() instanceof MushroomCowConfiguration configuration)) continue;
 
             if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(level.getBiome(pos), configuration.getSettings().biomes().get())) {
                 totalWeight += configuration.getSettings().naturalSpawnWeight();
@@ -33,8 +33,8 @@ public class MushroomCowSpawnUtil {
 
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
-            if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration mushroomCowConfiguration)) continue;
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration).toList()) {
+            if (!(cowType.configuration() instanceof MushroomCowConfiguration mushroomCowConfiguration)) continue;
 
             if (mushroomCowConfiguration.getSettings().naturalSpawnWeight() > 0) {
                 mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
@@ -43,7 +43,7 @@ public class MushroomCowSpawnUtil {
 
         int index = 0;
         for (double r = random.nextDouble() * totalWeight; index < mooshroomList.size() - 1; ++index) {
-            r -= mooshroomList.get(index).getConfiguration().getSettings().naturalSpawnWeight();
+            r -= mooshroomList.get(index).configuration().getSettings().naturalSpawnWeight();
             if (r <= 0.0) break;
         }
         if (!mooshroomList.isEmpty()) {
@@ -58,8 +58,8 @@ public class MushroomCowSpawnUtil {
     public static ResourceLocation getMooshroomSpawnTypeDependingOnBiome(LevelAccessor level, BlockPos pos, RandomSource random) {
         List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
-            if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration).toList()) {
+            if (!(cowType.configuration() instanceof MushroomCowConfiguration configuration)) continue;
 
             if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(level.getBiome(pos), configuration.getSettings().biomes().get())) {
                 mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
@@ -68,7 +68,7 @@ public class MushroomCowSpawnUtil {
 
         int index = 0;
         for (double r = random.nextDouble() * getTotalSpawnWeight(level, pos); index < mooshroomList.size() - 1; ++index) {
-            r -= mooshroomList.get(index).getConfiguration().getSettings().naturalSpawnWeight();
+            r -= mooshroomList.get(index).configuration().getSettings().naturalSpawnWeight();
             if (r <= 0.0) break;
         }
         if (!mooshroomList.isEmpty()) {

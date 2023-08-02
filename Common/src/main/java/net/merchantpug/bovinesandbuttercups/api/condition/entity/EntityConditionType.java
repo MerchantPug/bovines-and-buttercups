@@ -18,14 +18,14 @@ import java.util.function.Function;
 public class EntityConditionType<CC extends ConditionConfiguration<Entity>> extends ConditionType<Entity, CC> {
     public static final Codec<EntityConditionType<?>> CODEC = Services.PLATFORM.getEntityConditionTypeCodec();
 
-    public EntityConditionType(Function<RegistryAccess, MapCodec<CC>> codecFunction) {
-        super(codecFunction);
+    public EntityConditionType(MapCodec<CC> codec) {
+        super(codec);
     }
 
-    public Codec<ConfiguredCondition<Entity, CC, ?>> getCodec(RegistryAccess registryAccess) {
+    public Codec<ConfiguredCondition<Entity, CC, ?>> getCodec() {
         return RecordCodecBuilder.create(instance ->
                 instance.group(
-                        codecFunction.apply(registryAccess).forGetter(ConfiguredCondition::getConfiguration)
-                ).apply(instance, (t1) -> new ConfiguredCondition(this, t1)));
+                        codec.forGetter(ConfiguredCondition::getConfiguration)
+                ).apply(instance, (t1) -> new ConfiguredCondition<>(this, t1)));
     }
 }

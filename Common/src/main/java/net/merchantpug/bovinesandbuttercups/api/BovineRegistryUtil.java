@@ -41,7 +41,7 @@ public class BovineRegistryUtil {
         if (cct.isEmpty()) {
             throw new NullPointerException("Could not find ConfiguredCowType at location '" + key + "'.");
         }
-        if (optional.isEmpty() || cct.get().getCowType().equals(optional.get())) {
+        if (optional.isEmpty() || cct.get().cowType().equals(optional.get())) {
             return (ConfiguredCowType<C, CowType<C>>) cct.get();
         }
         BovinesAndButtercups.LOG.error("ConfiguredCowType at location " + key + " does not match mob type for entity. Expected: " + Services.PLATFORM.getCowTypeKey(optional.get()));

@@ -24,11 +24,11 @@ import java.util.function.Supplier;
 public class BovineBiomeConditionTypes {
     public static final RegistrationProvider<BiomeConditionType<?>> BIOME_CONDITION_TYPE = RegistrationProvider.get(BovineRegistryKeys.BIOME_CONDITION_TYPE_KEY, BovinesAndButtercups.MOD_ID);
 
-    public static final RegistryObject<BiomeConditionType<AndConditionConfiguration<Holder<Biome>>>> AND = register("and", () -> new BiomeConditionType<>(AndConditionConfiguration.getCodec(BiomeConfiguredCondition::getCodec)));
+    public static final RegistryObject<BiomeConditionType<AndConditionConfiguration<Holder<Biome>>>> AND = register("and", () -> new BiomeConditionType<>(AndConditionConfiguration.getCodec(BiomeConfiguredCondition.getCodec())));
     public static final RegistryObject<BiomeConditionType<ConstantConditionConfiguration<Holder<Biome>>>> CONSTANT = register("constant", () -> new BiomeConditionType<>(ConstantConditionConfiguration.getCodec()));
-    public static final RegistryObject<BiomeConditionType<NotConditionConfiguration<Holder<Biome>>>> NOT = register("not", () -> new BiomeConditionType<>(NotConditionConfiguration.getCodec(BiomeConfiguredCondition::getCodec)));
-    public static final RegistryObject<BiomeConditionType<OrConditionConfiguration<Holder<Biome>>>> OR = register("or", () -> new BiomeConditionType<>(OrConditionConfiguration.getCodec(BiomeConfiguredCondition::getCodec)));
-    public static final RegistryObject<BiomeConditionType<BiomeLocationCondition>> BIOME_LOCATION = register("biome_location", () -> new BiomeConditionType<>(BiomeLocationCondition::getCodec));
+    public static final RegistryObject<BiomeConditionType<NotConditionConfiguration<Holder<Biome>>>> NOT = register("not", () -> new BiomeConditionType<>(NotConditionConfiguration.getCodec(BiomeConfiguredCondition.getCodec())));
+    public static final RegistryObject<BiomeConditionType<OrConditionConfiguration<Holder<Biome>>>> OR = register("or", () -> new BiomeConditionType<>(OrConditionConfiguration.getCodec(BiomeConfiguredCondition.getCodec())));
+    public static final RegistryObject<BiomeConditionType<BiomeLocationCondition>> BIOME_LOCATION = register("biome_location", () -> new BiomeConditionType<>(BiomeLocationCondition.getCodec()));
 
     public static void register() {
 

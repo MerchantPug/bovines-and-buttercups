@@ -41,9 +41,9 @@ public class OrConditionConfiguration<T> extends ConditionConfiguration<T> {
         return conditions;
     }
 
-    public static <T> Function<RegistryAccess, MapCodec<OrConditionConfiguration<T>>> getCodec(Function<RegistryAccess, Codec<ConfiguredCondition<T, ?, ?>>> configuredConditionCodec) {
-        return registryAccess -> RecordCodecBuilder.mapCodec(builder -> builder.group(
-                Codec.list(configuredConditionCodec.apply(registryAccess)).fieldOf("conditions").forGetter(OrConditionConfiguration::getConditions)
+    public static <T> MapCodec<OrConditionConfiguration<T>> getCodec(Codec<ConfiguredCondition<T, ?, ?>> configuredConditionCodec) {
+        return RecordCodecBuilder.mapCodec(builder -> builder.group(
+                Codec.list(configuredConditionCodec).fieldOf("conditions").forGetter(OrConditionConfiguration::getConditions)
         ).apply(builder, OrConditionConfiguration::new));
     }
 }

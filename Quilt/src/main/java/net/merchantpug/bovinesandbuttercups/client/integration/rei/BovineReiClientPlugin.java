@@ -39,11 +39,11 @@ public class BovineReiClientPlugin implements REIClientPlugin {
 
     @Override
     public void registerBasicEntryFiltering(BasicFilteringRule<?> rule) {
-        BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration && configuredCowType != configuredCowType.getCowType().getDefaultCowType().getSecond()).forEach(configuredCowType -> {
+        BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof FlowerCowConfiguration && configuredCowType != configuredCowType.cowType().getDefaultCowType().getSecond()).forEach(configuredCowType -> {
             ItemStack stack = new ItemStack(BovineItems.NECTAR_BOWL.get());
             ResourceLocation cowLocation = BovineRegistryUtil.getConfiguredCowTypeKey(configuredCowType);
 
-            FlowerCowConfiguration fcc = ((FlowerCowConfiguration)configuredCowType.getConfiguration());
+            FlowerCowConfiguration fcc = ((FlowerCowConfiguration)configuredCowType.configuration());
             if (fcc.getNectarEffectInstance().isEmpty()) return;
             NectarBowlItem.saveMoobloomTypeKey(stack, cowLocation);
             NectarBowlItem.saveMobEffect(stack, fcc.getNectarEffectInstance().get().getEffect(), fcc.getNectarEffectInstance().get().getDuration());

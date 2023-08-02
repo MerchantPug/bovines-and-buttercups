@@ -15,7 +15,7 @@ public class BlockConfiguredCondition<CC extends ConditionConfiguration<BlockInW
         super(conditionType, conditionConfiguration);
     }
 
-    public static Codec<ConfiguredCondition<BlockInWorld, ?, ?>> getCodec(RegistryAccess access) {
-        return BlockConditionType.CODEC.dispatch(BlockConfiguredCondition::getType, blockConditionType -> blockConditionType.getCodec(access));
+    public static Codec<ConfiguredCondition<BlockInWorld, ?, ?>> getCodec() {
+        return BlockConditionType.CODEC.dispatch(BlockConfiguredCondition::getType, BlockConditionType::getCodec);
     }
 }

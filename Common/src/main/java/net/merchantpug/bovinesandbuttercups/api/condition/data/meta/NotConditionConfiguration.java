@@ -25,9 +25,9 @@ public class NotConditionConfiguration<T> extends ConditionConfiguration<T> {
         return condition;
     }
 
-    public static <T> Function<RegistryAccess, MapCodec<NotConditionConfiguration<T>>> getCodec(Function<RegistryAccess, Codec<ConfiguredCondition<T, ?, ?>>> configuredConditionCodec) {
-        return registryAccess -> RecordCodecBuilder.mapCodec(builder -> builder.group(
-                configuredConditionCodec.apply(registryAccess).fieldOf("condition").forGetter(NotConditionConfiguration::getCondition)
+    public static <T> MapCodec<NotConditionConfiguration<T>> getCodec(Codec<ConfiguredCondition<T, ?, ?>> configuredConditionCodec) {
+        return RecordCodecBuilder.mapCodec(builder -> builder.group(
+                configuredConditionCodec.fieldOf("condition").forGetter(NotConditionConfiguration::getCondition)
         ).apply(builder, NotConditionConfiguration::new));
     }
 }

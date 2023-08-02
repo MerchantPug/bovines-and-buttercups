@@ -59,8 +59,8 @@ public class CreativeTabHelper {
     }
 
     public static List<ItemStack> getNectarBowlsForCreativeTab() {
-        return ConfiguredCowTypeRegistry.asStream().filter(entry -> entry.getValue().getConfiguration() instanceof FlowerCowConfiguration flowerCowConfiguration && flowerCowConfiguration.getNectarEffectInstance().isPresent()).map(entry -> {
-            FlowerCowConfiguration config = (FlowerCowConfiguration) entry.getValue().getConfiguration();
+        return ConfiguredCowTypeRegistry.asStream().filter(entry -> entry.getValue().configuration() instanceof FlowerCowConfiguration flowerCowConfiguration && flowerCowConfiguration.getNectarEffectInstance().isPresent()).map(entry -> {
+            FlowerCowConfiguration config = (FlowerCowConfiguration) entry.getValue().configuration();
             ItemStack nectar = new ItemStack(BovineItems.NECTAR_BOWL.get());
             if (config.getNectarEffectInstance().isPresent()) {
                 NectarBowlItem.saveMoobloomTypeKey(nectar, entry.getKey());

@@ -15,14 +15,14 @@ import java.util.function.Function;
 public class BlockConditionType<CC extends ConditionConfiguration<BlockInWorld>> extends ConditionType<BlockInWorld, CC> {
     public static final Codec<BlockConditionType<?>> CODEC = Services.PLATFORM.getBlockConditionTypeCodec();
 
-    public BlockConditionType(Function<RegistryAccess, MapCodec<CC>> codecFunction) {
-        super(codecFunction);
+    public BlockConditionType(MapCodec<CC> codec) {
+        super(codec);
     }
 
-    public Codec<ConfiguredCondition<BlockInWorld, CC, ?>> getCodec(RegistryAccess registryAccess) {
+    public Codec<ConfiguredCondition<BlockInWorld, CC, ?>> getCodec() {
         return RecordCodecBuilder.create(instance ->
                 instance.group(
-                        codecFunction.apply(registryAccess).forGetter(ConfiguredCondition::getConfiguration)
-                ).apply(instance, (t1) -> new ConfiguredCondition(this, t1)));
+                        codec.forGetter(ConfiguredCondition::getConfiguration)
+                ).apply(instance, (t1) -> new ConfiguredCondition<>(this, t1)));
     }
 }

@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
 public class BlockStateCondition extends ConditionConfiguration<BlockInWorld> {
-    public static MapCodec<BlockStateCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<BlockStateCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
                 BlockState.CODEC.fieldOf("state").forGetter(BlockStateCondition::getState)
         ).apply(builder, BlockStateCondition::new));

@@ -14,9 +14,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.biome.Biome;
 
 public class BiomeConditionCondition extends ConditionConfiguration<Entity> {
-    public static MapCodec<BiomeConditionCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<BiomeConditionCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
-                BiomeConfiguredCondition.getCodec(registryAccess).fieldOf("biome_condition").forGetter(BiomeConditionCondition::getBiomeCondition)
+                BiomeConfiguredCondition.getCodec().fieldOf("biome_condition").forGetter(BiomeConditionCondition::getBiomeCondition)
         ).apply(builder, BiomeConditionCondition::new));
     }
 

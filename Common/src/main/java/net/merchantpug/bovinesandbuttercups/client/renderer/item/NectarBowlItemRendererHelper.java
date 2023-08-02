@@ -27,7 +27,7 @@ public class NectarBowlItemRendererHelper {
         if (level == null) return;
 
         if (NectarBowlItem.getCowTypeFromStack(stack) != null) {
-            Optional<ResourceLocation> modelLocationWithoutVariant = NectarBowlItem.getCowTypeFromStack(stack).getConfiguration().getNectarTexture();
+            Optional<ResourceLocation> modelLocationWithoutVariant = NectarBowlItem.getCowTypeFromStack(stack).configuration().getNectarTexture();
             if (modelLocationWithoutVariant.isPresent()) {
                 modelResourceLocation = new ModelResourceLocation(BovineStatesAssociationRegistry.getItem(modelLocationWithoutVariant.get()).orElse(BovinesAndButtercups.asResource("buttercup_nectar_bowl")), "inventory");
             }

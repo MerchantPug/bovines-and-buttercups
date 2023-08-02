@@ -26,8 +26,8 @@ public class ConstantConditionConfiguration<T> extends ConditionConfiguration<T>
         return value;
     }
 
-    public static <T> Function<RegistryAccess, MapCodec<ConstantConditionConfiguration<T>>> getCodec() {
-        return registryyAccess -> RecordCodecBuilder.mapCodec(builder -> builder.group(
+    public static <T> MapCodec<ConstantConditionConfiguration<T>> getCodec() {
+        return RecordCodecBuilder.mapCodec(builder -> builder.group(
                 Codec.BOOL.fieldOf("value").forGetter(ConstantConditionConfiguration::getValue)
         ).apply(builder, ConstantConditionConfiguration::new));
     }

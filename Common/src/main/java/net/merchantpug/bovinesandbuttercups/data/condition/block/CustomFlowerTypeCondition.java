@@ -6,12 +6,11 @@ import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomFlowerBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
 public class CustomFlowerTypeCondition extends ConditionConfiguration<BlockInWorld> {
-    public static MapCodec<CustomFlowerTypeCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<CustomFlowerTypeCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
                 ResourceLocation.CODEC.fieldOf("location").forGetter(CustomFlowerTypeCondition::getLocation)
         ).apply(builder, CustomFlowerTypeCondition::new));

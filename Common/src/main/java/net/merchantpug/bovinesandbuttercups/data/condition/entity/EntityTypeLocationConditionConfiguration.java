@@ -13,7 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 
 public class EntityTypeLocationConditionConfiguration extends ConditionConfiguration<Entity> {
-    public static MapCodec<EntityTypeLocationConditionConfiguration> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<EntityTypeLocationConditionConfiguration> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
                 Codec.either(TagKey.hashedCodec(Registries.ENTITY_TYPE), BuiltInRegistries.ENTITY_TYPE.holderByNameCodec()).fieldOf("location").xmap(tagKeyBlockEither ->
                                 tagKeyBlockEither.map(BuiltInRegistries.ENTITY_TYPE::getOrCreateTag, block -> (HolderSet<EntityType<?>>) HolderSet.direct(block)),

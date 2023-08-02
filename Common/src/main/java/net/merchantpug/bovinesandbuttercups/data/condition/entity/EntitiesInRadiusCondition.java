@@ -7,7 +7,6 @@ import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.data.meta.NotConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -20,9 +19,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class EntitiesInRadiusCondition extends ConditionConfiguration<Entity> {
-    public static MapCodec<EntitiesInRadiusCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<EntitiesInRadiusCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
-                Codec.list(EntityConfiguredCondition.getCodec(registryAccess)).fieldOf("entity_conditions").forGetter(EntitiesInRadiusCondition::getConditions),
+                Codec.list(EntityConfiguredCondition.getCodec()).fieldOf("entity_conditions").forGetter(EntitiesInRadiusCondition::getConditions),
                 Codec.DOUBLE.fieldOf("radius").forGetter(EntitiesInRadiusCondition::getRadius),
                 Vec3.CODEC.optionalFieldOf("offset").forGetter(EntitiesInRadiusCondition::getOffset)
         ).apply(builder, EntitiesInRadiusCondition::new));

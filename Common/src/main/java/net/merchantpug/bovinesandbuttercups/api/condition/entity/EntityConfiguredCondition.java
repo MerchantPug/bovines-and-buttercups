@@ -14,7 +14,7 @@ public class EntityConfiguredCondition<CC extends ConditionConfiguration<Entity>
         super(conditionType, conditionConfiguration);
     }
 
-    public static Codec<ConfiguredCondition<Entity, ?, ?>> getCodec(RegistryAccess access) {
-        return EntityConditionType.CODEC.dispatch(EntityConfiguredCondition::getType, entityConditionType -> entityConditionType.getCodec(access));
+    public static Codec<ConfiguredCondition<Entity, ?, ?>> getCodec() {
+        return EntityConditionType.CODEC.dispatch(EntityConfiguredCondition::getType, EntityConditionType::getCodec);
     }
 }

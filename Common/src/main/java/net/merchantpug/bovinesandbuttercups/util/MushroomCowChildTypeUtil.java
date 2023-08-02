@@ -38,10 +38,10 @@ public class MushroomCowChildTypeUtil {
         boolean bl = false;
         Level level = parent.level();
 
-        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(type -> type.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
+        for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(type -> type.configuration() instanceof MushroomCowConfiguration).toList()) {
             ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> mushroomCowType = (ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType;
-            if (mushroomCowType.getConfiguration().getBreedingConditions().isEmpty()) continue;
-            var conditions = mushroomCowType.getConfiguration().getBreedingConditions().get();
+            if (mushroomCowType.configuration().getBreedingConditions().isEmpty()) continue;
+            var conditions = mushroomCowType.configuration().getBreedingConditions().get();
 
             if (conditions.getCondition().isPresent() && conditions.getOtherCondition().isPresent() && conditions.getCondition().get().test(parent) && conditions.getOtherCondition().get().test(other))
                 eligibleCowTypes.add(mushroomCowType);
@@ -50,7 +50,7 @@ public class MushroomCowChildTypeUtil {
             else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isPresent() && conditions.getOtherCondition().get().test(other)) {
                 bl = true;
                 eligibleCowTypes.add(mushroomCowType);
-            } else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isEmpty() && testBreedingBlocks(parent, mushroomCowType.getConfiguration(), level)) {
+            } else if (conditions.getCondition().isEmpty() && conditions.getOtherCondition().isEmpty() && testBreedingBlocks(parent, mushroomCowType.configuration(), level)) {
                 eligibleCowTypes.add(mushroomCowType);
             }
         }
@@ -62,12 +62,12 @@ public class MushroomCowChildTypeUtil {
         if (!eligibleCowTypes.isEmpty()) {
             int random = parent.getRandom().nextInt(eligibleCowTypes.size());
             var randomType = eligibleCowTypes.get(random);
-            if (!bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getCondition().isPresent() && randomType.getConfiguration().getColor().isPresent())
-                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(parent, new ShroomParticleOptions(randomType.getConfiguration().getColor().get()));
-            else if (bl && randomType.getConfiguration().getBreedingConditions().isPresent() && randomType.getConfiguration().getBreedingConditions().get().getOtherCondition().isPresent() && randomType.getConfiguration().getColor().isPresent())
-                randomType.getConfiguration().getBreedingConditions().get().getCondition().get().returnCowFeedback(other, new ShroomParticleOptions(randomType.getConfiguration().getColor().get()));
+            if (!bl && randomType.configuration().getBreedingConditions().isPresent() && randomType.configuration().getBreedingConditions().get().getCondition().isPresent() && randomType.configuration().getColor().isPresent())
+                randomType.configuration().getBreedingConditions().get().getCondition().get().returnCowFeedback(parent, new ShroomParticleOptions(randomType.configuration().getColor().get()));
+            else if (bl && randomType.configuration().getBreedingConditions().isPresent() && randomType.configuration().getBreedingConditions().get().getOtherCondition().isPresent() && randomType.configuration().getColor().isPresent())
+                randomType.configuration().getBreedingConditions().get().getCondition().get().returnCowFeedback(other, new ShroomParticleOptions(randomType.configuration().getColor().get()));
             else
-                spawnParticleToBreedPosition(parent, randomType.getConfiguration(), level);
+                spawnParticleToBreedPosition(parent, randomType.configuration(), level);
 
             ResourceLocation randomTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(randomType);
 

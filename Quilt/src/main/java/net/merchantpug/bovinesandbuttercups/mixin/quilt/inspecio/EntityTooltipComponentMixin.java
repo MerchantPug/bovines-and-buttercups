@@ -35,8 +35,8 @@ public class EntityTooltipComponentMixin {
             List<ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>> moobloomList = new ArrayList<>();
             int totalWeight = 0;
 
-            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof FlowerCowConfiguration).toList()) {
-                if (!(cowType.getConfiguration() instanceof FlowerCowConfiguration configuration)) continue;
+            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof FlowerCowConfiguration).toList()) {
+                if (!(cowType.configuration() instanceof FlowerCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
                     Holder<Biome> biome = level.getBiome(Minecraft.getInstance().player.blockPosition());
                     if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome, configuration.getSettings().biomes().get())) {
@@ -56,7 +56,7 @@ public class EntityTooltipComponentMixin {
             } else if (!moobloomList.isEmpty()) {
                 int i = (Minecraft.getInstance().player.tickCount / (160 / totalWeight) % totalWeight);
                 for (ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>> cct : moobloomList) {
-                    i -= cct.getConfiguration().getSettings().naturalSpawnWeight();
+                    i -= cct.configuration().getSettings().naturalSpawnWeight();
                     if (i < 0) {
                         flowerCow.setFlowerType(cct, Minecraft.getInstance().level);
                         break;
@@ -67,8 +67,8 @@ public class EntityTooltipComponentMixin {
             List<ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>> mooshroomList = new ArrayList<>();
             int totalWeight = 0;
 
-            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.getConfiguration() instanceof MushroomCowConfiguration).toList()) {
-                if (!(cowType.getConfiguration() instanceof MushroomCowConfiguration configuration)) continue;
+            for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration).toList()) {
+                if (!(cowType.configuration() instanceof MushroomCowConfiguration configuration)) continue;
                 if (FlowerCow.getTotalSpawnWeight(level, Minecraft.getInstance().player.blockPosition()) > 0) {
                     Holder<Biome> biome = level.getBiome(Minecraft.getInstance().player.blockPosition());
                     if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome, configuration.getSettings().biomes().get())) {
@@ -90,7 +90,7 @@ public class EntityTooltipComponentMixin {
             } else {
                 int i = (Minecraft.getInstance().player.tickCount / (160 / totalWeight) % totalWeight);
                 for (ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> cfc : mooshroomList) {
-                    i -= cfc.getConfiguration().getSettings().naturalSpawnWeight();
+                    i -= cfc.configuration().getSettings().naturalSpawnWeight();
                     if (i < 0) {
                         BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity).setMushroomCowType(BovineRegistryUtil.getConfiguredCowTypeKey(mooshroomList.get(0)));
                         break;

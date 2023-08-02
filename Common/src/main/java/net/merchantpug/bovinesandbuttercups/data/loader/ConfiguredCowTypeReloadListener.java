@@ -26,7 +26,7 @@ public class ConfiguredCowTypeReloadListener extends SimpleJsonResourceReloadLis
         ConfiguredCowTypeRegistry.clear();
         jsonElements.forEach((location, jsonElement) -> {
             try {
-                var dataResult = ConfiguredCowType.getServerCodec().parse(JsonOps.INSTANCE, jsonElement);
+                var dataResult = ConfiguredCowType.CODEC.parse(JsonOps.INSTANCE, jsonElement);
                 var configuredCowType = dataResult.resultOrPartial(BovinesAndButtercups.LOG::error);
 
                 dataResult.error().ifPresent(result -> {
@@ -36,7 +36,7 @@ public class ConfiguredCowTypeReloadListener extends SimpleJsonResourceReloadLis
                         BovinesAndButtercups.LOG.error("Error loading Configured Cow Type '{}'. (Skipping). {}", location, result.message());
                 });
 
-                if (configuredCowType.isEmpty() || ConfiguredCowTypeRegistry.containsKey(location) && ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getLoadingPriority() > configuredCowType.get().getLoadingPriority()) return;
+                if (configuredCowType.isEmpty() || ConfiguredCowTypeRegistry.containsKey(location) && ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().loadingPriority() > configuredCowType.get().loadingPriority()) return;
                 if (ConfiguredCowTypeRegistry.containsKey(location))
                     ConfiguredCowTypeRegistry.update(location, configuredCowType.get());
                 else

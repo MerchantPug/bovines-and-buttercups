@@ -1,6 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.mojang.serialization.Codec;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
@@ -29,6 +30,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
         return "Fabric";
     }
 
+    @Override
+    public boolean isClientSide() {
+        return BovinesAndButtercups.getServer() == null;
+    }
+    
     @Override
     public boolean isModLoaded(String modId) {
         return FabricLoader.getInstance().isModLoaded(modId);

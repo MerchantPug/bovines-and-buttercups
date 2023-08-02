@@ -42,11 +42,11 @@ public class MushroomCowDatapackMushroomLayer<T extends MushroomCow> extends Ren
         if (entity.isInvisible() && !bl
                 || entity.isBaby()
                 || (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("red_mushroom"))
-                && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().get().is(Blocks.RED_MUSHROOM))
+                && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().get().is(Blocks.RED_MUSHROOM))
                 || (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).equals(BovinesAndButtercups.asResource("brown_mushroom"))
-                && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration().getMushroom().blockState().get().is(Blocks.BROWN_MUSHROOM))) return;
+                && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().isPresent() && Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getMushroom().blockState().get().is(Blocks.BROWN_MUSHROOM))) return;
 
-        MushroomCowConfiguration configuration = Services.COMPONENT.getMushroomCowTypeFromCow(entity).getConfiguration();
+        MushroomCowConfiguration configuration = Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration();
 
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 

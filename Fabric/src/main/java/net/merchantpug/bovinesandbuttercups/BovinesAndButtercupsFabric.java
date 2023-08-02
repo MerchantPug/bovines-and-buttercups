@@ -30,23 +30,17 @@ import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPack
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.MushroomCow;
-import net.minecraft.world.item.*;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class BovinesAndButtercupsFabric implements ModInitializer {
 
@@ -82,7 +76,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
                 if (component.getMushroomCowTypeKey() == null || component.getMushroomCowTypeKey().equals(BovinesAndButtercups.asResource("missing_mooshroom"))) {
                     if (MushroomCowSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
                         component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
-                    } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.getConfiguration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
+                    } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.configuration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
                         if (((MushroomCow)entity).getVariant().equals(MushroomCow.MushroomType.BROWN)) {
                             component.setMushroomCowType(BovinesAndButtercups.asResource("brown_mushroom"));
                         } else {
@@ -103,7 +97,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) -> {
             HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();
             ConfiguredCowTypeRegistry.asStream().forEach(entry -> {
-                if (entry.getValue().equals(BovineRegistryUtil.getDefaultMoobloom(entry.getValue().getCowType()))) return;
+                if (entry.getValue().equals(BovineRegistryUtil.getDefaultMoobloom(entry.getValue().cowType()))) return;
                 configuredCowTypeMap.put(entry.getKey(), entry.getValue());
             });
 
@@ -124,10 +118,10 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         });
 
         createBiomeModifications(BovinesAndButtercups.asResource("moobloom"),
-                biome -> BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome.getBiomeRegistryEntry(), configuredCowType.getConfiguration().getSettings().biomes().get())  && configuredCowType.getConfiguration().getSettings().naturalSpawnWeight() > 0),
+                biome -> BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.cowType() == BovineCowTypes.FLOWER_COW_TYPE.get() && configuredCowType.configuration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome.getBiomeRegistryEntry(), configuredCowType.configuration().getSettings().biomes().get())  && configuredCowType.configuration().getSettings().naturalSpawnWeight() > 0),
                 BovineEntityTypes.MOOBLOOM.get(), 15, 4, 4);
         createBiomeModifications(BovinesAndButtercups.asResource("mooshroom"),
-                biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.getCowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.getConfiguration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome.getBiomeRegistryEntry(), configuredCowType.getConfiguration().getSettings().biomes().get())  && configuredCowType.getConfiguration().getSettings().naturalSpawnWeight() > 0),
+                biome -> biome.getBiomeKey() != Biomes.MUSHROOM_FIELDS && BovineRegistryUtil.configuredCowTypeStream().anyMatch(configuredCowType -> configuredCowType.cowType() == BovineCowTypes.MUSHROOM_COW_TYPE.get() && configuredCowType.configuration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome.getBiomeRegistryEntry(), configuredCowType.configuration().getSettings().biomes().get())  && configuredCowType.configuration().getSettings().naturalSpawnWeight() > 0),
                 EntityType.MOOSHROOM, 15, 4, 4);
         BiomeModifications.create(BovinesAndButtercups.asResource("remove_cows")).add(ModificationPhase.REMOVALS, biome -> biome.hasTag(BovineTags.PREVENT_COW_SPAWNS), context -> context.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW));
     }
@@ -150,4 +144,5 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM.get(), 0.65F);
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), 0.85F);
     }
+
 }

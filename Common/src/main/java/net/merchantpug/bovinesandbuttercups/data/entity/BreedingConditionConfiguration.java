@@ -26,11 +26,11 @@ public class BreedingConditionConfiguration {
     private final List<BlockPredicate> predicates;
     private final boolean includesAssociatedBlocks;
 
-    public static Codec<BreedingConditionConfiguration> getCodec(RegistryAccess registryAccess) {
+    public static Codec<BreedingConditionConfiguration> getCodec() {
         return RecordCodecBuilder.create(builder -> builder.group(
                 Codec.DOUBLE.optionalFieldOf("radius", 6.0).forGetter(BreedingConditionConfiguration::getRadius),
-                EntityConfiguredCondition.getCodec(registryAccess).optionalFieldOf("condition").forGetter(BreedingConditionConfiguration::getCondition),
-                EntityConfiguredCondition.getCodec(registryAccess).optionalFieldOf("other_condition").forGetter(BreedingConditionConfiguration::getOtherCondition),
+                EntityConfiguredCondition.getCodec().optionalFieldOf("condition").forGetter(BreedingConditionConfiguration::getCondition),
+                EntityConfiguredCondition.getCodec().optionalFieldOf("other_condition").forGetter(BreedingConditionConfiguration::getOtherCondition),
                 Codec.list(BlockPredicate.CODEC).optionalFieldOf("predicates", List.of()).forGetter(BreedingConditionConfiguration::getBlockPredicates),
                 Codec.BOOL.optionalFieldOf("includes_associated_blocks", true).forGetter(BreedingConditionConfiguration::shouldIncludeAssociatedBlocks)
         ).apply(builder, BreedingConditionConfiguration::new));

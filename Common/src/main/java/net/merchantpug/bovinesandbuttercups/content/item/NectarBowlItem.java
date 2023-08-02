@@ -64,7 +64,7 @@ public class NectarBowlItem extends Item {
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains(SOURCE_KEY, Tag.TAG_STRING)) {
             ResourceLocation location = ResourceLocation.tryParse(tag.getString(SOURCE_KEY));
-            if (ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().getCowType() == BovineCowTypes.FLOWER_COW_TYPE.get()) {
+            if (ConfiguredCowTypeRegistry.get(location).isPresent() && ConfiguredCowTypeRegistry.get(location).get().cowType() == BovineCowTypes.FLOWER_COW_TYPE.get()) {
                 getMoobloomName(location).ifPresent(components::add);
             }
         }
@@ -73,10 +73,10 @@ public class NectarBowlItem extends Item {
     private Optional<Component> getMoobloomName(ResourceLocation moobloomLocation) {
         var moobloom = BovineRegistryUtil.getConfiguredCowTypeFromKey(moobloomLocation, BovineCowTypes.FLOWER_COW_TYPE.get());
         if (!moobloom.equals(BovineRegistryUtil.getDefaultMoobloom(BovineCowTypes.FLOWER_COW_TYPE.get()))) {
-            if (moobloom.getConfiguration().getFlower().blockState().isPresent()) {
-                return Optional.of(Component.translatable(moobloom.getConfiguration().getFlower().blockState().get().getBlock().getDescriptionId()).withStyle(ChatFormatting.BLUE));
-            } else if (moobloom.getConfiguration().getFlower().flowerType().isPresent()) {
-                ResourceLocation location = moobloom.getConfiguration().getFlower().flowerType().get();
+            if (moobloom.configuration().getFlower().blockState().isPresent()) {
+                return Optional.of(Component.translatable(moobloom.configuration().getFlower().blockState().get().getBlock().getDescriptionId()).withStyle(ChatFormatting.BLUE));
+            } else if (moobloom.configuration().getFlower().flowerType().isPresent()) {
+                ResourceLocation location = moobloom.configuration().getFlower().flowerType().get();
                 return Optional.of(Component.translatable("block." + location.getNamespace() + "." + location.getPath()).withStyle(ChatFormatting.BLUE));
             } else {
                 return Optional.of(Component.translatable("configured_cow_type." + moobloomLocation.getNamespace() + "." + moobloomLocation.getPath() + ".name").withStyle(ChatFormatting.BLUE));

@@ -19,8 +19,7 @@
     "MushroomCowMixin",
     "PlacedFeatureMixin",
     "SuspiciousStewRecipeMixin",
-    "WorldGenRegionAccessor",
-    "WorldLoaderMixin"
+    "WorldGenRegionAccessor"
   ],
   "client": [
     "client.ClientLevelMixin",

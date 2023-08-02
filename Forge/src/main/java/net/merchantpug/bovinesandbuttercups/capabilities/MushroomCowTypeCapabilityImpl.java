@@ -53,7 +53,7 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability 
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowType() {
         try {
             if (this.typeId != null) {
-                if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(typeId) && this.type != null && this.type.getConfiguration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get()).getConfiguration()) {
+                if (BovineRegistryUtil.isConfiguredCowTypeInRegistry(typeId) && this.type != null && this.type.configuration() != BovineRegistryUtil.getConfiguredCowTypeFromKey(typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get()).configuration()) {
                     this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get());
                     return this.type;
                 } else if (this.type != null) {

@@ -12,8 +12,8 @@ import java.util.function.Supplier;
 public class BovineCowTypes {
     public static final RegistrationProvider<CowType<?>> COW_TYPE = RegistrationProvider.get(BovineRegistryKeys.COW_TYPE_KEY, BovinesAndButtercups.MOD_ID);
 
-    public static final Supplier<CowType<FlowerCowConfiguration>> FLOWER_COW_TYPE = register("moobloom", () -> new CowType<>(FlowerCowConfiguration::getCodec));
-    public static final Supplier<CowType<MushroomCowConfiguration>> MUSHROOM_COW_TYPE = register("mooshroom", () -> new CowType<>(MushroomCowConfiguration::getCodec));
+    public static final Supplier<CowType<FlowerCowConfiguration>> FLOWER_COW_TYPE = register("moobloom", () -> new CowType<>(FlowerCowConfiguration.CODEC));
+    public static final Supplier<CowType<MushroomCowConfiguration>> MUSHROOM_COW_TYPE = register("mooshroom", () -> new CowType<>(MushroomCowConfiguration.CODEC));
 
     public static void register() {
     }

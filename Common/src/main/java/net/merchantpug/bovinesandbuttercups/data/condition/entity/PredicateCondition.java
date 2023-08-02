@@ -15,7 +15,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public class PredicateCondition extends ConditionConfiguration<Entity> {
-    public static MapCodec<PredicateCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<PredicateCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
                 ResourceLocation.CODEC.fieldOf("predicate").forGetter(PredicateCondition::getPredicateLocation)
         ).apply(builder, PredicateCondition::new));

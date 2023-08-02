@@ -6,12 +6,11 @@ import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConditionConfiguration;
 import net.merchantpug.bovinesandbuttercups.content.block.CustomMushroomBlock;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
 public class CustomMushroomTypeCondition extends ConditionConfiguration<BlockInWorld> {
-    public static MapCodec<CustomMushroomTypeCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<CustomMushroomTypeCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
                 ResourceLocation.CODEC.fieldOf("location").forGetter(CustomMushroomTypeCondition::getLocation)
         ).apply(builder, CustomMushroomTypeCondition::new));

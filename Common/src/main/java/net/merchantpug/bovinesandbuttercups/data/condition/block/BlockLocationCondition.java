@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 
 public class BlockLocationCondition extends ConditionConfiguration<BlockInWorld> {
-    public static MapCodec<BlockLocationCondition> getCodec(RegistryAccess registryAccess) {
+    public static MapCodec<BlockLocationCondition> getCodec() {
         return RecordCodecBuilder.mapCodec(builder -> builder.group(
                 Codec.either(TagKey.hashedCodec(Registries.BLOCK), BuiltInRegistries.BLOCK.holderByNameCodec()).fieldOf("location").xmap(tagKeyBlockEither ->
                                 tagKeyBlockEither.map(BuiltInRegistries.BLOCK::getOrCreateTag, block -> (HolderSet<Block>) HolderSet.direct(block)),

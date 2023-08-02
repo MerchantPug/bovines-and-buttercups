@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.animal.MushroomCow;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
@@ -32,9 +31,9 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
     @Redirect(method = "mobInteract", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/animal/MushroomCow;getVariant()Lnet/minecraft/world/entity/animal/MushroomCow$MushroomType;"))
     private MushroomCow.MushroomType bovinesandbuttercups$allowFlowerFeeding(MushroomCow instance) {
         MushroomCow cow = (MushroomCow)(Object)this;
-        if (this.getVariant() == MushroomCow.MushroomType.RED && Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
+        if (this.getVariant() == MushroomCow.MushroomType.RED && Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().canEatFlowers()) {
             return MushroomCow.MushroomType.BROWN;
-        } else if (this.getVariant() == MushroomCow.MushroomType.BROWN && !Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().canEatFlowers()) {
+        } else if (this.getVariant() == MushroomCow.MushroomType.BROWN && !Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().canEatFlowers()) {
             return MushroomCow.MushroomType.RED;
         }
         return instance.getVariant();
@@ -46,7 +45,7 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
         if (Services.COMPONENT.getPreviousMushroomCowTypeKeyFromCow(cow).isPresent()) {
             Services.COMPONENT.setMushroomCowType(cow, Services.COMPONENT.getPreviousMushroomCowTypeKeyFromCow(cow).get());
             Services.COMPONENT.setPreviousMushroomCowType(cow, null);
-        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getSettings().thunderConverts().isEmpty()) {
+        } else if (Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().getSettings().thunderConverts().isEmpty()) {
             this.bovinesandbuttercups$thunderHit(level, bolt);
             ci.cancel();
         } else {
@@ -55,11 +54,11 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
             List<CowTypeConfiguration.WeightedConfiguredCowType> compatibleList = new ArrayList<>();
             int totalWeight = 0;
 
-            for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.COMPONENT.getMushroomCowTypeFromCow(cow).getConfiguration().getSettings().thunderConverts().get()) {
+            for (CowTypeConfiguration.WeightedConfiguredCowType weightedCowType : Services.COMPONENT.getMushroomCowTypeFromCow(cow).configuration().getSettings().thunderConverts().get()) {
                 if (weightedCowType.getConfiguredCowType().isEmpty()) {
                     BovinesAndButtercups.LOG.warn("Lightning struck mooshroom at {} tried to get thunder conversion type '{}' that does not exist. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                     continue;
-                } else if (!(weightedCowType.getConfiguredCowType().get().getConfiguration() instanceof MushroomCowConfiguration)) {
+                } else if (!(weightedCowType.getConfiguredCowType().get().configuration() instanceof MushroomCowConfiguration)) {
                     BovinesAndButtercups.LOG.warn("Lightning struck mooshroom at {} tried to get thunder conversion type '{}' that is not a mooshroom type. (Skipping).", this.position(), weightedCowType.configuredCowTypeResource());
                     continue;
                 }

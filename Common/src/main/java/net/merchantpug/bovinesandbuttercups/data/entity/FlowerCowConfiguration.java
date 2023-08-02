@@ -8,7 +8,6 @@ import net.merchantpug.bovinesandbuttercups.util.Color;
 import net.merchantpug.bovinesandbuttercups.util.MobEffectUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,18 +43,16 @@ public class FlowerCowConfiguration extends CowTypeConfiguration {
         this.breedingConditions = breedingConditions;
     }
 
-    public static Codec<FlowerCowConfiguration> getCodec(RegistryAccess frozen) {
-        return RecordCodecBuilder.create(builder -> builder.group(
-                Settings.getCodec(frozen).forGetter(FlowerCowConfiguration::getSettings),
+    public static final Codec<FlowerCowConfiguration> CODEC = RecordCodecBuilder.create(builder -> builder.group(
+                Settings.getCodec().forGetter(FlowerCowConfiguration::getSettings),
                 FlowerCowFlower.CODEC.fieldOf("flower").forGetter(FlowerCowConfiguration::getFlower),
                 FlowerCowFlower.CODEC.fieldOf("bud").forGetter(FlowerCowConfiguration::getBud),
                 Color.CODEC.fieldOf("color").forGetter(FlowerCowConfiguration::getColor),
                 BackGrassConfiguration.CODEC.optionalFieldOf("back_grass", new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true)).forGetter(FlowerCowConfiguration::getBackGrassConfiguration),
                 ResourceLocation.CODEC.optionalFieldOf("nectar_texture").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarTexture),
                 MobEffectUtil.CODEC.optionalFieldOf("nectar_effect").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getNectarEffectInstance),
-                BreedingConditionConfiguration.getCodec(frozen).optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
+                BreedingConditionConfiguration.getCodec().optionalFieldOf("breeding_conditions").orElseGet(Optional::empty).forGetter(FlowerCowConfiguration::getBreedingConditions)
         ).apply(builder, FlowerCowConfiguration::new));
-    }
 
     public static final FlowerCowConfiguration MISSING = new FlowerCowConfiguration(new Settings(Optional.of(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/missing_moobloom.png")), Optional.empty(), 0, Optional.empty()), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing_flower"))), new FlowerCowFlower(Optional.empty(), Optional.empty(), Optional.of(BovinesAndButtercups.asResource("missing"))), new Vector3f(1.0F, 1.0F, 1.0F), new BackGrassConfiguration(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/moobloom_grass.png"), true), Optional.empty(), Optional.empty(), Optional.empty());
 

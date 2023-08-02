@@ -18,6 +18,8 @@ public interface IPlatformHelper {
 
     String getPlatformName();
 
+    boolean isClientSide();
+
     boolean isModLoaded(String modId);
 
     boolean isDevelopmentEnvironment();

@@ -41,7 +41,7 @@ public class FlowerCowFlowerLayer<T extends FlowerCow, M extends CowModel<T>> ex
         bl = Minecraft.getInstance().shouldEntityAppearGlowing(entity) && entity.isInvisible();
         if (entity.isInvisible() && !bl) return;
 
-        FlowerCowConfiguration configuration = entity.getFlowerCowType().getConfiguration();
+        FlowerCowConfiguration configuration = entity.getFlowerCowType().configuration();
 
         int m = LivingEntityRenderer.getOverlayCoords(entity, 0.0f);
 

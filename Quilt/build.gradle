@@ -35,7 +35,7 @@ repositories {
     }
     maven {
         name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        url = 'https://maven.ladysnake.org/releases'
     }
     maven {
         // location of the maven that hosts JEI files since January 2023

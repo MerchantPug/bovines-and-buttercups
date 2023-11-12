@@ -22,9 +22,9 @@ dependencies {
     // If you have a Common sourceset shared between Forge, Fabric, and Quilt
     compileOnly "net.merchantpug:Bovines-And-Buttercups-Common:${project.bovines_version}"
 
-    // Forge
-    implementation fg.deobf("net.merchantpug:Bovines-And-Buttercups-Forge:${project.bovines_version}")
-
+    // NeoForge
+    implementation "net.merchantpug:Bovines-And-Buttercups-NeoForge:${project.bovines_version}"
+    
     // Fabric
     modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabric:${project.bovines_version}"
 
@@ -36,4 +36,11 @@ dependencies {
 **gradle.properties**
 ```properties
 bovines_version=[INSERT VERSION HERE]
+```
+
+
+#### Old Versions
+```groovy
+// Forge (Pre 1.20.2)
+implementation fg.deobf("net.merchantpug:Bovines-And-Buttercups-Forge:${project.bovines_version}")
 ```

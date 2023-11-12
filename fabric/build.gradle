@@ -44,9 +44,9 @@ repositories {
 
 
 loom {
-    accessWidenerPath = file("src/main/resources/bovinesandbuttercups.accesswidener")
+    accessWidenerPath.set(file("src/main/resources/bovinesandbuttercups.accesswidener"))
     mixin {
-        defaultRefmapName = "bovinesandbuttercups-refmap.json"
+        defaultRefmapName.set("bovinesandbuttercups.refmap.json")
     }
 
     mods {
@@ -129,13 +129,13 @@ tasks.named("sourcesJar", Jar) {
     from(project(":common").sourceSets.main.allSource)
 }
 
-tasks.withType(ProcessResources){
-    from project(":common").sourceSets.main.resources
+processResources {
+    from(project(":common").sourceSets.main.resources)
     exclude("bovinesandbuttercups-common.accesswidener")
 }
 
-tasks.named("processTestResources") {
-    from project(":common").sourceSets.test.resources
+processTestResources {
+    from(project(":common").sourceSets.test.resources)
 }
 
 publishing {

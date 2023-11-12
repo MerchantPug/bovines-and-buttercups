@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.merchantpug.bovinesandbuttercups.mixin",
+  "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BeeAccessor",
@@ -30,6 +31,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "refmap": "bovinesandbuttercups-refmap.json"
+  }
 }

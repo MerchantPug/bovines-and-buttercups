@@ -179,7 +179,7 @@ curseforge {
                     optionalDependency project
                 }
 
-                cf_fabric_embedded_deps.split(", ").each { String project ->
+                fabric_embedded_deps.split(", ").each { String project ->
                     embeddedLibrary project
                 }
             }
@@ -210,7 +210,7 @@ modrinth {
             optional.project project
         }
 
-        mr_fabric_embedded_deps.split(", ").each { String project ->
+        fabric_embedded_deps.split(", ").each { String project ->
             embedded.project project
         }
     }

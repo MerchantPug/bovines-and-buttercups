@@ -1,0 +1,249 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version '7.0.41'
+    id 'net.neoforged.gradle.mixin' version '7.0.41'
+    id "net.darkhax.curseforgegradle" version "1.0.7"
+    id "com.modrinth.minotaur" version "2.+"
+    id 'java-library'
+}
+
+archivesBaseName = "${artifact_name}-NeoForge"
+
+mixin {
+    config "${project.mod_id}.mixins.json"
+    config "${project.mod_id}.neoforge.mixins.json"
+}
+
+jarJar.enable()
+
+if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
+    minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
+}
+
+runs {
+    configureEach {
+        workingDirectory project.file("run")
+        modSource project.sourceSets.main
+        modSource project.sourceSets.test
+    }
+    client {
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+    }
+
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        programArgument '--nogui'
+    }
+}
+
+minecraft {
+    mappings {
+        channel = official()
+        version.put "minecraft", minecraft_version
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+repositories {
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        url 'https://maven.terraformersmc.com/'
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven { url "https://maven.shedaniel.me/" }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content {
+            includeGroup 'maven.modrinth'
+        }
+    }
+    mavenCentral()
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoforge_version}"
+
+    compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
+    annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
+
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+    jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}") {
+        jarJar.ranged(it, "[${mixin_extras_version},)")
+    }
+
+    compileOnly project(":common")
+
+    /*
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    // TODO: For some odd reason the below two lines are necessary to compile, feel free to PR an easier method if you know one.
+    testCompileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    testCompileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+     */
+
+    // runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
+    // TODO: Use REI API jar once https://github.com/shedaniel/RoughlyEnoughItems/issues/1194 is fixed.
+    /*
+    compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
+    compileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+    compileOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
+     */
+
+    /*
+    runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
+    runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+    runtimeOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
+     */
+
+    /*
+    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
+    // TODO: For some odd reason the below line is necessary to compile, feel free to PR an easier method if you know one.
+    testCompileOnly(fg.deobf("dev.emi:emi-forge:${emi_version}:api"))
+    // runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
+     */
+}
+
+// NeoGradle compiles the game, but we don't want to add our common code to the game's code
+TaskCollection.metaClass.excludingNeoTasks = { ->
+    delegate.matching { !it.name.startsWith("neo") }
+}
+
+tasks.withType(JavaCompile).excludingNeoTasks().configureEach {
+    source(project(":common").sourceSets.main.allSource)
+    exclude "net/merchantpug/bovinesandbuttercups/integration/jei/**"
+    exclude "net/merchantpug/bovinesandbuttercups/client/integration/emi/**"
+}
+
+tasks.withType(Javadoc).excludingNeoTasks().configureEach {
+    source(project(":common").sourceSets.main.allJava)
+    exclude "net/merchantpug/bovinesandbuttercups/integration/jei/**"
+    exclude "net/merchantpug/bovinesandbuttercups/client/integration/emi/**"
+}
+
+tasks.named("sourcesJar", Jar) {
+    from(project(":common").sourceSets.main.allSource)
+}
+
+tasks.withType(ProcessResources).excludingNeoTasks().configureEach {
+    from project(":common").sourceSets.main.resources
+    exclude("bovinesandbuttercups-common.accesswidener")
+}
+
+tasks.named("processTestResources") {
+    from project(":common").sourceSets.test.resources
+}
+
+jar {
+    manifest {
+        attributes(
+                "Implementation-Version": "${project.version}-neoforge"
+        )
+    }
+}
+
+tasks.named('jarJar').configure {
+    archiveClassifier = ""
+}
+
+tasks.named('build').configure {
+    dependsOn('jarJar')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            artifact jar
+        }
+    }
+
+    repositories {
+        maven {
+            name = "merchantpug"
+            url = "https://maven.merchantpug.net/releases"
+            credentials {
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
+            }
+            authentication {
+                create("basic", BasicAuthentication)
+            }
+        }
+    }
+}
+
+tasks.register('curseforge', TaskPublishCurseForge) {
+    disableVersionDetection()
+    apiToken = System.getenv("CURSEFORGE_TOKEN")
+
+    def mainFile = upload(cf_project_id, jar)
+    mainFile.displayName = "NeoForge v${rootProject.version}+${minecraft_version}"
+    mainFile.releaseType = "release"
+    mainFile.changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    mainFile.changelogType = "markdown"
+    mainFile.addModLoader('Forge')
+    neoforge_game_versions.split(", ").each {
+        mainFile.addGameVersion(it)
+    }
+    java_versions.split(", ").each {
+        mainFile.addJavaVersion(it)
+    }
+    // TODO: Re-enable this once the extra dependencies are on NeoForge.
+    /*
+    common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
+    cf_common_optional_deps.split(", ").each {
+        mainFile.addOptional(it)
+    }
+     */
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = mr_project_id
+    versionNumber = "${project.version}-neoforge"
+    versionType = "release"
+    versionName = "NeoForge v${rootProject.version}+${minecraft_version}"
+    changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
+    uploadFile = jar
+    gameVersions = neoforge_game_versions.split(", ").toList()
+    loaders = [ "neoforge" ]
+    dependencies {
+        // TODO: Re-enable this once the extra dependencies are on NeoForge.
+        /*
+        common_optional_deps.split(", ").each {
+            optional.project it
+        }
+        mr_common_optional_deps.split(", ").each {
+            optional.project it
+        }
+         */
+    }
+}

@@ -6,11 +6,10 @@ import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.item.ItemStack;
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraft.world.level.block.SuspiciousEffectHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -85,10 +84,10 @@ public abstract class MushroomCowMixin extends EntitySuperMixin {
         }
     }
 
-    @Inject(method = "getEffectFromItemStack", at = @At(value = "HEAD", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void bovinesandbuttercups$getEffectFromCustomFlowerStack(ItemStack stack, CallbackInfoReturnable<Optional<Pair<MobEffect, Integer>>> cir) {
+    @Inject(method = "getEffectsFromItemStack", at = @At(value = "HEAD", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+    private void bovinesandbuttercups$getEffectFromCustomFlowerStack(ItemStack stack, CallbackInfoReturnable<Optional<List<SuspiciousEffectHolder.EffectEntry>>> cir) {
         if (stack.getItem() instanceof CustomFlowerItem) {
-            cir.setReturnValue(Optional.of(Pair.of(CustomFlowerItem.getSuspiciousStewEffect(stack), CustomFlowerItem.getSuspiciousStewDuration(stack))));
+            cir.setReturnValue(Optional.of(List.of(new SuspiciousEffectHolder.EffectEntry(CustomFlowerItem.getSuspiciousStewEffect(stack), CustomFlowerItem.getSuspiciousStewDuration(stack)))));
         }
     }
 }

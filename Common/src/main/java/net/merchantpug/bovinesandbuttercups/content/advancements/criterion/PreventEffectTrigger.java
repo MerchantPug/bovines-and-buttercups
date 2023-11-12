@@ -13,20 +13,15 @@ import net.minecraft.world.effect.MobEffect;
 import java.util.Optional;
 
 public class PreventEffectTrigger extends SimpleCriterionTrigger<PreventEffectTrigger.TriggerInstance> {
-    static final ResourceLocation ID = BovinesAndButtercups.asResource("prevent_effect");
+    public static final ResourceLocation ID = BovinesAndButtercups.asResource("prevent_effect");
 
     @Override
-    protected PreventEffectTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate player, DeserializationContext context) {
+    protected PreventEffectTrigger.TriggerInstance createInstance(JsonObject json, Optional<ContextAwarePredicate> predicate, DeserializationContext context) {
         Optional<MobEffect> effect = Optional.empty();
         if (json.has("effect")) {
             effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
         }
-        return new PreventEffectTrigger.TriggerInstance(player, effect);
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return ID;
+        return new PreventEffectTrigger.TriggerInstance(predicate, effect);
     }
 
 
@@ -37,8 +32,8 @@ public class PreventEffectTrigger extends SimpleCriterionTrigger<PreventEffectTr
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final Optional<MobEffect> effect;
 
-        public TriggerInstance(ContextAwarePredicate player, Optional<MobEffect> effect) {
-            super(PreventEffectTrigger.ID, player);
+        public TriggerInstance(Optional<ContextAwarePredicate> predicate, Optional<MobEffect> effect) {
+            super(predicate);
             this.effect = effect;
         }
 
@@ -46,8 +41,8 @@ public class PreventEffectTrigger extends SimpleCriterionTrigger<PreventEffectTr
             return effect.isEmpty() || effect.get() == value;
         }
 
-        public JsonObject serializeToJson(SerializationContext context) {
-            JsonObject json = super.serializeToJson(context);
+        public JsonObject serializeToJson() {
+            JsonObject json = super.serializeToJson();
             Optional<MobEffect> effect = BuiltInRegistries.MOB_EFFECT.getOptional(ResourceLocation.tryParse(json.getAsJsonPrimitive("effect").getAsString()));
             if (effect.isPresent()) {
                 JsonElement element = JsonParser.parseString(json.getAsJsonPrimitive("effect").getAsString());

@@ -1,7 +1,6 @@
-## Features
-- Added an `AllowShearing` tag to Mooblooms and Mooshrooms (Located inside the Mooshroom type component/capability)
+## Modloader
+- Changed from Forge to NeoForge. I will not be porting it back.
 
 ## Bugfixes
-- Fixed inconsistent %s disconnections when joining a server due to null registry access.
-- Fixed Custom Mushroom Blocks appearing as their Custom Mushroom counterparts whilst in the inventory.
-- [FORGE] Fixed Mooshrooms not dropping the correct items upon shearing.
+- Fixed automatically coloured nectar bowl models showing as a missing texture.
+- [NEOFORGE] Fixed syncing of lockdown components when joining the game or swapping dimension.

@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class CustomFlowerDyeRecipe extends CustomRecipe {
-    public CustomFlowerDyeRecipe(ResourceLocation location, CraftingBookCategory craftingBookCategory) {
-        super(location, craftingBookCategory);
+    public CustomFlowerDyeRecipe(CraftingBookCategory craftingBookCategory) {
+        super(craftingBookCategory);
     }
 
     @Override

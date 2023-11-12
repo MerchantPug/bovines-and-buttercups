@@ -16,6 +16,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SuspiciousStewItem;
+import net.minecraft.world.level.block.SuspiciousEffectHolder;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class EmiCustomFlowerSuspiciousStewRecipe extends EmiPatternCraftingRecip
             Optional<MobEffectInstance> effectInstance = CustomFlowerItem.getFlowerTypeFromTag(getFlower(r)).get().stewEffectInstance();
             if (effectInstance.isPresent()) {
                 ItemStack stack = new ItemStack(Items.SUSPICIOUS_STEW);
-                SuspiciousStewItem.saveMobEffect(stack, effectInstance.get().getEffect(), effectInstance.get().getDuration());
+                SuspiciousStewItem.saveMobEffects(stack, List.of(new SuspiciousEffectHolder.EffectEntry(effectInstance.get().getEffect(), effectInstance.get().getDuration())));
                 return EmiStack.of(stack);
             }
             return EmiStack.of(ItemStack.EMPTY);

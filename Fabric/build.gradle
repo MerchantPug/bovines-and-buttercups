@@ -1,7 +1,7 @@
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
 plugins {
-    id 'fabric-loom' version '1.2-SNAPSHOT'
+    id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
     id 'idea'
     id "net.darkhax.curseforgegradle" version "1.0.7"
@@ -39,6 +39,7 @@ repositories {
         url = "https://modmaven.dev"
     }
     maven { url "https://maven.shedaniel.me/" }
+    mavenCentral()
 }
 
 
@@ -88,13 +89,13 @@ dependencies {
         exclude(group: "net.fabricmc")
     }
 
-    include(modApi(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${mixin_extras_version}")))
+    include(modApi(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
 
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    implementation(project(":Common"))
+    implementation(project(":common"))
 
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}") { transitive false }
     modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}") { transitive false }
@@ -118,25 +119,23 @@ dependencies {
 
 }
 
-processResources {
-    from project(":Common").sourceSets.main.resources
+tasks.withType(JavaCompile).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+tasks.withType(Javadoc).configureEach {
+    source(project(":common").sourceSets.main.allJava)
+}
+tasks.named("sourcesJar", Jar) {
+    from(project(":common").sourceSets.main.allSource)
+}
 
+tasks.withType(ProcessResources){
+    from project(":common").sourceSets.main.resources
     exclude("bovinesandbuttercups-common.accesswidener")
-
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
 }
 
-processTestResources {
-    outputs.upToDateWhen { false }
-    from project(":Common").sourceSets.test.resources
-}
-
-tasks.withType(JavaCompile) {
-    source(project(":Common").sourceSets.main.allSource)
+tasks.named("processTestResources") {
+    from project(":common").sourceSets.test.resources
 }
 
 publishing {
@@ -153,7 +152,10 @@ publishing {
         maven {
             name = "merchantpug"
             url = "https://maven.merchantpug.net/releases"
-            credentials(PasswordCredentials)
+            credentials {
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
+            }
             authentication {
                 create("basic", BasicAuthentication)
             }
@@ -183,16 +185,16 @@ tasks.register('curseforge', TaskPublishCurseForge) {
         mainFile.addRequirement(it)
     }
 
-    common_optional_deps.split(", ").each {
-        mainFile.addOptional(it)
+    if (project.hasProperty("common_optional_deps")) {
+        common_optional_deps.split(", ").each {
+            mainFile.addOptional(it)
+        }
     }
 
-    cf_common_optional_deps.split(", ").each {
-        mainFile.addOptional(it)
-    }
-
-    cf_fabric_embedded_deps.split(", ").each {
-        mainFile.addEmbedded(it)
+    if (project.hasProperty("cf_common_optional_deps")) {
+        cf_common_optional_deps.split(", ").each {
+            mainFile.addOptional(it)
+        }
     }
 }
 
@@ -211,16 +213,16 @@ modrinth {
             required.project project
         }
 
-        common_optional_deps.split(", ").each { String project ->
-            optional.project project
+        if (project.hasProperty("common_optional_deps")) {
+            common_optional_deps.split(", ").each { String project ->
+                optional.project project
+            }
         }
 
-        mr_common_optional_deps.split(", ").each { String project ->
-            optional.project project
-        }
-
-        mr_fabric_embedded_deps.split(", ").each { String project ->
-            embedded.project project
+        if (project.hasProperty("mr_common_optional_deps")) {
+            mr_common_optional_deps.split(", ").each { String project ->
+                optional.project project
+            }
         }
     }
 }

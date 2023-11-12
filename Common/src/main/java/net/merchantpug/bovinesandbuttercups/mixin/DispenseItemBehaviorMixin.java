@@ -2,7 +2,7 @@ package net.merchantpug.bovinesandbuttercups.mixin;
 
 import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;

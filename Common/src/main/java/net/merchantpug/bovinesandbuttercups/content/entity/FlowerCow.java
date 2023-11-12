@@ -325,7 +325,9 @@ public class FlowerCow extends Cow {
                 if (this.getFlowerCowType().configuration().getNectarEffectInstance().isPresent()) {
                     NectarBowlItem.saveMobEffect(itemStack2, this.getFlowerCowType().configuration().getNectarEffectInstance().get().getEffect(), this.getFlowerCowType().configuration().getNectarEffectInstance().get().getDuration());
                 } else if (this.getFlowerCowType().configuration().getFlower().blockState().isPresent() && this.getFlowerCowType().configuration().getFlower().blockState().get().getBlock() instanceof FlowerBlock) {
-                    NectarBowlItem.saveMobEffect(itemStack2, ((FlowerBlock)this.getFlowerCowType().configuration().getFlower().blockState().get().getBlock()).getSuspiciousEffect(), 600);
+                    ((FlowerBlock)this.getFlowerCowType().configuration().getFlower().blockState().get().getBlock()).getSuspiciousEffects().forEach(effectEntry ->  {
+                        NectarBowlItem.saveMobEffect(itemStack2, effectEntry.effect(), 600);
+                    });
                 } else {
                     return InteractionResult.PASS;
                 }

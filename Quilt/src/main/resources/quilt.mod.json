@@ -6,7 +6,7 @@
     "version": "${version}-quilt",
     "metadata": {
       "name": "Bovines and Buttercups",
-      "description": "A new take on the Moobloom and other bovines.",
+      "description": "A new take on the Moobloom.",
       "license": "LGPL-3.0-only",
       "contributors": {
         "MerchantPug": "Owner",

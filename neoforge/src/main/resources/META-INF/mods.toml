@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="${neoforge_loader_version_range}"
+issueTrackerURL = "https://github.com/MerchantPug/bovines-and-buttercups/issues"
+license="LGPL-3.0-only"
+
+[[mods]]
+modId="${mod_id}"
+version="${version}"
+displayName="Bovines and Buttercups"
+logoFile="bovinesandbuttercups.png"
+updateJSONURL = "https://api.modrinth.com/updates/BDg6nMn3/forge_updates.json"
+authors="MerchantPug"
+credits="SpiderKolo"
+description='''
+A new take on the Moobloom.
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    mandatory=true
+    versionRange="${neoforge_loader_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[${minecraft_version},)"
+    ordering="NONE"
+    side="BOTH"

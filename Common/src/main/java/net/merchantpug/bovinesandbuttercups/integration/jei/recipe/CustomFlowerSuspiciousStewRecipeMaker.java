@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SuspiciousEffectHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +47,9 @@ public class CustomFlowerSuspiciousStewRecipeMaker {
         if (flowerType.stewEffectInstance().isEmpty()) {
             return Optional.empty();
         }
-        SuspiciousStewItem.saveMobEffect(output, flowerType.stewEffectInstance().get().getEffect(), flowerType.stewEffectInstance().get().getDuration());
+        SuspiciousStewItem.saveMobEffects(output, List.of(new SuspiciousEffectHolder.EffectEntry(flowerType.stewEffectInstance().get().getEffect(), flowerType.stewEffectInstance().get().getDuration())));
 
         ResourceLocation id = new ResourceLocation(ModIds.MINECRAFT_ID, "bovinesandbuttercups.custom.flower.suspicious.stew." + flowerTypeLocation.toLanguageKey());
-        return Optional.of(new ShapelessRecipe(id, "bovinesandbuttercups.custom.flower.suspicious.stew", CraftingBookCategory.MISC, output, inputs));
+        return Optional.of(new ShapelessRecipe("bovinesandbuttercups.custom.flower.suspicious.stew", CraftingBookCategory.MISC, output, inputs));
     }
 }

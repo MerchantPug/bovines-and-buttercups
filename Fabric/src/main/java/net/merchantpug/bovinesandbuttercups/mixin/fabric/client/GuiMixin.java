@@ -1,7 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabric.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
@@ -9,7 +7,7 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.MobEffectTextureManager;
 import net.minecraft.util.Mth;
@@ -32,12 +30,12 @@ import java.util.Map;
 public class GuiMixin {
     @Shadow @Final private Minecraft minecraft;
 
-    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics guiGraphics, CallbackInfo ci, Collection<MobEffectInstance> collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l) {
+    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
+    private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics graphics, CallbackInfo ci, Collection collection, int k, int l, MobEffectTextureManager mobEffectTextureManager, List<Runnable> runnables, Iterator iterator, MobEffectInstance mobEffectInstance, MobEffect effect, int width, int height) {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovineEffects.LOCKDOWN.get())) return;
 
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
-            guiGraphics.blit(BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"), k, l, 36, 4, 24, 24, 64, 32);
+            graphics.blitSprite(BovinesAndButtercups.asResource("hud/lockdown_frame"), width, height, 24, 24);
         }
     }
 

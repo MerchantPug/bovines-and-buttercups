@@ -15,6 +15,7 @@ import net.merchantpug.bovinesandbuttercups.platform.services.IRegistryHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovineBlocks;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Cow;
@@ -38,8 +39,8 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public CriterionTrigger<?> registerCriteria(CriterionTrigger<?> criterionTrigger) {
-        return CriteriaTriggers.register(criterionTrigger);
+    public CriterionTrigger<?> registerCriteria(ResourceLocation location, CriterionTrigger<?> criterionTrigger) {
+        return CriteriaTriggers.register(location.toString(), criterionTrigger);
     }
 
     @Override

@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.LineContains
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
 buildscript {
@@ -151,6 +152,10 @@ tasks.named("sourcesJar", Jar) {
 tasks.withType(ProcessResources).excludingNeoTasks().configureEach {
     from project(":common").sourceSets.main.resources
     exclude("bovinesandbuttercups-common.accesswidener")
+
+    filesMatching("bovinesandbuttercups.mixins.json") {
+        filter(LineContains, negate: true, contains: [ 'refmap' ] )
+    }
 }
 
 tasks.named("processTestResources") {

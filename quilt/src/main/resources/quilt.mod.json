@@ -2,12 +2,12 @@
   "schema_version": 1,
   "quilt_loader": {
     "group": "net.merchantpug",
-    "id": "bovinesandbuttercups",
-    "version": "${version}-quilt",
+    "id": "${mod_id}",
+    "version": "${version}",
     "metadata": {
       "name": "Bovines and Buttercups",
       "description": "A new take on the Moobloom.",
-      "license": "LGPL-3.0-only",
+      "license": "${license}",
       "contributors": {
         "MerchantPug": "Owner",
         "SpiderKolo": "Artist"

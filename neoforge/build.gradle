@@ -212,7 +212,7 @@ tasks.register('curseforge', TaskPublishCurseForge) {
     mainFile.releaseType = "release"
     mainFile.changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
     mainFile.changelogType = "markdown"
-    mainFile.addModLoader('Forge')
+    mainFile.addModLoader('NeoForge')
     neoforge_game_versions.split(", ").each {
         mainFile.addGameVersion(it)
     }

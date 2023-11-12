@@ -208,7 +208,7 @@ tasks.register('curseforge', TaskPublishCurseForge) {
     apiToken = System.getenv("CURSEFORGE_TOKEN")
 
     def mainFile = upload(cf_project_id, jar)
-    mainFile.displayName = "NeoForge v${rootProject.version}+${minecraft_version}"
+    mainFile.displayName = "NeoForge v${rootProject.version}}"
     mainFile.releaseType = "release"
     mainFile.changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
     mainFile.changelogType = "markdown"
@@ -235,7 +235,7 @@ modrinth {
     projectId = mr_project_id
     versionNumber = "${project.version}-neoforge"
     versionType = "release"
-    versionName = "NeoForge v${rootProject.version}+${minecraft_version}"
+    versionName = "NeoForge v${rootProject.version}"
     changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
     uploadFile = jar
     gameVersions = neoforge_game_versions.split(", ").toList()

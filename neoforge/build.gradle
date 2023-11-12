@@ -90,7 +90,7 @@ dependencies {
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
-    jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}") {
+    jarJar("io.github.llamalad7:mixinextras-neoforge:${mixin_extras_version}") {
         jarJar.ranged(it, "[${mixin_extras_version},)")
     }
 

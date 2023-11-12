@@ -45,7 +45,7 @@ public class CustomFlowerItemRendererHelper {
         int translationMultiplier = left ? -1 : 1;
         poseStack.translate(0.5F, 0.5F, 0.5F);
         poseStack.scale(1.0F / type.scale.x(), 1.0F / type.scale.y(), 1.0F / type.scale.z());
-        poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(type.rotation.x() * ((float)Math.PI / 180F), left ? -type.rotation.y()  * ((float)Math.PI / 180F) : type.rotation.y()  * ((float)Math.PI / 180F), left ? -type.rotation.z() * ((float)Math.PI / 180F) : type.rotation.z() * ((float)Math.PI / 180F))));
+        poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(type.rotation.x() / 0.017453292F, left ? -type.rotation.y() / 0.017453292F : type.rotation.y() / 0.017453292F, left ? -type.rotation.z() / 0.017453292F: type.rotation.z() / 0.017453292F)));
         poseStack.translate(-((float) translationMultiplier * type.translation.x()), -type.translation.y(), -type.translation.z());
 
         boolean bl = transformType == ItemDisplayContext.GUI && !flowerModel.usesBlockLight();

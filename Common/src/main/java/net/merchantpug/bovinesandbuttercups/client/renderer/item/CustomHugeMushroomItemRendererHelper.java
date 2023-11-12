@@ -46,7 +46,7 @@ public class CustomHugeMushroomItemRendererHelper {
         int translationMultiplier = left ? -1 : 1;
         poseStack.translate(0.5F, 0.5F, 0.5F);
         poseStack.scale(1.0F / transform.scale.x(), 1.0F / transform.scale.y(), 1.0F / transform.scale.z());
-        poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(-(transform.rotation.x() * ((float)Math.PI / 180F)), left ? transform.rotation.y()  * ((float)Math.PI / 180F) : -(transform.rotation.y()  * ((float)Math.PI / 180F)), left ? transform.rotation.z() * ((float)Math.PI / 180F) : -(transform.rotation.z() * ((float)Math.PI / 180F)))));
+        poseStack.mulPose(QuaternionUtil.inverse(new Quaternionf().rotationXYZ(transform.rotation.x() / 0.017453292F, left ? -transform.rotation.y() / 0.017453292F : transform.rotation.y() / 0.017453292F, left ? -transform.rotation.z() / 0.017453292F: transform.rotation.z() / 0.017453292F)));
         poseStack.translate(-((float) translationMultiplier * transform.translation.x()), -transform.translation.y(), -transform.translation.z());
 
         boolean bl = transformType == ItemDisplayContext.GUI && !mushroomModel.usesBlockLight();

@@ -28,7 +28,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         super(handler, inventory, title);
     }
 
-    @Inject(method = "renderBackgrounds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V", ordinal = 1, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "renderBackgrounds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 1, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
     private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics guiGraphics, int x, int height, Iterable<MobEffectInstance> iterable, boolean wide, CallbackInfo ci, int i, Iterator var7, MobEffectInstance mobEffectInstance) {
         if (this.minecraft == null || this.minecraft.player == null) return;
 
@@ -37,7 +37,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         if (lockdownEffectInstance.isEmpty()) return;
 
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && Services.COMPONENT.getLockdownMobEffects(this.minecraft.player).entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
-            guiGraphics.blit(BovinesAndButtercups.asResource("textures/gui/container/lockdown_frame.png"), x, i, 0, 0, 32, 32, 64, 32);
+            guiGraphics.blitSprite(BovinesAndButtercups.asResource("container/inventory/lockdown_frame"), x, i, 32, 32);
         }
     }
 

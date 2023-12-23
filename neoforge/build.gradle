@@ -178,6 +178,10 @@ tasks.named('build').configure {
     dependsOn('jarJar')
 }
 
+tasks.withType(AbstractPublishToMaven).configureEach {
+    it.dependsOn('jarJar')
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {

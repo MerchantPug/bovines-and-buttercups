@@ -72,7 +72,7 @@ public class MushroomCowChildTypeUtil {
             ResourceLocation randomTypeKey = BovineRegistryUtil.getConfiguredCowTypeKey(randomType);
 
             if (player instanceof ServerPlayer serverPlayer && !randomTypeKey.equals(parentTypeKey) && !randomTypeKey.equals(otherTypeKey)) {
-                BovineCriteriaTriggers.MUTATION.trigger(serverPlayer, parent, other, child, randomTypeKey);
+                BovineCriteriaTriggers.MUTATION.get().trigger(serverPlayer, parent, other, child, randomTypeKey);
             }
             return randomTypeKey;
         }
@@ -106,7 +106,7 @@ public class MushroomCowChildTypeUtil {
                 }
             }
             if (breedingCondition.get().shouldIncludeAssociatedBlocks()) {
-                if (configuration.getMushroom().blockState().isPresent() && (state.is(configuration.getMushroom().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getMushroom().blockState().get().getBlock())) {
+                if (configuration.getMushroom().blockState().isPresent() && (state.is(configuration.getMushroom().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getPotted() == configuration.getMushroom().blockState().get().getBlock())) {
                     associatedBlockFound = true;
                     break;
                 } else if (configuration.getMushroom().getMushroomType().isPresent() &&
@@ -150,7 +150,7 @@ public class MushroomCowChildTypeUtil {
             });
 
             if (breedingCondition.get().shouldIncludeAssociatedBlocks()) {
-                if (configuration.getMushroom().blockState().isPresent() && (state.is(configuration.getMushroom().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getMushroom().blockState().get().getBlock())) {
+                if (configuration.getMushroom().blockState().isPresent() && (state.is(configuration.getMushroom().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getPotted() == configuration.getMushroom().blockState().get().getBlock())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;

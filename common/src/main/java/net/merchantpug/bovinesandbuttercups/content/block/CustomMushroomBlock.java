@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomBlockEntity;
@@ -38,10 +39,16 @@ public class CustomMushroomBlock extends BaseEntityBlock implements Bonemealable
         super(properties);
     }
 
+    // Once data driven blocks are introduced, datapackers should be adding flowers using that.
     @Override
-    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+    protected MapCodec<CustomMushroomBlock> codec() {
+        return Block.simpleCodec(CustomMushroomBlock::new);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = new ItemStack(this);
-        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
+        BlockEntity blockEntity = levelReader.getBlockEntity(blockPos);
         if (blockEntity instanceof CustomMushroomBlockEntity cmbe && cmbe.getLevel() != null) {
             CompoundTag compound = new CompoundTag();
             if (cmbe.getMushroomType() != null && !cmbe.getMushroomType().equals(MushroomType.MISSING)) {

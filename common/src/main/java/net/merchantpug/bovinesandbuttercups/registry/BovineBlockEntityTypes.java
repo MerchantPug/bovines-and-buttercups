@@ -13,17 +13,17 @@ public class BovineBlockEntityTypes {
     private static final RegistrationProvider<BlockEntityType<?>> BLOCK_ENTITY_TYPES = RegistrationProvider.get(Registries.BLOCK_ENTITY_TYPE, BovinesAndButtercups.MOD_ID);
 
 
-    public static final RegistryObject<BlockEntityType<CustomFlowerBlockEntity>> CUSTOM_FLOWER = register("custom_flower", Services.REGISTRY.createCustomFlowerBlockEntity());
-    public static final RegistryObject<BlockEntityType<CustomMushroomBlockEntity>> CUSTOM_MUSHROOM = register("custom_mushroom", Services.REGISTRY.createCustomMushroomBlockEntity());
-    public static final RegistryObject<BlockEntityType<CustomFlowerPotBlockEntity>> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", Services.REGISTRY.createCustomFlowerPotBlockEntity());
-    public static final RegistryObject<BlockEntityType<CustomMushroomPotBlockEntity>> POTTED_CUSTOM_MUSHROOM = register("potted_custom_mushroom", Services.REGISTRY.createCustomMushroomPotBlockEntity());
-    public static final RegistryObject<BlockEntityType<CustomHugeMushroomBlockEntity>> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", Services.REGISTRY.createCustomHugeMushroomBlockEntity());
+    public static final Supplier<BlockEntityType<CustomFlowerBlockEntity>> CUSTOM_FLOWER = register("custom_flower", Services.REGISTRY.createCustomFlowerBlockEntity());
+    public static final Supplier<BlockEntityType<CustomMushroomBlockEntity>> CUSTOM_MUSHROOM = register("custom_mushroom", Services.REGISTRY.createCustomMushroomBlockEntity());
+    public static final Supplier<BlockEntityType<CustomFlowerPotBlockEntity>> POTTED_CUSTOM_FLOWER = register("potted_custom_flower", Services.REGISTRY.createCustomFlowerPotBlockEntity());
+    public static final Supplier<BlockEntityType<CustomMushroomPotBlockEntity>> POTTED_CUSTOM_MUSHROOM = register("potted_custom_mushroom", Services.REGISTRY.createCustomMushroomPotBlockEntity());
+    public static final Supplier<BlockEntityType<CustomHugeMushroomBlockEntity>> CUSTOM_MUSHROOM_BLOCK = register("custom_mushroom_block", Services.REGISTRY.createCustomHugeMushroomBlockEntity());
 
     public static void register() {
 
     }
 
-    private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, Supplier<BlockEntityType<T>> type) {
+    private static <T extends BlockEntity> Supplier<BlockEntityType<T>> register(String name, Supplier<BlockEntityType<T>> type) {
         return BLOCK_ENTITY_TYPES.register(name, type);
     }
 }

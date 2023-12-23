@@ -4,7 +4,6 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;

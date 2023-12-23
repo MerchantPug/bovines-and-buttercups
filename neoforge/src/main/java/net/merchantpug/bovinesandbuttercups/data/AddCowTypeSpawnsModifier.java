@@ -17,7 +17,7 @@ import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 import java.util.List;
 import java.util.Optional;
 
-public record AddCowTypeSpawnsModifier(CowType<?> cowType, Optional<HolderSet<Biome>> excludedBiomes, List<MobSpawnSettings.SpawnerData> spawners) implements BiomeModifier {
+public record AddCowTypeSpawnsModifier(Holder<CowType<?>> cowType, Optional<HolderSet<Biome>> excludedBiomes, List<MobSpawnSettings.SpawnerData> spawners) implements BiomeModifier {
     @Override
     public void modify(Holder<Biome> biome, BiomeModifier.Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
         if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(entry -> entry.cowType() == cowType && entry.configuration().getSettings().naturalSpawnWeight() > 0 && entry.configuration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome, entry.configuration().getSettings().biomes().get()))) {

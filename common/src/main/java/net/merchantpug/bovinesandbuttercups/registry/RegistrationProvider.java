@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.registry;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
@@ -56,17 +57,16 @@ public interface RegistrationProvider<T> {
      * @param name     the name of the object
      * @param supplier a supplier of the object to register
      * @param <I>      the type of the object
-     * @return a wrapper containing the lazy registered object. <strong>Calling {@link RegistryObject#get() get} too early
-     * on the wrapper might result in crashes!</strong>
+     * @return a wrapper containing the lazy registered object.
      */
-    <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier);
+    <I extends T> Supplier<I> register(String name, Supplier<? extends I> supplier);
 
     /**
      * Gets all the objects currently registered.
      *
      * @return an <strong>immutable</strong> view of all the objects currently registered
      */
-    Collection<RegistryObject<T>> getEntries();
+    Collection<Supplier<T>> getEntries();
 
     /**
      * Gets the mod id that this provider registers objects for.

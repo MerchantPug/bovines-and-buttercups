@@ -3,6 +3,7 @@ package net.merchantpug.bovinesandbuttercups.mixin.client;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -56,7 +57,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
                 l += j;
             }
             if (mobEffectInstance != null) {
-                List<Component> list = List.of(this.getEffectName(mobEffectInstance), MobEffectUtil.formatDuration(mobEffectInstance, 1.0F));
+                List<Component> list = List.of(this.getEffectName(mobEffectInstance), MobEffectUtil.formatDuration(mobEffectInstance, 1.0F, Minecraft.getInstance().level.tickRateManager().tickrate()));
                 guiGraphics.renderTooltip(this.font, list, Optional.empty(), mouseX, mouseY);
             }
         }

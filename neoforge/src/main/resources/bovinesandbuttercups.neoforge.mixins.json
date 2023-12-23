@@ -6,7 +6,8 @@
   "mixins": [
     "BeePollinateGoalMixin",
     "MushroomCowAccessor",
-    "MushroomCowMixin"
+    "MushroomCowMixin",
+    "EntityMixin"
   ],
   "client": [
     "client.GuiMixin",

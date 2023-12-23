@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.util.ClassUtil;
 import net.minecraft.resources.ResourceLocation;
 

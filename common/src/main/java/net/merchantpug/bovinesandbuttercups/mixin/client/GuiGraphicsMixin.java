@@ -23,7 +23,7 @@ public class GuiGraphicsMixin {
         if (!list.isEmpty() && list.get(0).contains(BovineEffects.LOCKDOWN.get().getDisplayName())) {
             List<Component> newList = new ArrayList<>(list);
             newList.remove(1);
-            Services.COMPONENT.getLockdownMobEffects(Minecraft.getInstance().player).forEach(((statusEffect, duration) -> newList.add(statusEffect.getDisplayName().plainCopy().append(" ").append(StringUtil.formatTickDuration(duration)).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)))));
+            Services.COMPONENT.getLockdownMobEffects(Minecraft.getInstance().player).forEach(((statusEffect, duration) -> newList.add(statusEffect.getDisplayName().plainCopy().append(" ").append(StringUtil.formatTickDuration(duration, Minecraft.getInstance().level.tickRateManager().tickrate())).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)))));
             return newList;
         }
         return list;

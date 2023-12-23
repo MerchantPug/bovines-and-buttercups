@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomFlowerItem;
 import net.merchantpug.bovinesandbuttercups.content.item.CustomMushroomItem;
@@ -35,6 +36,12 @@ public class CustomMushroomPotBlock extends BaseEntityBlock {
 
     public CustomMushroomPotBlock(Properties properties) {
         super(properties);
+    }
+
+    // Once data driven blocks are introduced, datapackers should be adding flowers using that.
+    @Override
+    protected MapCodec<CustomMushroomPotBlock> codec() {
+        return Block.simpleCodec(CustomMushroomPotBlock::new);
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

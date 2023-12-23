@@ -1,8 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.mixin.neoforge.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.capabilities.ILockdownEffectAttachability;
 import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCapabilities;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -32,10 +34,12 @@ public class GuiMixin {
     private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics graphics, CallbackInfo ci, Collection collection, Screen screen, int k, int l, MobEffectTextureManager mobEffectTextureManager, List<Runnable> runnables, Iterator iterator, MobEffectInstance mobEffectInstance, MobEffect effect, IClientMobEffectExtensions extensions, int width, int height) {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovineEffects.LOCKDOWN.get())) return;
 
-        minecraft.player.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
+        LockdownEffectCapability cap = minecraft.player.getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+
+        if (cap != null) {
             if (!(effect instanceof LockdownEffect) && cap.getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == effect)) {
                 graphics.blitSprite(BovinesAndButtercups.asResource("hud/lockdown_frame"), width, height, 24, 24);
             }
-        });
+        }
     }
 }

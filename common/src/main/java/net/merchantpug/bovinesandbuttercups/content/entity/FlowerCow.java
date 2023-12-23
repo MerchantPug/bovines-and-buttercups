@@ -374,7 +374,7 @@ public class FlowerCow extends Cow {
                 spawnParticleToBreedPosition(randomType.configuration(), level());
 
             if (this.getLoveCause() != null && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(this.getFlowerCowType())) && !BovineRegistryUtil.getConfiguredCowTypeKey(randomType).equals(BovineRegistryUtil.getConfiguredCowTypeKey(otherParent.getFlowerCowType()))) {
-                BovineCriteriaTriggers.MUTATION.trigger(this.getLoveCause(), this, otherParent, child, BovineRegistryUtil.getConfiguredCowTypeKey(randomType));
+                BovineCriteriaTriggers.MUTATION.get().trigger(this.getLoveCause(), this, otherParent, child, BovineRegistryUtil.getConfiguredCowTypeKey(randomType));
             }
             return randomType;
         }
@@ -403,7 +403,7 @@ public class FlowerCow extends Cow {
             });
 
             if (breedingCondition.get().shouldIncludeAssociatedBlocks()) {
-                if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getFlower().blockState().get().getBlock())) {
+                if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock) state.getBlock()).getPotted() == configuration.getFlower().blockState().get().getBlock())) {
                     stateMap.clear();
                     stateMap.put(state, pos.immutable());
                     break;
@@ -456,7 +456,7 @@ public class FlowerCow extends Cow {
                 }
             }
             if (breedingCondition.get().shouldIncludeAssociatedBlocks()) {
-                if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getContent() == configuration.getFlower().blockState().get().getBlock())) {
+                if (configuration.getFlower().blockState().isPresent() && (state.is(configuration.getFlower().blockState().get().getBlock()) || state.getBlock() instanceof FlowerPotBlock && ((FlowerPotBlock)state.getBlock()).getPotted() == configuration.getFlower().blockState().get().getBlock())) {
                     associatedBlockFound = true;
                     break;
                 } else if (configuration.getFlower().getFlowerType().isPresent() &&

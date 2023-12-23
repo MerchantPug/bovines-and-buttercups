@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.integration.jei.recipe;
 
+/*
 import mezz.jei.api.constants.ModIds;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
@@ -53,3 +54,4 @@ public class CustomFlowerSuspiciousStewRecipeMaker {
         return Optional.of(new ShapelessRecipe("bovinesandbuttercups.custom.flower.suspicious.stew", CraftingBookCategory.MISC, output, inputs));
     }
 }
+ */

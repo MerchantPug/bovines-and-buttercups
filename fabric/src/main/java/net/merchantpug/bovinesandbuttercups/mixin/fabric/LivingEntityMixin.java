@@ -59,7 +59,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && !BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty()) {
             BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().forEach((effect1, duration) -> {
                 if (!this.hasEffect(effect1)) return;
-                BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
+                BovineCriteriaTriggers.LOCK_EFFECT.get().trigger(serverPlayer, effect1);
             });
         }
     }
@@ -86,7 +86,7 @@ public abstract class LivingEntityMixin extends Entity {
     private void bovinesandbuttercups$cancelStatusEffectIfLocked(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
         if (this.hasEffect(BovineEffects.LOCKDOWN.get()) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().containsKey(effect.getEffect())) {
             if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer) {
-                BovineCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, effect.getEffect());
+                BovineCriteriaTriggers.PREVENT_EFFECT.get().trigger(serverPlayer, effect.getEffect());
             }
             cir.setReturnValue(false);
         }

@@ -5,59 +5,42 @@ import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
-import net.merchantpug.bovinesandbuttercups.mixin.neoforge.MushroomCowAccessor;
-import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
-import net.merchantpug.bovinesandbuttercups.network.s2c.SyncMushroomCowTypePacket;
-import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.MushroomCow;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.common.util.LazyOptional;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability, ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class MushroomCowTypeAttachment implements IMushroomCowTypeAttachability, INBTSerializable<CompoundTag> {
     private ResourceLocation typeId;
     private @Nullable ResourceLocation previousTypeId;
     private ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> type;
-    private final MushroomCow provider;
     private boolean allowShearing = true;
-    private final LazyOptional<MushroomCowTypeCapabilityImpl> lazyOptional = LazyOptional.of(() -> this);
-
-    public MushroomCowTypeCapabilityImpl(MushroomCow provider) {
-        this.provider = provider;
-    }
 
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         if (this.typeId != null) {
-            tag.putString("Type", this.typeId.toString());
+            tag.putString("type", this.typeId.toString());
         }
         if (this.previousTypeId != null) {
-            tag.putString("PreviousType", this.previousTypeId.toString());
+            tag.putString("previous_type", this.previousTypeId.toString());
         }
-        tag.putBoolean("AllowShearing", this.allowShearing);
+        tag.putBoolean("allow_shearing", this.allowShearing);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        if (tag.contains("Type", Tag.TAG_STRING)) {
-            this.setMushroomType(ResourceLocation.tryParse(tag.getString("Type")));
+        if (tag.contains("type", Tag.TAG_STRING)) {
+            this.setMushroomType(ResourceLocation.tryParse(tag.getString("type")));
         }
-        if (tag.contains("PreviousType", Tag.TAG_STRING)) {
-            this.setPreviousMushroomTypeKey(ResourceLocation.tryParse(tag.getString("PreviousType")));
+        if (tag.contains("previous_type", Tag.TAG_STRING)) {
+            this.setPreviousMushroomTypeKey(ResourceLocation.tryParse(tag.getString("previous_type")));
         }
-        if (tag.contains("AllowShearing", Tag.TAG_BYTE)) {
-            this.setAllowShearing(tag.getBoolean("AllowShearing"));
+        if (tag.contains("allow_shearing", Tag.TAG_BYTE)) {
+            this.setAllowShearing(tag.getBoolean("allow_shearing"));
         }
     }
 
@@ -74,13 +57,13 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability,
                     this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(typeId, BovineCowTypes.MUSHROOM_COW_TYPE.get());
                     return this.type;
                 }
-                BovinesAndButtercups.LOG.warn("Could not find type '{}' from mooshroom at position {}. Setting type to 'bovinesandbuttercups:missing_mooshroom'.", this.typeId, provider.position());
+                BovinesAndButtercups.LOG.warn("Could not find type '{}' from mooshroom. Setting type to 'bovinesandbuttercups:missing_mooshroom'.", this.typeId);
             }
             this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get());
             return this.type;
         } catch (Exception e) {
             this.type = BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get());
-            BovinesAndButtercups.LOG.warn("Could not get type '{}' from mooshroom at position {}. Setting type to 'bovinesandbuttercups:missing_mooshroom'. {}", this.typeId, provider.position(), e.getMessage());
+            BovinesAndButtercups.LOG.warn("Could not get type '{}' from mooshroom. Setting type to 'bovinesandbuttercups:missing_mooshroom'. {}", this.typeId, e.getMessage());
             return this.type;
         }
     }
@@ -103,15 +86,6 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability,
     @Override
     public void setMushroomType(ResourceLocation key) {
         this.typeId = key;
-
-        if (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(provider)).equals(BovinesAndButtercups.asResource("brown_mushroom"))) {
-            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetVariant(MushroomCow.MushroomType.BROWN);
-        } else if (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(provider)).equals(BovinesAndButtercups.asResource("red_mushroom"))) {
-            ((MushroomCowAccessor)provider).bovinesandbuttercups$invokeSetVariant(MushroomCow.MushroomType.RED);
-        }
-
-        this.sync();
-
         this.getMushroomCowType();
     }
 
@@ -123,17 +97,6 @@ public class MushroomCowTypeCapabilityImpl implements MushroomCowTypeCapability,
     @Override
     public void setPreviousMushroomTypeKey(@Nullable ResourceLocation key) {
         this.previousTypeId = key;
-        this.sync();
     }
 
-    @Override
-    public void sync() {
-        if (provider.level().isClientSide || this.typeId == null) return;
-        BovinePacketHandler.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> provider), new SyncMushroomCowTypePacket(provider.getId(), this.typeId, this.previousTypeId, this.allowShearing));
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return MushroomCowTypeCapability.INSTANCE.orEmpty(cap, this.lazyOptional);
-    }
 }

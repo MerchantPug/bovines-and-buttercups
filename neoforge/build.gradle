@@ -12,8 +12,8 @@ plugins {
     id 'java'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.41'
-    id 'net.neoforged.gradle.mixin' version '7.0.41'
+    id 'net.neoforged.gradle.userdev' version '7.0.72'
+    id 'net.neoforged.gradle.mixin' version '7.0.72'
     id "net.darkhax.curseforgegradle" version "1.0.7"
     id "com.modrinth.minotaur" version "2.+"
     id 'java-library'
@@ -90,11 +90,6 @@ dependencies {
     compileOnly group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
     annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: '1.0.1'
 
-    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
-    jarJar("io.github.llamalad7:mixinextras-neoforge:${mixin_extras_version}") {
-        jarJar.ranged(it, "[${mixin_extras_version},)")
-    }
-
     compileOnly project(":common")
 
     /*
@@ -108,24 +103,19 @@ dependencies {
     // runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
 
     // TODO: Use REI API jar once https://github.com/shedaniel/RoughlyEnoughItems/issues/1194 is fixed.
-    /*
-    compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
-    compileOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
-    compileOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
-     */
+    compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    compileOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+    compileOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
-    /*
-    runtimeOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}")
-    runtimeOnly fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
-    runtimeOnly fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
-     */
+    runtimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}"
+    runtimeOnly "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+    runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
 
-    /*
-    compileOnly fg.deobf("dev.emi:emi-forge:${emi_version}:api")
+    // TODO: Re-enable EMI once it gets a NeoForge version.
+    // compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     // TODO: For some odd reason the below line is necessary to compile, feel free to PR an easier method if you know one.
-    testCompileOnly(fg.deobf("dev.emi:emi-forge:${emi_version}:api"))
+    // testCompileOnly("dev.emi:emi-neoforge:${emi_version}:api")
     // runtimeOnly fg.deobf("dev.emi:emi-forge:${emi_version}")
-     */
 }
 
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code
@@ -219,15 +209,16 @@ tasks.register('curseforge', TaskPublishCurseForge) {
     java_versions.split(", ").each {
         mainFile.addJavaVersion(it)
     }
-    // TODO: Re-enable this once the extra dependencies are on NeoForge.
+
+    // TODO: Uncomment this once JEI/EMI is on NeoForge
     /*
     common_optional_deps.split(", ").each {
         mainFile.addOptional(it)
     }
+     */
     cf_common_optional_deps.split(", ").each {
         mainFile.addOptional(it)
     }
-     */
 }
 
 modrinth {
@@ -239,16 +230,17 @@ modrinth {
     changelog = new File("$project.rootDir/CHANGELOG.md").getText('UTF-8')
     uploadFile = jar
     gameVersions = neoforge_game_versions.split(", ").toList()
-    loaders = [ "neoforge" ]
+    loaders = ["neoforge"]
     dependencies {
-        // TODO: Re-enable this once the extra dependencies are on NeoForge.
-        /*
-        common_optional_deps.split(", ").each {
-            optional.project it
-        }
-        mr_common_optional_deps.split(", ").each {
-            optional.project it
-        }
-         */
+
+    }
+    // TODO: Uncomment this once JEI/EMI is on NeoForge
+    /*
+    common_optional_deps.split(", ").each {
+        optional.project it
+    }
+     */
+    mr_common_optional_deps.split(", ").each {
+        optional.project it
     }
 }

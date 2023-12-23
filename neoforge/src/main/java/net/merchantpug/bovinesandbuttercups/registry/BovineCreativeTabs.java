@@ -8,12 +8,13 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegistryObject;
+
+import java.util.function.Supplier;
 
 public class BovineCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BovinesAndButtercups.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> BOVINES_AND_BUTTERCUPS = CREATIVE_MODE_TAB.register("items", () -> CreativeModeTab.builder()
+    public static final Supplier<CreativeModeTab> BOVINES_AND_BUTTERCUPS = CREATIVE_MODE_TAB.register("items", () -> CreativeModeTab.builder()
             .title(Component.translatable("bovinesandbuttercups.itemGroup.items"))
             .icon(() -> new ItemStack(BovineItems.BUTTERCUP.get()))
             .displayItems((params, output) -> {

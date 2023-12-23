@@ -1,5 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.integration.jei;
 
+// TODO: Re-enable once JEI updates.
+/*
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.recipe.RecipeType;
@@ -41,3 +43,4 @@ public class BovineJeiPlugin implements IModPlugin {
     }
 
 }
+ */

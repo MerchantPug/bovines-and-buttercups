@@ -3,22 +3,20 @@ package net.merchantpug.bovinesandbuttercups.content.structure;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.registry.BovineStructureTypes;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -96,7 +94,7 @@ public class RanchStructure extends Structure {
         ChunkPos chunkPos = context.chunkPos();
         int height = this.startHeight.sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
         BlockPos pos = new BlockPos(chunkPos.getMinBlockX(), height, chunkPos.getMinBlockZ());
-        return JigsawPlacement.addPieces(context, this.startPool, this.startJigsawName, this.maxDepth, pos, false, this.projectStartToHeightmap, this.maxDistanceFromCenter);
+        return JigsawPlacement.addPieces(context, this.startPool, this.startJigsawName, this.maxDepth, pos, false, this.projectStartToHeightmap, this.maxDistanceFromCenter, PoolAliasLookup.EMPTY);
     }
 
     public StructureType<?> type() {

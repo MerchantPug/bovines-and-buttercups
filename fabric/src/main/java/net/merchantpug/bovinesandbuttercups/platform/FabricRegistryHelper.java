@@ -39,11 +39,6 @@ public class FabricRegistryHelper implements IRegistryHelper {
     }
 
     @Override
-    public CriterionTrigger<?> registerCriteria(ResourceLocation location, CriterionTrigger<?> criterionTrigger) {
-        return CriteriaTriggers.register(location.toString(), criterionTrigger);
-    }
-
-    @Override
     public Supplier<BlockEntityType<CustomFlowerBlockEntity>> createCustomFlowerBlockEntity() {
         return () -> FabricBlockEntityTypeBuilder.create(CustomFlowerBlockEntity::new, BovineBlocks.CUSTOM_FLOWER.get()).build(null);
     }

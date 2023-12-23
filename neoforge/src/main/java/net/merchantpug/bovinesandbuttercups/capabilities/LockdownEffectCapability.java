@@ -1,26 +1,59 @@
 package net.merchantpug.bovinesandbuttercups.capabilities;
 
-import com.google.common.collect.ImmutableMap;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.registry.BovineAttachments;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.CapabilityManager;
-import net.neoforged.neoforge.common.capabilities.CapabilityToken;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Map;
 
-public interface LockdownEffectCapability extends INBTSerializable<CompoundTag> {
-    ResourceLocation ID = BovinesAndButtercups.asResource("lockdown");
-    Capability<LockdownEffectCapabilityImpl> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
-    ImmutableMap<MobEffect, Integer> NO_EFFECTS = ImmutableMap.of();
+public class LockdownEffectCapability implements ILockdownEffectAttachability {
+    private final LivingEntity provider;
 
-    Map<MobEffect, Integer> getLockdownMobEffects();
-    void addLockdownMobEffect(MobEffect effect, int duration);
-    void removeLockdownMobEffect(MobEffect effect);
-    void setLockdownMobEffects(Map<MobEffect, Integer> map);
+    public LockdownEffectCapability(LivingEntity entity) {
+        this.provider = entity;
+    }
 
-    void sync();
+    public void deserializeLegacyCap(CompoundTag tag) {
+        if (!tag.contains("ForgeCaps", Tag.TAG_COMPOUND)) return;
+        CompoundTag forgeCapsTag = tag.getCompound("ForgeCaps");
+        if (!forgeCapsTag.contains(ILockdownEffectAttachability.ID.toString(), Tag.TAG_COMPOUND)) return;
+        CompoundTag legacyTag = forgeCapsTag.getCompound(ILockdownEffectAttachability.ID.toString());
+        ListTag list = legacyTag.getList("LockedEffects", Tag.TAG_COMPOUND);
+        for (Tag nbtElement : list) {
+            if (!(nbtElement instanceof CompoundTag compound)) {
+                BovinesAndButtercups.LOG.warn("LockedEffects NBT is not a CompoundTag.");
+                continue;
+            }
+            if (compound.contains("Id", Tag.TAG_STRING) && compound.contains("Duration", Tag.TAG_INT)) {
+                addLockdownMobEffect(BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(compound.getString("Id"))), compound.getInt("Duration"));
+            }
+        }
+    }
+
+    @Override
+    public Map<MobEffect, Integer> getLockdownMobEffects() {
+        return provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).getLockdownMobEffects();
+    }
+
+    @Override
+    public void addLockdownMobEffect(MobEffect effect, int duration) {
+        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).addLockdownMobEffect(effect, duration);
+    }
+
+    @Override
+    public void removeLockdownMobEffect(MobEffect effect) {
+        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).removeLockdownMobEffect(effect);
+    }
+
+    @Override
+    public void setLockdownMobEffects(Map<MobEffect, Integer> map) {
+        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).setLockdownMobEffects(map);
+    }
+
 }

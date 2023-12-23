@@ -23,7 +23,7 @@ public class BovineCowTypes {
         MUSHROOM_COW_TYPE.get().setDefaultConfiguredCowType(BovinesAndButtercups.asResource("missing_mooshroom"), new ConfiguredCowType<>(BovineCowTypes.MUSHROOM_COW_TYPE.get(), MushroomCowConfiguration.MISSING, Integer.MAX_VALUE));
     }
 
-    private static <CTC extends CowTypeConfiguration> RegistryObject<CowType<CTC>> register(String name, Supplier<CowType<CTC>> cowType) {
+    private static <CTC extends CowTypeConfiguration> Supplier<CowType<CTC>> register(String name, Supplier<CowType<CTC>> cowType) {
         return COW_TYPE.register(name, cowType);
     }
 }

@@ -8,16 +8,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.condition.ConfiguredCondition;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConfiguredCondition;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.*;
-import java.util.function.Function;
 
 public class BreedingConditionConfiguration {
     private final double radius;

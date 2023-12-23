@@ -33,7 +33,11 @@ import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtAccounter;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
@@ -65,15 +69,13 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.AttachCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -84,20 +86,21 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
 
+import java.io.File;
 import java.util.*;
 
 @Mod(BovinesAndButtercups.MOD_ID)
 public class BovinesAndButtercupsNeoForge {
-    public BovinesAndButtercupsNeoForge() {
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public BovinesAndButtercupsNeoForge(IEventBus eventBus) {
         BovinesAndButtercups.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
-        BovineRegistriesForge.init(eventBus);
         BovinesAndButtercups.init();
         BovineCreativeTabs.init(eventBus);
+        BovineAttachments.init(eventBus);
         BovineBiomeModifierSerializers.register(eventBus);
     }
 
@@ -105,10 +108,18 @@ public class BovinesAndButtercupsNeoForge {
     public static class ModEventBusListeners {
 
         @SubscribeEvent
+        public static void newRegistries(NewRegistryEvent event) {
+            event.register(BovineRegistriesNeoForge.COW_TYPE);
+            event.register(BovineRegistriesNeoForge.ENTITY_CONDITION_TYPE);
+            event.register(BovineRegistriesNeoForge.BLOCK_CONDITION_TYPE);
+            event.register(BovineRegistriesNeoForge.BIOME_CONDITION_TYPE);
+        }
+
+        @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent event) {
-            BovinePacketHandler.register();
             event.enqueueWork(BovinesAndButtercupsNeoForge::registerCompostables);
             BovineCowTypes.registerDefaultConfigureds();
+            BovinePacketHandler.register();
         }
 
         @SubscribeEvent
@@ -141,7 +152,7 @@ public class BovinesAndButtercupsNeoForge {
             } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 CreativeTabHelper.getNectarBowlsForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
             } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
-                event.accept(BovineItems.MOOBLOOM_SPAWN_EGG);
+                event.accept(BovineItems.MOOBLOOM_SPAWN_EGG.get());
             }
         }
 
@@ -161,32 +172,29 @@ public class BovinesAndButtercupsNeoForge {
                 });
             }
         }
+        private static final Map<LivingEntity, LockdownEffectCapability> LOCKDOWN_EFFECT_CAPABILITY_CACHE = new WeakHashMap<>(256);
+        private static final Map<MushroomCow, MushroomCowTypeCapability> MOOSHROOM_TYPE_CAPABILITY_CACHE = new WeakHashMap<>(128);
+        private static final Map<Bee, FlowerCowTargetCapability> MOOBLOOM_TARGET_CAPABILITY_CACHE = new WeakHashMap<>(128);
+
+        @SubscribeEvent
+        public static void attachCapabilities(RegisterCapabilitiesEvent event) {
+            for (Map.Entry<ResourceKey<EntityType<?>>, EntityType<?>> entityType : BuiltInRegistries.ENTITY_TYPE.entrySet()) {
+                if (entityType.getValue().getBaseClass().isAssignableFrom(LivingEntity.class)) {
+                    event.registerEntity(BovineCapabilities.LOCKDOWN_EFFECT, entityType.getValue(), (entity, ctx) -> {
+                        if (entity instanceof LivingEntity living) {
+                            return LOCKDOWN_EFFECT_CAPABILITY_CACHE.computeIfAbsent(living, LockdownEffectCapability::new);
+                        }
+                        return null;
+                    });
+                }
+            }
+            event.registerEntity(BovineCapabilities.MOOSHROOM_TYPE, EntityType.MOOSHROOM, (mooshroom, ctx) -> MOOSHROOM_TYPE_CAPABILITY_CACHE.computeIfAbsent(mooshroom, MushroomCowTypeCapability::new));
+            event.registerEntity(BovineCapabilities.MOOBLOOM_TARGET, EntityType.BEE, (bee, ctx) -> MOOBLOOM_TARGET_CAPABILITY_CACHE.computeIfAbsent(bee, FlowerCowTargetCapability::new));
+        }
     }
 
     @Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class NeoEventBusListeners {
-
-        @SubscribeEvent
-        public static void attachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-            if (event.getObject() instanceof LivingEntity living) {
-                event.addCapability(LockdownEffectCapability.ID, new LockdownEffectCapabilityImpl(living));
-            }
-            if (event.getObject() instanceof MushroomCow mushroomCow) {
-                event.addCapability(MushroomCowTypeCapability.ID, new MushroomCowTypeCapabilityImpl(mushroomCow));
-            } else if (event.getObject() instanceof Bee bee) {
-                event.addCapability(FlowerCowTargetCapability.ID, new FlowerCowTargetCapabilityImpl(bee));
-            }
-        }
-
-        @SubscribeEvent
-        public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(LockdownEffectCapabilityImpl::sync);
-        }
-
-        @SubscribeEvent
-        public static void onPlayerLoggedIn(PlayerEvent.PlayerChangedDimensionEvent event) {
-            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(LockdownEffectCapabilityImpl::sync);
-        }
 
         @SubscribeEvent
         public static void onServerAboutToStart(ServerAboutToStartEvent event) {
@@ -199,11 +207,10 @@ public class BovinesAndButtercupsNeoForge {
             if (event.getTarget() instanceof FlowerCow cow && !cow.shouldAllowShearing()) {
                 event.setCanceled(true);
             }
-            event.getTarget().getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
-                if (!cap.shouldAllowShearing()) {
-                    event.setCanceled(true);
-                }
-            });
+            MushroomCowTypeCapability cap = event.getEntity().getCapability(BovineCapabilities.MOOSHROOM_TYPE);
+            if (cap != null && !cap.shouldAllowShearing()) {
+                event.setCanceled(true);
+            }
         }
 
         @SubscribeEvent
@@ -305,7 +312,8 @@ public class BovinesAndButtercupsNeoForge {
         @SubscribeEvent
         public static void onStartTracking(PlayerEvent.StartTracking event) {
             if (event.getTarget() instanceof MushroomCow cow) {
-                cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> {
+                MushroomCowTypeCapability cap = cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE);
+                if (cap != null) {
                     if (cap.getMushroomCowTypeKey() == null || cap.getMushroomCowTypeKey().equals(BovinesAndButtercups.asResource("missing_mooshroom"))) {
                         if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().level(), cow.blockPosition()) > 0) {
                             cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().level(), cow.blockPosition(), cow.getRandom()));
@@ -319,8 +327,7 @@ public class BovinesAndButtercupsNeoForge {
                             cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnType(cow.getRandom(), cow.getVariant()));
                         }
                     }
-                });
-                cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(MushroomCowTypeCapabilityImpl::sync);
+                }
             } else if (event.getTarget() instanceof Bee bee && ((BeeAccess) bee).bovinesandbuttercups$getPollinateFlowerCowGoal() == null) {
                 PollinateFlowerCowGoal pollinateGoal = new PollinateFlowerCowGoal(bee);
                 bee.goalSelector.addGoal(4, pollinateGoal);
@@ -357,55 +364,58 @@ public class BovinesAndButtercupsNeoForge {
             Mob parentB = event.getParentB();
             AgeableMob child = event.getChild();
 
-            if (parentA instanceof MushroomCow mushroomCowA && parentB instanceof MushroomCow mushroomCowB && child instanceof MushroomCow mushroomCowChild)
-                mushroomCowChild.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(cap -> cap.setMushroomType(MushroomCowChildTypeUtil.chooseMooshroomBabyType(mushroomCowA, mushroomCowB, mushroomCowChild, event.getCausedByPlayer())));
+            if (parentA instanceof MushroomCow mushroomCowA && parentB instanceof MushroomCow mushroomCowB && child instanceof MushroomCow mushroomCowChild) {
+                MushroomCowTypeCapability cap =  mushroomCowChild.getCapability(BovineCapabilities.MOOSHROOM_TYPE);
+                if (cap != null) {
+                    cap.setMushroomType(MushroomCowChildTypeUtil.chooseMooshroomBabyType(mushroomCowA, mushroomCowB, mushroomCowChild, event.getCausedByPlayer()));
+                }
+            }
         }
 
         @SubscribeEvent
         public static void onMobEffectAdded(MobEffectEvent.Added event) {
             LivingEntity entity = event.getEntity();
 
-            if (event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent()) {
-                Optional<Map<MobEffect, Integer>> optional = entity.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects);
+            LockdownEffectCapability cap = event.getEntity().getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+            if (event.getEffectInstance().getEffect() instanceof LockdownEffect && cap != null) {
+                Optional<Map<MobEffect, Integer>> optional = Optional.ofNullable(cap.getLockdownMobEffects());
                 if (optional.isEmpty() || optional.get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration())) {
                     Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(entity.level().random);
-                    randomEffect.ifPresent(entry -> event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
+                    randomEffect.ifPresent(entry -> {
                         cap.addLockdownMobEffect(entry.value(), event.getEffectInstance().getDuration());
-                        cap.sync();
-                    }));
+                    });
                 }
                 if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && optional.get().containsKey(event.getEffectInstance().getEffect())) {
-                    BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, event.getEffectInstance().getEffect());
+                    BovineCriteriaTriggers.LOCK_EFFECT.get().trigger(serverPlayer, event.getEffectInstance().getEffect());
                 }
             }
         }
         @SubscribeEvent
         public static void onMobEffectRemoved(MobEffectEvent.Remove event) {
             if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
-            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
+            LockdownEffectCapability cap = event.getEntity().getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+            if (cap != null) {
                 cap.getLockdownMobEffects().clear();
-                cap.sync();
-            });
+            }
         }
         @SubscribeEvent
         public static void onMobEffectExpired(MobEffectEvent.Expired event) {
             if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
-            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
+            LockdownEffectCapability cap = event.getEntity().getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+            if (cap != null) {
                 cap.getLockdownMobEffects().clear();
-                cap.sync();
-            });
+            }
         }
         @SubscribeEvent
         public static void changeMobEffectApplicability(MobEffectEvent.Applicable event) {
             Entity entity = event.getEntity();
-            entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> {
-                if (cap.getLockdownMobEffects().containsKey(event.getEffectInstance().getEffect())) {
-                    if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer) {
-                        BovineCriteriaTriggers.PREVENT_EFFECT.trigger(serverPlayer, event.getEffectInstance().getEffect());
-                    }
-                    event.setResult(Event.Result.DENY);
+            LockdownEffectCapability cap = entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+            if (cap != null && cap.getLockdownMobEffects().containsKey(event.getEffectInstance().getEffect())) {
+                if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer) {
+                    BovineCriteriaTriggers.PREVENT_EFFECT.get().trigger(serverPlayer, event.getEffectInstance().getEffect());
                 }
-            });
+                event.setResult(Event.Result.DENY);
+            }
         }
     }
 

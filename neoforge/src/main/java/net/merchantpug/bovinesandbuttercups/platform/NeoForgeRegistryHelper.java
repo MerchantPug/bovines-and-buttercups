@@ -26,7 +26,7 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import java.util.function.Supplier;
 
 @AutoService(IRegistryHelper.class)
-public class ForgeRegistryHelper implements IRegistryHelper {
+public class NeoForgeRegistryHelper implements IRegistryHelper {
     @Override
     public <T extends Mob> SpawnEggItem createSpawnEggItem(Supplier<EntityType<T>> entityType, int backgroundColor, int highlightColor, Item.Properties properties) {
         return new DeferredSpawnEggItem(entityType, backgroundColor, highlightColor, properties);
@@ -35,11 +35,6 @@ public class ForgeRegistryHelper implements IRegistryHelper {
     @Override
     public NectarBowlItem createNectarBowlItem(Item.Properties properties) {
         return new NectarBowlItemForge(properties);
-    }
-
-    @Override
-    public CriterionTrigger<?> registerCriteria(ResourceLocation location, CriterionTrigger<?> criterionTrigger) {
-        return CriteriaTriggers.register(location.toString(), criterionTrigger);
     }
 
     @Override

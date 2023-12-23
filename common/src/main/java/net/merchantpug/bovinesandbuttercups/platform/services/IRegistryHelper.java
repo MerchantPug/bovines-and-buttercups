@@ -22,8 +22,6 @@ public interface IRegistryHelper {
 
     NectarBowlItem createNectarBowlItem(Item.Properties properties);
 
-    CriterionTrigger<?> registerCriteria(ResourceLocation location, CriterionTrigger<?> criterionTrigger);
-
     Supplier<BlockEntityType<CustomFlowerBlockEntity>> createCustomFlowerBlockEntity();
 
     Supplier<BlockEntityType<CustomMushroomBlockEntity>> createCustomMushroomBlockEntity();

@@ -8,6 +8,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.capabilities.*;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.services.IComponentHelper;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCapabilities;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCowTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -21,68 +22,65 @@ import java.util.Optional;
 import java.util.UUID;
 
 @AutoService(IComponentHelper.class)
-public class ForgeComponentHelper implements IComponentHelper {
+public class NeoForgeComponentHelper implements IComponentHelper {
 
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowTypeFromCow(MushroomCow cow) {
-        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get()));
+        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).map(MushroomCowTypeCapability::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get()));
     }
 
     @Override
     public ResourceLocation getMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(MushroomCowTypeCapabilityImpl::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
+        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).map(MushroomCowTypeCapability::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
     }
 
     @Override
     public Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return cow.getCapability(MushroomCowTypeCapability.INSTANCE).map(x -> Optional.ofNullable(x.getPreviousMushroomTypeKey())).orElseGet(Optional::empty);
+        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).map(MushroomCowTypeCapability::getPreviousMushroomTypeKey);
     }
 
     @Override
     public void setMushroomCowType(MushroomCow cow, ResourceLocation key) {
-        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setMushroomType(key));
+        Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).ifPresent(capability -> capability.setMushroomType(key));
     }
 
     @Override
     public void setPreviousMushroomCowType(MushroomCow cow, @Nullable ResourceLocation key) {
-        cow.getCapability(MushroomCowTypeCapability.INSTANCE).ifPresent(capability -> capability.setPreviousMushroomTypeKey(key));
+        Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).ifPresent(capability -> capability.setPreviousMushroomTypeKey(key));
     }
 
     @Override
     public Map<MobEffect, Integer> getLockdownMobEffects(LivingEntity entity) {
-        if (entity.getCapability(LockdownEffectCapability.INSTANCE).resolve().isPresent()) {
-            return entity.getCapability(LockdownEffectCapability.INSTANCE).resolve().get().getLockdownMobEffects();
-        }
-        return LockdownEffectCapability.NO_EFFECTS;
+        return Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).map(LockdownEffectCapability::getLockdownMobEffects).orElse(LockdownEffectCapability.NO_EFFECTS);
     }
 
     @Override
     public void addLockdownMobEffect(LivingEntity entity, MobEffect effect, int duration) {
-        entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> cap.addLockdownMobEffect(effect, duration));
+        Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).ifPresent(cap -> cap.addLockdownMobEffect(effect, duration));
     }
 
     @Override
     public void removeLockdownMobEffect(LivingEntity entity, MobEffect effect) {
-        entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> cap.removeLockdownMobEffect(effect));
+        Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).ifPresent(cap -> cap.removeLockdownMobEffect(effect));
     }
 
     @Override
     public void setLockdownMobEffects(LivingEntity entity, Map<MobEffect, Integer> map) {
-        entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(cap -> cap.setLockdownMobEffects(map));
+        Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).ifPresent(cap -> cap.setLockdownMobEffects(map));
     }
 
     @Override
     public void syncLockdownMobEffects(LivingEntity entity) {
-        entity.getCapability(LockdownEffectCapability.INSTANCE).ifPresent(LockdownEffectCapabilityImpl::sync);
+        // Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).ifPresent(LockdownEffectCapability::sync);
     }
 
     @Override
     public Optional<UUID> getMoobloomTarget(Bee bee) {
-        return bee.getCapability(FlowerCowTargetCapability.INSTANCE).map(x -> Optional.ofNullable(x.getMoobloom())).orElseGet(Optional::empty);
+        return Optional.ofNullable(bee.getCapability(BovineCapabilities.MOOBLOOM_TARGET)).map(FlowerCowTargetCapability::getMoobloom);
     }
 
     @Override
     public void setMoobloomTarget(Bee bee, @Nullable UUID uUID) {
-        bee.getCapability(FlowerCowTargetCapability.INSTANCE).ifPresent(cap -> cap.setMoobloom(uUID));
+        Optional.ofNullable(bee.getCapability(BovineCapabilities.MOOBLOOM_TARGET)).ifPresent(cap -> cap.setMoobloom(uUID));
     }
 }

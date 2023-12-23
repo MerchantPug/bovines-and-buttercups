@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.FlowerType;
@@ -39,6 +40,12 @@ public class CustomFlowerBlock extends BaseEntityBlock {
         this.registerDefaultState(this.getStateDefinition().any().setValue(PERSISTENT, Boolean.TRUE));
     }
 
+    // Once data driven blocks are introduced, datapackers should be adding flowers using that.
+    @Override
+    protected MapCodec<CustomFlowerBlock> codec() {
+        return Block.simpleCodec(CustomFlowerBlock::new);
+    }
+
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
         return blockState.is(BlockTags.DIRT) || blockState.is(Blocks.FARMLAND);
     }
@@ -51,9 +58,9 @@ public class CustomFlowerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = new ItemStack(this);
-        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
+        BlockEntity blockEntity = levelReader.getBlockEntity(blockPos);
         if (blockEntity instanceof CustomFlowerBlockEntity cfbe) {
             CompoundTag compound = new CompoundTag();
             if (cfbe.getFlowerType() != null && !cfbe.getFlowerType().equals(FlowerType.MISSING)) {

@@ -1,5 +1,6 @@
 package net.merchantpug.bovinesandbuttercups.content.block;
 
+import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomHugeMushroomBlockEntity;
 import net.merchantpug.bovinesandbuttercups.data.block.MushroomType;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,10 +34,16 @@ public class CustomHugeMushroomBlock extends BaseEntityBlock {
         super(properties);
     }
 
+    // Once data driven blocks are introduced, datapackers should be adding flowers using that.
     @Override
-    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+    protected MapCodec<CustomHugeMushroomBlock> codec() {
+        return Block.simpleCodec(CustomHugeMushroomBlock::new);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         ItemStack itemStack = new ItemStack(this);
-        BlockEntity blockEntity = blockGetter.getBlockEntity(blockPos);
+        BlockEntity blockEntity = levelReader.getBlockEntity(blockPos);
         if (blockEntity instanceof CustomHugeMushroomBlockEntity chmbe && chmbe.getLevel() != null) {
             CompoundTag compound = new CompoundTag();
             if (chmbe.getMushroomType() != null && !chmbe.getMushroomType().equals(MushroomType.MISSING)) {

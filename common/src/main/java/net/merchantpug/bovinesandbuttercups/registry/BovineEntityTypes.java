@@ -12,13 +12,13 @@ import java.util.function.Supplier;
 public class BovineEntityTypes {
     private static final RegistrationProvider<EntityType<?>> ENTITY_TYPES = RegistrationProvider.get(Registries.ENTITY_TYPE, BovinesAndButtercups.MOD_ID);
 
-    public static final RegistryObject<EntityType<FlowerCow>> MOOBLOOM = register("moobloom", Services.REGISTRY.createMoobloomEntity());
+    public static final Supplier<EntityType<FlowerCow>> MOOBLOOM = register("moobloom", Services.REGISTRY.createMoobloomEntity());
 
     public static void register() {
 
     }
 
-    private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, Supplier<EntityType<T>> entityType) {
+    private static <T extends Entity> Supplier<EntityType<T>> register(String name, Supplier<EntityType<T>> entityType) {
         return ENTITY_TYPES.register(name, entityType);
     }
 }

@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
+import net.merchantpug.bovinesandbuttercups.registry.BovineCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,7 +19,10 @@ import java.util.Map;
 public class LockdownClientEffectExtensions implements IClientMobEffectExtensions {
     @Override
     public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
-        Minecraft.getInstance().player.getCapability(LockdownEffectCapability.INSTANCE).map(cap -> cap.getLockdownMobEffects().entrySet().stream().toList()).ifPresent(list -> {
+        LockdownEffectCapability cap = Minecraft.getInstance().player.getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+
+        if (cap != null) {
+            List<Map.Entry<MobEffect, Integer>> list = cap.getLockdownMobEffects().entrySet().stream().toList();
             if (!list.isEmpty()) {
                 int lockdownEffectIndex = Minecraft.getInstance().player.tickCount / (160 / list.size()) % list.size();
 
@@ -28,14 +32,17 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
                 RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
                 guiGraphics.blit(x, y + 7, blitOffset, 18, 18, additionalSprite);
             }
-        });
+        }
 
         return false;
     }
 
     @Override
     public boolean renderGuiIcon(MobEffectInstance instance, Gui gui, GuiGraphics guiGraphics, int x, int y, float z, float alpha) {
-        Minecraft.getInstance().player.getCapability(LockdownEffectCapability.INSTANCE).map(cap -> cap.getLockdownMobEffects().entrySet().stream().toList()).ifPresent(list -> {
+        LockdownEffectCapability cap = Minecraft.getInstance().player.getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+
+        if (cap != null) {
+            List<Map.Entry<MobEffect, Integer>> list = cap.getLockdownMobEffects().entrySet().stream().toList();
             if (!list.isEmpty()) {
                 int lockdownEffectIndex = Minecraft.getInstance().player.tickCount / (160 / list.size()) % list.size();
 
@@ -50,20 +57,20 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
                     if (!instance.isAmbient()) {
                         int duration = runningOutEffectList.get(runningOutEffectIndex).getValue();
                         int m = 10 - duration / 20;
-                        a = Mth.clamp((float)duration / 10.0f / 5.0f * 0.5f, 0.0f, 0.5f) + Mth.cos((float)duration * (float)Math.PI / 5.0f) * Mth.clamp((float)m / 10.0f * 0.25f, 0.0f, 0.25f);
+                        a = Mth.clamp((float) duration / 10.0f / 5.0f * 0.5f, 0.0f, 0.5f) + Mth.cos((float) duration * (float) Math.PI / 5.0f) * Mth.clamp((float) m / 10.0f * 0.25f, 0.0f, 0.25f);
                     }
 
                     statusEffect1 = runningOutEffectList.get(runningOutEffectIndex).getKey();
                 }
 
                 TextureAtlasSprite additionalSprite = Minecraft.getInstance().getMobEffectTextures().get(statusEffect1);
-                float finalAlpha =  a;
+                float finalAlpha = a;
 
                 RenderSystem.setShaderTexture(0, additionalSprite.atlasLocation());
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, finalAlpha);
                 guiGraphics.blit(x + 3, y + 3, 0, 18, 18, additionalSprite);
             }
-        });
+        }
         return false;
     }
 }

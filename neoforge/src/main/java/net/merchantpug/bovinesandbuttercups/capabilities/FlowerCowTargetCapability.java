@@ -1,22 +1,37 @@
 package net.merchantpug.bovinesandbuttercups.capabilities;
 
-import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.registry.BovineAttachments;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.CapabilityManager;
-import net.neoforged.neoforge.common.capabilities.CapabilityToken;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.animal.Bee;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public interface FlowerCowTargetCapability extends INBTSerializable<CompoundTag> {
-    ResourceLocation ID = BovinesAndButtercups.asResource("moobloom_target");
-    Capability<FlowerCowTargetCapabilityImpl> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
+public class FlowerCowTargetCapability implements IFlowerCowTargetAttachability {
+    Bee provider;
 
-    @Nullable UUID getMoobloom();
-    void setMoobloom(@Nullable UUID moobloom);
+    public FlowerCowTargetCapability(Bee provider) {
+        this.provider = provider;
+    }
 
-    void sync();
+    public void deserializeLegacyCap(CompoundTag tag) {
+        if (!tag.contains("ForgeCaps", Tag.TAG_COMPOUND)) return;
+        CompoundTag forgeCapsTag = tag.getCompound("ForgeCaps");
+        if (!forgeCapsTag.contains(IFlowerCowTargetAttachability.ID.toString(), Tag.TAG_COMPOUND)) return;
+        CompoundTag legacyTag = forgeCapsTag.getCompound(IFlowerCowTargetAttachability.ID.toString());
+        if (legacyTag.contains("MoobloomTarget")) {
+            setMoobloom(legacyTag.getUUID("MoobloomTarget"));
+        }
+    }
+
+    @Override
+    public @Nullable UUID getMoobloom() {
+        return this.provider.getData(BovineAttachments.MOOBLOOM_TARGET).getMoobloom();
+    }
+
+    @Override
+    public void setMoobloom(@Nullable UUID moobloom) {
+        this.provider.getData(BovineAttachments.MOOBLOOM_TARGET).setMoobloom(moobloom);
+    }
 }

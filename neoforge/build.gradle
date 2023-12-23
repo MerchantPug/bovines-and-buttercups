@@ -26,8 +26,6 @@ mixin {
     config "${project.mod_id}.neoforge.mixins.json"
 }
 
-jarJar.enable()
-
 if (file('src/main/resources/META-INF/accesstransformer.cfg').exists()) {
     minecraft.accessTransformers.file file('src/main/resources/META-INF/accesstransformer.cfg')
 }
@@ -158,14 +156,6 @@ jar {
                 "Implementation-Version": "${project.version}-neoforge"
         )
     }
-}
-
-tasks.named('jarJar').configure {
-    archiveClassifier = ""
-}
-
-tasks.named('build').configure {
-    dependsOn('jarJar')
 }
 
 publishing {

@@ -1,12 +1,9 @@
 package net.merchantpug.bovinesandbuttercups;
 
 import net.merchantpug.bovinesandbuttercups.registry.RegistrationProvider;
-import net.merchantpug.bovinesandbuttercups.registry.RegistryObject;
 import com.google.auto.service.AutoService;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -38,8 +35,8 @@ public class NeoForgeRegistrationFactory implements RegistrationProvider.Factory
         private final String modId;
         private final DeferredRegister<T> registry;
 
-        private final Set<RegistryObject<T>> entries = new HashSet<>();
-        private final Set<RegistryObject<T>> entriesView = Collections.unmodifiableSet(entries);
+        private final Set<Supplier<T>> entries = new HashSet<>();
+        private final Set<Supplier<T>> entriesView = Collections.unmodifiableSet(entries);
 
         private Provider(String modId, DeferredRegister<T> registry) {
             this.modId = modId;
@@ -53,36 +50,14 @@ public class NeoForgeRegistrationFactory implements RegistrationProvider.Factory
 
         @Override
         @SuppressWarnings("unchecked")
-        public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier) {
+        public <I extends T> Supplier<I> register(String name, Supplier<? extends I> supplier) {
             final var obj = registry.<I>register(name, supplier);
-            final var ro = new RegistryObject<I>() {
-
-                @Override
-                public ResourceKey<I> getResourceKey() {
-                    return obj.getKey();
-                }
-
-                @Override
-                public ResourceLocation getId() {
-                    return obj.getId();
-                }
-
-                @Override
-                public I get() {
-                    return obj.get();
-                }
-
-                @Override
-                public Holder<I> asHolder() {
-                    return obj.getHolder().orElseThrow();
-                }
-            };
-            entries.add((RegistryObject<T>) ro);
-            return ro;
+            entries.add(obj::value);
+            return obj::value;
         }
 
         @Override
-        public Set<RegistryObject<T>> getEntries() {
+        public Set<Supplier<T>> getEntries() {
             return entriesView;
         }
     }

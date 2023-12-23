@@ -2,4 +2,4 @@
 - Lockdown Effect now works properly under infinite duration.
 
 ## Miscellaneous
-- Updated to 1.20.4.
+- Updated NeoForge module to stable 1.20.2 release.

@@ -84,6 +84,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
 
@@ -95,7 +96,6 @@ public class BovinesAndButtercupsNeoForge {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         BovinesAndButtercups.VERSION = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion().toString();
 
-        BovineRegistriesForge.init(eventBus);
         BovinesAndButtercups.init();
         BovineCreativeTabs.init(eventBus);
         BovineBiomeModifierSerializers.register(eventBus);
@@ -103,6 +103,14 @@ public class BovinesAndButtercupsNeoForge {
 
     @Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModEventBusListeners {
+
+        @SubscribeEvent
+        public static void newRegistries(NewRegistryEvent event) {
+            event.register(BovineRegistriesNeoForge.COW_TYPE);
+            event.register(BovineRegistriesNeoForge.ENTITY_CONDITION_TYPE);
+            event.register(BovineRegistriesNeoForge.BLOCK_CONDITION_TYPE);
+            event.register(BovineRegistriesNeoForge.BIOME_CONDITION_TYPE);
+        }
 
         @SubscribeEvent
         public static void commonSetup(FMLCommonSetupEvent event) {
@@ -141,7 +149,7 @@ public class BovinesAndButtercupsNeoForge {
             } else if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
                 CreativeTabHelper.getNectarBowlsForCreativeTab().forEach(stack -> event.getEntries().putAfter(new ItemStack(Items.MILK_BUCKET), stack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS));
             } else if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
-                event.accept(BovineItems.MOOBLOOM_SPAWN_EGG);
+                event.accept(BovineItems.MOOBLOOM_SPAWN_EGG.get());
             }
         }
 

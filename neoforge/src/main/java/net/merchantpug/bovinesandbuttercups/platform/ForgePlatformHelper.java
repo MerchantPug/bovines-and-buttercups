@@ -8,7 +8,7 @@ import net.merchantpug.bovinesandbuttercups.api.type.CowType;
 import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.platform.services.IPlatformHelper;
 import com.google.auto.service.AutoService;
-import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesForge;
+import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesNeoForge;
 import net.merchantpug.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -44,34 +44,34 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public void registerDefaultConfiguredCowTypes() {
-        BovineRegistriesForge.COW_TYPE_REGISTRY.get().forEach(cowType -> {
+        BovineRegistriesNeoForge.COW_TYPE.forEach(cowType -> {
             ConfiguredCowTypeRegistry.register(cowType.getDefaultCowType().getFirst(), cowType.getDefaultCowType().getSecond());
         });
     }
 
     @Override
     public Codec<CowType<?>> getCowTypeCodec() {
-        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.COW_TYPE_REGISTRY.get().getCodec());
+        return ExtraCodecs.lazyInitializedCodec(BovineRegistriesNeoForge.COW_TYPE::byNameCodec);
     }
 
     @Override
     public Codec<EntityConditionType<?>> getEntityConditionTypeCodec() {
-        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.ENTITY_CONDITION_TYPE_REGISTRY.get().getCodec());
+        return ExtraCodecs.lazyInitializedCodec(BovineRegistriesNeoForge.ENTITY_CONDITION_TYPE::byNameCodec);
     }
 
     @Override
     public Codec<BlockConditionType<?>> getBlockConditionTypeCodec() {
-        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.BLOCK_CONDITION_TYPE_REGISTRY.get().getCodec());
+        return ExtraCodecs.lazyInitializedCodec(BovineRegistriesNeoForge.BLOCK_CONDITION_TYPE::byNameCodec);
     }
 
     @Override
     public Codec<BiomeConditionType<?>> getBiomeConditionTypeCodec() {
-        return ExtraCodecs.lazyInitializedCodec(() -> BovineRegistriesForge.BIOME_CONDITION_TYPE_REGISTRY.get().getCodec());
+        return ExtraCodecs.lazyInitializedCodec(BovineRegistriesNeoForge.BIOME_CONDITION_TYPE::byNameCodec);
     }
 
     @Override
     public ResourceLocation getCowTypeKey(CowType<?> cowType) {
-        return BovineRegistriesForge.COW_TYPE_REGISTRY.get().getKey(cowType);
+        return BovineRegistriesNeoForge.COW_TYPE.getKey(cowType);
     }
 
     @Override

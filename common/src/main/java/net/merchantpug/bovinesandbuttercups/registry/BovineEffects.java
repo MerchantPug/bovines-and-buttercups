@@ -10,13 +10,13 @@ import java.util.function.Supplier;
 public class BovineEffects {
     private static final RegistrationProvider<MobEffect> MOB_EFFECTS = RegistrationProvider.get(Registries.MOB_EFFECT, BovinesAndButtercups.MOD_ID);
 
-    public static final RegistryObject<MobEffect> LOCKDOWN = register("lockdown", Services.REGISTRY.createLockdownEffectSupplier());
+    public static final Supplier<MobEffect> LOCKDOWN = register("lockdown", Services.REGISTRY.createLockdownEffectSupplier());
 
     public static void register() {
 
     }
 
-    private static RegistryObject<MobEffect> register(String name, Supplier<MobEffect> item) {
+    private static Supplier<MobEffect> register(String name, Supplier<MobEffect> item) {
         return MOB_EFFECTS.register(name, item);
     }
 }

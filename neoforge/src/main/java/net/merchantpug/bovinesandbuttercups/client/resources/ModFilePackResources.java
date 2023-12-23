@@ -24,9 +24,13 @@
 
 package net.merchantpug.bovinesandbuttercups.client.resources;
 
-import net.neoforged.neoforge.resource.PathPackResources;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.resources.IoSupplier;
 import net.neoforged.neoforgespi.locating.IModFile;
 
+import javax.annotation.Nullable;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ModFilePackResources extends PathPackResources {
@@ -34,16 +38,17 @@ public class ModFilePackResources extends PathPackResources {
     protected final String sourcePath;
 
     public ModFilePackResources(String name, IModFile modFile, String sourcePath) {
-        super(name, true, modFile.findResource(sourcePath));
+        super(name, modFile.findResource(sourcePath), true);
         this.modFile = modFile;
         this.sourcePath = sourcePath;
     }
 
-    @Override
-    protected Path resolve(String... paths) {
+    @Nullable
+    public IoSupplier<InputStream> getRootResource(String... paths) {
         String[] allPaths = new String[paths.length + 1];
         allPaths[0] = sourcePath;
         System.arraycopy(paths, 0, allPaths, 1, paths.length);
-        return modFile.findResource(allPaths);
+        Path path = modFile.findResource(allPaths);
+        return Files.exists(path) ? IoSupplier.create(path) : null;
     }
 }

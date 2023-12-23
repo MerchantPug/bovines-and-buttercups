@@ -302,6 +302,8 @@ public class BovinesAndButtercupsForge {
                 Services.COMPONENT.getLockdownMobEffects(event.getEntity()).forEach(((statusEffect, integer) -> {
                     if (integer > 0) {
                         lockdownEffectsToUpdate.put(statusEffect, --integer);
+                    } else if (integer == -1) {
+                        lockdownEffectsToUpdate.put(statusEffect, -1);
                     }
                 }));
                 Services.COMPONENT.setLockdownMobEffects(event.getEntity(), lockdownEffectsToUpdate);

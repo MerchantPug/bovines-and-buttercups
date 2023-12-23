@@ -20,7 +20,8 @@ import java.util.Optional;
 public record AddCowTypeSpawnsModifier(Holder<CowType<?>> cowType, Optional<HolderSet<Biome>> excludedBiomes, List<MobSpawnSettings.SpawnerData> spawners) implements BiomeModifier {
     @Override
     public void modify(Holder<Biome> biome, BiomeModifier.Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(entry -> entry.cowType() == cowType && entry.configuration().getSettings().naturalSpawnWeight() > 0 && entry.configuration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome, entry.configuration().getSettings().biomes().get()))) {
+        if (!cowType.isBound()) return;
+        if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(entry -> entry.cowType() == cowType.value() && entry.configuration().getSettings().naturalSpawnWeight() > 0 && entry.configuration().getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(biome, entry.configuration().getSettings().biomes().get()))) {
             if (phase == Phase.ADD && (this.excludedBiomes.isEmpty() || !this.excludedBiomes.get().contains(biome))) {
                 MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
                 for (MobSpawnSettings.SpawnerData spawner : this.spawners) {

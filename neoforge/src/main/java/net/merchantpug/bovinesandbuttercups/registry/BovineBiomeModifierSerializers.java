@@ -11,7 +11,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.ForgeRegistries;
-import net.neoforged.neoforge.registries.RegistryObject;
 
 import java.util.List;
 import java.util.function.Function;
@@ -22,7 +21,7 @@ public class BovineBiomeModifierSerializers {
 
     public static final Supplier<Codec<AddCowTypeSpawnsModifier>> ADD_COW_TYPE_SPAWNS_MODIFIER = BIOME_MODIFIER_SERIALIZERS.register("add_cow_type_spawns", () ->
             RecordCodecBuilder.create(builder -> builder.group(
-                    BovineRegistriesNeoForge.COW_TYPE.byNameCodec().fieldOf("cow_type").forGetter(AddCowTypeSpawnsModifier::cowType),
+                    BovineRegistriesNeoForge.COW_TYPE.holderByNameCodec().fieldOf("cow_type").forGetter(AddCowTypeSpawnsModifier::cowType),
                     Biome.LIST_CODEC.optionalFieldOf("excluded_biomes").forGetter(AddCowTypeSpawnsModifier::excludedBiomes),
                     Codec.either(MobSpawnSettings.SpawnerData.CODEC.listOf(), MobSpawnSettings.SpawnerData.CODEC).xmap(
                             either -> either.map(Function.identity(), List::of),

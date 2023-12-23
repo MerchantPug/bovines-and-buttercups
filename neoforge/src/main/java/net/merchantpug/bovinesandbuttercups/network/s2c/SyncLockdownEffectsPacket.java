@@ -4,12 +4,12 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketS2C;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ public record SyncLockdownEffectsPacket(int entityId, Map<MobEffect, Integer> ef
         List<MobEffect> statusEffectList = effects.keySet().stream().toList();
         for (int i = 0; i < effects.size(); i++) {
             MobEffect effect = statusEffectList.get(i);
-            buf.writeResourceLocation(ForgeRegistries.MOB_EFFECTS.getKey(effect));
+            buf.writeResourceLocation(BuiltInRegistries.MOB_EFFECT.getKey(effect));
             buf.writeInt(effects.get(effect));
         }
     }
@@ -33,7 +33,7 @@ public record SyncLockdownEffectsPacket(int entityId, Map<MobEffect, Integer> ef
         Map<MobEffect, Integer> lockedEffects = new HashMap<>();
         int lockdownEffectSize = buf.readInt();
         for (int i = 0; i < lockdownEffectSize; ++i) {
-            lockedEffects.put(ForgeRegistries.MOB_EFFECTS.getValue(buf.readResourceLocation()), buf.readInt());
+            lockedEffects.put(BuiltInRegistries.MOB_EFFECT.get(buf.readResourceLocation()), buf.readInt());
         }
         return new SyncLockdownEffectsPacket(entityId, lockedEffects);
     }

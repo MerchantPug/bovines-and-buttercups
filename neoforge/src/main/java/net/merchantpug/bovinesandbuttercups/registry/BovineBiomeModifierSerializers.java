@@ -10,14 +10,14 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BovineBiomeModifierSerializers {
-    private static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, BovinesAndButtercups.MOD_ID);
+    private static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, BovinesAndButtercups.MOD_ID);
 
     public static final Supplier<Codec<AddCowTypeSpawnsModifier>> ADD_COW_TYPE_SPAWNS_MODIFIER = BIOME_MODIFIER_SERIALIZERS.register("add_cow_type_spawns", () ->
             RecordCodecBuilder.create(builder -> builder.group(

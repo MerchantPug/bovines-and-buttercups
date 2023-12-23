@@ -4,6 +4,7 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncLockdownEffectsPacket;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -14,7 +15,6 @@ import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +36,7 @@ public class LockdownEffectCapabilityImpl implements LockdownEffectCapability, I
         ListTag list = new ListTag();
         lockdownEffects.forEach((statusEffect, integer) -> {
             CompoundTag effectCompound = new CompoundTag();
-            effectCompound.putString("Id", ForgeRegistries.MOB_EFFECTS.getKey(statusEffect).toString());
+            effectCompound.putString("Id", BuiltInRegistries.MOB_EFFECT.getKey(statusEffect).toString());
             effectCompound.putInt("Duration", integer);
             list.add(effectCompound);
         });
@@ -54,7 +54,7 @@ public class LockdownEffectCapabilityImpl implements LockdownEffectCapability, I
                 continue;
             }
             if (compound.contains("Id", Tag.TAG_STRING) && compound.contains("Duration", Tag.TAG_INT)) {
-                addLockdownMobEffect(ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(compound.getString("Id"))), compound.getInt("Duration"));
+                addLockdownMobEffect(BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(compound.getString("Id"))), compound.getInt("Duration"));
             }
         }
         sync();

@@ -40,9 +40,16 @@ public class EffectLockdownCommand {
                                             )
                                         )
                                     )
+                                .then(Commands.literal("infinite")
+                                    .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"), ResourceArgument.getMobEffect(command, "effect"), -1, true))
+                                        .then(Commands.argument("hideParticles", BoolArgumentType.bool())
+                                            .executes((command) -> giveLockdownEffect(command, EntityArgument.getEntities(command, "targets"), ResourceArgument.getMobEffect(command, "effect"), -1, !BoolArgumentType.getBool(command, "hideParticles"))
+                                        )
+                                    )
                                 )
                             )
                         )
+                    )
         );
     }
 
@@ -51,7 +58,7 @@ public class EffectLockdownCommand {
             throw new SimpleCommandExceptionType(Component.translatable("commands.effect.lockdown.failed")).create();
         }
         int i = 0;
-        int j = seconds != null ? seconds * 20 : 600;
+        int j = seconds != null ? seconds != -1 ? seconds * 20 : seconds : 600;
         for (Entity entity : targets) {
             MobEffectInstance statusEffectInstance = new MobEffectInstance(BovineEffects.LOCKDOWN.get(), j, 0, false, showParticles);
             if (!(entity instanceof LivingEntity)) continue;

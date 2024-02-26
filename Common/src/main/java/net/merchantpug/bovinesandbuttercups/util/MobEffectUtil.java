@@ -3,6 +3,9 @@ package net.merchantpug.bovinesandbuttercups.util;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.util.StringUtil;
 import net.minecraft.world.effect.MobEffectInstance;
 
 public class MobEffectUtil {
@@ -14,4 +17,13 @@ public class MobEffectUtil {
             Codec.BOOL.optionalFieldOf("visible", false).forGetter(MobEffectInstance::isVisible),
             Codec.BOOL.optionalFieldOf("show_icon", true).forGetter(MobEffectInstance::showIcon)
     ).apply(builder, MobEffectInstance::new));
+
+    public static Component formatDuration(int duration, float multiplier) {
+        if (duration == -1) {
+            return Component.translatable("effect.duration.infinite");
+        } else {
+            int i = Mth.floor((float)duration * multiplier);
+            return Component.literal(StringUtil.formatTickDuration(i));
+        }
+    }
 }

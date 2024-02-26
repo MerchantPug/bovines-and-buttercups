@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,8 +38,12 @@ public class LockdownEffectComponentImpl implements LockdownEffectComponent, Aut
                 BovinesAndButtercups.LOG.warn("LockedEffects NBT is not a CompoundTag.");
                 continue;
             }
+            // Backwards compatibility.
             if (compound.contains("Id", Tag.TAG_BYTE) && compound.contains("Duration", Tag.TAG_INT)) {
                 lockdownEffects.put(MobEffect.byId(compound.getByte("Id")), compound.getInt("Duration"));
+            }
+            if (compound.contains("Id", Tag.TAG_STRING) && compound.contains("Duration", Tag.TAG_INT)) {
+                lockdownEffects.put(BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(compound.getString("Id"))), compound.getInt("Duration"));
             }
         }
 
@@ -51,7 +56,7 @@ public class LockdownEffectComponentImpl implements LockdownEffectComponent, Aut
         ListTag list = new ListTag();
         lockdownEffects.forEach(((statusEffect, integer) -> {
             CompoundTag effectCompound = new CompoundTag();
-            effectCompound.putByte("Id", (byte)MobEffect.getId(statusEffect));
+            effectCompound.putString("Id", BuiltInRegistries.MOB_EFFECT.getKey(statusEffect).toString());
             effectCompound.putInt("Duration", integer);
             list.add(effectCompound);
         }));

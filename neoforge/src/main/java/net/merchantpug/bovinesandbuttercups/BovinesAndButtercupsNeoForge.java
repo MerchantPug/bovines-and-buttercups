@@ -211,7 +211,8 @@ public class BovinesAndButtercupsNeoForge {
             BovinesAndButtercups.setServer(event.getServer());
         }
 
-        @SubscribeEvent
+        // Make sure that the shearing is cancelled as a whole.
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
         public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
             if (!event.getItemStack().is(Items.SHEARS)) return;
             if (event.getTarget() instanceof FlowerCow cow && !cow.shouldAllowShearing()) {

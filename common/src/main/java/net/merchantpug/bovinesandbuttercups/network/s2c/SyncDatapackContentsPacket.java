@@ -24,7 +24,7 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("sync_datapack_contents");
 
     @Override
-    public void encode(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         Codec.unboundedMap(ResourceLocation.CODEC, ConfiguredCowType.CODEC).encodeStart(NbtOps.INSTANCE, configuredCowTypeMap)
                 .resultOrPartial(msg -> {
                     buf.writeBoolean(false);
@@ -32,7 +32,7 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
                 })
                 .ifPresent(tag -> {
                     buf.writeBoolean(true);
-                    buf.writeNbt((CompoundTag) tag);
+                    buf.writeNbt(tag);
                 });
 
         Codec.unboundedMap(ResourceLocation.CODEC, FlowerType.CODEC.codec()).encodeStart(NbtOps.INSTANCE, flowerTypeMap)
@@ -42,7 +42,7 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
                 })
                 .ifPresent(tag -> {
                     buf.writeBoolean(true);
-                    buf.writeNbt((CompoundTag) tag);
+                    buf.writeNbt(tag);
                 });
 
         Codec.unboundedMap(ResourceLocation.CODEC, MushroomType.CODEC.codec()).encodeStart(NbtOps.INSTANCE, mushroomTypeMap)
@@ -52,11 +52,11 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
                 })
                 .ifPresent(tag -> {
                     buf.writeBoolean(true);
-                    buf.writeNbt((CompoundTag) tag);
+                    buf.writeNbt(tag);
                 });
         }
 
-    public static SyncDatapackContentsPacket decode(FriendlyByteBuf buf) {
+    public static SyncDatapackContentsPacket read(FriendlyByteBuf buf) {
         HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();
         if (buf.readBoolean()) {
             CompoundTag compoundTag = buf.readNbt();
@@ -95,7 +95,7 @@ public record SyncDatapackContentsPacket(Map<ResourceLocation, ConfiguredCowType
     }
 
     @Override
-    public ResourceLocation getId() {
+    public ResourceLocation id() {
         return ID;
     }
 }

@@ -23,7 +23,6 @@ import net.merchantpug.bovinesandbuttercups.content.entity.FlowerCow;
 import net.merchantpug.bovinesandbuttercups.data.loader.ConfiguredCowTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.data.loader.FlowerTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.data.loader.MushroomTypeReloadListener;
-import net.merchantpug.bovinesandbuttercups.network.BovinePacketHandler;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
@@ -33,10 +32,8 @@ import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtAccounter;
-import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -86,12 +83,15 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
+import net.neoforged.neoforge.network.handling.IPlayPayloadHandler;
+import net.neoforged.neoforge.network.registration.IDirectionAwarePayloadHandlerBuilder;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
 
-import java.io.File;
 import java.util.*;
+import java.util.function.Consumer;
 
 @Mod(BovinesAndButtercups.MOD_ID)
 public class BovinesAndButtercupsNeoForge {
@@ -119,7 +119,17 @@ public class BovinesAndButtercupsNeoForge {
         public static void commonSetup(FMLCommonSetupEvent event) {
             event.enqueueWork(BovinesAndButtercupsNeoForge::registerCompostables);
             BovineCowTypes.registerDefaultConfigureds();
-            BovinePacketHandler.register();
+        }
+
+        @SubscribeEvent
+        public static void registerPayload(RegisterPayloadHandlerEvent event) {
+            event.registrar(BovinesAndButtercups.MOD_ID)
+                    .versioned("1.0.0")
+                    .play(SyncDatapackContentsPacket.ID, SyncDatapackContentsPacket::read, createCommonS2CHandler(SyncDatapackContentsPacket::handle));
+        }
+
+        private static <MSG extends CustomPacketPayload> Consumer<IDirectionAwarePayloadHandlerBuilder<MSG, IPlayPayloadHandler<MSG>>> createCommonS2CHandler(Consumer<MSG> handler) {
+            return builder -> builder.client((payload, context) -> handler.accept(payload));
         }
 
         @SubscribeEvent
@@ -247,7 +257,7 @@ public class BovinesAndButtercupsNeoForge {
             });
 
             var packet = new SyncDatapackContentsPacket(configuredCowTypeMap, flowerTypeMap, mushroomTypeMap);
-            BovinePacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(event::getPlayer), packet);
+            PacketDistributor.PLAYER.with(event.getPlayer()).send(packet);
         }
 
         @SubscribeEvent

@@ -114,7 +114,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             });
 
             var packet = new SyncDatapackContentsPacket(configuredCowTypeMap, flowerTypeMap, mushroomTypeMap);
-            ServerPlayNetworking.send(player, packet.getId(), packet.toBuf());
+            ServerPlayNetworking.send(player, packet.id(), packet.toBuf());
         });
 
         createBiomeModifications(BovinesAndButtercups.asResource("moobloom"),

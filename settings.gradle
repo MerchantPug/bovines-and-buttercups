@@ -12,24 +12,14 @@ pluginManagement {
             name = 'Sponge Snapshots'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
         }
-        maven {
-
-            name = 'Quilt (Release)'
-            url = 'https://maven.quiltmc.org/repository/release'
-        }
-
-        maven {
-
-            name = 'Quilt (Snapshot)'
-            url = 'https://maven.quiltmc.org/repository/snapshot'
-        }
-
-        maven {
-            name = 'Cotton'
-            url = 'https://server.bbkr.space/artifactory/libs-release/'
-        }
         mavenCentral()
         gradlePluginPortal()
+    }
+}
+// TODO: Remove this line once https://github.com/FabricMC/fabric-loom/issues/1020 is resolved.
+buildscript {
+    dependencies {
+        classpath("com.google.code.gson:gson:2.10.1")
     }
 }
 
@@ -38,4 +28,4 @@ plugins {
 }
 
 rootProject.name = 'bovines-and-buttercups'
-include("common", "fabric", "neoforge", /*"quilt"*/)
+include("common", "fabric", "neoforge")

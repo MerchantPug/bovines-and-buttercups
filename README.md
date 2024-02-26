@@ -19,17 +19,14 @@ repositories {
 }
 
 dependencies {
-    // If you have a Common sourceset shared between Forge, Fabric, and Quilt
+    // If you have a Common sourceset shared between Forge, Fabric
     compileOnly "net.merchantpug:Bovines-And-Buttercups-Common:${project.bovines_version}"
 
     // NeoForge
     implementation "net.merchantpug:Bovines-And-Buttercups-NeoForge:${project.bovines_version}"
     
-    // Fabric
+    // Fabric/Quilt
     modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabric:${project.bovines_version}"
-
-    // Quilt
-    modImplementation "net.merchantpug:Bovines-And-Buttercups-Quilt:${project.bovines_version}"
 }
 ```
 

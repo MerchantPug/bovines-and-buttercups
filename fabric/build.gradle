@@ -96,10 +96,8 @@ dependencies {
     implementation(project(":common"))
 
     // TODO: Re-enable once JEI is updated.
-    /*
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}") { transitive false }
     modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}") { transitive false }
-     */
 
     // modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
 
@@ -116,7 +114,7 @@ dependencies {
      */
 
     modCompileOnly("dev.emi:emi-fabric:${emi_version}:api") { transitive false }
-    // modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
+    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
 
 }
 

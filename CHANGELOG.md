@@ -1,5 +1,1 @@
-## Features
-- Lockdown Effect now works properly under infinite duration.
-
-## Miscellaneous
-- Updated NeoForge module to stable 1.20.2 release.
+- Fixed a rare crash involving Mooblooms not being able to find their texture. #22

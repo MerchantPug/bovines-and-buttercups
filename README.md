@@ -27,9 +27,6 @@ dependencies {
 
     // Fabric
     modImplementation "net.merchantpug:Bovines-And-Buttercups-Fabric:${project.bovines_version}"
-
-    // Quilt
-    modImplementation "net.merchantpug:Bovines-And-Buttercups-Quilt:${project.bovines_version}"
 }
 ```
 

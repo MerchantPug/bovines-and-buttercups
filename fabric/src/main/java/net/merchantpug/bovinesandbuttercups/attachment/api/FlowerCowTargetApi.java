@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class FlowerCowTargetApi {
-    Bee provider;
+    private final Bee provider;
 
     public FlowerCowTargetApi(Bee provider) {
         this.provider = provider;

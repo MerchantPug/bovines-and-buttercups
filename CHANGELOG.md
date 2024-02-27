@@ -5,7 +5,6 @@
 - Fixed a rare crash involving Mooblooms not being able to find their texture. #22
 - Fixed missing mooshrooms becoming an actual mooshroom type upon tracking.
 - Fixed infinite lockdown effects being dimmed and prioritised in the HUD.
-- Fixed NeoForge crashing due to an invalid mods.toml.
 
 ## Miscellaneous
 - Updated mod icon.

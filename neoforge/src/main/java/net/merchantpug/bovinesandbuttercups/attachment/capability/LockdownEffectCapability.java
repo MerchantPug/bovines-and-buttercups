@@ -1,6 +1,7 @@
-package net.merchantpug.bovinesandbuttercups.capabilities;
+package net.merchantpug.bovinesandbuttercups.attachment.capability;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.attachment.LockdownEffectAttachment;
 import net.merchantpug.bovinesandbuttercups.registry.BovineAttachments;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Map;
 
-public class LockdownEffectCapability implements ILockdownEffectAttachability {
+public class LockdownEffectCapability {
     private final LivingEntity provider;
 
     public LockdownEffectCapability(LivingEntity entity) {
@@ -22,8 +23,8 @@ public class LockdownEffectCapability implements ILockdownEffectAttachability {
     public void deserializeLegacyCap(CompoundTag tag) {
         if (!tag.contains("ForgeCaps", Tag.TAG_COMPOUND)) return;
         CompoundTag forgeCapsTag = tag.getCompound("ForgeCaps");
-        if (!forgeCapsTag.contains(ILockdownEffectAttachability.ID.toString(), Tag.TAG_COMPOUND)) return;
-        CompoundTag legacyTag = forgeCapsTag.getCompound(ILockdownEffectAttachability.ID.toString());
+        if (!forgeCapsTag.contains(LockdownEffectAttachment.ID.toString(), Tag.TAG_COMPOUND)) return;
+        CompoundTag legacyTag = forgeCapsTag.getCompound(LockdownEffectAttachment.ID.toString());
         ListTag list = legacyTag.getList("LockedEffects", Tag.TAG_COMPOUND);
         for (Tag nbtElement : list) {
             if (!(nbtElement instanceof CompoundTag compound)) {
@@ -36,24 +37,20 @@ public class LockdownEffectCapability implements ILockdownEffectAttachability {
         }
     }
 
-    @Override
     public Map<MobEffect, Integer> getLockdownMobEffects() {
-        return provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).getLockdownMobEffects();
+        return provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).get().getLockdownMobEffects();
     }
 
-    @Override
     public void addLockdownMobEffect(MobEffect effect, int duration) {
-        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).addLockdownMobEffect(effect, duration);
+        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).get().addLockdownMobEffect(effect, duration);
     }
 
-    @Override
     public void removeLockdownMobEffect(MobEffect effect) {
-        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).removeLockdownMobEffect(effect);
+        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).get().removeLockdownMobEffect(effect);
     }
 
-    @Override
     public void setLockdownMobEffects(Map<MobEffect, Integer> map) {
-        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).setLockdownMobEffects(map);
+        provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).get().setLockdownMobEffects(map);
     }
 
 }

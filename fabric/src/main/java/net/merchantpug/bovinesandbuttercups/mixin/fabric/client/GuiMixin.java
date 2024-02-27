@@ -1,9 +1,10 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabric.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
+import net.merchantpug.bovinesandbuttercups.attachment.api.LockdownEffectApi;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityApis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -33,7 +34,8 @@ public class GuiMixin {
     private void bovinesandbuttercups$overlayLockdownBorder(GuiGraphics graphics, CallbackInfo ci, Collection collection, int k, int l, MobEffectTextureManager mobEffectTextureManager, List<Runnable> runnables, Iterator iterator, MobEffectInstance mobEffectInstance, MobEffect effect, int width, int height) {
         if (minecraft.player == null || !minecraft.player.hasEffect(BovineEffects.LOCKDOWN.get())) return;
 
-        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(minecraft.player, null);
+        if (!(mobEffectInstance.getEffect() instanceof LockdownEffect) && api != null && api.getLockdownMobEffects().entrySet().stream().anyMatch(instance -> instance.getKey() == mobEffectInstance.getEffect())) {
             graphics.blitSprite(BovinesAndButtercups.asResource("hud/lockdown_frame"), width, height, 24, 24);
         }
     }
@@ -42,7 +44,11 @@ public class GuiMixin {
     private void bovinesandbuttercups$renderLockdownStatusEffectOverlay(GuiGraphics guiGraphics, CallbackInfo ci, Collection collection, int i, int j, MobEffectTextureManager mobEffectTextureManager, List<Runnable> list, Iterator var7, MobEffectInstance mobEffectInstance, MobEffect mobEffect, int k, int l, float f, TextureAtlasSprite textureAtlasSprite, int n, int o, float g) {
         if (!(mobEffectInstance.getEffect() instanceof LockdownEffect)) return;
 
-        List<Map.Entry<MobEffect, Integer>> statusEffectList = BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(minecraft.player).getLockdownMobEffects().entrySet().stream().toList();
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(minecraft.player, null);
+
+        if (api == null) return;
+
+        List<Map.Entry<MobEffect, Integer>> statusEffectList = api.getLockdownMobEffects().entrySet().stream().toList();
 
         if (statusEffectList.isEmpty()) return;
         int lockdownEffectIndex = minecraft.player.tickCount / (160 / statusEffectList.size()) % statusEffectList.size();

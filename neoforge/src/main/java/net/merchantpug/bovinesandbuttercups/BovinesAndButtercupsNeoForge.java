@@ -3,7 +3,9 @@ package net.merchantpug.bovinesandbuttercups;
 import net.merchantpug.bovinesandbuttercups.access.BeeAccess;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.capabilities.*;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.FlowerCowTargetCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.LockdownEffectCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.MushroomCowTypeCapability;
 import net.merchantpug.bovinesandbuttercups.client.resources.ModFilePackResources;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomFlowerPotBlockEntity;
 import net.merchantpug.bovinesandbuttercups.content.block.entity.CustomMushroomPotBlockEntity;
@@ -182,9 +184,9 @@ public class BovinesAndButtercupsNeoForge {
                 });
             }
         }
-        private static final Map<LivingEntity, LockdownEffectCapability> LOCKDOWN_EFFECT_CAPABILITY_CACHE = new WeakHashMap<>(256);
-        private static final Map<MushroomCow, MushroomCowTypeCapability> MOOSHROOM_TYPE_CAPABILITY_CACHE = new WeakHashMap<>(128);
-        private static final Map<Bee, FlowerCowTargetCapability> MOOBLOOM_TARGET_CAPABILITY_CACHE = new WeakHashMap<>(128);
+        private static final Map<LivingEntity, LockdownEffectCapability> LOCKDOWN_EFFECT_CAPABILITY_CACHE = new WeakHashMap<>(512);
+        private static final Map<MushroomCow, MushroomCowTypeCapability> MOOSHROOM_TYPE_CAPABILITY_CACHE = new WeakHashMap<>(256);
+        private static final Map<Bee, FlowerCowTargetCapability> MOOBLOOM_TARGET_CAPABILITY_CACHE = new WeakHashMap<>(256);
 
         @SubscribeEvent
         public static void attachCapabilities(RegisterCapabilitiesEvent event) {
@@ -325,7 +327,7 @@ public class BovinesAndButtercupsNeoForge {
             if (event.getTarget() instanceof MushroomCow cow) {
                 MushroomCowTypeCapability cap = cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE);
                 if (cap != null) {
-                    if (cap.getMushroomCowTypeKey() == null || cap.getMushroomCowTypeKey().equals(BovinesAndButtercups.asResource("missing_mooshroom"))) {
+                    if (cap.getTypeKey().isEmpty()) {
                         if (MushroomCowSpawnUtil.getTotalSpawnWeight(event.getTarget().level(), cow.blockPosition()) > 0) {
                             cap.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(event.getTarget().level(), cow.blockPosition(), cow.getRandom()));
                         } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.configuration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && cow.level().getBiome(cow.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
@@ -349,7 +351,7 @@ public class BovinesAndButtercupsNeoForge {
 
         @SubscribeEvent
         public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-            if (event.getEntity().hasEffect(BovineEffects.LOCKDOWN.get())) {
+            if (!event.getEntity().level().isClientSide() && event.getEntity().hasEffect(BovineEffects.LOCKDOWN.get())) {
                 HashMap<MobEffect, Integer> lockdownEffectsToUpdate = new HashMap<>();
                 Services.COMPONENT.getLockdownMobEffects(event.getEntity()).forEach(((statusEffect, integer) -> {
                     if (integer > 0) {

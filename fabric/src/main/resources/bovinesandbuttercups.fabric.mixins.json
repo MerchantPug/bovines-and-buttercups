@@ -7,6 +7,7 @@
   "mixins": [
     "BeeMixin",
     "BeePollinateGoalMixin",
+    "EntityMixin",
     "FlowerPotBlockMixin",
     "LivingEntityMixin",
     "MushroomCowAccessor",

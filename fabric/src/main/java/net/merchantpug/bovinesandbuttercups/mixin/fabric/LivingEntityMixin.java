@@ -1,10 +1,11 @@
 package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
-import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
+import net.merchantpug.bovinesandbuttercups.attachment.api.LockdownEffectApi;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCriteriaTriggers;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityApis;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,7 +37,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;tickEffects()V", shift = At.Shift.AFTER))
     private void bovinesandbuttercups$tickLockdown(CallbackInfo ci) {
         LivingEntity entity = (LivingEntity)(Object)this;
-        if (entity.hasEffect(BovineEffects.LOCKDOWN.get())) {
+        if (!this.level().isClientSide() && entity.hasEffect(BovineEffects.LOCKDOWN.get())) {
             HashMap<MobEffect, Integer> lockdownEffectsToUpdate = new HashMap<>();
             Services.COMPONENT.getLockdownMobEffects(entity).forEach(((statusEffect, integer) -> {
                 if (integer > 0) {
@@ -51,15 +52,16 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "onEffectAdded", at = @At("TAIL"))
     private void bovinesandbuttercups$addRandomLockdown(MobEffectInstance effect, Entity entity, CallbackInfo ci) {
-        if (!this.level().isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(this, null);
+        if (!this.level().isClientSide && effect.getEffect() instanceof LockdownEffect && api != null && (api.getLockdownMobEffects().isEmpty() || api.getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
             Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level().random);
             randomEffect.ifPresent(entry -> {
-                BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).addLockdownMobEffect(entry.value(), effect.getDuration());
-                BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
+                api.addLockdownMobEffect(entry.value(), effect.getDuration());
+                api.sync();
             });
         }
-        if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && !BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty()) {
-            BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().forEach((effect1, duration) -> {
+        if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && api != null && api.getLockdownMobEffects().isEmpty()) {
+            api.getLockdownMobEffects().forEach((effect1, duration) -> {
                 if (!this.hasEffect(effect1)) return;
                 BovineCriteriaTriggers.LOCK_EFFECT.get().trigger(serverPlayer, effect1);
             });
@@ -68,25 +70,28 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "onEffectUpdated", at = @At("TAIL"))
     private void bovinesandbuttercups$updateWithRandomLockdown(MobEffectInstance effect, boolean bl, Entity entity, CallbackInfo ci) {
-        if (!this.level().isClientSide && effect.getEffect() instanceof LockdownEffect && (BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().isEmpty() || BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(this, null);
+        if (!this.level().isClientSide && effect.getEffect() instanceof LockdownEffect && api != null && (api.getLockdownMobEffects().isEmpty() || api.getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
             Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(this.level().random);
             randomEffect.ifPresent(entry -> {
-                BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).addLockdownMobEffect(entry.value(), effect.getDuration());
-                BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
+                api.addLockdownMobEffect(entry.value(), effect.getDuration());
+                api.sync();
             });
         }
     }
 
     @Inject(method = "onEffectRemoved", at = @At("TAIL"))
     private void bovinesandbuttercups$removeAllLockdownEffects(MobEffectInstance effect, CallbackInfo ci) {
-        if (this.level().isClientSide || !(effect.getEffect() instanceof LockdownEffect)) return;
-        BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().clear();
-        BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(this);
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(this, null);
+        if (this.level().isClientSide || !(effect.getEffect() instanceof LockdownEffect) || api == null) return;
+        api.getLockdownMobEffects().clear();
+        api.sync();
     }
 
     @Inject(method = "canBeAffected", at = @At(value = "RETURN"), cancellable = true)
     private void bovinesandbuttercups$cancelStatusEffectIfLocked(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
-        if (this.hasEffect(BovineEffects.LOCKDOWN.get()) && BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(this).getLockdownMobEffects().containsKey(effect.getEffect())) {
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(this, null);
+        if (this.hasEffect(BovineEffects.LOCKDOWN.get()) && api != null && api.getLockdownMobEffects().containsKey(effect.getEffect())) {
             if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer) {
                 BovineCriteriaTriggers.PREVENT_EFFECT.get().trigger(serverPlayer, effect.getEffect());
             }

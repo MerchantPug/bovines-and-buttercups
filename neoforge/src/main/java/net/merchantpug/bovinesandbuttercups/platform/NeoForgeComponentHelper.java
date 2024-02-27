@@ -5,7 +5,10 @@ import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
-import net.merchantpug.bovinesandbuttercups.capabilities.*;
+import net.merchantpug.bovinesandbuttercups.attachment.LockdownEffectAttachment;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.FlowerCowTargetCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.LockdownEffectCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.MushroomCowTypeCapability;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.services.IComponentHelper;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCapabilities;
@@ -26,17 +29,17 @@ public class NeoForgeComponentHelper implements IComponentHelper {
 
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowTypeFromCow(MushroomCow cow) {
-        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).map(MushroomCowTypeCapability::getMushroomCowType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get()));
+        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).map(MushroomCowTypeCapability::getType).orElse(BovineRegistryUtil.getConfiguredCowTypeFromKey(BovinesAndButtercups.asResource("missing_mooshroom"), BovineCowTypes.MUSHROOM_COW_TYPE.get()));
     }
 
     @Override
     public ResourceLocation getMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).map(MushroomCowTypeCapability::getMushroomCowTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
+        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).flatMap(MushroomCowTypeCapability::getTypeKey).orElse(BovinesAndButtercups.asResource("missing_mooshroom"));
     }
 
     @Override
     public Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).map(MushroomCowTypeCapability::getPreviousMushroomTypeKey);
+        return Optional.ofNullable(cow.getCapability(BovineCapabilities.MOOSHROOM_TYPE)).flatMap(MushroomCowTypeCapability::getPreviousTypeKey);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class NeoForgeComponentHelper implements IComponentHelper {
 
     @Override
     public Map<MobEffect, Integer> getLockdownMobEffects(LivingEntity entity) {
-        return Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).map(LockdownEffectCapability::getLockdownMobEffects).orElse(LockdownEffectCapability.NO_EFFECTS);
+        return Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).map(LockdownEffectCapability::getLockdownMobEffects).orElse(LockdownEffectAttachment.NO_EFFECTS);
     }
 
     @Override

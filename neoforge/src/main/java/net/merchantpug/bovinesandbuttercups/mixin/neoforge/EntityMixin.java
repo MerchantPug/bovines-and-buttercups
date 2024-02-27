@@ -1,20 +1,17 @@
 package net.merchantpug.bovinesandbuttercups.mixin.neoforge;
 
-import net.merchantpug.bovinesandbuttercups.capabilities.FlowerCowTargetCapability;
-import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
-import net.merchantpug.bovinesandbuttercups.capabilities.MushroomCowTypeCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.FlowerCowTargetCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.LockdownEffectCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.MushroomCowTypeCapability;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCapabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.storage.PlayerDataStorage;
 import net.neoforged.neoforge.capabilities.EntityCapability;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(Entity.class)

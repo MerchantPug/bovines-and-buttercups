@@ -2,9 +2,10 @@ package net.merchantpug.bovinesandbuttercups.mixin.fabric;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
-import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
+import net.merchantpug.bovinesandbuttercups.attachment.api.MushroomCowTypeApi;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityApis;
 import net.merchantpug.bovinesandbuttercups.registry.BovineItems;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowChildTypeUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
@@ -39,12 +40,14 @@ public class MushroomCowMixin {
 
     @ModifyReturnValue(method = "readyForShearing", at = @At("RETURN"))
     private boolean bovinesandbuttercups$isReadyForShearing(boolean original) {
-        return original && (!BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.isProvidedBy(this) || BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(this).shouldAllowShearing());
+        return original && (BovineEntityApis.MOOSHROOM_TYPE.find((MushroomCow)(Object)this, null) == null || BovineEntityApis.MOOSHROOM_TYPE.find((MushroomCow)(Object)this, null).shouldAllowShearing());
     }
 
     @Inject(method = "getBreedOffspring(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/AgeableMob;)Lnet/minecraft/world/entity/animal/MushroomCow;", at = @At(value = "RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
     private void bovinesandbuttercups$setDataDrivenMooshroomOffspringType(ServerLevel serverLevel, AgeableMob ageableMob, CallbackInfoReturnable<MushroomCow> cir, MushroomCow mushroomCow) {
-        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(mushroomCow).setMushroomCowType(MushroomCowChildTypeUtil.chooseMooshroomBabyType((MushroomCow)(Object)this, (MushroomCow)ageableMob, mushroomCow, ((Animal)(Object)this).getLoveCause()));
+        MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find((MushroomCow)(Object)this, null);
+        if (api == null) return;
+        api.setMushroomType(MushroomCowChildTypeUtil.chooseMooshroomBabyType((MushroomCow)(Object)this, (MushroomCow)ageableMob, mushroomCow, ((Animal)(Object)this).getLoveCause()));
     }
 
     @Inject(method = "shear", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z", ordinal = 0, shift = At.Shift.AFTER), cancellable = true)

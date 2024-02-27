@@ -1,8 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.mixin.neoforge.client;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
-import net.merchantpug.bovinesandbuttercups.capabilities.ILockdownEffectAttachability;
-import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.LockdownEffectCapability;
 import net.merchantpug.bovinesandbuttercups.content.effect.LockdownEffect;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCapabilities;
 import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;

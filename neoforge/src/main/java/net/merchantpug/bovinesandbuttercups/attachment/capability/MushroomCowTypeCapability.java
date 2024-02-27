@@ -1,9 +1,10 @@
-package net.merchantpug.bovinesandbuttercups.capabilities;
+package net.merchantpug.bovinesandbuttercups.attachment.capability;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
 import net.merchantpug.bovinesandbuttercups.api.type.CowType;
+import net.merchantpug.bovinesandbuttercups.attachment.MushroomCowTypeAttachment;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.mixin.neoforge.MushroomCowAccessor;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
@@ -14,19 +15,20 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.MushroomCow;
 import org.jetbrains.annotations.Nullable;
 
-public class MushroomCowTypeCapability implements IMushroomCowTypeAttachability {
+import java.util.Optional;
+
+public class MushroomCowTypeCapability {
     private final MushroomCow provider;
 
     public MushroomCowTypeCapability(MushroomCow provider) {
         this.provider = provider;
     }
 
-
     public void deserializeLegacyCap(CompoundTag tag) {
         if (!tag.contains("ForgeCaps", Tag.TAG_COMPOUND)) return;
         CompoundTag forgeCapsTag = tag.getCompound("ForgeCaps");
-        if (!forgeCapsTag.contains(IMushroomCowTypeAttachability.ID.toString(), Tag.TAG_COMPOUND)) return;
-        CompoundTag legacyTag = forgeCapsTag.getCompound(IMushroomCowTypeAttachability.ID.toString());
+        if (!forgeCapsTag.contains(MushroomCowTypeAttachment.ID.toString(), Tag.TAG_COMPOUND)) return;
+        CompoundTag legacyTag = forgeCapsTag.getCompound(MushroomCowTypeAttachment.ID.toString());
         if (legacyTag.contains("Type", Tag.TAG_STRING)) {
             this.setMushroomType(ResourceLocation.tryParse(legacyTag.getString("Type")));
         }
@@ -38,29 +40,24 @@ public class MushroomCowTypeCapability implements IMushroomCowTypeAttachability 
         }
     }
 
-    @Override
-    public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getMushroomCowType() {
-        return this.provider.getData(BovineAttachments.MUSHROOM_COW_TYPE).getMushroomCowType();
+    public ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>> getType() {
+        return this.provider.getData(BovineAttachments.MOOSHROOM_TYPE).get().getType();
     }
 
-    @Override
-    public ResourceLocation getMushroomCowTypeKey() {
-        return this.provider.getData(BovineAttachments.MUSHROOM_COW_TYPE).getMushroomCowTypeKey();
+    public Optional<ResourceLocation> getTypeKey() {
+        return this.provider.getData(BovineAttachments.MOOSHROOM_TYPE).get().getTypeKey();
     }
 
-    @Override
     public boolean shouldAllowShearing() {
-        return this.provider.getData(BovineAttachments.MUSHROOM_COW_TYPE).shouldAllowShearing();
+        return this.provider.getData(BovineAttachments.MOOSHROOM_TYPE).get().shouldAllowShearing();
     }
 
-    @Override
     public void setAllowShearing(boolean value) {
-        this.provider.getData(BovineAttachments.MUSHROOM_COW_TYPE).setAllowShearing(value);
+        this.provider.getData(BovineAttachments.MOOSHROOM_TYPE).get().setAllowShearing(value);
     }
 
-    @Override
     public void setMushroomType(ResourceLocation key) {
-        this.provider.getData(BovineAttachments.MUSHROOM_COW_TYPE).setMushroomType(key);
+        this.provider.getData(BovineAttachments.MOOSHROOM_TYPE).get().setType(key);
 
 
         if (BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(provider)).equals(BovinesAndButtercups.asResource("brown_mushroom"))) {
@@ -70,13 +67,11 @@ public class MushroomCowTypeCapability implements IMushroomCowTypeAttachability 
         }
     }
 
-    @Override
-    public ResourceLocation getPreviousMushroomTypeKey() {
-        return this.provider.getData(BovineAttachments.MUSHROOM_COW_TYPE).getPreviousMushroomTypeKey();
+    public Optional<ResourceLocation> getPreviousTypeKey() {
+        return this.provider.getData(BovineAttachments.MOOSHROOM_TYPE).get().getPreviousTypeKey();
     }
 
-    @Override
     public void setPreviousMushroomTypeKey(@Nullable ResourceLocation key) {
-        this.provider.getData(BovineAttachments.MUSHROOM_COW_TYPE).setPreviousMushroomTypeKey(key);
+        this.provider.getData(BovineAttachments.MOOSHROOM_TYPE).get().setPreviousTypeKey(key);
     }
 }

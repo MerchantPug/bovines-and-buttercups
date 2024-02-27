@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.lookup.v1.entity.EntityApiLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.api.ModInitializer;
@@ -14,8 +15,9 @@ import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
-import net.merchantpug.bovinesandbuttercups.component.MushroomCowTypeComponent;
+import net.merchantpug.bovinesandbuttercups.attachment.api.FlowerCowTargetApi;
+import net.merchantpug.bovinesandbuttercups.attachment.api.LockdownEffectApi;
+import net.merchantpug.bovinesandbuttercups.attachment.api.MushroomCowTypeApi;
 import net.merchantpug.bovinesandbuttercups.content.command.EffectLockdownCommand;
 import net.merchantpug.bovinesandbuttercups.data.ConfiguredCowTypeRegistry;
 import net.merchantpug.bovinesandbuttercups.data.FlowerTypeRegistry;
@@ -34,12 +36,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.entity.EntityLookup;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.function.Predicate;
 
 public class BovinesAndButtercupsFabric implements ModInitializer {
@@ -71,24 +78,25 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTING.register(BovinesAndButtercups::setServer);
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
-            if (BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.isProvidedBy(entity)) {
-                MushroomCowTypeComponent component = BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(entity);
-                if (component.getMushroomCowTypeKey() == null || component.getMushroomCowTypeKey().equals(BovinesAndButtercups.asResource("missing_mooshroom"))) {
+            MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find(entity, null);
+            if (api != null) {
+                if (api.getTypeKey().isEmpty() || api.getTypeKey().equals(BovinesAndButtercups.asResource("missing_mooshroom"))) {
                     if (MushroomCowSpawnUtil.getTotalSpawnWeight(level, entity.blockPosition()) > 0) {
-                        component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
+                        api.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnTypeDependingOnBiome(level, entity.blockPosition(), level.getRandom()));
                     } else if (BovineRegistryUtil.configuredCowTypeStream().anyMatch(cct -> cct.configuration() instanceof MushroomCowConfiguration mcct && mcct.usesVanillaSpawningHack()) && level.getBiome(entity.blockPosition()).is(Biomes.MUSHROOM_FIELDS)) {
                         if (((MushroomCow)entity).getVariant().equals(MushroomCow.MushroomType.BROWN)) {
-                            component.setMushroomCowType(BovinesAndButtercups.asResource("brown_mushroom"));
+                            api.setMushroomType(BovinesAndButtercups.asResource("brown_mushroom"));
                         } else {
-                            component.setMushroomCowType(BovinesAndButtercups.asResource("red_mushroom"));
+                            api.setMushroomType(BovinesAndButtercups.asResource("red_mushroom"));
                         }
                     } else {
-                        component.setMushroomCowType(MushroomCowSpawnUtil.getMooshroomSpawnType(level.getRandom(), ((MushroomCow)entity).getVariant()));
+                        api.setMushroomType(MushroomCowSpawnUtil.getMooshroomSpawnType(level.getRandom(), ((MushroomCow)entity).getVariant()));
                     }
                 }
             }
         });
         registerCompostables();
+        registerEntityApis();
 
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new ConfiguredCowTypeReloadListenerFabric());
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new FlowerTypeReloadListenerFabric());
@@ -126,7 +134,7 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         BiomeModifications.create(BovinesAndButtercups.asResource("remove_cows")).add(ModificationPhase.REMOVALS, biome -> biome.hasTag(BovineTags.PREVENT_COW_SPAWNS), context -> context.getSpawnSettings().removeSpawnsOfEntityType(EntityType.COW));
     }
 
-    public static void createBiomeModifications(ResourceLocation location, Predicate<BiomeSelectionContext> predicate, EntityType<?> entityType, int weight, int min, int max) {
+    private static void createBiomeModifications(ResourceLocation location, Predicate<BiomeSelectionContext> predicate, EntityType<?> entityType, int weight, int min, int max) {
         BiomeModifications.create(location).add(ModificationPhase.POST_PROCESSING, predicate, context -> context.getSpawnSettings().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(entityType, weight, min, max)));
     }
 
@@ -143,6 +151,20 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_FLOWER.get(), 0.65F);
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM.get(), 0.65F);
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), 0.85F);
+    }
+
+    private static final Map<LivingEntity, LockdownEffectApi> LOCKDOWN_EFFECT_API_CACHE = new WeakHashMap<>(512);
+    private static final Map<MushroomCow, MushroomCowTypeApi> MOOSHROOM_TYPE_API_CACHE = new WeakHashMap<>(256);
+    private static final Map<Bee, FlowerCowTargetApi> MOOBLOOM_TARGET_CAPABILITY_CACHE = new WeakHashMap<>(256);
+    private static void registerEntityApis() {
+        BovineEntityApis.MOOSHROOM_TYPE.registerForType((entity, aVoid) -> MOOSHROOM_TYPE_API_CACHE.computeIfAbsent(entity, MushroomCowTypeApi::new), EntityType.MOOSHROOM);
+        BovineEntityApis.LOCKDOWN_EFFECTS.registerFallback((entity, aVoid) -> {
+            if (entity instanceof LivingEntity living) {
+                return LOCKDOWN_EFFECT_API_CACHE.computeIfAbsent(living, LockdownEffectApi::new);
+            }
+            return null;
+        });
+        BovineEntityApis.MOOBLOOM_TARGET.registerForType((entity, aVoid) -> MOOBLOOM_TARGET_CAPABILITY_CACHE.computeIfAbsent(entity, FlowerCowTargetApi::new), EntityType.BEE);
     }
 
 }

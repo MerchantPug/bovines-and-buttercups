@@ -2,9 +2,13 @@ package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.google.auto.service.AutoService;
 import net.merchantpug.bovinesandbuttercups.api.type.ConfiguredCowType;
-import net.merchantpug.bovinesandbuttercups.component.BovineEntityComponents;
+import net.merchantpug.bovinesandbuttercups.attachment.LockdownEffectAttachment;
+import net.merchantpug.bovinesandbuttercups.attachment.api.FlowerCowTargetApi;
+import net.merchantpug.bovinesandbuttercups.attachment.api.LockdownEffectApi;
+import net.merchantpug.bovinesandbuttercups.attachment.api.MushroomCowTypeApi;
 import net.merchantpug.bovinesandbuttercups.data.entity.MushroomCowConfiguration;
 import net.merchantpug.bovinesandbuttercups.platform.services.IComponentHelper;
+import net.merchantpug.bovinesandbuttercups.registry.BovineEntityApis;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,61 +24,95 @@ import java.util.UUID;
 public class FabricComponentHelper implements IComponentHelper {
     @Override
     public ConfiguredCowType<MushroomCowConfiguration, ?> getMushroomCowTypeFromCow(MushroomCow cow) {
-        return BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowType();
+        MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find(cow, null);
+        if (api == null) {
+            return null;
+        }
+        return api.getType();
     }
 
     @Override
     public ResourceLocation getMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getMushroomCowTypeKey();
+        MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find(cow, null);
+        if (api == null) {
+            return null;
+        }
+        return api.getTypeKey().orElse(null);
     }
 
     @Override
     public Optional<ResourceLocation> getPreviousMushroomCowTypeKeyFromCow(MushroomCow cow) {
-        return Optional.ofNullable(BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).getPreviousMushroomCowTypeKey());
+        MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find(cow, null);
+        if (api == null) {
+            return Optional.empty();
+        }
+        return api.getPreviousTypeKey();
     }
 
     @Override
     public void setMushroomCowType(MushroomCow cow, ResourceLocation key) {
-        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).setMushroomCowType(key);
+        MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find(cow, null);
+        if (api == null) return;
+        api.setMushroomType(key);
     }
 
     @Override
     public void setPreviousMushroomCowType(MushroomCow cow, ResourceLocation key) {
-        BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.get(cow).setPreviousMushroomCowTypeKey(key);
+        MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find(cow, null);
+        if (api == null) return;
+        api.setPreviousMushroomTypeKey(key);
     }
 
     @Override
     public Map<MobEffect, Integer> getLockdownMobEffects(LivingEntity entity) {
-        return BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(entity).getLockdownMobEffects();
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(entity, null);
+        if (api == null) {
+            return LockdownEffectAttachment.NO_EFFECTS;
+        }
+        return api.getLockdownMobEffects();
     }
 
     @Override
     public void addLockdownMobEffect(LivingEntity entity, MobEffect effect, int duration) {
-        BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(entity).addLockdownMobEffect(effect, duration);
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(entity, null);
+        if (api == null) return;
+        api.addLockdownMobEffect(effect, duration);
     }
 
     @Override
     public void removeLockdownMobEffect(LivingEntity entity, MobEffect effect) {
-        BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(entity).removeLockdownMobEffect(effect);
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(entity, null);
+        if (api == null) return;
+        api.removeLockdownMobEffect(effect);
     }
 
     @Override
     public void setLockdownMobEffects(LivingEntity entity, Map<MobEffect, Integer> map) {
-        BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.get(entity).setLockdownMobEffects(map);
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(entity, null);
+        if (api == null) return;
+        api.setLockdownMobEffects(map);
     }
 
     @Override
     public void syncLockdownMobEffects(LivingEntity entity) {
-        BovineEntityComponents.LOCKDOWN_EFFECT_COMPONENT.sync(entity);
+        LockdownEffectApi api = BovineEntityApis.LOCKDOWN_EFFECTS.find(entity, null);
+        if (api == null) return;
+        api.sync();
     }
 
     @Override
     public Optional<UUID> getMoobloomTarget(Bee bee) {
-        return Optional.ofNullable(BovineEntityComponents.FLOWER_COW_TARGET_COMPONENT.get(bee).getMoobloom());
+        FlowerCowTargetApi api = BovineEntityApis.MOOBLOOM_TARGET.find(bee, null);
+        if (api == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(api.getMoobloom());
     }
 
     @Override
     public void setMoobloomTarget(Bee bee, @Nullable UUID uUID) {
-        BovineEntityComponents.FLOWER_COW_TARGET_COMPONENT.get(bee).setMoobloom(uUID);
+        FlowerCowTargetApi api = BovineEntityApis.MOOBLOOM_TARGET.find(bee, null);
+        if (api == null) return;
+        api.setMoobloom(uUID);
     }
 }

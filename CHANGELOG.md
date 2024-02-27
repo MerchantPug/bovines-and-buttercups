@@ -5,9 +5,13 @@
 - Fixed a rare crash involving Mooblooms not being able to find their texture. #22
 - Fixed missing mooshrooms becoming an actual mooshroom type upon tracking.
 - Fixed infinite lockdown effects being dimmed and prioritised in the HUD.
-- Fixed 
+- Fixed NeoForge crashing due to an invalid mods.toml.
 
 ## Miscellaneous
-- Updated for NeoForge Networking Rewrite.
+- Updated mod icon.
+- Removed Cardinal Components API dependency in favour of Fabric's Attachment/API Lookup.
+  - This also rewrites attachments/capabilities on the NeoForge end.
+  - This changes the NBT path of everything on Fabric.
+- Updated for NeoForge Networking rewrite.
 - Re-added JEI and EMI compatibility.
   - REI compatibility is not available on NeoForge.

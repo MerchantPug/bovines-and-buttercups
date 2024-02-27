@@ -16,7 +16,7 @@
     "issues": "https://github.com/MerchantPug/bovines-and-buttercups/issues",
     "sources": "https://github.com/MerchantPug/bovines-and-buttercups"
   },
-  "license": "LGPL-3.0-only",
+  "license": "MIT",
   "icon": "assets/bovinesandbuttercups/icon.png",
   "environment": "*",
   "entrypoints": {

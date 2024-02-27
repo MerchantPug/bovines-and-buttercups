@@ -7,7 +7,6 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.MobEffectTextureManager;
 import net.minecraft.util.Mth;
@@ -50,7 +49,7 @@ public class GuiMixin {
 
         MobEffect statusEffect1 = statusEffectList.get(lockdownEffectIndex).getKey();
 
-        List<Map.Entry<MobEffect, Integer>> runningOutEffectList = statusEffectList.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() <= 200).toList();
+        List<Map.Entry<MobEffect, Integer>> runningOutEffectList = statusEffectList.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() != -1 && statusEffectIntegerEntry.getValue() <= 200).toList();
 
         float alpha = g;
         if (statusEffectList.size() > 1) {

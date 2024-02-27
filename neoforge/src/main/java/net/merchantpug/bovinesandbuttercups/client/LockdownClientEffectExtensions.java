@@ -1,7 +1,7 @@
 package net.merchantpug.bovinesandbuttercups.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.merchantpug.bovinesandbuttercups.capabilities.LockdownEffectCapability;
+import net.merchantpug.bovinesandbuttercups.attachment.capability.LockdownEffectCapability;
 import net.merchantpug.bovinesandbuttercups.registry.BovineCapabilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -48,7 +48,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
 
                 MobEffect statusEffect1 = list.get(lockdownEffectIndex).getKey();
 
-                List<Map.Entry<MobEffect, Integer>> runningOutEffectList = list.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() <= 200).toList();
+                List<Map.Entry<MobEffect, Integer>> runningOutEffectList = list.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() != -1 && statusEffectIntegerEntry.getValue() <= 200).toList();
 
                 float a = alpha;
                 if (list.size() > 1 && !runningOutEffectList.isEmpty()) {

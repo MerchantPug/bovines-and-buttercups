@@ -191,7 +191,7 @@ tasks.register('curseforge', TaskPublishCurseForge) {
         mainFile.addOptional(it)
     }
 
-    cf_fabric_embedded_deps.split(", ").each {
+    fabric_embedded_deps.split(", ").each {
         mainFile.addEmbedded(it)
     }
 }
@@ -219,7 +219,7 @@ modrinth {
             optional.project project
         }
 
-        mr_fabric_embedded_deps.split(", ").each { String project ->
+        fabric_embedded_deps.split(", ").each { String project ->
             embedded.project project
         }
     }

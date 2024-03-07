@@ -385,9 +385,11 @@ public class BovinesAndButtercupsNeoForge {
                         cap.sync();
                     }));
                 }
-                if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && optional.get().containsKey(event.getEffectInstance().getEffect())) {
-                    BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, event.getEffectInstance().getEffect());
-                }
+            }if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent() && entity.getCapability(LockdownEffectCapability.INSTANCE).map(cap -> !cap.getLockdownMobEffects().isEmpty()).orElse(false)) {
+                entity.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapability::getLockdownMobEffects).orElse(Map.of()).forEach((effect1, duration) -> {
+                    if (!entity.hasEffect(effect1)) return;
+                    BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
+                });
             }
         }
         @SubscribeEvent

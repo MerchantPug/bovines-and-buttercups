@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -20,5 +21,5 @@ public class MobEffectUtil {
             Codec.BOOL.optionalFieldOf("show_icon", true).forGetter(MobEffectInstance::showIcon)
     ).apply(builder, MobEffectInstance::new));
 
-    public static final Codec<Map<MobEffect, Integer>> LOCKDOWN_CODEC = Codec.simpleMap(BuiltInRegistries.MOB_EFFECT.byNameCodec(), Codec.INT, Keyable.forStrings(() -> Stream.of("id", "duration"))).codec();
+    public static final Codec<Map<MobEffect, Integer>> LOCKDOWN_CODEC = Codec.simpleMap(BuiltInRegistries.MOB_EFFECT.byNameCodec(), Codec.INT, Keyable.forStrings(() -> Stream.of("id", "duration"))).codec().xmap(HashMap::new, map -> map);
 }

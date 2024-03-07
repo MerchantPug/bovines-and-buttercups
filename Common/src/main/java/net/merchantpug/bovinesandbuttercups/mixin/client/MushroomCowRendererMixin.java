@@ -18,12 +18,14 @@ import java.util.Locale;
 public abstract class MushroomCowRendererMixin {
     @Inject(method = "getTextureLocation(Lnet/minecraft/world/entity/animal/MushroomCow;)Lnet/minecraft/resources/ResourceLocation;", at = @At("RETURN"), cancellable = true)
     private void bovinesandbuttercups$changeTextureLocation(MushroomCow entity, CallbackInfoReturnable<ResourceLocation> cir) {
-        ResourceLocation location = Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getSettings().cowTexture().orElseGet(() -> new ResourceLocation(BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).getNamespace(), "textures/entity/bovinesandbuttercups/mooshroom/" + BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)).getPath().toLowerCase(Locale.ROOT) + "_mooshroom.png"));
+        ResourceLocation location = Services.COMPONENT.getMushroomCowTypeFromCow(entity).configuration().getSettings().cowTexture().orElseGet(() -> {
+            ResourceLocation mooshroomLocation = BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)) != null ? BovineRegistryUtil.getConfiguredCowTypeKey(Services.COMPONENT.getMushroomCowTypeFromCow(entity)) : BovinesAndButtercups.asResource("missing_mooshroom");
+            return new ResourceLocation(mooshroomLocation.getNamespace().toLowerCase(Locale.ROOT), "textures/entity/bovinesandbuttercups/mooshroom/" + mooshroomLocation.getPath().toLowerCase(Locale.ROOT) + "_mooshroom.png");
+        });
         if (location.equals(cir.getReturnValue())) return;
         if (BovinesAndButtercupsClient.LOADED_COW_TEXTURES.contains(location)) {
             cir.setReturnValue(location);
-        } else {
-            cir.setReturnValue(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/mooshroom/missing_mooshroom.png"));
         }
+        cir.setReturnValue(BovinesAndButtercups.asResource("textures/entity/bovinesandbuttercups/moobloom/missing_moobloom.png"));
     }
 }

@@ -341,7 +341,7 @@ public class BovinesAndButtercupsForge {
         eventBus.addListener((MobEffectEvent.Added event) -> {
             LivingEntity entity = event.getEntity();
 
-            if (event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent()) {
+            if (!entity.level().isClientSide() && event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent()) {
                 Optional<Map<MobEffect, Integer>> optional = entity.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapabilityImpl::getLockdownMobEffects);
                 if (optional.isEmpty() || optional.get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration())) {
                     Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(entity.level().random);
@@ -350,12 +350,12 @@ public class BovinesAndButtercupsForge {
                         cap.sync();
                     }));
                 }
-                if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && !optional.get().isEmpty()) {
-                    optional.get().forEach((effect1, duration) -> {
-                        if (!serverPlayer.hasEffect(effect1)) return;
-                        BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
-                    });
-                }
+            }
+            if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && event.getEffectInstance().getEffect() instanceof LockdownEffect && entity.getCapability(LockdownEffectCapability.INSTANCE).isPresent() && entity.getCapability(LockdownEffectCapability.INSTANCE).map(cap -> !cap.getLockdownMobEffects().isEmpty()).orElse(false)) {
+                entity.getCapability(LockdownEffectCapability.INSTANCE).map(LockdownEffectCapability::getLockdownMobEffects).orElse(Map.of()).forEach((effect1, duration) -> {
+                    if (!entity.hasEffect(effect1)) return;
+                    BovineCriteriaTriggers.LOCK_EFFECT.trigger(serverPlayer, effect1);
+                });
             }
         });
         eventBus.addListener((MobEffectEvent.Remove event) -> {

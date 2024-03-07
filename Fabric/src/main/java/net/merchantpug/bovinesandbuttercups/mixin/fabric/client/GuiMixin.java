@@ -52,7 +52,7 @@ public class GuiMixin {
 
         MobEffect statusEffect1 = statusEffectList.get(lockdownEffectIndex).getKey();
 
-        List<Map.Entry<MobEffect, Integer>> runningOutEffectList = statusEffectList.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() <= 200).toList();
+        List<Map.Entry<MobEffect, Integer>> runningOutEffectList = statusEffectList.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() <= 200 && statusEffectIntegerEntry.getValue() != -1).toList();
 
         float alpha = g;
         if (statusEffectList.size() > 1) {

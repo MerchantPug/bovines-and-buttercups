@@ -349,6 +349,7 @@ public class BovinesAndButtercupsNeoForge {
                     }
                 }));
                 Services.COMPONENT.setLockdownMobEffects(event.getEntity(), lockdownEffectsToUpdate);
+                Services.COMPONENT.syncLockdownMobEffects(event.getEntity());
             }
             if (event.getEntity() instanceof Bee bee && !event.getEntity().level().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();

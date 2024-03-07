@@ -74,7 +74,7 @@ public class NeoForgeComponentHelper implements IComponentHelper {
 
     @Override
     public void syncLockdownMobEffects(LivingEntity entity) {
-        // Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).ifPresent(LockdownEffectCapability::sync);
+        Optional.ofNullable(entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT)).ifPresent(LockdownEffectCapability::sync);
     }
 
     @Override

@@ -3,14 +3,14 @@ package net.merchantpug.bovinesandbuttercups.network.s2c;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.attachment.LockdownEffectAttachment;
 import net.merchantpug.bovinesandbuttercups.network.BovinePacketS2C;
-import net.merchantpug.bovinesandbuttercups.registry.BovineAttachmentTypes;
+import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.animal.Bee;
+import net.minecraft.world.entity.LivingEntity;
 
 public record SyncLockdownEffectAttachmentPacket(int entityId, LockdownEffectAttachment attachment) implements BovinePacketS2C {
     public static final ResourceLocation ID = BovinesAndButtercups.asResource("sync_lockdown_effect_attachment");
@@ -30,10 +30,10 @@ public record SyncLockdownEffectAttachmentPacket(int entityId, LockdownEffectAtt
     public void handle() {
         Minecraft.getInstance().execute(() -> {
             Entity entity = Minecraft.getInstance().level.getEntity(entityId());
-            if (!(entity instanceof Bee bee)) {
+            if (!(entity instanceof LivingEntity living)) {
                 return;
             }
-            bee.setAttached(BovineAttachmentTypes.LOCKDOWN_EFFECT, attachment());
+            Services.COMPONENT.setLockdownMobEffects(living, attachment().getLockdownMobEffects());
         });
     }
 

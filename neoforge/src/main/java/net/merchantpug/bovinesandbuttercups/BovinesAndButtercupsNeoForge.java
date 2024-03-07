@@ -26,6 +26,7 @@ import net.merchantpug.bovinesandbuttercups.data.loader.ConfiguredCowTypeReloadL
 import net.merchantpug.bovinesandbuttercups.data.loader.FlowerTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.data.loader.MushroomTypeReloadListener;
 import net.merchantpug.bovinesandbuttercups.network.s2c.SyncDatapackContentsPacket;
+import net.merchantpug.bovinesandbuttercups.network.s2c.SyncLockdownEffectAttachmentPacket;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
 import net.merchantpug.bovinesandbuttercups.registry.*;
 import net.merchantpug.bovinesandbuttercups.util.CreativeTabHelper;
@@ -126,8 +127,9 @@ public class BovinesAndButtercupsNeoForge {
         @SubscribeEvent
         public static void registerPayload(RegisterPayloadHandlerEvent event) {
             event.registrar(BovinesAndButtercups.MOD_ID)
-                    .versioned("1.0.0")
-                    .play(SyncDatapackContentsPacket.ID, SyncDatapackContentsPacket::read, createCommonS2CHandler(SyncDatapackContentsPacket::handle));
+                    .versioned("1.1")
+                    .play(SyncDatapackContentsPacket.ID, SyncDatapackContentsPacket::read, createCommonS2CHandler(SyncDatapackContentsPacket::handle))
+                    .play(SyncLockdownEffectAttachmentPacket.ID, SyncLockdownEffectAttachmentPacket::read, createCommonS2CHandler(SyncLockdownEffectAttachmentPacket::handle));
         }
 
         private static <MSG extends CustomPacketPayload> Consumer<IDirectionAwarePayloadHandlerBuilder<MSG, IPlayPayloadHandler<MSG>>> createCommonS2CHandler(Consumer<MSG> handler) {
@@ -361,6 +363,7 @@ public class BovinesAndButtercupsNeoForge {
                     }
                 }));
                 Services.COMPONENT.setLockdownMobEffects(event.getEntity(), lockdownEffectsToUpdate);
+                Services.COMPONENT.syncLockdownMobEffects(event.getEntity());
             }
             if (event.getEntity() instanceof Bee bee && !event.getEntity().level().isClientSide() && ((BeeAccess)event.getEntity()).bovinesandbuttercups$getPollinateFlowerCowGoal() != null) {
                 ((BeeAccess)bee).bovinesandbuttercups$getPollinateFlowerCowGoal().tickCooldown();
@@ -399,28 +402,34 @@ public class BovinesAndButtercupsNeoForge {
                     randomEffect.ifPresent(entry -> {
                         cap.addLockdownMobEffect(entry.value(), event.getEffectInstance().getDuration());
                     });
+                    cap.sync();
                 }
                 if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && optional.get().containsKey(event.getEffectInstance().getEffect())) {
                     BovineCriteriaTriggers.LOCK_EFFECT.get().trigger(serverPlayer, event.getEffectInstance().getEffect());
                 }
             }
         }
+
         @SubscribeEvent
         public static void onMobEffectRemoved(MobEffectEvent.Remove event) {
             if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
             LockdownEffectCapability cap = event.getEntity().getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
             if (cap != null) {
                 cap.getLockdownMobEffects().clear();
+                cap.sync();
             }
         }
+
         @SubscribeEvent
         public static void onMobEffectExpired(MobEffectEvent.Expired event) {
             if (event.getEffectInstance() == null || !(event.getEffectInstance().getEffect() instanceof LockdownEffect)) return;
             LockdownEffectCapability cap = event.getEntity().getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
             if (cap != null) {
                 cap.getLockdownMobEffects().clear();
+                cap.sync();
             }
         }
+
         @SubscribeEvent
         public static void changeMobEffectApplicability(MobEffectEvent.Applicable event) {
             Entity entity = event.getEntity();

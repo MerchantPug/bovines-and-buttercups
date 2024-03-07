@@ -2,14 +2,17 @@ package net.merchantpug.bovinesandbuttercups.attachment.capability;
 
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.attachment.LockdownEffectAttachment;
+import net.merchantpug.bovinesandbuttercups.network.s2c.SyncLockdownEffectAttachmentPacket;
 import net.merchantpug.bovinesandbuttercups.registry.BovineAttachments;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.Map;
 
@@ -51,6 +54,12 @@ public class LockdownEffectCapability {
 
     public void setLockdownMobEffects(Map<MobEffect, Integer> map) {
         provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).get().setLockdownMobEffects(map);
+    }
+
+    public void sync() {
+        if (!(this.provider instanceof ServerPlayer serverPlayer)) return;
+        SyncLockdownEffectAttachmentPacket packet = new SyncLockdownEffectAttachmentPacket(this.provider.getId(), this.provider.getData(BovineAttachments.LOCKDOWN_EFFECT.get()).get());
+        PacketDistributor.PLAYER.with(serverPlayer).send(packet);
     }
 
 }

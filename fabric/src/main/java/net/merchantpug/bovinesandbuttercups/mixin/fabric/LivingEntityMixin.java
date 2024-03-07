@@ -47,6 +47,7 @@ public abstract class LivingEntityMixin extends Entity {
                 }
             }));
             Services.COMPONENT.setLockdownMobEffects(entity, lockdownEffectsToUpdate);
+            Services.COMPONENT.syncLockdownMobEffects(entity);
         }
     }
 

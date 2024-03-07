@@ -48,6 +48,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bee;
@@ -394,19 +395,20 @@ public class BovinesAndButtercupsNeoForge {
         public static void onMobEffectAdded(MobEffectEvent.Added event) {
             LivingEntity entity = event.getEntity();
 
-            LockdownEffectCapability cap = event.getEntity().getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
-            if (event.getEffectInstance().getEffect() instanceof LockdownEffect && cap != null) {
-                Optional<Map<MobEffect, Integer>> optional = Optional.ofNullable(cap.getLockdownMobEffects());
-                if (optional.isEmpty() || optional.get().values().stream().allMatch(value -> value < event.getEffectInstance().getDuration())) {
-                    Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(entity.level().random);
-                    randomEffect.ifPresent(entry -> {
-                        cap.addLockdownMobEffect(entry.value(), event.getEffectInstance().getDuration());
-                    });
+            LockdownEffectCapability cap = entity.getCapability(BovineCapabilities.LOCKDOWN_EFFECT);
+            MobEffectInstance effect = event.getEffectInstance();
+            if (!entity.level().isClientSide && effect.getEffect() instanceof LockdownEffect && cap != null && (cap.getLockdownMobEffects().isEmpty() || cap.getLockdownMobEffects().values().stream().allMatch(value -> value < effect.getDuration()))) {
+                Optional<Holder.Reference<MobEffect>> randomEffect = BuiltInRegistries.MOB_EFFECT.getRandom(entity.level().random);
+                randomEffect.ifPresent(entry -> {
+                    cap.addLockdownMobEffect(entry.value(), effect.getDuration());
                     cap.sync();
-                }
-                if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && optional.isPresent() && optional.get().containsKey(event.getEffectInstance().getEffect())) {
-                    BovineCriteriaTriggers.LOCK_EFFECT.get().trigger(serverPlayer, event.getEffectInstance().getEffect());
-                }
+                });
+            }
+            if (!entity.level().isClientSide && entity instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && cap != null && !cap.getLockdownMobEffects().isEmpty()) {
+                cap.getLockdownMobEffects().forEach((effect1, duration) -> {
+                    if (!entity.hasEffect(effect1)) return;
+                    BovineCriteriaTriggers.LOCK_EFFECT.get().trigger(serverPlayer, effect1);
+                });
             }
         }
 

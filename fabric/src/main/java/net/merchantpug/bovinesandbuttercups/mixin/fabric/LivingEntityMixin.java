@@ -61,7 +61,7 @@ public abstract class LivingEntityMixin extends Entity {
                 api.sync();
             });
         }
-        if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && api != null && api.getLockdownMobEffects().isEmpty()) {
+        if (!this.level().isClientSide && (LivingEntity)(Object)this instanceof ServerPlayer serverPlayer && effect.getEffect() instanceof LockdownEffect && api != null && !api.getLockdownMobEffects().isEmpty()) {
             api.getLockdownMobEffects().forEach((effect1, duration) -> {
                 if (!this.hasEffect(effect1)) return;
                 BovineCriteriaTriggers.LOCK_EFFECT.get().trigger(serverPlayer, effect1);

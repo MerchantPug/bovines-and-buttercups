@@ -1,6 +1,5 @@
 package net.merchantpug.bovinesandbuttercups.content.advancements.criterion;
 
-import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;

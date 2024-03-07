@@ -321,6 +321,13 @@ public class BovinesAndButtercupsForge {
         eventBus.addGenericListener(Entity.class, LockdownEffectCapabilityAttacher::attach);
         eventBus.addGenericListener(Entity.class, FlowerCowTargetCapabilityAttacher::attach);
 
+        eventBus.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
+            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(LockdownEffectCapability::sync);
+        });
+        eventBus.addListener((PlayerEvent.PlayerChangedDimensionEvent event) -> {
+            event.getEntity().getCapability(LockdownEffectCapability.INSTANCE).ifPresent(LockdownEffectCapability::sync);
+        });
+
         eventBus.addListener((BabyEntitySpawnEvent event) -> {
             Mob parentA = event.getParentA();
             Mob parentB = event.getParentB();

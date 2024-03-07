@@ -41,7 +41,7 @@ public class LockdownClientEffectExtensions implements IClientMobEffectExtension
 
                 MobEffect statusEffect1 = list.get(lockdownEffectIndex).getKey();
 
-                List<Map.Entry<MobEffect, Integer>> runningOutEffectList = list.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() <= 200).toList();
+                List<Map.Entry<MobEffect, Integer>> runningOutEffectList = list.stream().filter(statusEffectIntegerEntry -> statusEffectIntegerEntry.getValue() <= 200 && statusEffectIntegerEntry.getValue() != -1).toList();
 
                 float a = alpha;
                 if (list.size() > 1 && !runningOutEffectList.isEmpty()) {

@@ -1,1 +1,2 @@
-- Fixed a rare crash involving Mooblooms not being able to find their texture. #22
+### Bugfixes
+- Fixed rare crash when unable to load Mooshroom textures.

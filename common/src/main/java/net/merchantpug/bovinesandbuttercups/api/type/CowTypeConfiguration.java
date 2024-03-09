@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.merchantpug.bovinesandbuttercups.api.BovineRegistryUtil;
 import net.merchantpug.bovinesandbuttercups.util.CodecUtil;
-import net.minecraft.core.HolderSet;
+import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
@@ -52,7 +52,7 @@ public class CowTypeConfiguration {
      * @param naturalSpawnWeight The natural spawn weight for this cow in relation to other cows of its type. Any value below 1 should be ignored.
      * @param thunderConverts A list of weighted cow types that this cow will/have a chance to convert into upon being struck by lightning.
      */
-    public record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderSet<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
+    public record Settings(Optional<ResourceLocation> cowTexture, Optional<HolderUtil.PsuedoHolder<Biome>> biomes, int naturalSpawnWeight, Optional<List<WeightedConfiguredCowType>> thunderConverts) {
         public static MapCodec<Settings> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
                     ResourceLocation.CODEC.optionalFieldOf("texture_location").orElseGet(Optional::empty).forGetter(Settings::cowTexture),

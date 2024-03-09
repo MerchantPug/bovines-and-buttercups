@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.lookup.v1.entity.EntityApiLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.fabricmc.api.ModInitializer;
@@ -34,6 +33,7 @@ import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,7 +42,6 @@ import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.entity.EntityLookup;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,9 +72,9 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
 
         BovinesAndButtercups.init();
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, context, selection) -> EffectLockdownCommand.register(dispatcher, context));
+        ServerLifecycleEvents.SERVER_STOPPED.register(server1 -> BovinesAndButtercupsFabric.setServer(null));
 
-        ServerLifecycleEvents.SERVER_STARTING.register(BovinesAndButtercups::setServer);
+        CommandRegistrationCallback.EVENT.register((dispatcher, context, selection) -> EffectLockdownCommand.register(dispatcher, context));
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             MushroomCowTypeApi api = BovineEntityApis.MOOSHROOM_TYPE.find(entity, null);
@@ -165,6 +164,16 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
             return null;
         });
         BovineEntityApis.MOOBLOOM_TARGET.registerForType((entity, aVoid) -> MOOBLOOM_TARGET_CAPABILITY_CACHE.computeIfAbsent(entity, FlowerCowTargetApi::new), EntityType.BEE);
+    }
+
+    private static MinecraftServer server;
+
+    public static MinecraftServer getServer() {
+        return server;
+    }
+
+    public static void setServer(MinecraftServer server) {
+        BovinesAndButtercupsFabric.server = server;
     }
 
 }

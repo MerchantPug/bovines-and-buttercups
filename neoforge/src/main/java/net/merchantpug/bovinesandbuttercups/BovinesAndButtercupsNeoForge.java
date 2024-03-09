@@ -211,11 +211,6 @@ public class BovinesAndButtercupsNeoForge {
     @Mod.EventBusSubscriber(modid = BovinesAndButtercups.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class NeoEventBusListeners {
 
-        @SubscribeEvent
-        public static void onServerAboutToStart(ServerAboutToStartEvent event) {
-            BovinesAndButtercups.setServer(event.getServer());
-        }
-
         // Make sure that the shearing is cancelled as a whole.
         @SubscribeEvent(priority = EventPriority.HIGHEST)
         public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {

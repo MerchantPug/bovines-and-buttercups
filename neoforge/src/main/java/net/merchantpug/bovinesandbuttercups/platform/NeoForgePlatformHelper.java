@@ -12,11 +12,14 @@ import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesNeoForge;
 import net.merchantpug.bovinesandbuttercups.util.PottedBlockMapUtil;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.util.thread.EffectiveSide;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.Map;
 
@@ -40,6 +43,11 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public boolean isDevelopmentEnvironment() {
         return !FMLLoader.isProduction();
+    }
+
+    @Override
+    public MinecraftServer getServer() {
+        return ServerLifecycleHooks.getCurrentServer();
     }
 
     @Override

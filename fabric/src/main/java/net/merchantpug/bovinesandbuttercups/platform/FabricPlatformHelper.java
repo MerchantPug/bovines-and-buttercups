@@ -2,6 +2,7 @@ package net.merchantpug.bovinesandbuttercups.platform;
 
 import com.mojang.serialization.Codec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
+import net.merchantpug.bovinesandbuttercups.BovinesAndButtercupsFabric;
 import net.merchantpug.bovinesandbuttercups.api.condition.biome.BiomeConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.block.BlockConditionType;
 import net.merchantpug.bovinesandbuttercups.api.condition.entity.EntityConditionType;
@@ -14,6 +15,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.merchantpug.bovinesandbuttercups.registry.BovineRegistriesFabric;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +34,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public boolean isClientSide() {
-        return BovinesAndButtercups.getServer() == null;
+        return BovinesAndButtercupsFabric.getServer() == null;
     }
     
     @Override
@@ -43,6 +45,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public boolean isDevelopmentEnvironment() {
         return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    @Override
+    public MinecraftServer getServer() {
+        return BovinesAndButtercupsFabric.getServer();
     }
 
     @Override

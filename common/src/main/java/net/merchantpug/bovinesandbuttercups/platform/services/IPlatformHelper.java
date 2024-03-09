@@ -24,6 +24,8 @@ public interface IPlatformHelper {
 
     boolean isDevelopmentEnvironment();
 
+    MinecraftServer getServer();
+
     void registerDefaultConfiguredCowTypes();
 
     Codec<CowType<?>> getCowTypeCodec();

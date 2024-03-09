@@ -32,6 +32,7 @@ import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.merchantpug.bovinesandbuttercups.util.MushroomCowSpawnUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -66,9 +67,9 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
 
         BovinesAndButtercups.init();
 
-        CommandRegistrationCallback.EVENT.register((dispatcher, context, selection) -> EffectLockdownCommand.register(dispatcher, context));
+        ServerLifecycleEvents.SERVER_STOPPED.register(server1 -> BovinesAndButtercupsFabric.setServer(null));
 
-        ServerLifecycleEvents.SERVER_STARTING.register(BovinesAndButtercups::setServer);
+        CommandRegistrationCallback.EVENT.register((dispatcher, context, selection) -> EffectLockdownCommand.register(dispatcher, context));
 
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             if (BovineEntityComponents.MUSHROOM_COW_TYPE_COMPONENT.isProvidedBy(entity)) {
@@ -143,6 +144,16 @@ public class BovinesAndButtercupsFabric implements ModInitializer {
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_FLOWER.get(), 0.65F);
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM.get(), 0.65F);
         CompostingChanceRegistry.INSTANCE.add(BovineItems.CUSTOM_MUSHROOM_BLOCK.get(), 0.85F);
+    }
+
+    private static MinecraftServer server;
+
+    public static MinecraftServer getServer() {
+        return server;
+    }
+
+    public static void setServer(MinecraftServer server) {
+        BovinesAndButtercupsFabric.server = server;
     }
 
 }

@@ -9,6 +9,7 @@
     "BeePollinateGoalMixin",
     "FlowerPotBlockMixin",
     "LivingEntityMixin",
+    "MinecraftServerMixin",
     "MushroomCowAccessor",
     "MushroomCowMixin"
   ],

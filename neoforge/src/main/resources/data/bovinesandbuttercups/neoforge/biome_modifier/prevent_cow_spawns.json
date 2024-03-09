@@ -1,5 +1,5 @@
 {
-  "type": "forge:remove_spawns",
+  "type": "neoforge:remove_spawns",
   "biomes": "#bovinesandbuttercups:prevent_cow_spawns",
   "entity_types": [
     "minecraft:cow"

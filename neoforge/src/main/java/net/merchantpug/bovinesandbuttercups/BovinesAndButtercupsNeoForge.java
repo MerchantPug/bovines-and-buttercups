@@ -197,11 +197,6 @@ public class BovinesAndButtercupsNeoForge {
         }
 
         @SubscribeEvent
-        public static void onServerAboutToStart(ServerAboutToStartEvent event) {
-            BovinesAndButtercups.setServer(event.getServer());
-        }
-
-        @SubscribeEvent
         public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
             if (!event.getItemStack().is(Items.SHEARS)) return;
             if (event.getTarget() instanceof FlowerCow cow && !cow.shouldAllowShearing()) {

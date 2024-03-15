@@ -185,10 +185,6 @@ public class BovinesAndButtercupsForge {
 
         eventBus.addListener((RegisterCommandsEvent event) -> EffectLockdownCommand.register(event.getDispatcher(), event.getBuildContext()));
 
-        eventBus.addListener((ServerAboutToStartEvent event) -> {
-            BovinesAndButtercups.setServer(event.getServer());
-        });
-
         eventBus.addListener((OnDatapackSyncEvent event) -> {
             if (event.getPlayer() == null) return;
             HashMap<ResourceLocation, ConfiguredCowType<?, ?>> configuredCowTypeMap = new HashMap<>();

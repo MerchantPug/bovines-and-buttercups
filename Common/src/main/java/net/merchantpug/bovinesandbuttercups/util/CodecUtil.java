@@ -5,58 +5,54 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.merchantpug.bovinesandbuttercups.BovinesAndButtercups;
 import net.merchantpug.bovinesandbuttercups.platform.Services;
+import net.merchantpug.bovinesandbuttercups.util.HolderUtil;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 
 import java.util.Optional;
 
 public class CodecUtil {
 
-    public static <T> MapCodec<HolderSet<T>> tagOrObjectCodec(ResourceKey<Registry<T>> registryKey, String fieldName) {
-        RegistryAccess registryAccess = getRegistryAccess();
-        if (registryAccess == null) {
-            return MapCodec.unit(HolderSet.direct());
-        }
-        Optional<Registry<T>> optionalRegistry = registryAccess.registry(registryKey);
-        if (optionalRegistry.isEmpty()) {
-            return MapCodec.unit(HolderSet.direct());
-        }
-        Registry<T> registry = optionalRegistry.get();
-        return Codec.either(TagKey.hashedCodec(registryKey), registry.holderByNameCodec()).fieldOf(fieldName)
-                .xmap(tagKeyHolderEither -> tagKeyHolderEither.map(registry::getOrCreateTag, HolderSet::direct),
-                        holders -> {
-                            if (holders.unwrapKey().isEmpty()) {
-                                return Either.right(holders.get(0));
+    public static <T> MapCodec<HolderUtil.PsuedoHolder<T>> tagOrObjectCodec(ResourceKey<Registry<T>> registryKey, String fieldName) {
+        return Codec.either(TagKey.hashedCodec(registryKey), ResourceLocation.CODEC.xmap(resourceLocation -> ResourceKey.create(registryKey, resourceLocation), ResourceKey::location)).fieldOf(fieldName)
+                .xmap(tagKeyHolderEither -> tagKeyHolderEither.map(
+                                tagKey -> new HolderUtil.PsuedoHolder<>(registryKey, Either.right(tagKey)),
+                                key -> new HolderUtil.PsuedoHolder<>(registryKey, Either.left(key))),
+                        psuedoHolder -> {
+                            if (psuedoHolder.key().right().isPresent()) {
+                                return Either.left(psuedoHolder.key().right().get());
                             }
-                            return Either.left(holders.unwrapKey().get());
+                            if (psuedoHolder.key().left().isPresent()) {
+                                return Either.right(psuedoHolder.key().left().get());
+                            }
+                            return Either.left(null);
                         });
     }
 
-    public static <T> MapCodec<Optional<HolderSet<T>>> optionalTagOrObjectCodec(ResourceKey<Registry<T>> registryKey, String fieldName) {
-        RegistryAccess registryAccess = getRegistryAccess();
-        if (registryAccess == null) {
-            return MapCodec.unit(Optional.empty());
-        }
-        Optional<Registry<T>> optionalRegistry = registryAccess.registry(registryKey);
-        if (optionalRegistry.isEmpty()) {
-            return MapCodec.unit(Optional.empty());
-        }
-        Registry<T> registry = optionalRegistry.get();
-        return Codec.either(TagKey.hashedCodec(registryKey), registry.holderByNameCodec()).optionalFieldOf(fieldName)
-                .xmap(tagKeyHolderEither -> tagKeyHolderEither.map(tagKeyHolderEither1 -> tagKeyHolderEither1.map(registry::getOrCreateTag, HolderSet::direct)),
-                        holders -> holders.map(holders1 -> {
-                            if (holders1.unwrapKey().isEmpty()) {
-                                return Either.right(holders1.get(0));
+    public static <T> MapCodec<Optional<HolderUtil.PsuedoHolder<T>>> optionalTagOrObjectCodec(ResourceKey<Registry<T>> registryKey, String fieldName) {
+        return Codec.either(TagKey.hashedCodec(registryKey), ResourceLocation.CODEC.xmap(resourceLocation -> ResourceKey.create(registryKey, resourceLocation), ResourceKey::location)).optionalFieldOf(fieldName)
+                .xmap(optional ->
+                                optional.map(tagKeyHolderEither -> tagKeyHolderEither.map(
+                                        tagKey -> new HolderUtil.PsuedoHolder<>(registryKey, Either.right(tagKey)),
+                                        key -> new HolderUtil.PsuedoHolder<>(registryKey, Either.left(key))
+                                )),
+                        optionalPsuedoHolder -> {
+                            if (optionalPsuedoHolder.isPresent() && optionalPsuedoHolder.get().key().right().isPresent()) {
+                                return Optional.of(Either.left(optionalPsuedoHolder.get().key().right().get()));
                             }
-                            return Either.left(holders1.unwrapKey().get());
-                        }));
+                            if (optionalPsuedoHolder.isPresent() && optionalPsuedoHolder.get().key().left().isPresent()) {
+                                return Optional.of(Either.right(optionalPsuedoHolder.get().key().left().get()));
+                            }
+                            return Optional.empty();
+                        });
     }
 
     public static RegistryAccess getRegistryAccess() {
-        if (!Services.PLATFORM.isClientSide()) {
+        if (BovinesAndButtercups.getServer() != null) {
             return BovinesAndButtercups.getServer().registryAccess();
         }
         return null;

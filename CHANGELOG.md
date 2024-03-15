@@ -1,10 +1,2 @@
-### Bugfixes
-- Fixed rare crash when unable to load Mooshroom textures.
-- Fixed lockdown effects not syncing whilst ticking.
-- Fixed infinite lockdown effects being dimmed and prioritised in the HUD.
-- Fixed built-in resource packs having the incorrect `pack_format` value.
-- [FORGE] Fixed lockdown effects not syncing when swapping dimensions or joining worlds.
-- [FORGE] Fixed `lock_effect` criterion trigger not running.
-
-### Miscellaneous
-- Update mod icon.
+## Bugfixes
+- Fixed Mooblooms not spawning for clients when connected to dedicated servers.

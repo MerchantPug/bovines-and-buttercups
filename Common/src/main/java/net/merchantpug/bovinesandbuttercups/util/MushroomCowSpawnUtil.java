@@ -21,7 +21,7 @@ public class MushroomCowSpawnUtil {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.configuration() instanceof MushroomCowConfiguration configuration)) continue;
 
-            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(level.getBiome(pos), configuration.getSettings().biomes().get())) {
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.registryAccess(), level.getBiome(pos))) {
                 totalWeight += configuration.getSettings().naturalSpawnWeight();
             }
         }
@@ -61,7 +61,7 @@ public class MushroomCowSpawnUtil {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof MushroomCowConfiguration).toList()) {
             if (!(cowType.configuration() instanceof MushroomCowConfiguration configuration)) continue;
 
-            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(level.getBiome(pos), configuration.getSettings().biomes().get())) {
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.registryAccess(), level.getBiome(pos))) {
                 mooshroomList.add((ConfiguredCowType<MushroomCowConfiguration, CowType<MushroomCowConfiguration>>) cowType);
             }
         }

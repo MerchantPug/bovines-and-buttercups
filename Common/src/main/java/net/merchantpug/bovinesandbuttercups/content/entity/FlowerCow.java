@@ -595,7 +595,7 @@ public class FlowerCow extends Cow {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.configuration() instanceof FlowerCowConfiguration configuration)) continue;
 
-            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(level.getBiome(pos), configuration.getSettings().biomes().get())) {
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.registryAccess(), level.getBiome(pos))) {
                 totalWeight += configuration.getSettings().naturalSpawnWeight();
             }
         }
@@ -637,7 +637,7 @@ public class FlowerCow extends Cow {
         for (ConfiguredCowType<?, ?> cowType : BovineRegistryUtil.configuredCowTypeStream().filter(configuredCowType -> configuredCowType.configuration() instanceof FlowerCowConfiguration).toList()) {
             if (!(cowType.configuration() instanceof FlowerCowConfiguration configuration)) continue;
 
-            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && HolderUtil.containsBiomeHolder(level.getBiome(pos), configuration.getSettings().biomes().get())) {
+            if (configuration.getSettings().naturalSpawnWeight() > 0 && configuration.getSettings().biomes().isPresent() && configuration.getSettings().biomes().get().contains(level.registryAccess(), level.getBiome(pos))) {
                 moobloomList.add((ConfiguredCowType<FlowerCowConfiguration, CowType<FlowerCowConfiguration>>) cowType);
                 totalWeight += configuration.getSettings().naturalSpawnWeight();
             }
